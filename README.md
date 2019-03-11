@@ -21,10 +21,16 @@ $ bundle exec ruby server.rb
 ## Aims
 
 - Automate the behind-the-scenes processes used by jurors and hosts of the /r/anime awards, including:
+	- Juror applications and juror selection
 	- Genre allocation
 	- Shortlist creation
 	- Internal ranking and voting
 - Host public-facing surveys for nominations, genre allocations, and final votes
-- Allow subreddit moderators to manage the role of various users, including host selection and juror selection
+- Allow subreddit moderators and awards hosts to manage user roles and view the progression of the awards as appropriate, especially in:
 - Mitigate the risk of human error and information leaks in the awards process
 - Generate data for use with the awards presentation site
+
+Stretches:
+
+- Integrate directly with Discord to automate channel access and role management
+- Fold the existing awards site into this repo to further automate results display and eliminate the need to generate JSON data
