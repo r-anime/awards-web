@@ -1,0 +1,9 @@
+{
+	"extends": [
+		"plugin:vue/essential",
+		"@geo1088"
+	],
+	"env": {
+		"browser": true
+	}
+}

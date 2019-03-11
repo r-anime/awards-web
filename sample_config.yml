@@ -1,0 +1,7 @@
+# Secret hashing value for session storage
+:cookie_secret: "no u"
+# The hostname of the server running the app (used for OAuth stuff)
+:host: "http://localhost:4567"
+:reddit:
+  :client_id: "Reddit app client ID"
+  :secret: "Reddit app secret"
