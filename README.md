@@ -26,7 +26,7 @@ $ bundle exec ruby server.rb
 	- Shortlist creation
 	- Internal ranking and voting
 - Host public-facing surveys for nominations, genre allocations, and final votes
-- Allow subreddit moderators and awards hosts to manage user roles and view the progression of the awards as appropriate, especially in:
+- Allow subreddit moderators and awards hosts to manage user roles and view the progression of the awards as appropriate
 - Mitigate the risk of human error and information leaks in the awards process
 - Generate data for use with the awards presentation site
 
