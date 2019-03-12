@@ -34,3 +34,8 @@ Stretches:
 
 - Integrate directly with Discord to automate channel access and role management
 - Fold the existing awards site into this repo to further automate results display and eliminate the need to generate JSON data
+
+# Technical TODOs
+
+- Implement smart redirects after logging in, e.g. when you point someone to `/auth/reddit`, specify a path they get sent to afterwards, e.g. `/auth/reddit?to=/apply` to log in and then redirect to the juror application form
+  - can we do this with the referrer header?
