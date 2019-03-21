@@ -10,10 +10,11 @@ let vm; // eslint-disable-line prefer-const
 //       `created` hook because having the promise lets us use `await` to ensure
 //       we have user data before navigating (which is important for when the
 //       page is initially loading)
-const loadPromise = fetch('/api/me').then(r => r.json()).then(user => {
-	vm.user = user;
+const loadPromise = fetch('/api/me').then(r => r.json()).then(data => {
+	vm.user = data.user;
+	vm.redditor = data.redditor;
 }).catch(console.error).finally(() => {
-	vm.userLoaded = true;
+	vm.loaded = true;
 });
 
 // Handle authentication
@@ -23,7 +24,7 @@ router.beforeEach(async (to, from, next) => {
 	if (to.path.startsWith('/host')) {
 		if (vm.user) {
 			// The user is logged in
-			if (vm.user.isHost) {
+			if (vm.user.host || vm.user.mod) {
 				// The user is a host, so send them to the page
 				return next();
 			}
@@ -58,12 +59,13 @@ vm = new Vue({
 	// el: '#app',
 	data: {
 		user: null,
-		userLoaded: false,
-		userLoadedPromise: null,
+		redditor: null,
+		loaded: false,
 	},
 	router,
 	render: create => create(App),
 });
+console.log(router);
 
 // Now that we have authentication set up, mount the Vue instance to the page
 vm.$mount('#app');

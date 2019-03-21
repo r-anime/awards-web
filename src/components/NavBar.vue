@@ -8,22 +8,37 @@
 			/>
 		</div>
 		<div class="nav-bar-user">
-			<template v-if="user">
+			<template v-if="$root.user">
 				<nav-bar-link>
-					<img class="nav-bar-user-avatar" :src="user.subreddit.icon_img">
-					<span class="nav-bar-user-name">
-						/u/{{user.name}}
-					</span>
+					<template v-if="$root.redditor">
+						<img class="nav-bar-user-avatar" :src="$root.redditor.subreddit.icon_img">
+						<span class="nav-bar-user-name">
+							/u/{{$root.redditor.name}} {{$root.user.mod ? '[M]' : ''}}
+						</span>
+					</template>
+					<template v-else>
+						<span class="nav-bar-user-name">
+							No Reddit account linked
+						</span>
+					</template>
+
 					<template slot="dropdown">
+						<template v-if="$root.discord">
+							<!-- TODO -->
+						</template>
+						<template v-else>
+							<span>
+								No Discord account linked
+							</span>
+						</template>
+
 						<a href="/auth/reddit/logout">Log out</a>
 					</template>
 				</nav-bar-link>
 			</template>
-			<template v-else>
-				<nav-bar-link>
-					<a class="button" href="/auth/reddit">Log in with Reddit</a>
-				</nav-bar-link>
-			</template>
+			<nav-bar-link v-else>
+				<a class="button" href="/auth/reddit">Log in with Reddit</a>
+			</nav-bar-link>
 		</div>
 	</nav>
 </template>
@@ -37,7 +52,6 @@ export default {
 	},
 	props: {
 		routes: Array,
-		user: Object,
 		vertical: Boolean,
 	},
 	computed: {

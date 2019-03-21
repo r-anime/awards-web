@@ -1,6 +1,6 @@
 <template>
 	<body>
-		<nav-bar :routes="[]" :user="$root.user"/>
+		<nav-bar :routes="routes" />
 		<router-view/>
 	</body>
 </template>
@@ -11,10 +11,19 @@ export default {
 	components: {
 		NavBar,
 	},
+	computed: {
+		routes () {
+			const routes = [];
+			if (this.$root.user.mod) {
+				routes.push({name: 'Host page', path: '/host'});
+			}
+			return routes;
+		},
+	},
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 body {
 	margin: 0;
 	font-family: sans-serif;

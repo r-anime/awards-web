@@ -5,9 +5,11 @@
 		<span v-if="$slots.default" class="nav-bar-link-inner">
 			<slot/>
 		</span>
+
 		<router-link v-if="route" :to="route.path" :exact="!namedChildren">
 			{{route.name}}
 		</router-link>
+
 		<span v-if="namedChildren && namedChildren.length" class="nav-bar-dropdown">
 			<router-link
 				v-for="childRoute in namedChildren"
@@ -37,33 +39,52 @@ export default {
 </script>
 
 <style lang="scss">
+$height: 50px;
 .nav-bar-link {
 	display: block;
+	position: relative;
 	margin: 0;
-	height: 50px;
-	line-height: 50px;
+	height: $height;
+	line-height: $height;
 	color: inherit;
 	text-decoration: inherit;
+
+	&:hover {
+		background: #222;
+	}
 
 	> a,
 	> span  {
 		display: block;
 		padding: 0 10px;
 	}
-	&:hover > a,
-	&:hover > span {
-		background: #222;
-	}
 	.router-link-active {
 		color: red;
 	}
 
 	.nav-bar-dropdown {
-		display: none;
+		right: 0;
+		height: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		overflow: hidden;
 	}
 
 	&:hover .nav-bar-dropdown {
-		display: block;
+		height: auto;
+		background: inherit;
+	}
+
+	.vertical & {
+		height: auto;
+		line-height: 1.5;
+		padding-top: 10px;
+		padding-bottom: 10px;
+
+		.nav-bar-dropdown {
+			height: auto;
+		}
 	}
 }
 </style>

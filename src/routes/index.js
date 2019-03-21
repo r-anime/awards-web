@@ -7,10 +7,11 @@ Vue.use(VueRouter);
 import PublicLayout from '../layouts/Public';
 // import JurorLayout from './layout/Juror';
 import HostLayout from '../layouts/Host';
+import HostRoutes from './host';
 
 import Home from '../pages/Home';
 import About from '../pages/About';
-import HostDashboard from '../pages/host/Dashboard';
+import JurorApplication from '../pages/JurorApplication';
 import NotFound from '../pages/NotFound';
 
 export default new VueRouter({
@@ -23,15 +24,14 @@ export default new VueRouter({
 			children: [
 				{path: '', component: Home},
 				{path: 'about', component: About},
+				{path: 'apply', component: JurorApplication},
 			],
 		},
 		// Layout for the host dashboard
 		{
 			path: '/host',
 			component: HostLayout,
-			children: [
-				{path: '', component: HostDashboard},
-			],
+			children: HostRoutes,
 		},
 		// // Layout for juror things
 		// {
