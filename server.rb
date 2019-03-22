@@ -25,7 +25,7 @@ use Redd::Middleware, CONFIG[:reddit].merge({
   user_agent: "web:github.com/Geo1088/awards-nomination:v1.0.0 (by /u/geo1088)",
   via: "/auth/reddit",
   redirect_uri: "#{CONFIG[:host]}/auth/reddit/callback",
-  scope: ["identity"]
+  scope: %w[identity]
 })
 
 before do
@@ -75,6 +75,14 @@ namespace "/api" do
       user: @user,
       redditor: @redditor.to_h,
     })
+  end
+
+  get "/users" do
+    authenticate_reddit!
+    p @user
+    half jsonerr(401, "Unauthorized") if not @user["mod"]
+    users = r.table("users").run.to_a
+    json(users)
   end
 
   get "/juror_applications/:reddit_name" do

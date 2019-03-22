@@ -1,5 +1,5 @@
 <template>
-	<table>
+	<table v-if="loaded">
 		<tr>
 			<th v-for="(value, key) in users[0]" :key="key">
 				{{key}}
@@ -11,17 +11,25 @@
 			</td>
 		</tr>
 	</table>
+	<h1 v-else>Loading...</h1>
 </template>
 
 <script>
 export default {
 	data () {
 		return {
-			users: [
-				{name: 'Geo1088', type: 'Moderator'},
-				{name: 'ShaKing807', type: 'Moderator'},
-			],
+			users: [],
+			loaded: false,
 		};
+	},
+	created () {
+		fetch('/api/users').then(res => res.json()).then(users => {
+			this.users = users;
+		}).catch(error => {
+			window.alert(`Couldn't get users.\n${error}`);
+		}).finally(() => {
+			this.loaded = true;
+		});
 	},
 };
 </script>

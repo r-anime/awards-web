@@ -9,7 +9,9 @@
 			vertical
 		/>
 		<div class="content-wrap">
-			<router-view/>
+			<keep-alive>
+				<router-view/>
+			</keep-alive>
 		</div>
 	</body>
 </template>
