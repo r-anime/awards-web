@@ -5,14 +5,16 @@ import router from './routes';
 // What will be the Vue instance
 let vm; // eslint-disable-line prefer-const
 
-// Fetch user data and store it on the Vue instance when we get it
+// Fetch core user data and store it on the Vue instance when we get it
 // NOTE: This is done as its own thing rather than in the Vue instance's
 //       `created` hook because having the promise lets us use `await` to ensure
 //       we have user data before navigating (which is important for when the
 //       page is initially loading)
-const loadPromise = fetch('/api/me').then(r => r.json()).then(data => {
-	vm.user = data.user;
-	vm.redditor = data.redditor;
+const loadPromise = fetch('/api/me').then(redditResponse => {
+	if (!redditResponse.ok) throw redditResponse;
+	return redditResponse.json();
+}).then(data => {
+	vm.me = data;
 }).catch(console.error).finally(() => {
 	vm.loaded = true;
 });
@@ -22,9 +24,9 @@ router.beforeEach(async (to, from, next) => {
 	// We must be loaded before we can route
 	await loadPromise;
 	if (to.path.startsWith('/host')) {
-		if (vm.user) {
+		if (vm.me) {
 			// The user is logged in
-			if (vm.user.host || vm.user.mod) {
+			if (vm.me.level >= 2) {
 				// The user is a host, so send them to the page
 				return next();
 			}
@@ -34,9 +36,9 @@ router.beforeEach(async (to, from, next) => {
 		// The user is not logged in, so have them log in
 		return next('/login');
 	// } else if (to.path.startsWith('/juror')) {
-	// 	if (vm.user) {
+	// 	if (vm.me) {
 	// 		// The user is logged in
-	// 		if (vm.user.isHost) {
+	// 		if (vm.me.level >= 1) {
 	// 			// The user is a juror, so send them to the page
 	// 			return next();
 	// 		}
@@ -58,14 +60,12 @@ import App from './App';
 vm = new Vue({
 	// el: '#app',
 	data: {
-		user: null,
-		redditor: null,
+		me: null,
 		loaded: false,
 	},
 	router,
 	render: create => create(App),
 });
-console.log(router);
 
 // Now that we have authentication set up, mount the Vue instance to the page
 vm.$mount('#app');

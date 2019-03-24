@@ -14,7 +14,7 @@ export default {
 	computed: {
 		routes () {
 			const routes = [];
-			if (this.$root.user && this.$root.user.mod) {
+			if (this.$root.me && this.$root.me.level >= 2) {
 				routes.push({name: 'Host page', path: '/host'});
 			}
 			return routes;

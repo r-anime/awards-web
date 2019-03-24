@@ -9,7 +9,7 @@
 export default {
 	computed: {
 		info () {
-			return `${JSON.stringify(this.$root.user, null, 4)}\n\n${JSON.stringify(this.$root.redditor, null, 4)}`;
+			return `${JSON.stringify(this.$root.me, null, 4)}`;
 		},
 	},
 };

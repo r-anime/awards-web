@@ -1,12 +1,11 @@
-// webpack.config.js
-const path = require('path');
 const {VueLoaderPlugin} = require('vue-loader');
+const config = require('./config');
 
 module.exports = {
 	mode: 'development',
 	entry: './src/index.js',
 	output: {
-		path: path.join(__dirname, 'public'),
+		path: config.publicDir,
 		filename: 'index.js',
 	},
 	resolve: {
@@ -46,7 +45,6 @@ module.exports = {
 		],
 	},
 	plugins: [
-		// make sure to include the plugin!
 		new VueLoaderPlugin(),
 	],
 };

@@ -8,12 +8,12 @@
 			/>
 		</div>
 		<div class="nav-bar-user">
-			<template v-if="$root.user">
+			<template v-if="$root.me">
 				<nav-bar-link>
-					<template v-if="$root.redditor">
-						<img class="nav-bar-user-avatar" :src="$root.redditor.subreddit.icon_img">
+					<template v-if="$root.me.reddit">
+						<img class="nav-bar-user-avatar" :src="$root.me.reddit.avatar">
 						<span class="nav-bar-user-name">
-							/u/{{$root.redditor.name}} {{$root.user.mod ? '[M]' : ''}}
+							/u/{{$root.me.reddit.name}} {{levelDesignator}}
 						</span>
 					</template>
 					<template v-else>
@@ -23,8 +23,11 @@
 					</template>
 
 					<template slot="dropdown">
-						<template v-if="$root.discord">
-							<!-- TODO -->
+						<template v-if="$root.me.discord">
+							<img class="nav-bar-user-avatar" :src="$root.me.discord.avatar">
+							<span class="nav-bar-user-name">
+								@{{$root.me.discord.name}}#{{$root.me.discord.discriminator}}
+							</span>
 						</template>
 						<template v-else>
 							<span>
@@ -32,7 +35,7 @@
 							</span>
 						</template>
 
-						<a href="/auth/reddit/logout">Log out</a>
+						<a href="/auth/logout">Log out</a>
 					</template>
 				</nav-bar-link>
 			</template>
@@ -55,6 +58,14 @@ export default {
 		vertical: Boolean,
 	},
 	computed: {
+		levelDesignator () {
+			switch (this.$root.me.level) {
+				case 3: return '[Mod]';
+				case 2: return '[Host]';
+				case 1: return '[Juror]';
+				default: return '';
+			}
+		},
 		namedRoutes () {
 			return this.routes.filter(route => route.name);
 		},

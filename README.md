@@ -7,15 +7,14 @@ I dunno a thing to do the stuff
 Requires Ruby 2.6 and Node 10+.
 
 ```bash
-# Install frontend dependencies
-$ yarn # with yarn
-$ npm install # with npm
-# Build the frontend (add --watch for development)
-$ npx webpack
-# Install server dependencies
-$ bundle install
-# Run the server
-$ bundle exec ruby server.rb
+# Install dependencies
+$ yarn
+# Build and run
+$ yarn start
+# Just build the frontend
+$ yarn build
+# Just start the server
+$ yarn serve
 ```
 
 ## Aims
