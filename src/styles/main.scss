@@ -1,0 +1,12 @@
+// This file is loaded by webpack as a prelude to all other sass snippets. It
+// should not contain any actual styles, because any styles here will be
+// included with every other sass snippet in the app. Needless to day, that is
+// not how we want that to work.
+
+// Customize Bulma variables
+$family-sans-serif: "Open Sans", "Helvetica", "Arial", sans-serif;
+$family-monospace: "Source Code Pro", "Menlo", "Consolas", monospace;
+$primary: #0094FF;
+
+// Load other Bulma variables
+@import "~bulma/sass/utilities/all";

@@ -2,16 +2,36 @@
 	<body>
 		<nav-bar
 			:routes="[
-				{name: 'Dashboard', path: '/host'},
-				{name: 'Users', path: '/host/users'},
-				{name: 'Public stuff', path: '/'},
+				{name: 'Back to public', path: '/'}
 			]"
-			vertical
+			class="is-dark"
+			fullwidth
 		/>
 		<div class="content-wrap">
-			<keep-alive>
-				<router-view/>
-			</keep-alive>
+			<aside class="menu">
+				<template v-for="(routes, label) in nav">
+				<h3 class="menu-label has-text-light" :key="label">
+					{{label}}
+				</h3>
+				<ul class="menu-list" :key="label">
+					<li v-for="route in routes" :key="label + route.path">
+						<router-link
+							:to="route.path"
+							class="has-text-light"
+							active-class="is-active"
+							exact
+						>
+							{{route.name}}
+						</router-link>
+					</li>
+				</ul>
+				</template>
+			</aside>
+			<main>
+				<keep-alive>
+					<router-view/>
+				</keep-alive>
+			</main>
 		</div>
 	</body>
 </template>
@@ -24,9 +44,12 @@ export default {
 	},
 	data () {
 		return {
-			routes: [
-
-			],
+			nav: {
+				'Host Tools': [
+					{name: 'Dashboard', path: '/host'},
+					{name: 'Users', path: '/host/users'},
+				],
+			},
 		};
 	},
 };
@@ -34,18 +57,32 @@ export default {
 
 <style lang="scss" scoped>
 body {
-	margin: 0;
-	font-family: sans-serif;
-	display: flex;
-	overflow: hidden;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
 }
-.nav-bar {
-	flex: 0 0 200px;
-	order: 1;
+.navbar {
+	flex: 0 0 auto;
 }
 .content-wrap {
 	flex: 0 1 100%;
-	overflow: auto;
+	display: flex;
+	overflow: hidden;
+	> .menu {
+		flex: 0 0 200px;
+		order: -1;
+		padding: 1.5rem 0.75rem;
+		background: hsl(0, 0%, 29%);
+		a.is-active {
+			background: $primary;
+		}
+		a:hover:not(.is-active) {
+			background: hsl(0, 0%, 48%);
+		}
+	}
+	> main {
+		flex: 0 1 100%;
+		overflow: auto;
+	}
 }
 </style>

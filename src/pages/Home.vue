@@ -1,8 +1,10 @@
 <template>
-	<div>
-		<h3>yeet</h3>
-		<pre>{{info}}</pre>
-	</div>
+	<section class="section">
+		<div class="container">
+			<h3>yeet</h3>
+			<pre>{{info}}</pre>
+		</div>
+	</section>
 </template>
 
 <script>

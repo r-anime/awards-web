@@ -1,6 +1,6 @@
 <template>
 	<body>
-		<nav-bar :routes="routes" />
+		<nav-bar class="is-light" :routes="routes" />
 		<router-view/>
 	</body>
 </template>

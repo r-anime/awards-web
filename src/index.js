@@ -1,3 +1,6 @@
+// Import style stuff
+import './styles/main.scss';
+
 // Import libraries
 import Vue from 'vue';
 import router from './routes';

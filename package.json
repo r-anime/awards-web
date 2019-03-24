@@ -28,6 +28,7 @@
     "@geo1088/express-session-rethinkdb": "^0.4.2",
     "@polka/send-type": "^0.5.2",
     "another-logger": "^2.0.0",
+    "bulma": "^0.7.4",
     "express-session": "^1.15.6",
     "polka": "^0.5.2",
     "rethinkdbdash": "^2.3.31",
