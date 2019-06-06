@@ -1,5 +1,6 @@
 const log = require('another-logger');
 const apiApp = require('polka')();
+const superagent = require('superagent');
 const r = require('../util/db');
 
 // this entire file is TODO because I have to implement actual API calls again
@@ -52,6 +53,14 @@ apiApp.post('/user', async (request, response) => {
 		log.info('user already present');
 		return response.json(400, {error: 'That user is already present'});
 	}
+	let redditResponse;
+	try {
+		redditResponse = await superagent.get(`https://www.reddit.com/user/${user.reddit}/about.json`);
+	} catch (error) {
+		return response.json(400, {error: 'That user does not have a Reddit account'});
+	}
+	// replace the name with the one from reddit in case the capitalization is different
+	user.reddit = redditResponse.body.data.name;
 	log.info('adding user');
 	await r.table('users').insert(user);
 	log.info('responding');
