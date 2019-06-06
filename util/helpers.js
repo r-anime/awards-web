@@ -1,5 +1,6 @@
 const {STATUS_CODES} = require('http');
 const superagent = require('superagent');
+const log = require('another-logger');
 const config = require('../config');
 const r = require('./db');
 
@@ -77,7 +78,9 @@ const requestHelpers = {
 	},
 	async authenticate ({level}) {
 		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
-		const userInfo = await r.table('users').filter({reddit: redditInfo.name}).run();
+		const userInfo = (await r.table('users').filter({reddit: redditInfo.name}).run())[0];
+		log.debug('target level', level);
+		log.debug('actual level', userInfo.level);
 		if (level && userInfo.level < level) return false;
 		return true;
 	},

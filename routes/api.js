@@ -17,6 +17,9 @@ apiApp.get('/me', async (request, response) => {
 	}
 	const userInfo = (await r.table('users').filter({reddit: redditorInfo.name}).run())[0];
 	log.info(userInfo);
+	if (!userInfo) {
+		return response.json(null);
+	}
 	response.json({
 		reddit: {
 			name: redditorInfo.name,
@@ -40,7 +43,7 @@ apiApp.get('/users', async (request, response) => {
 
 apiApp.post('/user', async (request, response) => {
 	const user = await request.json();
-	if (!await request.authenticate({level: user.level})) {
+	if (!await request.authenticate({level: user.level + 1})) {
 		return response.json(401, {error: 'You can only set users to levels below your own'});
 	}
 	log.info(user);
@@ -53,6 +56,22 @@ apiApp.post('/user', async (request, response) => {
 	await r.table('users').insert(user);
 	log.info('responding');
 	response.json(user);
+});
+
+apiApp.delete('/user/:reddit', async (request, response) => {
+	const redditName = request.params.reddit;
+	if (!redditName) {
+		return response.json(400, {error: 'Missing reddit name of user to delete'});
+	}
+	const userInfo = (await r.table('users').filter({reddit: redditName}).run())[0];
+	if (!userInfo) {
+		return response.json(400, {error: 'The specified user does not exist'});
+	}
+	if (!await request.authenticate({level: userInfo.level + 1})) {
+		return response.json(401, {error: 'You can only remove users of lower level than yourself'});
+	}
+	await r.table('users').filter({reddit: redditName}).delete().run();
+	response.json({});
 });
 
 module.exports = apiApp;

@@ -23,11 +23,15 @@
 				<th>Reddit</th>
 				<th>Last Login</th>
 				<th>User Level</th>
+				<th>Actions</th>
 			</tr>
 			<tr v-for="user in users" :key="user.reddit">
 				<td>/u/{{user.reddit}}</td>
 				<td>{{dateDisplay(user.lastLogin)}}</td>
 				<td>{{user.level}}</td>
+				<td>
+					<button class="button is-danger" @click="removeUser(user)">Remove</button>
+				</td>
 			</tr>
 			</tbody>
 		</table>
@@ -47,6 +51,17 @@ export default {
 		dateDisplay (time) {
 			if (time == null) return 'Never';
 			return new Date(time).toLocaleString();
+		},
+		removeUser (user) {
+			fetch(`/api/user/${user.reddit}`, {
+				method: 'DELETE',
+			}).then(async response => {
+				if (!response.ok) {
+					return window.alert((await response.json()).error);
+				}
+				window.alert('User removed.');
+				this.users.splice(this.users.indexOf(user), 1);
+			});
 		},
 		addUser () {
 			fetch('/api/user', {
