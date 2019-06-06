@@ -10,8 +10,7 @@ apiApp.get('/me', async (request, response) => {
 	}
 	let redditorInfo;
 	try {
-		redditorInfo = await request.reddit().get('/me')
-			.then(redditResponse => redditResponse.body);
+		redditorInfo = (await request.reddit().get('/api/v1/me')).body;
 	} catch (error) {
 		log.error(`Error while retrieving Reddit account info:\n${error}`);
 		return response.json(500, error);
