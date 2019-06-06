@@ -1,6 +1,7 @@
 const {STATUS_CODES} = require('http');
 const superagent = require('superagent');
 const config = require('../config');
+const r = require('./db');
 
 const requestHelpers = {
 	reddit () {
@@ -60,6 +61,25 @@ const requestHelpers = {
 		// we also have the method-first one if we want that
 		obj.sendRequest = sendRequest;
 		return obj;
+	},
+	body () {
+		return new Promise(resolve => {
+			const chunks = [];
+			this.on('data', chunk => {
+				chunks.push(chunk);
+			}).on('end', () => {
+				resolve(Buffer.concat(chunks).toString());
+			});
+		});
+	},
+	json () {
+		return this.body().then(body => JSON.parse(body));
+	},
+	async authenticate ({level}) {
+		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
+		const userInfo = await r.table('users').filter({reddit: redditInfo.name}).run();
+		if (level && userInfo.level < level) return false;
+		return true;
 	},
 };
 const responseHelpers = {

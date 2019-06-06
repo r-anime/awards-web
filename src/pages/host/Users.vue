@@ -1,21 +1,35 @@
 <template>
 	<div>
 		<h2>Add user</h2>
-		Username:
-		<input type="text" v-model="username" placeholder="Reddit Username"/>
-		Account level:
-		<select v-model="userLevel">
-			<option :value="1">Juror</option>
-			<option :value="2">Host</option>
-		</select>
-		<button @click="addUser">Add</button>
-		<table>
+		<div class="field is-grouped">
+			<div class="control">
+				<input class="input" type="text" v-model="username" placeholder="Reddit Username"/>
+			</div>
+			<div class="control">
+				<div class="select">
+					<select v-model="userLevel">
+						<option :value="1">Juror</option>
+						<option :value="2">Host</option>
+					</select>
+				</div>
+			</div>
+			<div class="control">
+				<button class="button" @click="addUser">Add</button>
+			</div>
+		</div>
+		<table class="table is-hoverable is-fullwidth">
+			<tbody>
 			<tr>
 				<th>Reddit</th>
+				<th>Last Login</th>
+				<th>User Level</th>
 			</tr>
 			<tr v-for="user in users" :key="user.reddit">
-				<td>{{user.reddit}}</td>
+				<td>/u/{{user.reddit}}</td>
+				<td>{{dateDisplay(user.lastLogin)}}</td>
+				<td>{{user.level}}</td>
 			</tr>
+			</tbody>
 		</table>
 	</div>
 </template>
@@ -30,13 +44,23 @@ export default {
 		};
 	},
 	methods: {
+		dateDisplay (time) {
+			if (time == null) return 'Never';
+			return new Date(time).toLocaleString();
+		},
 		addUser () {
-			fetch('/api/users', {
+			fetch('/api/user', {
 				method: 'POST',
 				body: JSON.stringify({
-					redditName: this.username,
+					reddit: this.username,
 					level: this.userLevel,
 				}),
+			}).then(async response => {
+				if (!response.ok) {
+					window.alert((await response.json()).error);
+					return;
+				}
+				this.users.push(await response.json());
 			});
 		},
 	},

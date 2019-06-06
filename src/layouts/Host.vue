@@ -84,6 +84,7 @@ body {
 	> main {
 		flex: 0 1 100%;
 		overflow: auto;
+		padding: 0 15px;
 	}
 }
 </style>
