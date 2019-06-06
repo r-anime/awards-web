@@ -17,7 +17,7 @@
 						<li v-for="route in routes" :key="label + route.path">
 							<router-link
 								:to="route.path"
-								class="has-text-light"
+								class="has-text-white"
 								active-class="is-active"
 								exact
 							>
