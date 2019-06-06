@@ -10,21 +10,21 @@
 		<div class="content-wrap">
 			<aside class="menu">
 				<template v-for="(routes, label) in nav">
-				<h3 class="menu-label has-text-light" :key="label">
-					{{label}}
-				</h3>
-				<ul class="menu-list" :key="label">
-					<li v-for="route in routes" :key="label + route.path">
-						<router-link
-							:to="route.path"
-							class="has-text-light"
-							active-class="is-active"
-							exact
-						>
-							{{route.name}}
-						</router-link>
-					</li>
-				</ul>
+					<h3 class="menu-label has-text-light" :key="label + 1">
+						{{label}}
+					</h3>
+					<ul class="menu-list" :key="label + 2">
+						<li v-for="route in routes" :key="label + route.path">
+							<router-link
+								:to="route.path"
+								class="has-text-light"
+								active-class="is-active"
+								exact
+							>
+								{{route.name}}
+							</router-link>
+						</li>
+					</ul>
 				</template>
 			</aside>
 			<main>
@@ -48,6 +48,7 @@ export default {
 				'Host Tools': [
 					{name: 'Dashboard', path: '/host'},
 					{name: 'Genre Allocation', path: '/host/allocation'},
+					{name: 'Users', path: '/host/users'},
 				],
 			},
 		};

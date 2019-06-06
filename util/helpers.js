@@ -1,5 +1,4 @@
 const {STATUS_CODES} = require('http');
-const url = require('url');
 const superagent = require('superagent');
 const config = require('../config');
 

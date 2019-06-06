@@ -37,7 +37,9 @@ polka({
 			resave: true,
 			saveUninitialized: true,
 		}),
-		sirv(config.publicDir), // Frontend assets
+		sirv(config.publicDir, {
+			dev: true,
+		}), // Frontend assets
 	)
 	// Use the API routes and auth routes
 	.use('/api', api)
