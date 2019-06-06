@@ -33,6 +33,6 @@
     "polka": "^0.5.2",
     "rethinkdbdash": "^2.3.31",
     "sirv": "^0.2.2",
-    "superagent": "^4.1.0"
+    "superagent": "^5.0.2"
   }
 }

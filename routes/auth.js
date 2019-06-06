@@ -40,9 +40,13 @@ authApp.get('/reddit/callback', async (request, response) => {
 
 	// Now that we stored the tokens, we need to see who we are and if we're
 	// already in the database or not
-	const {name} = await request.reddit().get('/me')
-		.then(redditResponse => redditResponse.body);
-	log.info(name);
+	let name;
+	try {
+		name = (await request.reddit().get('/api/v1/me')).body.name;
+		log.info(name);
+	} catch (res) {
+		log.error('Error getting reddit user info:', res.status, res.body);
+	}
 	const users = await r.table('users').filter({reddit: name}).run();
 	if (!users.length) {
 		r.table('users').insert({

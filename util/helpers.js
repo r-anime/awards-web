@@ -4,9 +4,6 @@ const superagent = require('superagent');
 const config = require('../config');
 
 const requestHelpers = {
-	params () {
-		return url.parse(this.url, true).query;
-	},
 	reddit () {
 		const originalRequest = this;
 		let accessToken = originalRequest.session.redditAccessToken;
@@ -16,7 +13,7 @@ const requestHelpers = {
 		// called `superagent.get(...)` normally.
 		function sendRequest (method, path, retried = false) {
 			// Try to send the request with the stored access token...
-			return superagent[method.toLowerCase()](`https://oauth.reddit.com/api/v1${path}`)
+			return superagent[method.toLowerCase()](`https://oauth.reddit.com${path}`)
 				.set('Authorization', `bearer ${accessToken}`)
 				.catch(async ({response}) => {
 					// If we've already tried to get a new token once, don't do
@@ -76,7 +73,8 @@ const responseHelpers = {
 		}
 		this.writeHead(status, {
 			'Content-Type': 'application/json',
-		}).end(JSON.stringify(data));
+		});
+		this.end(JSON.stringify(data));
 	},
 	redirect (status = 302, location) {
 		if (typeof status !== 'number') {
@@ -85,7 +83,8 @@ const responseHelpers = {
 		}
 		this.writeHead(status, {
 			Location: location,
-		}).end();
+		});
+		this.end();
 	},
 };
 

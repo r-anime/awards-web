@@ -11,6 +11,7 @@ import HostRoutes from './host';
 
 import Home from '../pages/Home';
 import About from '../pages/About';
+import Profile from '../pages/Profile';
 import JurorApplication from '../pages/JurorApplication';
 import NotFound from '../pages/NotFound';
 
@@ -23,6 +24,7 @@ export default new VueRouter({
 			component: PublicLayout,
 			children: [
 				{path: '', component: Home},
+				{path: 'profile', component: Profile},
 				{path: 'about', component: About},
 				{path: 'apply', component: JurorApplication},
 			],

@@ -36,16 +36,13 @@
 						</template>
 
 						<template slot="dropdown">
-							<span v-if="$root.me.discord" class="navbar-item">
-								<img class="navbar-user-avatar" :src="$root.me.discord.avatar">
-								@{{$root.me.discord.name}}#{{$root.me.discord.discriminator}}
-							</span>
-							<span v-else class="navbar-item">
-								<span>
-									No Discord account linked
-								</span>
-							</span>
-							<hr class="navbar-divider"/>
+							<router-link
+								class="navbar-item"
+								active-class="is-active"
+								to="/profile"
+							>
+								Profile settings
+							</router-link>
 							<a class="navbar-item" href="/auth/logout">
 								Log out
 							</a>

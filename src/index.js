@@ -15,16 +15,14 @@ let vm; // eslint-disable-line prefer-const
 //       page is initially loading)
 const loadPromise = fetch('/api/me').then(redditResponse => {
 	if (!redditResponse.ok) throw redditResponse;
-	return redditResponse.json();
-}).then(data => {
-	vm.me = data;
+	vm.me = redditResponse.json();
 }).catch(console.error).finally(() => {
 	vm.loaded = true;
 });
 
-// Handle authentication
+// Handle authentication on page navigation
 router.beforeEach(async (to, from, next) => {
-	// We must be loaded before we can route
+	// We must have the user info loaded before we can route
 	await loadPromise;
 	if (to.path.startsWith('/host')) {
 		if (vm.me) {

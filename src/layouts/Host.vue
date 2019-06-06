@@ -47,7 +47,7 @@ export default {
 			nav: {
 				'Host Tools': [
 					{name: 'Dashboard', path: '/host'},
-					{name: 'Users', path: '/host/users'},
+					{name: 'Genre Allocation', path: '/host/allocation'},
 				],
 			},
 		};
