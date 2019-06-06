@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<h2 class="is-size-4">Add user</h2>
-		<form class="field is-grouped" @submit.prevent="addUser">
+		<form
+			v-if="$root.me.level > 1"
+			class="field is-grouped"
+			@submit.prevent="addUser"
+		>
 			<div class="control">
 				<input class="input" type="text" v-model="username" placeholder="Reddit Username"/>
 			</div>
@@ -9,7 +13,8 @@
 				<div class="select">
 					<select v-model="userLevel">
 						<option :value="1">Juror</option>
-						<option :value="2">Host</option>
+						<option v-if="$root.me.level > 2" :value="2">Host</option>
+						<option v-if="$root.me.level > 3" :value="3">Mod</option>
 					</select>
 				</div>
 			</div>
@@ -44,7 +49,7 @@
 			<tr v-for="user in filteredUsers" :key="user.reddit">
 				<td>/u/{{user.reddit}}</td>
 				<td>{{dateDisplay(user.lastLogin)}}</td>
-				<td>{{user.level}}</td>
+				<td>{{levelDisplay(user.level)}}</td>
 				<td>
 					<button class="button is-danger" @click="removeUser(user)">Remove</button>
 				</td>
@@ -74,6 +79,21 @@ export default {
 		dateDisplay (time) {
 			if (time == null) return 'Never';
 			return new Date(time).toLocaleString();
+		},
+		levelDisplay (level) {
+			let levelString;
+			if (level === 4) {
+				levelString = 'Database Admin';
+			} else if (level === 3) {
+				levelString = 'Moderator';
+			} else if (level === 2) {
+				levelString = 'Host';
+			} else if (level === 1) {
+				levelString = 'Juror';
+			} else {
+				levelString = 'Public';
+			}
+			return `${level}: ${levelString}`;
 		},
 		removeUser (user) {
 			fetch(`/api/user/${user.reddit}`, {
