@@ -13,9 +13,9 @@ let vm; // eslint-disable-line prefer-const
 //       `created` hook because having the promise lets us use `await` to ensure
 //       we have user data before navigating (which is important for when the
 //       page is initially loading)
-const loadPromise = fetch('/api/me').then(redditResponse => {
+const loadPromise = fetch('/api/me').then(async redditResponse => {
 	if (!redditResponse.ok) throw redditResponse;
-	vm.me = redditResponse.json();
+	vm.me = await redditResponse.json();
 }).catch(console.error).finally(() => {
 	vm.loaded = true;
 });
