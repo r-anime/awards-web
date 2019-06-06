@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h2>Add user</h2>
-		<div class="field is-grouped">
+		<form class="field is-grouped" @submit.prevent="addUser">
 			<div class="control">
 				<input class="input" type="text" v-model="username" placeholder="Reddit Username"/>
 			</div>
@@ -14,9 +14,9 @@
 				</div>
 			</div>
 			<div class="control">
-				<button class="button" @click="addUser">Add</button>
+				<input class="button is-primary" type="submit" value="Add">
 			</div>
-		</div>
+		</form>
 		<table class="table is-hoverable is-fullwidth">
 			<tbody>
 			<tr>
