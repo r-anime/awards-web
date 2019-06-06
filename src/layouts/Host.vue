@@ -78,7 +78,7 @@ body {
 			background: $primary;
 		}
 		a:hover:not(.is-active) {
-			background: hsl(0, 0%, 48%);
+			background: #363636;
 		}
 	}
 	> main {
