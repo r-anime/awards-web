@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2>Add user</h2>
+		<h2 class="is-size-4">Add user</h2>
 		<form class="field is-grouped" @submit.prevent="addUser">
 			<div class="control">
 				<input class="input" type="text" v-model="username" placeholder="Reddit Username"/>
@@ -17,6 +17,22 @@
 				<input class="button is-primary" type="submit" value="Add">
 			</div>
 		</form>
+		<div>
+			<div class="level">
+				<div class="level-left">
+					<div class="level-item">
+						<h2 class="subtitle is-5">All Users</h2>
+					</div>
+					<div class="level-item">
+						<div class="field">
+							<div class="control is-expanded">
+								<input class="input" type="text" v-model="userFilter" placeholder="Reddit username"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<table class="table is-hoverable is-fullwidth">
 			<tbody>
 			<tr>
@@ -25,7 +41,7 @@
 				<th>User Level</th>
 				<th>Actions</th>
 			</tr>
-			<tr v-for="user in users" :key="user.reddit">
+			<tr v-for="user in filteredUsers" :key="user.reddit">
 				<td>/u/{{user.reddit}}</td>
 				<td>{{dateDisplay(user.lastLogin)}}</td>
 				<td>{{user.level}}</td>
@@ -43,9 +59,16 @@ export default {
 	data () {
 		return {
 			users: [],
+			userFilter: '',
 			username: '',
 			userLevel: 1,
 		};
+	},
+	computed: {
+		filteredUsers () {
+			if (!this.userFilter) return this.users;
+			return this.users.filter(user => user.reddit.includes(this.userFilter));
+		},
 	},
 	methods: {
 		dateDisplay (time) {
