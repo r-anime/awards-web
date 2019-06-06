@@ -37,6 +37,14 @@
 
 						<template slot="dropdown">
 							<router-link
+								v-if="$root.me.level >= 2"
+								class="navbar-item"
+								active-class="is-active"
+								to="/host"
+							>
+								Hosting Dashboard
+							</router-link>
+							<router-link
 								class="navbar-item"
 								active-class="is-active"
 								to="/profile"
