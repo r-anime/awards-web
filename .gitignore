@@ -1,5 +1,14 @@
 node_modules
-dist/main.js
 .DS_Store
-config.js
+
+# Editor stuff
+.vscode
+
+# Generated bundle
 public/index.js
+
+# Secrets
+config.js
+
+# SQLite databases
+*.db
