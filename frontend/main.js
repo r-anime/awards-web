@@ -51,6 +51,18 @@ vm = new Vue({
 		me: null,
 		loaded: false,
 	},
+	computed: {
+		// Auth helpers
+		isHost () {
+			return this.me && this.me.level >= 2;
+		},
+		isMod () {
+			return this.me && this.me.level >= 3;
+		},
+		isAdmin () {
+			return this.me && this.me.level >= 4;
+		},
+	},
 	router,
 	render: create => create(App),
 });

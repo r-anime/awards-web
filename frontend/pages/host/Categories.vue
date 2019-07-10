@@ -1,8 +1,26 @@
 <template>
-	<div v-else>
-		Genre allocation yaaaaaay
-		<input type="text" v-model="categoryName" placeholder="New category name..."/>
-		<button @click="createCategory">New Category</button>
+	<div class="section">
+		<div class="level title-margin">
+			<div class="level-left">
+				<div class="level-item">
+					<h2 class="title">Categories</h2>
+				</div>
+			</div>
+			<div class="level-right">
+				<div class="level-item">
+					<div class="field">
+						<div class="control is-expanded">
+							<input class="input" type="text" v-model="categoryFilter" placeholder="Filter by name"/>
+						</div>
+					</div>
+				</div>
+				<div v-if="$root.isHost" class="level-item">
+					<div class="control">
+						<button class="button is-primary" @click="createCategoryOpen = true">Create Category</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div v-if="!categories">
 			Loading categories...
@@ -28,16 +46,49 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<modal-generic v-model="createCategoryOpen">
+			<h3 class="title">Create Category</h3>
+			<form
+				v-if="$root.me.level > 1"
+				@submit.prevent="createCategory"
+			>
+				<div class="field">
+					<div class="control">
+						<input class="input" type="text" v-model="categoryName" placeholder="Genre Awards"/>
+					</div>
+				</div>
+				<div class="field">
+					<div class="control">
+						<input class="button is-primary" type="submit" value="Add">
+					</div>
+				</div>
+			</form>
+		</modal-generic>
 	</div>
 </template>
 
 <script>
+import ModalGeneric from '../../components/ModalGeneric';
 export default {
+	components: {
+		ModalGeneric,
+	},
 	data () {
 		return {
-			categoryName: '',
+			// The list of categories
 			categories: null,
+			// A string to filter the displayed list
+			categoryFilter: '',
+			// Info for the "New Category" modal
+			createCategoryOpen: false,
+			categoryName: '',
 		};
+	},
+	computed: {
+		filteredCategories () {
+			return this.categories.filter(cat => cat.name.toLowerCase().includes(this.categoryFilter.toLowerCase));
+		},
 	},
 	methods: {
 		createCategory () {
@@ -48,11 +99,11 @@ export default {
 				}),
 			}).then(async response => {
 				const json = await response.json();
-				if (response.ok) {
-					this.categories.push(json);
-				} else {
+				if (!response.ok) {
 					throw json.error;
 				}
+				this.categories.push(json);
+				this.createCategoryOpen = false;
 			}).catch(window.alert);
 		},
 		deleteCategory (id) {
