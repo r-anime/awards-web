@@ -29,7 +29,7 @@
     "@polka/send-type": "^0.5.2",
     "another-logger": "^2.0.0",
     "better-sqlite3": "^5.4.0",
-    "bulma": "^0.7.4",
+    "bulma": "^0.7.5",
     "connect-sqlite3": "^0.9.11",
     "express-session": "^1.15.6",
     "polka": "^0.5.2",
