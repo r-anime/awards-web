@@ -3,7 +3,7 @@ const config = require('./config');
 
 module.exports = {
 	mode: 'development',
-	entry: './src/index.js',
+	entry: './frontend/index.js',
 	output: {
 		path: config.publicDir,
 		filename: 'index.js',
@@ -37,7 +37,7 @@ module.exports = {
 						loader: 'sass-loader',
 						options: {
 							data: `
-								@import "src/styles/main";
+								@import "frontend/styles/main";
 							`,
 						},
 					},

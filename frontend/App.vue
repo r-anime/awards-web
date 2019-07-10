@@ -3,7 +3,7 @@
 </template>
 
 <style lang="scss">
-// Variables and customization are set in src/styles/main.scss, but we still
+// Variables and customization are set in frontend/styles/main.scss, but we still
 // need to import the actual styles once the variables are set.
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:400");
 // TODO: only import bulma components we actually use
