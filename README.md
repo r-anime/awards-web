@@ -7,7 +7,7 @@ I dunno a thing to do the stuff
 
 ## Usage
 
-Requires Node 10+.
+Requires Node 10+ and SQLite3.
 
 ```bash
 # Edit your config

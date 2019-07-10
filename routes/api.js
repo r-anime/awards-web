@@ -69,7 +69,7 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 		return response.json(401, {error: 'You can only remove users of lower level than yourself'});
 	}
 	db.deleteUser(redditName);
-	response.json({});
+	response.empty();
 });
 
 module.exports = apiApp;

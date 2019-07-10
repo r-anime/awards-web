@@ -108,6 +108,10 @@ const responseHelpers = {
 		});
 		this.end();
 	},
+	empty () {
+		this.writeHead(204);
+		this.end();
+	},
 };
 
 module.exports = (request, response, next) => {
