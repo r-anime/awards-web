@@ -1,9 +1,16 @@
 <template>
-	<div>
+	<div v-else>
 		Genre allocation yaaaaaay
 		<input type="text" v-model="categoryName" placeholder="New category name..."/>
 		<button @click="createCategory">New Category</button>
-		<table>
+
+		<div v-if="!categories">
+			Loading categories...
+		</div>
+		<div v-else-if="categories.length === 0">
+			No categories!
+		</div>
+		<table v-else class="table is-hoverable is-fullwidth">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -16,7 +23,7 @@
 					<td>{{category.name}}</td>
 					<td>{{category.id}}</td>
 					<td>
-						<button @click="deleteCategory(category.id)">Remove</button>
+						<button class="button is-danger" @click="deleteCategory(category.id)">Remove</button>
 					</td>
 				</tr>
 			</tbody>
@@ -24,13 +31,12 @@
 	</div>
 </template>
 
-
 <script>
 export default {
 	data () {
 		return {
 			categoryName: '',
-			categories: [],
+			categories: null,
 		};
 	},
 	methods: {
@@ -45,16 +51,16 @@ export default {
 				if (response.ok) {
 					this.categories.push(json);
 				} else {
-					window.alert(json.error);
+					throw json.error;
 				}
-			});
+			}).catch(window.alert);
 		},
 		deleteCategory (id) {
 			fetch(`/api/category/${id}`, {
 				method: 'DELETE',
 			}).then(async response => {
-
-			});
+				if (!response.ok) throw (await response.json()).error;
+			}).catch(window.alert);
 		},
 	},
 	mounted () {

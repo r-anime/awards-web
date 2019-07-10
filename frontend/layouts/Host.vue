@@ -47,7 +47,7 @@ export default {
 			nav: {
 				'Host Tools': [
 					{name: 'Dashboard', path: '/host'},
-					{name: 'Genre Allocation', path: '/host/allocation'},
+					{name: 'Categories', path: '/host/categories'},
 					{name: 'Users', path: '/host/users'},
 				],
 			},
@@ -84,7 +84,10 @@ body {
 	> main {
 		flex: 0 1 100%;
 		overflow: auto;
-		padding: 0 15px;
+		padding: 0;
+		> .section {
+			padding: 1.5rem;
+		}
 	}
 }
 </style>

@@ -43,6 +43,7 @@ db.exec(`
 	);
 `);
 
+// Define all our queries
 const getUserQuery = db.prepare('SELECT * FROM users WHERE reddit=?');
 const getAllUsersQuery = db.prepare('SELECT * FROM users');
 const insertUserQuery = db.prepare('INSERT INTO users (reddit, flags) VALUES (:reddit, :flags)');
