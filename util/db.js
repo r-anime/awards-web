@@ -9,6 +9,10 @@ db.exec(`
 		reddit
 			TEXT
 			PRIMARY KEY,
+		level
+			INTEGER
+			NOT NULL
+			DEFAULT 0,
 		flags
 			INTEGER
 			NOT NULL

@@ -17,13 +17,14 @@ apiApp.get('/me', async (request, response) => {
 	const userInfo = db.getUser(redditorInfo.name);
 	log.info(userInfo);
 	if (!userInfo) {
-		return response.json(null);
+		return response.json(404, null);
 	}
 	response.json({
 		reddit: {
 			name: redditorInfo.name,
 			avatar: redditorInfo.subreddit.icon_img,
 		},
+		level: userInfo.level,
 		flags: userInfo.flags,
 	});
 });
