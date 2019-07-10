@@ -108,5 +108,6 @@ export default {
 .navbar > .container.is-fullwidth {
 	max-width: none;
 	flex-basis: calc(100% - 1.5rem);
+	flex-grow: 0;
 }
 </style>

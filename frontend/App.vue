@@ -11,4 +11,21 @@
 @import "~bulma/sass/layout/all";
 @import "~bulma/sass/elements/all";
 @import "~bulma/sass/components/all";
+
+// Navbar menus on mobile shouldn't interfere with page content
+@include touch {
+	.navbar-menu {
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+}
+
+// Some other utility classes
+
+// When you have a title inside a level, the title's margin is lost. Apply this
+// class to the level to get it back.
+.title-margin {
+	margin-bottom: 1.5rem;
+}
 </style>
