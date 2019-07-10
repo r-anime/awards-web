@@ -4,9 +4,8 @@ const path = require('path');
 const polka = require('polka'); // Web server
 const sirv = require('sirv'); // Static file middleware
 const session = require('express-session'); // Session storage middleware
-const RDBStore = require('@geo1088/express-session-rethinkdb')(session); // Storage provider
+const SQLiteStore = require('connect-sqlite3')(session);
 const log = require('another-logger'); // Logging utility
-const r = require('./util/db'); // Database connection
 const logging = require('./util/logging'); // Request logging middleware
 const helpers = require('./util/helpers'); // Generic request/response helpers
 const config = require('./config'); // Generic configuration
@@ -27,19 +26,14 @@ polka({
 	.use(
 		logging, // Request logging
 		helpers, // Helper functions
-		session({ // Sessions and RethinkDB session storage
+		session({
 			secret: config.session.secret,
-			store: new RDBStore({
-				connection: r,
-				table: config.session.table,
+			store: new SQLiteStore({
+				db: 'animeawards.db',
+				table: 'sessions',
 			}),
-			// Next two options are required for RDBStore to work
-			resave: true,
-			saveUninitialized: true,
 		}),
-		sirv(config.publicDir, {
-			dev: true,
-		}), // Frontend assets
+		sirv(config.publicDir, {dev: true}), // Frontend assets
 	)
 	// Use the API routes and auth routes
 	.use('/api', api)

@@ -2,7 +2,7 @@ const log = require('another-logger');
 const superagent = require('superagent');
 const authApp = require('polka')();
 const config = require('../config');
-const r = require('../util/db');
+const db = require('../util/db');
 
 function query (obj) {
 	return Object.keys(obj)
@@ -47,20 +47,14 @@ authApp.get('/reddit/callback', async (request, response) => {
 	} catch (res) {
 		log.error('Error getting reddit user info:', res.status, res.body);
 	}
-	const users = await r.table('users').filter({reddit: name}).run();
-	if (!users.length) {
-		r.table('users').insert({
-			reddit: name,
-			discord: null,
-			level: 0,
-			lastLogin: Date.now(),
-		}).run();
-	} else if (users.length > 1) {
-		return response.end(`You have a very bad problem. There's more than one account in the database with the Reddit account ${name} registered.`);
+	const user = db.getUser(name);
+	if (user) {
+		// TODO: implement lastLogin
 	} else {
-		r.table('users').filter({reddit: name}).update({
-			lastLogin: Date.now(),
-		}).run();
+		db.insertUser({
+			reddit: name,
+			flags: 0,
+		});
 	}
 	response.redirect('/');
 });
