@@ -43,10 +43,17 @@ export default {
 			}).then(async response => {
 				const json = await response.json();
 				if (response.ok) {
-					this.users.push(json);
+					this.categories.push(json);
 				} else {
 					window.alert(json.error);
 				}
+			});
+		},
+		deleteCategory (id) {
+			fetch(`/api/category/${id}`, {
+				method: 'DELETE',
+			}).then(async response => {
+
 			});
 		},
 	},

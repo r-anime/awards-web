@@ -73,4 +73,38 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 	response.empty();
 });
 
+apiApp.get('/categories', (request, response) => {
+	response.json(db.getAllCategories());
+});
+
+apiApp.get('/category/:id', (request, response) => {
+	response.json(db.getCategory(request.params.id));
+});
+
+apiApp.post('/category', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to create categories'});
+	}
+	const category = await request.json();
+	db.insertCategory(category);
+	response.json(db.getCategory(category.id));
+});
+
+apiApp.patch('/category/:id', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to modify categories'});
+	}
+	const category = await request.json();
+	db.updateCategory(category);
+	response.json(db.getCategory(category.id));
+});
+
+apiApp.delete('/category/:id', async (request, response) => {
+	if (!await request.authenticate({level: 4})) {
+		return response.json(401, {error: 'You must be an admin to delete categories (did you mean to hide the category instead?)'});
+	}
+	db.deleteCategory(request.params.id);
+	response.empty();
+});
+
 module.exports = apiApp;

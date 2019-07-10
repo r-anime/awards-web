@@ -43,14 +43,26 @@ db.exec(`
 	);
 `);
 
-const userQuery = db.prepare('SELECT * FROM users WHERE reddit=?');
-const allUsersQuery = db.prepare('SELECT * FROM users');
+const getUserQuery = db.prepare('SELECT * FROM users WHERE reddit=?');
+const getAllUsersQuery = db.prepare('SELECT * FROM users');
 const insertUserQuery = db.prepare('INSERT INTO users (reddit, flags) VALUES (:reddit, :flags)');
 const deleteUserQuery = db.prepare('DELETE FROM users WHERE reddit=?');
 
+const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=?');
+const getAllCategoriesQuery = db.prepare('SELECT * FROM categories');
+const insertCategoryQuery = db.prepare('INSERT INTO categories (name) VALUES (:name)');
+const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name WHERE id=:id');
+const deleteCategoryQuery = db.prepare('DELETE FROM categories WHERE id=?');
+
 module.exports = {
-	getUser: userQuery.get.bind(userQuery),
-	getAllUsers: allUsersQuery.all.bind(allUsersQuery),
+	getUser: getUserQuery.get.bind(getUserQuery),
+	getAllUsers: getAllUsersQuery.all.bind(getAllUsersQuery),
 	insertUser: insertUserQuery.run.bind(insertUserQuery),
 	deleteUser: deleteUserQuery.run.bind(deleteUserQuery),
+
+	getCategory: getCategoryQuery.get.bind(getCategoryQuery),
+	getAllCategories: getAllCategoriesQuery.all.bind(getAllCategoriesQuery),
+	insertCategory: insertCategoryQuery.run.bind(insertCategoryQuery),
+	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery),
+	deleteCategory: deleteCategoryQuery.run.bind(deleteCategoryQuery),
 };
