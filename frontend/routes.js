@@ -4,18 +4,18 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 // Layouts, pages, and routing
-import PublicLayout from '../layouts/Public';
+import PublicLayout from './layouts/Public';
 // import JurorLayout from './layout/Juror';
-import HostLayout from '../layouts/Host';
+import HostLayout from './layouts/Host';
 
-import Home from '../pages/Home';
-import About from '../pages/About';
-import Profile from '../pages/Profile';
-import JurorApplication from '../pages/JurorApplication';
-import NotFound from '../pages/NotFound';
-import Dashboard from '../pages/host/Dashboard';
-import Categories from '../pages/host/Categories';
-import Users from '../pages/host/Users';
+import Home from './pages/Home';
+import About from './pages/About';
+import Profile from './pages/Profile';
+import JurorApplication from './pages/JurorApplication';
+import NotFound from './pages/NotFound';
+import Dashboard from './pages/host/Dashboard';
+import Categories from './pages/host/Categories';
+import Users from './pages/host/Users';
 
 export default new VueRouter({
 	mode: 'history',
