@@ -7,13 +7,15 @@ Vue.use(VueRouter);
 import PublicLayout from '../layouts/Public';
 // import JurorLayout from './layout/Juror';
 import HostLayout from '../layouts/Host';
-import HostRoutes from './host';
 
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Profile from '../pages/Profile';
 import JurorApplication from '../pages/JurorApplication';
 import NotFound from '../pages/NotFound';
+import Dashboard from '../pages/host/Dashboard';
+import Categories from '../pages/host/Categories';
+import Users from '../pages/host/Users';
 
 export default new VueRouter({
 	mode: 'history',
@@ -33,7 +35,11 @@ export default new VueRouter({
 		{
 			path: '/host',
 			component: HostLayout,
-			children: HostRoutes,
+			children: [
+				{path: '', component: Dashboard},
+				{path: 'categories', component: Categories},
+				{path: 'users', component: Users},
+			],
 		},
 		// // Layout for juror things
 		// {

@@ -25,29 +25,16 @@ router.beforeEach(async (to, from, next) => {
 	// We must have the user info loaded before we can route
 	await loadPromise;
 	if (to.path.startsWith('/host')) {
-		if (vm.me) {
-			// The user is logged in
-			if (vm.me.level >= 2) {
-				// The user is a host, so send them to the page
-				return next();
-			}
-			// The user is not a host, so send them home
-			return next('/');
+		if (!vm.me) {
+			// The user is not logged in, so have them log in
+			return next('/login');
 		}
-		// The user is not logged in, so have them log in
-		return next('/login');
-	// } else if (to.path.startsWith('/juror')) {
-	// 	if (vm.me) {
-	// 		// The user is logged in
-	// 		if (vm.me.level >= 1) {
-	// 			// The user is a juror, so send them to the page
-	// 			return next();
-	// 		}
-	// 		// The user is not a juror, so send them home
-	// 		return next('/');
-	// 	}
-	// 	// The user is not logged in, so have them log in
-	// 	return next('/login');
+		if (vm.me.level >= 2) {
+			// The user is a host, so send them to the page
+			return next();
+		}
+		// The user is not a host, so send them home
+		return next('/');
 	}
 	next();
 });
