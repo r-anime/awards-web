@@ -11,6 +11,7 @@
 @import "~bulma/sass/layout/all";
 @import "~bulma/sass/elements/all";
 @import "~bulma/sass/components/all";
+@import "~bulma/sass/form/all";
 
 // Navbar menus on mobile shouldn't interfere with page content
 @include touch {
