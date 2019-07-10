@@ -42,13 +42,11 @@
 			<tbody>
 			<tr>
 				<th>Reddit</th>
-				<th>Last Login</th>
 				<th>User Level</th>
 				<th>Actions</th>
 			</tr>
 			<tr v-for="user in filteredUsers" :key="user.reddit">
 				<td>/u/{{user.reddit}}</td>
-				<td>{{dateDisplay(user.lastLogin)}}</td>
 				<td>{{levelDisplay(user.level)}}</td>
 				<td>
 					<button class="button is-danger" @click="removeUser(user)">Remove</button>

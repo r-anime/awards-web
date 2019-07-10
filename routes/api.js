@@ -30,7 +30,7 @@ apiApp.get('/me', async (request, response) => {
 });
 
 apiApp.get('/users', (request, response) => {
-	response.json(db.allUsers());
+	response.json(db.getAllUsers());
 });
 
 apiApp.post('/user', async (request, response) => {
@@ -52,7 +52,7 @@ apiApp.post('/user', async (request, response) => {
 	// replace the name with the one from reddit in case the capitalization is different
 	user.reddit = redditResponse.body.data.name;
 	log.info('adding user');
-	db.insertUser({reddit: user.reddit, flags: 0});
+	db.insertUser(user);
 	log.info('responding');
 	response.json(user);
 });

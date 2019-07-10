@@ -48,13 +48,8 @@ authApp.get('/reddit/callback', async (request, response) => {
 		log.error('Error getting reddit user info:', res.status, res.body);
 	}
 	const user = db.getUser(name);
-	if (user) {
-		// TODO: implement lastLogin
-	} else {
-		db.insertUser({
-			reddit: name,
-			flags: 0,
-		});
+	if (!user) {
+		db.insertUser({reddit: name});
 	}
 	response.redirect('/');
 });
