@@ -3,10 +3,10 @@ const config = require('./config');
 
 module.exports = {
 	mode: 'development',
-	entry: './frontend/index.js',
+	entry: './frontend/main.js',
 	output: {
 		path: config.publicDir,
-		filename: 'index.js',
+		filename: 'bundle.js',
 	},
 	resolve: {
 		extensions: [

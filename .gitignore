@@ -5,7 +5,7 @@ node_modules
 .vscode
 
 # Generated bundle
-public/index.js
+public/*.js
 
 # Secrets
 config.js
