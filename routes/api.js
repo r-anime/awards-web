@@ -86,8 +86,8 @@ apiApp.post('/category', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to create categories'});
 	}
 	const category = await request.json();
-	db.insertCategory(category);
-	response.json(db.getCategory(category.id));
+	const {lastInsertRowid} = db.insertCategory(category);
+	response.json(db.getCategoryByRowid(lastInsertRowid));
 });
 
 apiApp.patch('/category/:id', async (request, response) => {

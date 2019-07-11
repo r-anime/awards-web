@@ -50,6 +50,7 @@ const insertUserQuery = db.prepare('INSERT INTO users (reddit, flags) VALUES (:r
 const deleteUserQuery = db.prepare('DELETE FROM users WHERE reddit=?');
 
 const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=?');
+const getCategoryByRowidQuery = db.prepare('SELECT * FROM categories WHERE rowid=?');
 const getAllCategoriesQuery = db.prepare('SELECT * FROM categories');
 const insertCategoryQuery = db.prepare('INSERT INTO categories (name) VALUES (:name)');
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name WHERE id=:id');
@@ -62,6 +63,7 @@ module.exports = {
 	deleteUser: deleteUserQuery.run.bind(deleteUserQuery),
 
 	getCategory: getCategoryQuery.get.bind(getCategoryQuery),
+	getCategoryByRowid: getCategoryByRowidQuery.get.bind(getCategoryByRowidQuery),
 	getAllCategories: getAllCategoriesQuery.all.bind(getAllCategoriesQuery),
 	insertCategory: insertCategoryQuery.run.bind(insertCategoryQuery),
 	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery),

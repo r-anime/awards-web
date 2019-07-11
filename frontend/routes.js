@@ -16,6 +16,8 @@ import NotFound from './pages/NotFound';
 import Dashboard from './pages/host/Dashboard';
 import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
+import SingleCategory from './components/SingleCategory';
+import CategoryEntries from './components/CategoryEntries';
 
 export default new VueRouter({
 	mode: 'history',
@@ -37,8 +39,17 @@ export default new VueRouter({
 			component: HostLayout,
 			children: [
 				{path: '', component: Dashboard},
-				{path: 'categories', component: Categories},
 				{path: 'users', component: Users},
+				{path: 'categories', component: Categories},
+				{
+					path: 'category/:id',
+					props: true,
+					component: SingleCategory,
+					children: [
+						{path: '', redirect: 'entries'},
+						{path: 'entries', component: CategoryEntries},
+					],
+				},
 			],
 		},
 		// // Layout for juror things

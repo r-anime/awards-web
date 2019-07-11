@@ -8,15 +8,33 @@ import router from './routes';
 // What will be the Vue instance
 let vm; // eslint-disable-line prefer-const
 
+async function makeRequest (path, method = 'GET', body) {
+	if (typeof body === 'object' && body != null) {
+		body = JSON.stringify(body);
+	}
+	try {
+		const result = await fetch(path, {method, body});
+		if (!result.ok) {
+			const json = await result.json();
+			throw json.error;
+		}
+		if (result.status === 204) {
+			return;
+		}
+		return await result.json();
+	} catch (error) {
+		window.alert(error);
+	}
+}
+
 // Fetch core user data and store it on the Vue instance when we get it
 // NOTE: This is done as its own thing rather than in the Vue instance's
 //       `created` hook because having the promise lets us use `await` to ensure
 //       we have user data before navigating (which is important for when the
 //       page is initially loading)
-const loadPromise = fetch('/api/me').then(async redditResponse => {
-	if (!redditResponse.ok) throw redditResponse;
-	vm.me = await redditResponse.json();
-}).catch(console.error).finally(() => {
+const loadPromise = makeRequest('/api/me').then(user => {
+	vm.me = user;
+}).finally(() => {
 	vm.loaded = true;
 });
 
@@ -50,6 +68,9 @@ vm = new Vue({
 	data: {
 		me: null,
 		loaded: false,
+
+		users: null,
+		categories: null,
 	},
 	computed: {
 		// Auth helpers
@@ -61,6 +82,41 @@ vm = new Vue({
 		},
 		isAdmin () {
 			return this.me && this.me.level >= 4;
+		},
+	},
+	methods: {
+		getUsers () {
+			return makeRequest('/api/users').then(users => {
+				this.users = users;
+			});
+		},
+		addUser (data) {
+			return makeRequest('/api/user', 'POST', data).then(user => {
+				this.users.push(user);
+			});
+		},
+		removeUser (reddit) {
+			return makeRequest(`/api/user/${reddit}`, 'DELETE').then(() => {
+				const targetIndex = this.users.findIndex(user => user.reddit === reddit);
+				this.users.splice(targetIndex, 1);
+			});
+		},
+
+		getCategories () {
+			return makeRequest('/api/categories').then(categories => {
+				this.categories = categories;
+			});
+		},
+		createCategory (data) {
+			return makeRequest('/api/category', 'POST', data).then(category => {
+				this.categories.push(category);
+			});
+		},
+		deleteCategory (id) {
+			return makeRequest(`/api/category/${id}`, 'DELETE').then(() => {
+				const targetIndex = this.categories.findIndex(cat => cat.id === id);
+				this.categories.splice(targetIndex, 1);
+			});
 		},
 	},
 	router,

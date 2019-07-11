@@ -1,6 +1,6 @@
 module.exports = {
 	levels: {
-		hit: {style: 'cyan'},
+		hit: {style: 'magenta'},
 	},
 	ignoredLevels: [],
 };

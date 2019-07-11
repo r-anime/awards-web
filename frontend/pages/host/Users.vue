@@ -32,7 +32,7 @@
 				<td>/u/{{user.reddit}}</td>
 				<td>{{levelDisplay(user.level)}}</td>
 				<td>
-					<button class="button is-danger is-small" @click="removeUser(user)">Remove</button>
+					<button class="button is-danger is-small" @click="removeUser(user.reddit)">Remove</button>
 				</td>
 			</tr>
 			</tbody>
@@ -105,41 +105,19 @@ export default {
 			}
 			return `${level}: ${levelString}`;
 		},
-		removeUser (user) {
-			fetch(`/api/user/${user.reddit}`, {
-				method: 'DELETE',
-			}).then(async response => {
-				if (!response.ok) {
-					return window.alert((await response.json()).error);
-				}
-				window.alert('User removed.');
-				this.users.splice(this.users.indexOf(user), 1);
-			});
+		removeUser (reddit) {
+			this.$root.removeUser(reddit);
 		},
 		addUser () {
-			fetch('/api/user', {
-				method: 'POST',
-				body: JSON.stringify({
-					reddit: this.username,
-					level: this.userLevel,
-					flags: 0,
-				}),
-			}).then(async response => {
-				const json = await response.json();
-				if (!response.ok) {
-					throw json.error;
-				}
-				this.users.push(json);
-				this.addUserOpen = false;
-			}).catch(window.alert);
+			this.$root.addUser({
+				reddit: this.username,
+				level: this.userLevel,
+				flags: 0,
+			});
 		},
 	},
 	mounted () {
-		fetch('/api/users').then(async response => {
-			console.log('got users');
-			this.users = await response.json();
-			console.log(this.users);
-		});
+		this.$root.getUsers();
 	},
 };
 </script>

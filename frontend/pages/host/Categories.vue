@@ -22,10 +22,10 @@
 			</div>
 		</div>
 
-		<div v-if="!categories">
+		<div v-if="!$root.categories">
 			Loading categories...
 		</div>
-		<div v-else-if="categories.length === 0">
+		<div v-else-if="$root.categories.length === 0">
 			No categories!
 		</div>
 		<table v-else class="table is-hoverable is-fullwidth">
@@ -37,7 +37,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="category in categories" :key="category.id">
+				<tr v-for="category in filteredCategories" :key="category.id">
 					<td>{{category.name}}</td>
 					<td>{{category.id}}</td>
 					<td>
@@ -76,8 +76,6 @@ export default {
 	},
 	data () {
 		return {
-			// The list of categories
-			categories: null,
 			// A string to filter the displayed list
 			categoryFilter: '',
 			// Info for the "New Category" modal
@@ -87,37 +85,22 @@ export default {
 	},
 	computed: {
 		filteredCategories () {
-			return this.categories.filter(cat => cat.name.toLowerCase().includes(this.categoryFilter.toLowerCase));
+			if (!this.categoryFilter) return this.$root.categories;
+			return this.$root.categories.filter(cat => cat.name.toLowerCase().includes(this.categoryFilter.toLowerCase));
 		},
 	},
 	methods: {
 		createCategory () {
-			fetch('/api/category', {
-				method: 'POST',
-				body: JSON.stringify({
-					name: this.categoryName,
-				}),
-			}).then(async response => {
-				const json = await response.json();
-				if (!response.ok) {
-					throw json.error;
-				}
-				this.categories.push(json);
+			this.$root.createCategory({name: this.categoryName}).then(() => {
 				this.createCategoryOpen = false;
-			}).catch(window.alert);
+			});
 		},
 		deleteCategory (id) {
-			fetch(`/api/category/${id}`, {
-				method: 'DELETE',
-			}).then(async response => {
-				if (!response.ok) throw (await response.json()).error;
-			}).catch(window.alert);
+			this.$root.deleteCategory(id);
 		},
 	},
 	mounted () {
-		fetch('/api/categories').then(async response => {
-			this.categories = await response.json();
-		});
+		this.$root.getCategories();
 	},
 };
 </script>
