@@ -26,18 +26,13 @@
 					/>
 				</div>
 				<div class="navbar-end">
-					<nav-bar-link v-if="$root.me">
-						<template v-if="$root.me.reddit">
-							<img class="navbar-user-avatar" :src="$root.me.reddit.avatar">
-							/u/{{$root.me.reddit.name}} {{levelDesignator}}
-						</template>
-						<template v-else>
-							No Reddit account linked
-						</template>
+					<nav-bar-link v-if="me">
+						<img class="navbar-user-avatar" :src="me.reddit.avatar">
+						/u/{{me.reddit.name}} {{levelDesignator}}
 
 						<template slot="dropdown">
 							<router-link
-								v-if="$root.me.level >= 2"
+								v-if="me.level >= 2"
 								class="navbar-item"
 								active-class="is-active"
 								to="/host"
@@ -68,6 +63,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 import NavBarLink from './NavBarLink';
 
 export default {
@@ -85,8 +81,12 @@ export default {
 		};
 	},
 	computed: {
+		...mapState([
+			'me',
+		]),
 		levelDesignator () {
-			switch (this.$root.me.level) {
+			switch (this.me.level) {
+				case 4: return '[Admin]';
 				case 3: return '[Mod]';
 				case 2: return '[Host]';
 				case 1: return '[Juror]';

@@ -14,7 +14,7 @@
 						</div>
 					</div>
 				</div>
-				<div v-if="$root.isHost" class="level-item">
+				<div v-if="isHost" class="level-item">
 					<div class="control">
 						<button class="button is-primary" @click="addUserOpen = true">Add User</button>
 					</div>
@@ -42,7 +42,7 @@
 			<h3 class="title">Add User</h3>
 			<form
 				class="field is-grouped"
-				@submit.prevent="addUser"
+				@submit.prevent="submitAddUser"
 			>
 				<div class="control">
 					<input class="input" type="text" v-model="username" placeholder="Reddit Username"/>
@@ -51,8 +51,8 @@
 					<div class="select">
 						<select v-model="userLevel">
 							<option :value="1">Juror</option>
-							<option v-if="$root.isMod" :value="2">Host</option>
-							<option v-if="$root.isAdmin" :value="3">Mod</option>
+							<option v-if="isMod" :value="2">Host</option>
+							<option v-if="isAdmin" :value="3">Mod</option>
 						</select>
 					</div>
 				</div>
@@ -65,26 +65,43 @@
 </template>
 
 <script>
+import {mapState, mapGetters, mapActions} from 'vuex';
 import ModalGeneric from '../../components/ModalGeneric';
+
 export default {
 	components: {
 		ModalGeneric,
 	},
 	data () {
 		return {
-			addUserOpen: false,
+			// Filtering text
 			userFilter: '',
+			// Stuff for add user dialog
+			addUserOpen: false,
 			username: '',
 			userLevel: 1,
 		};
 	},
 	computed: {
+		...mapState([
+			'users',
+		]),
+		...mapGetters([
+			'isHost',
+			'isMod',
+			'isAdmin',
+		]),
 		filteredUsers () {
-			if (!this.userFilter) return this.$root.users;
-			return this.$root.users.filter(user => user.reddit.toLowerCase().includes(this.userFilter.toLowerCase()));
+			if (!this.userFilter) return this.users;
+			return this.users.filter(user => user.reddit.toLowerCase().includes(this.userFilter.toLowerCase()));
 		},
 	},
 	methods: {
+		...mapActions([
+			'getUsers',
+			'addUser',
+			'removeUser',
+		]),
 		dateDisplay (time) {
 			if (time == null) return 'Never';
 			return new Date(time).toLocaleString();
@@ -104,11 +121,8 @@ export default {
 			}
 			return `${level}: ${levelString}`;
 		},
-		removeUser (reddit) {
-			this.$root.removeUser(reddit);
-		},
-		addUser () {
-			this.$root.addUser({
+		submitAddUser () {
+			this.addUser({
 				reddit: this.username,
 				level: this.userLevel,
 				flags: 0,
@@ -118,7 +132,9 @@ export default {
 		},
 	},
 	mounted () {
-		this.$root.getUsers();
+		if (!this.users) {
+			this.getUsers();
+		}
 	},
 };
 </script>

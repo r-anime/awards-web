@@ -10,12 +10,12 @@
 			<div class="media">
 				<figure class="media-left">
 					<p class="image is-64x64">
-						<img :src="$root.me.reddit.avatar"/>
+						<img :src="me.reddit.avatar"/>
 					</p>
 				</figure>
 				<div class="media-content">
 					<p class="is-size-4">
-						You are <a :href="redditLink" target="_blank">/u/{{$root.me.reddit.name}}</a>
+						You are <a :href="redditLink" target="_blank">/u/{{me.reddit.name}}</a>
 					</p>
 					<p>
 						Your Reddit account is the main way we identify you, so you can't unlink it.
@@ -31,10 +31,15 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
+
 export default {
 	computed: {
+		...mapState([
+			'me',
+		]),
 		redditLink () {
-			return `https://www.reddit.com/user/${this.$root.me.reddit.name}`;
+			return `https://www.reddit.com/user/${this.me.reddit.name}`;
 		},
 	},
 };

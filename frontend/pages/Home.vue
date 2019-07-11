@@ -8,10 +8,15 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
+
 export default {
 	computed: {
+		...mapState([
+			'me',
+		]),
 		info () {
-			return `${JSON.stringify(this.$root.me, null, 4)}`;
+			return `${JSON.stringify(this.me, null, 4)}`;
 		},
 	},
 };

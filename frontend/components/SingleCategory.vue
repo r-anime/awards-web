@@ -1,9 +1,12 @@
 <template>
-	<div class="section">
+	<div v-if="!category" class="section">
+		Loading...
+	</div>
+	<div v-else class="section">
 		<div class="level title-margin">
 			<div class="level-left">
 				<div class="level-item">
-					<h2 class="title">Category name</h2>
+					<h2 class="title">{{category.name}}</h2>
 				</div>
 			</div>
 			<div class="level-right">
@@ -29,21 +32,25 @@
 </template>
 
 <script>
+import {mapState, mapActions} from 'vuex';
+
 export default {
-	props: ['id'],
-	data () {
-		return {
-			category: null,
-		};
+	props: ['categoryId'],
+	computed: {
+		...mapState([
+			'categories',
+		]),
+		category () {
+			return this.categories && this.categories.find(cat => cat.id === this.categoryId);
+		},
 	},
+	methods: mapActions([
+		'getCategories',
+	]),
 	mounted () {
-		fetch(`/api/category/${this.id}`).then(async response => {
-			const json = await response.json();
-			if (!response.ok) {
-				throw json.error;
-			}
-			this.category = json;
-		}).catch(window.alert);
+		if (!this.categories) {
+			this.getCategories();
+		}
 	},
 };
 </script>

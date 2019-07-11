@@ -11,7 +11,6 @@ import HostLayout from './layouts/Host';
 import Home from './pages/Home';
 import About from './pages/About';
 import Profile from './pages/Profile';
-import JurorApplication from './pages/JurorApplication';
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/host/Dashboard';
 import Categories from './pages/host/Categories';
@@ -30,7 +29,6 @@ export default new VueRouter({
 				{path: '', component: Home},
 				{path: 'profile', component: Profile},
 				{path: 'about', component: About},
-				{path: 'apply', component: JurorApplication},
 			],
 		},
 		// Layout for the host dashboard
@@ -42,7 +40,7 @@ export default new VueRouter({
 				{path: 'users', component: Users},
 				{path: 'categories', component: Categories},
 				{
-					path: 'category/:id',
+					path: 'category/:categoryId',
 					props: true,
 					component: SingleCategory,
 					children: [

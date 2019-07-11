@@ -14,7 +14,7 @@
 						</div>
 					</div>
 				</div>
-				<div v-if="$root.isHost" class="level-item">
+				<div v-if="isHost" class="level-item">
 					<div class="control">
 						<button class="button is-primary" @click="createCategoryOpen = true">Create Category</button>
 					</div>
@@ -22,10 +22,10 @@
 			</div>
 		</div>
 
-		<div v-if="!$root.categories">
+		<div v-if="!categories">
 			Loading categories...
 		</div>
-		<div v-else-if="$root.categories.length === 0">
+		<div v-else-if="categories.length === 0">
 			No categories!
 		</div>
 		<table v-else class="table is-hoverable is-fullwidth">
@@ -50,8 +50,8 @@
 		<modal-generic v-model="createCategoryOpen">
 			<h3 class="title">Create Category</h3>
 			<form
-				v-if="$root.me.level > 1"
-				@submit.prevent="createCategory"
+				v-if="isHost"
+				@submit.prevent="submitCreateCategory"
 			>
 				<div class="field">
 					<div class="control">
@@ -69,7 +69,9 @@
 </template>
 
 <script>
+import {mapState, mapGetters, mapActions} from 'vuex';
 import ModalGeneric from '../../components/ModalGeneric';
+
 export default {
 	components: {
 		ModalGeneric,
@@ -84,23 +86,36 @@ export default {
 		};
 	},
 	computed: {
+		// Pull in stuff from Vuex
+		...mapState([
+			'categories',
+		]),
+		...mapGetters([
+			'isHost',
+		]),
 		filteredCategories () {
-			if (!this.categoryFilter) return this.$root.categories;
-			return this.$root.categories.filter(cat => cat.name.toLowerCase().includes(this.categoryFilter.toLowerCase));
+			if (!this.categoryFilter) return this.categories;
+			return this.categories.filter(cat => cat.name.toLowerCase().includes(this.categoryFilter.toLowerCase()));
 		},
 	},
 	methods: {
-		createCategory () {
-			this.$root.createCategory({name: this.categoryName}).then(() => {
+		...mapActions([
+			'getCategories',
+			'createCategory',
+			'deleteCategory',
+		]),
+		submitCreateCategory () {
+			this.createCategory({
+				name: this.categoryName,
+			}).then(() => {
 				this.createCategoryOpen = false;
 			});
 		},
-		deleteCategory (id) {
-			this.$root.deleteCategory(id);
-		},
 	},
 	mounted () {
-		this.$root.getCategories();
+		if (!this.categories) {
+			this.getCategories();
+		}
 	},
 };
 </script>
