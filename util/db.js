@@ -46,7 +46,7 @@ db.exec(`
 // Define all our queries
 const getUserQuery = db.prepare('SELECT * FROM users WHERE reddit=?');
 const getAllUsersQuery = db.prepare('SELECT * FROM users');
-const insertUserQuery = db.prepare('INSERT INTO users (reddit, flags) VALUES (:reddit, :flags)');
+const insertUserQuery = db.prepare('INSERT INTO users (reddit, level, flags) VALUES (:reddit, :level, :flags)');
 const deleteUserQuery = db.prepare('DELETE FROM users WHERE reddit=?');
 
 const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=?');

@@ -24,6 +24,7 @@ async function makeRequest (path, method = 'GET', body) {
 		return await result.json();
 	} catch (error) {
 		window.alert(error);
+		throw error;
 	}
 }
 

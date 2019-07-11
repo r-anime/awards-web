@@ -72,7 +72,6 @@ export default {
 	},
 	data () {
 		return {
-			users: [],
 			addUserOpen: false,
 			userFilter: '',
 			username: '',
@@ -81,8 +80,8 @@ export default {
 	},
 	computed: {
 		filteredUsers () {
-			if (!this.userFilter) return this.users;
-			return this.users.filter(user => user.reddit.includes(this.userFilter));
+			if (!this.userFilter) return this.$root.users;
+			return this.$root.users.filter(user => user.reddit.toLowerCase().includes(this.userFilter.toLowerCase()));
 		},
 	},
 	methods: {
@@ -113,6 +112,8 @@ export default {
 				reddit: this.username,
 				level: this.userLevel,
 				flags: 0,
+			}).then(() => {
+				this.addUserOpen = false;
 			});
 		},
 	},
