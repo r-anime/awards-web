@@ -39,7 +39,10 @@ Stretches:
 - Integrate directly with Discord to automate channel access and role management
 - Fold the existing awards site into this repo to further automate results display and eliminate the need to generate JSON data
 
-# Technical TODOs
+## Stack
 
-- Implement smart redirects after logging in, e.g. when you point someone to `/auth/reddit`, specify a path they get sent to afterwards, e.g. `/auth/reddit?to=/apply` to log in and then redirect to the juror application form
-  - can we do this with the referrer header?
+This project has two parts: a Vue frontend, and a Node.js API server.
+
+The frontend uses vuex for state management and vue-router for routing. Styling is done primarily with the Bulma framework, with some custom styles applied with Sass. The frontend is compiled with Webpack and served statically.
+
+The backend uses Polka, a lightweight server framework, to serve the frontend, a JSON API, and some other routes used for OAuth authentication with Reddit. SQLite3 is used as a database.
