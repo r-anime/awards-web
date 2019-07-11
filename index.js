@@ -37,7 +37,7 @@ app.use(
 		saveUninitialized: false,
 		store: new SQLiteStore({
 			db: config.db.filename,
-			table: 'sessions',
+			table: config.session.table,
 		}),
 	}),
 	// Static assets

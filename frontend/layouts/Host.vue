@@ -2,37 +2,15 @@
 	<body>
 		<nav-bar
 			:routes="[
-				{name: 'Back to public', path: '/'}
+				{name: 'Categories', path: '/host/categories'},
+				{name: 'Users', path: '/host/users'},
 			]"
 			class="is-dark"
 			fullwidth
 		/>
-		<div class="content-wrap">
-			<aside class="menu">
-				<template v-for="(routes, label) in nav">
-					<h3 class="menu-label has-text-light" :key="label + 1">
-						{{label}}
-					</h3>
-					<ul class="menu-list" :key="label + 2">
-						<li v-for="route in routes" :key="label + route.path">
-							<router-link
-								:to="route.path"
-								class="has-text-white"
-								active-class="is-active"
-								exact
-							>
-								{{route.name}}
-							</router-link>
-						</li>
-					</ul>
-				</template>
-			</aside>
-			<main>
-				<keep-alive>
-					<router-view/>
-				</keep-alive>
-			</main>
-		</div>
+		<keep-alive>
+			<router-view/>
+		</keep-alive>
 	</body>
 </template>
 
@@ -41,17 +19,6 @@ import NavBar from '../components/NavBar.vue';
 export default {
 	components: {
 		NavBar,
-	},
-	data () {
-		return {
-			nav: {
-				'Host Tools': [
-					{name: 'Dashboard', path: '/host'},
-					{name: 'Categories', path: '/host/categories'},
-					{name: 'Users', path: '/host/users'},
-				],
-			},
-		};
 	},
 };
 </script>
@@ -64,30 +31,5 @@ body {
 }
 .navbar {
 	flex: 0 0 auto;
-}
-.content-wrap {
-	flex: 0 1 100%;
-	display: flex;
-	overflow: hidden;
-	> .menu {
-		flex: 0 0 200px;
-		order: -1;
-		padding: 1.5rem 0.75rem;
-		background: hsl(0, 0%, 29%);
-		a.is-active {
-			background: $primary;
-		}
-		a:hover:not(.is-active) {
-			background: #363636;
-		}
-	}
-	> main {
-		flex: 0 1 100%;
-		overflow: auto;
-		padding: 0;
-		> .section {
-			padding: 1.5rem;
-		}
-	}
 }
 </style>

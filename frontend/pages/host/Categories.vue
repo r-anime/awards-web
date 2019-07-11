@@ -42,6 +42,12 @@
 					<td>{{category.id}}</td>
 					<td>
 						<button class="button is-danger" @click="deleteCategory(category.id)">Remove</button>
+						<router-link
+							:to="categoryPath(category)"
+							class="button is-info"
+						>
+							View
+						</router-link>
 					</td>
 				</tr>
 			</tbody>
@@ -110,6 +116,9 @@ export default {
 			}).then(() => {
 				this.createCategoryOpen = false;
 			});
+		},
+		categoryPath (category) {
+			return `/host/categories/${category.id}`;
 		},
 	},
 	mounted () {

@@ -1,33 +1,44 @@
 <template>
-	<div v-if="!category" class="section">
-		Loading...
-	</div>
-	<div v-else class="section">
-		<div class="level title-margin">
-			<div class="level-left">
-				<div class="level-item">
-					<h2 class="title">{{category.name}}</h2>
-				</div>
+	<div class="columns is-gapless">
+		<aside class="column category-menu-column is-one-fifth has-background-white-bis">
+			<h2 class="title is-4">{{category.name}}</h2>
+			<div class="menu">
+				<ul class="menu-list">
+					<li><a>Information</a></li>
+					<li><a>Entries</a></li>
+					<li><a>Jurors &amp; Hosts</a></li>
+				</ul>
 			</div>
-			<div class="level-right">
-				<div class="level-item">
-					<div class="tabs is-toggle">
-						<ul>
-							<li>
-								<a>yeet</a>
-							</li>
-							<li class="is-active">
-								<a>other yeet</a>
-							</li>
-						</ul>
+		</aside>
+		<div class="column">
+			<div class="section">
+				<div class="level title-margin">
+					<div class="level-left">
+						<div class="level-item">
+							<h2 class="title">{{category.name}}</h2>
+						</div>
+					</div>
+					<div class="level-right">
+						<div class="level-item">
+							<div class="tabs is-toggle">
+								<ul>
+									<li>
+										<a>yeet</a>
+									</li>
+									<li class="is-active">
+										<a>other yeet</a>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
+
+				<keep-alive>
+					<router-view/>
+				</keep-alive>
 			</div>
 		</div>
-
-		<keep-alive>
-			<router-view/>
-		</keep-alive>
 	</div>
 </template>
 
@@ -41,7 +52,7 @@ export default {
 			'categories',
 		]),
 		category () {
-			return this.categories && this.categories.find(cat => cat.id === this.categoryId);
+			return this.categories && this.categories.find(cat => cat.id === parseInt(this.categoryId, 10));
 		},
 	},
 	methods: mapActions([
@@ -54,3 +65,10 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss">
+.columns.is-gapless .column.category-menu-column {
+	min-height: calc(100vh - 3.25rem);
+	padding: 0.75rem !important;
+}
+</style>

@@ -12,7 +12,6 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
-import Dashboard from './pages/host/Dashboard';
 import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
 import SingleCategory from './components/SingleCategory';
@@ -36,11 +35,11 @@ export default new VueRouter({
 			path: '/host',
 			component: HostLayout,
 			children: [
-				{path: '', component: Dashboard},
-				{path: 'users', component: Users},
+				{path: '', redirect: 'categories'},
 				{path: 'categories', component: Categories},
+				{path: 'users', component: Users},
 				{
-					path: 'category/:categoryId',
+					path: 'categories/:categoryId',
 					props: true,
 					component: SingleCategory,
 					children: [

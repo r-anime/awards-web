@@ -2,7 +2,7 @@
 	<router-link
 		v-if="route && !hasDropdown"
 		:to="route.path"
-		:exact="!namedChildren"
+		:exact="false"
 		:class="cssClass"
 		active-class="is-active"
 	>

@@ -4,6 +4,7 @@
 			<div class="navbar-brand">
 				<span class="navbar-item">
 					<h1 class="is-size-4">yeet</h1>
+					<span class="tag is-small">Host Dashboard</span>
 				</span>
 				<a
 					@click="expanded = !expanded"
