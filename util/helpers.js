@@ -15,6 +15,7 @@ const requestHelpers = {
 		function sendRequest (method, path, retried = false) {
 			// Try to send the request with the stored access token...
 			return superagent[method.toLowerCase()](`https://oauth.reddit.com${path}`)
+				.set('User-Agent', config.reddit.userAgent)
 				.set('Authorization', `bearer ${accessToken}`)
 				.catch(async ({response}) => {
 					// If we've already tried to get a new token once, don't do
@@ -27,6 +28,7 @@ const requestHelpers = {
 					// Try to get a new access token via the stored token
 					const refreshResponse = await superagent
 						.post('https://www.reddit.com/api/v1/access_token')
+						.set('User-Agent', config.reddit.userAgent)
 						.auth(config.reddit.clientId, config.reddit.clientSecret)
 						.query({
 							grant_type: 'refresh_token',

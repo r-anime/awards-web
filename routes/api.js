@@ -11,7 +11,7 @@ apiApp.get('/me', async (request, response) => {
 	try {
 		redditorInfo = (await request.reddit().get('/api/v1/me')).body;
 	} catch (error) {
-		log.error(`Error while retrieving Reddit account info:\n${error}`);
+		log.error('Error while retrieving Reddit account info', error);
 		return response.json(500, error);
 	}
 	const userInfo = db.getUser(redditorInfo.name);

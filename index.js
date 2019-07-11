@@ -17,28 +17,38 @@ const auth = require('./routes/auth');
 const indexPage = fs.readFileSync(path.join(config.publicDir, 'index.html'));
 
 // Define the main application
-polka({
+const app = polka({
 	// The frontend uses history mode, so any route that isn't already defined
-	// gets the frontend index page and Vue handles routing/rendering from there
+	// gets the frontend index page and Vue handles it from there (including
+	// rendering a "not found" page when appropriate)
 	onNoMatch: (request, response) => response.end(indexPage),
-})
-	// Set up global middlewares
-	.use(
-		logging, // Request logging
-		helpers, // Helper functions
-		session({
-			secret: config.session.secret,
-			store: new SQLiteStore({
-				db: 'animeawards.db',
-				table: 'sessions',
-			}),
+});
+
+// Set up global middlewares
+app.use(
+	// Request logging
+	logging,
+	// Helper functions
+	helpers,
+	// Session storage
+	session({
+		secret: config.session.secret,
+		resave: false,
+		saveUninitialized: false,
+		store: new SQLiteStore({
+			db: config.db.filename,
+			table: 'sessions',
 		}),
-		sirv(config.publicDir, {dev: true}), // Frontend assets
-	)
-	// Use the API routes and auth routes
-	.use('/api', api)
-	.use('/auth', auth)
-	// Start the server
-	.listen(config.port, () => {
-		log.success(`Listening on port ${config.port}~!`);
-	});
+	}),
+	// Static assets
+	sirv(config.publicDir, {dev: true}),
+);
+
+// Register the API routes and auth routes
+app.use('/api', api);
+app.use('/auth', auth);
+
+// Start the server
+app.listen(config.port, () => {
+	log.success(`Listening on port ${config.port}~!`);
+});

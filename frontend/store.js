@@ -69,9 +69,12 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		async getMe ({commit}) {
-			const me = await makeRequest('/api/me');
+			const response = await fetch('/api/me');
+			if (!response.ok) return;
+			const me = await response.json();
 			commit('GET_ME', me);
 		},
+
 		async getUsers ({commit}) {
 			const users = await makeRequest('/api/users');
 			commit('GET_USERS', users);

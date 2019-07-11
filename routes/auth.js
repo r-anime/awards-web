@@ -49,7 +49,11 @@ authApp.get('/reddit/callback', async (request, response) => {
 	}
 	const user = db.getUser(name);
 	if (!user) {
-		db.insertUser({reddit: name});
+		db.insertUser({
+			reddit: name,
+			level: 0,
+			flags: 0,
+		});
 	}
 	response.redirect('/');
 });
