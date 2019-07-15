@@ -16,6 +16,7 @@ import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
+import CategoryAbout from './components/CategoryAbout';
 
 export default new VueRouter({
 	mode: 'history',
@@ -43,7 +44,8 @@ export default new VueRouter({
 					props: true,
 					component: SingleCategory,
 					children: [
-						{path: '', redirect: 'entries'},
+						{path: '', redirect: 'about'},
+						{path: 'about', component: CategoryAbout},
 						{path: 'entries', component: CategoryEntries},
 					],
 				},
