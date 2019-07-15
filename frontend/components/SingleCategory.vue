@@ -1,18 +1,6 @@
 <template>
 	<div class="columns is-gapless">
 		<aside class="column category-menu-column is-one-fifth has-background-white-bis">
-			<div class="breadcrumb">
-				<ul>
-					<li>
-						<router-link to="/host/categories">
-							Categories
-						</router-link>
-					</li>
-					<li class="is-active">
-						<a>{{category.name}}</a>
-					</li>
-				</ul>
-			</div>
 			<div class="menu">
 				<ul class="menu-list">
 					<li>

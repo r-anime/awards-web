@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
+import AllCategories from './pages/host/AllCategories';
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
 import CategoryAbout from './components/CategoryAbout';
@@ -31,23 +32,60 @@ export default new VueRouter({
 				{path: 'about', component: About},
 			],
 		},
+
 		// Layout for the host dashboard
 		{
 			path: '/host',
 			component: HostLayout,
 			children: [
 				{path: '', redirect: 'categories'},
-				{path: 'categories', component: Categories},
-				{path: 'users', component: Users},
 				{
-					path: 'categories/:categoryId',
-					props: true,
-					component: SingleCategory,
+					path: 'categories',
+					component: Categories,
+					meta: {
+						title: 'Categories',
+					},
 					children: [
-						{path: '', redirect: 'about'},
-						{path: 'about', component: CategoryAbout},
-						{path: 'entries', component: CategoryEntries},
+						{
+							path: '',
+							component: AllCategories,
+						},
+						{
+							path: ':categoryId',
+							component: SingleCategory,
+							props: true,
+							meta: {
+								title: 'Category name TODO',
+							},
+							children: [
+								{
+									path: '',
+									redirect: 'about',
+								},
+								{
+									path: 'about',
+									component: CategoryAbout,
+									meta: {
+										title: 'Settings',
+									},
+								},
+								{
+									path: 'entries',
+									component: CategoryEntries,
+									meta: {
+										title: 'Entries',
+									},
+								},
+							],
+						},
 					],
+				},
+				{
+					path: 'users',
+					component: Users,
+					meta: {
+						title: 'Users',
+					},
 				},
 			],
 		},
