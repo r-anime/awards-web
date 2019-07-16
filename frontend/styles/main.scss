@@ -8,5 +8,8 @@ $family-sans-serif: "Open Sans", "Helvetica", "Arial", sans-serif;
 $family-monospace: "Source Code Pro", "Menlo", "Consolas", monospace;
 $primary: #0094FF;
 
+// Smaller vertical section padding
+$section-padding: 1.5rem;
+
 // Load other Bulma variables
 @import "~bulma/sass/utilities/all";
