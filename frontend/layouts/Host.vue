@@ -11,43 +11,32 @@
 		<div class="breadcrumb-wrap has-background-light">
 			<div class="breadcrumb">
 				<ul>
-					<router-link
+					<host-breadcrumb-link
 						v-for="routeRecord in matchedRoutes"
 						:key="routeRecord.path"
-						tag="li"
-						:to="locationFor(routeRecord)"
-						active-class="is-active"
-						exact
-					>
-						<a>{{routeRecord.meta.title}}</a>
-					</router-link>
+						:route="routeRecord"
+					/>
 				</ul>
 			</div>
 		</div>
 		<div class="full-height-content">
-			<keep-alive>
-				<router-view/>
-			</keep-alive>
+			<router-view/>
 		</div>
 	</body>
 </template>
 
 <script>
 import NavBar from '../components/NavBar.vue';
+import HostBreadcrumbLink from '../components/HostBreadcrumbLink';
+
 export default {
 	components: {
 		NavBar,
+		HostBreadcrumbLink,
 	},
 	computed: {
 		matchedRoutes () {
 			return this.$route.matched.filter(route => route.meta && route.meta.title);
-		},
-	},
-	methods: {
-		locationFor (routeRecord) {
-			// TODO: This should be brought closer to however vue-router
-			//       actually implements it.
-			return routeRecord.path.replace(/:([a-z0-9_]+)/gi, (_, param) => this.$route.params[param]);
 		},
 	},
 };

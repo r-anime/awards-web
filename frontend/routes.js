@@ -62,7 +62,11 @@ export default new VueRouter({
 							component: SingleCategory,
 							props: true,
 							meta: {
-								title: 'Category name TODO',
+								title ({$store, $route}) {
+									if (!$store.state.categories) return '...';
+									const category = $store.state.categories.find(cat => `${cat.id}` === $route.params.categoryId);
+									return category ? category.name : '(Unknown category)';
+								},
 							},
 							children: [
 								{

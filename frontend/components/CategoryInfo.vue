@@ -11,7 +11,7 @@
 			</div>
 			<div class="field">
 				<div class="control">
-					<input type="submit" class="button" value="Save changes">
+					<input type="submit" class="button is-primary" value="Save changes">
 				</div>
 			</div>
 		</form>

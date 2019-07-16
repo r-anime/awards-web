@@ -31,11 +31,9 @@
 			</div>
 		</aside>
 		<div class="column">
-			<keep-alive>
-				<router-view
-					:category="category"
-				/>
-			</keep-alive>
+			<router-view
+				:category="category"
+			/>
 		</div>
 	</div>
 </template>
@@ -72,15 +70,22 @@ export default {
 <style lang="scss" scoped>
 .full-height {
 	height: 100%;
+	@include mobile {
+		height: auto;
+	}
 	.column {
 		height: 100%;
 		overflow: auto;
+		@include mobile {
+			height: auto;
+		}
 	}
 }
 .columns.is-gapless .column.category-menu-column {
-	@include desktop {
-		min-height: 100%;
-	}
+	min-height: 100%;
 	padding: 0.75rem !important;
+	@include mobile {
+		min-height: auto;
+	}
 }
 </style>
