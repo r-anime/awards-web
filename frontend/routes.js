@@ -70,7 +70,7 @@ export default new VueRouter({
 							},
 							children: [
 								{
-									name: 'singleCategory',
+									name: 'category',
 									path: '',
 									redirect: 'info',
 								},

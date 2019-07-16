@@ -2,8 +2,9 @@
 	<div class="columns is-gapless full-height">
 		<aside class="column category-menu-column is-one-fifth has-background-white-bis">
 			<div class="menu">
+				<p class="menu-label">{{category.name}}</p>
 				<ul class="menu-list">
-					<li>
+					<li class=""
 						<router-link
 							:to="categoryPageLink('info')"
 							active-class="is-active"

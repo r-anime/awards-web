@@ -35,15 +35,41 @@
 				:key="category.id"
 			>
 				<div class="box">
-					<h3 class="title is-4">{{category.name}}</h3>
-					<div class="buttons is-right">
-						<button class="button is-danger" @click="deleteCategory(category.id)">Remove</button>
+					<h3 class="title is-4">
 						<router-link
-							:to="categoryPath(category)"
-							class="button is-info"
+							:to="{name: 'category', params: {categoryId: category.id}}"
+							class="has-text-dark"
 						>
-							View
+							{{category.name}}
 						</router-link>
+					</h3>
+					<div class="level is-mobile">
+						<div class="level-left">
+							<div class="level-item">
+								<span class="tag">Shows</span>
+							</div>
+							<div class="level-item">
+								<router-link
+									:to="{name: 'categoryEntries', params: {categoryId: category.id}}"
+									class="tag"
+								>
+									13 entries
+								</router-link>
+							</div>
+						</div>
+						<div class="level-right">
+							<div class="level-item">
+								<button class="button is-danger" @click="deleteCategory(category.id)">Remove</button>
+							</div>
+							<div class="level-item">
+								<router-link
+									:to="{name: 'category', params: {categoryId: category.id}}"
+									class="button is-info"
+								>
+									View
+								</router-link>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -112,9 +138,6 @@ export default {
 			}).then(() => {
 				this.createCategoryOpen = false;
 			});
-		},
-		categoryPath (category) {
-			return `/host/categories/${category.id}`;
 		},
 	},
 	mounted () {

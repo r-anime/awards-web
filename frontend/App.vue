@@ -23,6 +23,11 @@
 	}
 }
 
+// Don't need to default to overflow-y: scroll
+html {
+	overflow-y: auto;
+}
+
 // Some other utility classes
 
 // When you have a title inside a level, the title's margin is lost. Apply this
