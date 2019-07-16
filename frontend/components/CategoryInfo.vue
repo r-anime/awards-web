@@ -43,7 +43,7 @@ export default {
 	props: ['category'],
 	data () {
 		return {
-			newCategoryName: this.category.name,
+			newCategoryName: this.category ? this.category.name : '',
 			newEntryType: 'PLACEHOLDER_SHOW',
 			submitting: false,
 		};
