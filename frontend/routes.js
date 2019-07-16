@@ -17,7 +17,7 @@ import Users from './pages/host/Users';
 import AllCategories from './pages/host/AllCategories';
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
-import CategoryAbout from './components/CategoryAbout';
+import CategoryInfo from './components/CategoryInfo';
 
 export default new VueRouter({
 	mode: 'history',
@@ -37,8 +37,14 @@ export default new VueRouter({
 		{
 			path: '/host',
 			component: HostLayout,
+			meta: {
+				title: 'Host Dashboard',
+			},
 			children: [
-				{path: '', redirect: 'categories'},
+				{
+					path: '',
+					redirect: 'categories',
+				},
 				{
 					path: 'categories',
 					component: Categories,
@@ -47,6 +53,7 @@ export default new VueRouter({
 					},
 					children: [
 						{
+							name: 'allCategories',
 							path: '',
 							component: AllCategories,
 						},
@@ -59,17 +66,20 @@ export default new VueRouter({
 							},
 							children: [
 								{
+									name: 'singleCategory',
 									path: '',
-									redirect: 'about',
+									redirect: 'info',
 								},
 								{
-									path: 'about',
-									component: CategoryAbout,
+									name: 'categoryInfo',
+									path: 'info',
+									component: CategoryInfo,
 									meta: {
-										title: 'Settings',
+										title: 'Information',
 									},
 								},
 								{
+									name: 'categoryEntries',
 									path: 'entries',
 									component: CategoryEntries,
 									meta: {

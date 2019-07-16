@@ -1,6 +1,6 @@
 <template>
 	<div class="section">
-		<h2 class="title is-3">Category information</h2>
+		<h2 class="title is-3">Category Information</h2>
 		<form @submit.prevent="submitEditCategory">
 			<div class="field">
 				<label class="label">Name</label>

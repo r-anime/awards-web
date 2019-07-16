@@ -1,11 +1,11 @@
 <template>
-	<div class="columns is-gapless">
+	<div class="columns is-gapless full-height">
 		<aside class="column category-menu-column is-one-fifth has-background-white-bis">
 			<div class="menu">
 				<ul class="menu-list">
 					<li>
 						<router-link
-							:to="categoryPageLink('about')"
+							:to="categoryPageLink('info')"
 							active-class="is-active"
 						>
 							Information
@@ -69,10 +69,17 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.full-height {
+	height: 100%;
+	.column {
+		height: 100%;
+		overflow: auto;
+	}
+}
 .columns.is-gapless .column.category-menu-column {
 	@include desktop {
-		min-height: calc(100vh - 3.25rem);
+		min-height: 100%;
 	}
 	padding: 0.75rem !important;
 }

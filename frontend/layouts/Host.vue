@@ -15,17 +15,20 @@
 						v-for="routeRecord in matchedRoutes"
 						:key="routeRecord.path"
 						tag="li"
-						:to="routeRecord.path"
-						exact-active-class="is-active"
+						:to="locationFor(routeRecord)"
+						active-class="is-active"
+						exact
 					>
 						<a>{{routeRecord.meta.title}}</a>
 					</router-link>
 				</ul>
 			</div>
 		</div>
-		<keep-alive>
-			<router-view/>
-		</keep-alive>
+		<div class="full-height-content">
+			<keep-alive>
+				<router-view/>
+			</keep-alive>
+		</div>
 	</body>
 </template>
 
@@ -38,6 +41,13 @@ export default {
 	computed: {
 		matchedRoutes () {
 			return this.$route.matched.filter(route => route.meta && route.meta.title);
+		},
+	},
+	methods: {
+		locationFor (routeRecord) {
+			// TODO: This should be brought closer to however vue-router
+			//       actually implements it.
+			return routeRecord.path.replace(/:([a-z0-9_]+)/gi, (_, param) => this.$route.params[param]);
 		},
 	},
 };
@@ -54,5 +64,12 @@ body {
 }
 .breadcrumb-wrap {
 	padding: 0.75rem;
+}
+.full-height-content {
+	height: calc(100vh - 6.25rem);
+	overflow: auto;
+	@include mobile {
+		height: auto;
+	}
 }
 </style>
