@@ -11,11 +11,14 @@ apiApp.get('/me', async (request, response) => {
 	try {
 		redditorInfo = (await request.reddit().get('/api/v1/me')).body;
 	} catch (error) {
-		log.error('Error while retrieving Reddit account info', error);
-		return response.json(500, error);
+		return response.error(error);
 	}
-	const userInfo = db.getUser(redditorInfo.name);
-	log.info(userInfo);
+	let userInfo;
+	try {
+		userInfo = db.getUser(redditorInfo.name);
+	} catch (error) {
+		return response.error(error);
+	}
 	if (!userInfo) {
 		return response.json(404, null);
 	}
@@ -51,10 +54,12 @@ apiApp.post('/user', async (request, response) => {
 	}
 	// replace the name with the one from reddit in case the capitalization is different
 	user.reddit = redditResponse.body.data.name;
-	log.info('adding user');
-	db.insertUser(user);
-	log.info('responding');
-	response.json(user);
+	try {
+		db.insertUser(user);
+		response.json(user);
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.delete('/user/:reddit', async (request, response) => {
@@ -62,23 +67,40 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 	if (!redditName) {
 		return response.json(400, {error: 'Missing reddit name of user to delete'});
 	}
-	const userInfo = db.getUser(redditName);
+	let userInfo;
+	try {
+		userInfo = db.getUser(redditName);
+	} catch (error) {
+		return response.error(error);
+	}
 	if (!userInfo) {
 		return response.json(400, {error: 'The specified user does not exist'});
 	}
 	if (!await request.authenticate({level: userInfo.level + 1})) {
 		return response.json(401, {error: 'You can only remove users of lower level than yourself'});
 	}
-	db.deleteUser(redditName);
-	response.empty();
+	try {
+		db.deleteUser(redditName);
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.get('/categories', (request, response) => {
-	response.json(db.getAllCategories());
+	try {
+		response.json(db.getAllCategories());
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.get('/category/:id', (request, response) => {
-	response.json(db.getCategory(request.params.id));
+	try {
+		response.json(db.getCategory(request.params.id));
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.post('/category', async (request, response) => {
@@ -86,8 +108,12 @@ apiApp.post('/category', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to create categories'});
 	}
 	const category = await request.json();
-	const {lastInsertRowid} = db.insertCategory(category);
-	response.json(db.getCategoryByRowid(lastInsertRowid));
+	try {
+		const {lastInsertRowid} = db.insertCategory(category);
+		response.json(db.getCategoryByRowid(lastInsertRowid));
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.patch('/category/:id', async (request, response) => {
@@ -95,16 +121,24 @@ apiApp.patch('/category/:id', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to modify categories'});
 	}
 	const category = await request.json();
-	db.updateCategory(category);
-	response.json(db.getCategory(category.id));
+	try {
+		db.updateCategory(category);
+		response.json(db.getCategory(category.id));
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.delete('/category/:id', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to delete categories (did you mean to hide the category instead?)'});
 	}
-	db.deleteCategory(request.params.id);
-	response.empty();
+	try {
+		db.deleteCategory(request.params.id);
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 module.exports = apiApp;

@@ -88,7 +88,7 @@ const requestHelpers = {
 	},
 };
 const responseHelpers = {
-	json (status = 200, data) {
+	json (status, data) {
 		if (typeof status !== 'number') {
 			data = status;
 			status = 200;
@@ -100,7 +100,7 @@ const responseHelpers = {
 		});
 		this.end(JSON.stringify(data));
 	},
-	redirect (status = 302, location) {
+	redirect (status, location) {
 		if (typeof status !== 'number') {
 			location = status;
 			status = 302;
@@ -109,6 +109,16 @@ const responseHelpers = {
 			Location: location,
 		});
 		this.end();
+	},
+	error (status, message) {
+		if (typeof status !== 'number') {
+			message = status;
+			status = 500;
+		}
+		if (message instanceof Error) {
+			message = message.toString();
+		}
+		this.json(status, {status, message});
 	},
 	empty () {
 		this.writeHead(204);
