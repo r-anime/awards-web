@@ -27,6 +27,20 @@ db.exec(`
 		name
 			TEXT
 			NOT NULL
+		entry_type
+			TEXT
+			NOT NULL
+			CHECK(entry_type in ('shows', 'characters', 'vas'))
+			DEFAULT 'shows'
+	);
+	CREATE TABLE IF NOT EXISTS category_entries (
+		category_id
+			INTEGER
+			REFERENCES categories(id),
+		entry_anilist_id
+			INTEGER
+			NOT NULL,
+		PRIMARY KEY (category_id, entry_anilist_id)
 	);
 `);
 
