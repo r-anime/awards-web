@@ -1,10 +1,10 @@
 <template>
-	<div class="columns is-gapless full-height">
+	<div v-else class="columns is-gapless full-height">
 		<aside class="column category-menu-column is-one-fifth has-background-white-bis">
-			<div class="menu">
+			<div v-if="category" class="menu">
 				<p class="menu-label">{{category.name}}</p>
 				<ul class="menu-list">
-					<li class=""
+					<li class="">
 						<router-link
 							:to="categoryPageLink('info')"
 							active-class="is-active"
@@ -20,19 +20,15 @@
 							Entries
 						</router-link>
 					</li>
-					<li>
-						<router-link
-							:to="categoryPageLink('user')"
-							active-class="is-active"
-						>
-							Hosts &amp; Jurors
-						</router-link>
-					</li>
 				</ul>
 			</div>
 		</aside>
 		<div class="column">
+			<div v-if="!category">
+				Loading...
+			</div>
 			<router-view
+				v-else
 				:category="category"
 			/>
 		</div>
