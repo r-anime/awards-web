@@ -120,8 +120,8 @@ const responseHelpers = {
 		}
 		this.json(status, {status, message});
 	},
-	empty () {
-		this.writeHead(204);
+	empty (status = 204) {
+		this.writeHead(status);
 		this.end();
 	},
 };
