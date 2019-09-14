@@ -1,5 +1,18 @@
 <template>
-	<div class="section">
-		this is some test content
-	</div>
+	<show-picker v-model="selections"/>
 </template>
+
+<script>
+import ShowPicker from './ShowPicker';
+
+export default {
+	components: {
+		ShowPicker,
+	},
+	data () {
+		return {
+			selections: [],
+		};
+	},
+};
+</script>
