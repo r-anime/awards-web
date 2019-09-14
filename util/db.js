@@ -28,20 +28,6 @@ db.exec(`
 			TEXT
 			NOT NULL
 	);
-	CREATE TABLE IF NOT EXISTS user_categories (
-		id
-			INTEGER
-			PRIMARY KEY
-			AUTOINCREMENT,
-		user_reddit
-			TEXT
-			NOT NULL
-			REFERENCES users(reddit),
-		category_id
-			INTEGER
-			NOT NULL
-			REFERENCES categories(id)
-	);
 `);
 
 // Define all our queries
