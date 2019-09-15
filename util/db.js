@@ -26,7 +26,7 @@ db.exec(`
 			AUTOINCREMENT,
 		name
 			TEXT
-			NOT NULL
+			NOT NULL,
 		entry_type
 			TEXT
 			NOT NULL
