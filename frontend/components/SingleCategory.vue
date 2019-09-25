@@ -1,5 +1,5 @@
 <template>
-	<div v-else class="columns is-gapless full-height">
+	<div class="columns is-gapless full-height">
 		<aside class="column category-menu-column is-one-fifth has-background-white-bis">
 			<div v-if="category" class="menu">
 				<p class="menu-label">{{category.name}}</p>
@@ -18,6 +18,14 @@
 							active-class="is-active"
 						>
 							Entries
+						</router-link>
+					</li>
+					<li>
+						<router-link
+							:to="categoryPageLink('tools')"
+							active-class="is-active"
+						>
+							Tools
 						</router-link>
 					</li>
 				</ul>

@@ -18,6 +18,7 @@ import AllCategories from './pages/host/AllCategories';
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
 import CategoryInfo from './components/CategoryInfo';
+import CategoryTools from './components/categoryTools';
 
 export default new VueRouter({
 	mode: 'history',
@@ -88,6 +89,14 @@ export default new VueRouter({
 									component: CategoryEntries,
 									meta: {
 										title: 'Entries',
+									},
+								},
+								{
+									name: 'categoryTools',
+									path: 'tools',
+									component: CategoryTools,
+									meta: {
+										title: 'Tools',
 									},
 								},
 							],
