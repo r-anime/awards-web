@@ -1,24 +1,34 @@
 <template>
-	<label class="panel-block">
-		<input type="checkbox" @change="checkboxChange" :checked="selected"/>
-		<figure class="image show-cover">
-			<img :src="coverURI"/>
-		</figure>
-		<div class="content">
-			<p>
-				<em class="show-title">
-					{{name}}
-				</em>
-				<br/>
-				{{year}} {{format}} &bull;
-				<a
-					@click.stop
-					target="_blank"
-					:href="anilistLink"
-				>
-					AniList
-				</a>
-			</p>
+	<label class="show-picker-entry">
+		<div class="box">
+			<div class="media">
+				<div class="media-left">
+					<figure class="image show-cover">
+						<img :src="coverURI"/>
+					</figure>
+				</div>
+				<div class="media-content">
+					<div class="content">
+						<p>
+							<em class="show-title">
+								{{name}}
+							</em>
+							<br/>
+							{{year}} {{format}} &bull;
+							<a
+								@click.stop
+								target="_blank"
+								:href="anilistLink"
+							>
+								AniList
+							</a>
+						</p>
+					</div>
+				</div>
+				<div class="media-right">
+					<input type="checkbox" @change="checkboxChange" :checked="selected"/>
+				</div>
+			</div>
 		</div>
 	</label>
 </template>
