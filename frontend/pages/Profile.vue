@@ -1,12 +1,9 @@
 <template>
 	<section class="section">
 		<div class="container">
-			<h2 class="is-size-2">
-				Accounts
+			<h2 class="title is-2">
+				Account Information
 			</h2>
-			<h3 class="is-size-3">
-				Reddit
-			</h3>
 			<div class="media">
 				<figure class="media-left">
 					<p class="image is-64x64">
@@ -18,14 +15,28 @@
 						You are <a :href="redditLink" target="_blank">/u/{{me.reddit.name}}</a>
 					</p>
 					<p>
-						Your Reddit account is the main way we identify you, so you can't unlink it.
+						To use this site, you grant us access to verify your Reddit account name and public profile information, such as avatar and account age.
 					</p>
 				</div>
 			</div>
-
-			<h3 class="is-size-3">
-				Discord
-			</h3>
+			<br> <!-- geo pls -->
+			<h2 class="title is-2">
+				Account Actions
+			</h2>
+			<div class="field">
+				<div class="control">
+					<button
+						disabled
+						class="button is-danger"
+						@click="deleteAccount"
+					>
+						Delete My /r/anime Awards Data
+					</button>
+				</div>
+				<p class="help">
+					This will delete your responses and all other information associated with your Reddit account. It will not delete your Reddit account itself. <b>There is no further confirmation</b>; only click this button if you mean it.
+				</p>
+			</div>
 		</div>
 	</section>
 </template>
