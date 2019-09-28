@@ -182,7 +182,7 @@ export default {
 }
 .show-picker-overflow-wrap {
 	/* TODO hardcode bad */
-	height: calc(100vh - 141px);
+	height: calc(100vh - 141px - 46px);
 	overflow-y: auto;
 }
 .show-picker-search-bar {

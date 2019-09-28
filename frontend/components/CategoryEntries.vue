@@ -8,14 +8,15 @@
 			This is a non-show category, editing is not yet supported
 		</h2>
 
-		<hr>
-		<button
-			class="button is-success"
-			:class="{'is-loading': submitting}"
-			@click="submit"
-		>
-			Update Entries
-		</button>
+		<div class="submit-wrapper">
+			<button
+				class="button is-success"
+				:class="{'is-loading': submitting}"
+				@click="submit"
+			>
+				Update Entries
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -63,6 +64,13 @@ export default {
 			this.selections = JSON.parse(newVal.entries);
 		},
 	},
-
 };
 </script>
+
+<style lang="scss">
+.submit-wrapper {
+	box-shadow: inset 0 1px #dbdbdb;
+	text-align: center;
+	padding: 5px;
+}
+</style>
