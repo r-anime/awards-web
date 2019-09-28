@@ -27,20 +27,15 @@ db.exec(`
 		name
 			TEXT
 			NOT NULL,
-		entry_type
+		entryType
 			TEXT
 			NOT NULL
-			CHECK(entry_type in ('shows', 'characters', 'vas', 'themes'))
-			DEFAULT 'shows'
-	);
-	CREATE TABLE IF NOT EXISTS category_entries (
-		category_id
-			INTEGER
-			REFERENCES categories(id),
-		entry_anilist_id
-			INTEGER
-			NOT NULL,
-		PRIMARY KEY (category_id, entry_anilist_id)
+			CHECK(entryType in ('shows', 'characters', 'vas', 'themes'))
+			DEFAULT 'shows',
+		entries
+			TEXT
+			NOT NULL
+			DEFAULT ''
 	);
 `);
 
@@ -54,7 +49,7 @@ const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=?');
 const getCategoryByRowidQuery = db.prepare('SELECT * FROM categories WHERE rowid=?');
 const getAllCategoriesQuery = db.prepare('SELECT * FROM categories');
 const insertCategoryQuery = db.prepare('INSERT INTO categories (name) VALUES (:name)');
-const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name WHERE id=:id');
+const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries WHERE id=:id');
 const deleteCategoryQuery = db.prepare('DELETE FROM categories WHERE id=?');
 
 module.exports = {

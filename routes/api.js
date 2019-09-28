@@ -120,7 +120,9 @@ apiApp.patch('/category/:id', async (request, response) => {
 	if (!await request.authenticate({level: 2})) {
 		return response.json(401, {error: 'You must be a host to modify categories'});
 	}
-	const category = await request.json();
+	let category = await request.json();
+	// HACK there's gotta be a better way to merge things than this wow
+	category = Object.assign({}, db.getCategory(category.id), category);
 	try {
 		db.updateCategory(category);
 		response.json(db.getCategory(category.id));

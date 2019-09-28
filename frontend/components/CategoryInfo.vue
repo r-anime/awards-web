@@ -15,10 +15,10 @@
 					<div class="select">
 						<select v-model="newEntryType">
 							<option disabled>Select one</option>
-							<option value="PLACEHOLDER_SHOW">Shows</option>
-							<option value="PLACEHOLDER_CHAR">Characters</option>
-							<option value="PLACEHOLDER_PERF">VA Performances</option>
-							<option value="PLACEHOLDER_THEM">OP/ED</option>
+							<option value="shows">Shows</option>
+							<option value="characters">Characters</option>
+							<option value="vas">VA Performances</option>
+							<option value="themes">OP/ED</option>
 						</select>
 					</div>
 				</div>
@@ -45,8 +45,8 @@ export default {
 	props: ['category'],
 	data () {
 		return {
-			newCategoryName: this.category ? this.category.name : '',
-			newEntryType: 'PLACEHOLDER_SHOW',
+			newCategoryName: this.category.name,
+			newEntryType: this.category.entryType,
 			submitting: false,
 		};
 	},
@@ -65,7 +65,7 @@ export default {
 						id: this.category.id,
 						data: {
 							name: this.newCategoryName,
-							// entryType: // TODO: this isn't implemented yet on the server
+							entryType: this.newEntryType,
 						},
 					});
 				} finally {
@@ -80,7 +80,7 @@ export default {
 			// other data, because the user may be making changes
 			if (oldVal) return;
 			this.newCategoryName = newVal.name;
-			this.newEntryType = 'PLACEHOLDER_SHOW';
+			this.newEntryType = newVal.entryType;
 		},
 	},
 };
