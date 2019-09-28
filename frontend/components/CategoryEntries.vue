@@ -55,15 +55,6 @@ export default {
 			}
 		},
 	},
-	watch: {
-		category (newVal, oldVal) {
-			console.log('category changed', newVal, oldVal);
-			// If the category was already defined, we don't want to update the
-			// other data, because the user may be making changes
-			if (oldVal) return;
-			this.selections = JSON.parse(newVal.entries);
-		},
-	},
 };
 </script>
 

@@ -74,14 +74,5 @@ export default {
 			});
 		},
 	},
-	watch: {
-		category (newVal, oldVal) {
-			// If the category was already defined, we don't want to update the
-			// other data, because the user may be making changes
-			if (oldVal) return;
-			this.newCategoryName = newVal.name;
-			this.newEntryType = newVal.entryType;
-		},
-	},
 };
 </script>
