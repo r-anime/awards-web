@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 export default {
 	props: ['category'],
 	data () {
@@ -50,14 +51,26 @@ export default {
 		};
 	},
 	methods: {
+		...mapActions([
+			'updateCategory',
+		]),
 		submitEditCategory () {
 			// When this gets implemented, make sure there's a warning when
 			// changing the entry type, as that will also erase all current
 			// entries.
 			this.submitting = true;
-			setTimeout(() => {
-				alert('TODO');
-				this.submitting = false;
+			setTimeout(async () => {
+				try {
+					await this.updateCategory({
+						id: this.category.id,
+						data: {
+							name: this.newCategoryName,
+							// entryType: // TODO: this isn't implemented yet on the server
+						},
+					});
+				} finally {
+					this.submitting = false;
+				}
 			});
 		},
 	},

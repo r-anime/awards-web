@@ -67,6 +67,6 @@ module.exports = {
 	getCategoryByRowid: getCategoryByRowidQuery.get.bind(getCategoryByRowidQuery),
 	getAllCategories: getAllCategoriesQuery.all.bind(getAllCategoriesQuery),
 	insertCategory: insertCategoryQuery.run.bind(insertCategoryQuery),
-	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery),
+	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery), // TODO: I don't like that the id and the data are in the same object here
 	deleteCategory: deleteCategoryQuery.run.bind(deleteCategoryQuery),
 };

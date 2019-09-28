@@ -62,6 +62,10 @@ const store = new Vuex.Store({
 		CREATE_CATEGORY (state, category) {
 			state.categories.push(category);
 		},
+		UPDATE_CATEGORY (state, category) {
+			const index = state.categories.findIndex(cat => cat.id === category.id);
+			state.categories.splice(index, 1, category);
+		},
 		DELETE_CATEGORY (state, categoryId) {
 			const index = state.categories.findIndex(cat => cat.id === categoryId);
 			state.categories.splice(index, 1);
@@ -95,6 +99,12 @@ const store = new Vuex.Store({
 		async createCategory ({commit}, data) {
 			const category = await makeRequest('/api/category', 'POST', data);
 			commit('CREATE_CATEGORY', category);
+		},
+		async updateCategory ({commit}, {id, data}) {
+			console.log(id, data);
+			// TODO: I don't like that the id and the data are in the same object here
+			const updatedCategoryData = await makeRequest(`/api/category/${id}`, 'PATCH', {id, ...data});
+			commit('UPDATE_CATEGORY', updatedCategoryData);
 		},
 		async deleteCategory ({commit}, categoryId) {
 			await makeRequest(`/api/category/${categoryId}`, 'DELETE');
