@@ -18,6 +18,7 @@
 							<option value="PLACEHOLDER_SHOW">Shows</option>
 							<option value="PLACEHOLDER_CHAR">Characters</option>
 							<option value="PLACEHOLDER_PERF">VA Performances</option>
+							<option value="PLACEHOLDER_THEM">OP/ED</option>
 						</select>
 					</div>
 				</div>

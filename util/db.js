@@ -30,7 +30,7 @@ db.exec(`
 		entry_type
 			TEXT
 			NOT NULL
-			CHECK(entry_type in ('shows', 'characters', 'vas'))
+			CHECK(entry_type in ('shows', 'characters', 'vas', 'themes'))
 			DEFAULT 'shows'
 	);
 	CREATE TABLE IF NOT EXISTS category_entries (
