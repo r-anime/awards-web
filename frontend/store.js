@@ -62,8 +62,8 @@ const store = new Vuex.Store({
 		CREATE_CATEGORY (state, category) {
 			state.categories.push(category);
 		},
-		DELETE_CATEGORY (state, id) {
-			const index = state.categories.findIndex(cat => cat.id === id);
+		DELETE_CATEGORY (state, categoryId) {
+			const index = state.categories.findIndex(cat => cat.id === categoryId);
 			state.categories.splice(index, 1);
 		},
 	},
@@ -92,13 +92,13 @@ const store = new Vuex.Store({
 			const categories = await makeRequest('/api/categories');
 			commit('GET_CATEGORIES', categories);
 		},
-		async createCategory ({commit}, category) {
-			const finalCategory = await makeRequest('/api/category', 'POST', category);
-			commit('CREATE_CATEGORY', finalCategory);
+		async createCategory ({commit}, data) {
+			const category = await makeRequest('/api/category', 'POST', data);
+			commit('CREATE_CATEGORY', category);
 		},
-		async deleteCategory ({commit}, id) {
-			await makeRequest(`/api/category/${id}`, 'DELETE');
-			commit('DELETE_CATEGORY', id);
+		async deleteCategory ({commit}, categoryId) {
+			await makeRequest(`/api/category/${categoryId}`, 'DELETE');
+			commit('DELETE_CATEGORY', categoryId);
 		},
 	},
 });
