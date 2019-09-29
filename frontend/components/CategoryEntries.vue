@@ -33,7 +33,7 @@ export default {
 	},
 	data () {
 		return {
-			selections: JSON.parse(this.category.entries),
+			selections: this.category.entries ? JSON.parse(this.category.entries) : [],
 			submitting: false,
 		};
 	},
