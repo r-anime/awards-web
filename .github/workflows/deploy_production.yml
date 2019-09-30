@@ -12,4 +12,8 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
     - run: |
-        ssh -o StrictHostKeyChecking=no root@159.203.108.203 'cd /home/george/animeawards-mkii && git pull && systemctl restart animeawards'
+        ssh -o StrictHostKeyChecking=no root@159.203.108.203 << EOF
+          cd /home/george/animeawards-mkii
+          git pull
+          systemctl restart animeawards
+        EOF
