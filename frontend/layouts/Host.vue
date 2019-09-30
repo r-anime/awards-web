@@ -7,7 +7,14 @@
 			]"
 			class="is-dark"
 			fullwidth
-		/>
+		>
+			<template v-slot:title>
+				<router-link to="/" style="color: inherit;">
+					<h1 class="is-size-4">/r/anime Awards</h1>
+				</router-link>
+				<span class="tag is-small" style="margin-left:0.8rem;">Host Dashboard</span>
+			</template>
+		</nav-bar>
 		<div class="breadcrumb-wrap has-background-light">
 			<div class="breadcrumb">
 				<ul>

@@ -3,8 +3,7 @@
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
 			<div class="navbar-brand">
 				<span class="navbar-item">
-					<h1 class="is-size-4">yeet</h1>
-					<span class="tag is-small">Host Dashboard</span>
+					<slot name="title"/>
 				</span>
 				<a
 					@click="expanded = !expanded"
@@ -32,14 +31,6 @@
 						/u/{{me.reddit.name}} {{levelDesignator}}
 
 						<template slot="dropdown">
-							<router-link
-								v-if="me.level >= 2"
-								class="navbar-item"
-								active-class="is-active"
-								to="/host"
-							>
-								Hosting Dashboard
-							</router-link>
 							<router-link
 								class="navbar-item"
 								active-class="is-active"
