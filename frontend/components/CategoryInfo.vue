@@ -18,7 +18,7 @@
 							<option value="shows">Shows</option>
 							<option value="characters">Characters</option>
 							<option value="vas">VA Performances</option>
-							<option value="themes">OP/ED</option>
+							<option value="themes">OPs/EDs</option>
 						</select>
 					</div>
 				</div>

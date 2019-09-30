@@ -46,14 +46,14 @@
 					<div class="level is-mobile">
 						<div class="level-left">
 							<div class="level-item">
-								<span class="tag">Shows</span>
+								<span class="tag">{{categoryEntryType(category)}}</span>
 							</div>
 							<div class="level-item">
 								<router-link
 									:to="{name: 'categoryEntries', params: {categoryId: category.id}}"
 									class="tag"
 								>
-									13 entries
+									{{categoryEntryCount(category)}}
 								</router-link>
 							</div>
 						</div>
@@ -132,6 +132,21 @@ export default {
 			'createCategory',
 			'deleteCategory',
 		]),
+		categoryEntryCount (category) {
+			if (!category.entries) return 'No entries';
+			const entries = JSON.parse(category.entries);
+			if (!entries || !entries.length) return 'No entries';
+			return `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}`;
+		},
+		categoryEntryType (category) {
+			switch (category.entryType) {
+				case 'shows': return 'Shows';
+				case 'characters': return 'Characters';
+				case 'vas': return 'VA Performances';
+				case 'themes': return 'OPs/EDs';
+				default: return 'Unknown entry type';
+			}
+		},
 		submitCreateCategory () {
 			this.createCategory({
 				name: this.categoryName,
