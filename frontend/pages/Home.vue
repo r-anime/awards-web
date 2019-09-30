@@ -21,12 +21,6 @@
 				</div>
 			</div>
 		</section>
-		<section class="section">
-			<div class="container">
-				debug stuff plz ignore
-				<pre><code>{{info}}</code></pre>
-			</div>
-		</section>
 	</div>
 </template>
 

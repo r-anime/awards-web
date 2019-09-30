@@ -23,9 +23,9 @@ export default {
 			'me',
 		]),
 		routes () {
-			return this.me && this.me.level >= 2 ? [
-				{name: 'Host Dashboard', path: '/host'},
-			] : [];
+			return [
+				this.me && this.me.level >= 2 && {name: 'Host Dashboard', path: '/host'},
+			].filter(s => s);
 		},
 	},
 };
