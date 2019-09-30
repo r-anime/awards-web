@@ -1,0 +1,14 @@
+name: Deploy Production
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest    
+    steps:
+    - uses: actions/checkout@v1
+    - uses: webfactory/ssh-agent@v0.1.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
+    - run: |
+        ssh root@159.203.108.203 'cd /home/george/animeawards-mkii && git pull && systemctl restart animeawards'
