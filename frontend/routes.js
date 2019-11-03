@@ -65,7 +65,7 @@ export default new VueRouter({
 							meta: {
 								title ({$store, $route}) {
 									if (!$store.state.categories) return '...';
-									const category = $store.state.categories.find(cat => `${cat.id}` === $route.params.categoryId);
+									const category = $store.state.categories.find(cat => `${cat.id}` == $route.params.categoryId);
 									return category ? category.name : '(Unknown category)';
 								},
 							},
