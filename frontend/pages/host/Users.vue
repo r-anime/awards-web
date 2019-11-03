@@ -32,7 +32,11 @@
 				<td>/u/{{user.reddit}}</td>
 				<td>{{levelDisplay(user.level)}}</td>
 				<td>
-					<button class="button is-danger is-small" @click="removeUser(user.reddit)">Remove</button>
+					<button class="button is-danger is-small"
+					v-bind:class="{'is-loading' : removing && user.reddit === selectedUser}"
+					@click="submitRemoveUser(user.reddit)">
+					Remove
+					</button>
 				</td>
 			</tr>
 			</tbody>
@@ -57,7 +61,7 @@
 					</div>
 				</div>
 				<div class="control">
-					<input class="button is-primary" type="submit" value="Add">
+					<button class="button is-primary" :class="{'is-loading' : adding}" type="submit">Add</button>
 				</div>
 			</form>
 		</modal-generic>
@@ -80,6 +84,9 @@ export default {
 			addUserOpen: false,
 			username: '',
 			userLevel: 1,
+			adding: false,
+			removing: false,
+			selectedUser: '',
 		};
 	},
 	computed: {
@@ -122,12 +129,34 @@ export default {
 			return `${level}: ${levelString}`;
 		},
 		submitAddUser () {
-			this.addUser({
-				reddit: this.username,
-				level: this.userLevel,
-				flags: 0,
-			}).then(() => {
-				this.addUserOpen = false;
+			this.addUserOpen = true;
+			this.adding = true;
+			setTimeout(
+				async () => {
+					try {
+						await this.addUser({
+							reddit: this.username,
+							level: this.userLevel,
+							flags: 0,
+						});
+					}
+					finally {
+						this.addUserOpen = false;
+						this.adding = false;
+					}
+				}
+			);
+		},
+		submitRemoveUser (reddit) {
+			this.selectedUser = reddit;
+			this.removing = true;
+			setTimeout(async () => {
+				try {
+					await this.removeUser(reddit);
+				}
+				finally {
+					this.removing = false;
+				}
 			});
 		},
 	},

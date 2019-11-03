@@ -59,7 +59,11 @@
 						</div>
 						<div class="level-right">
 							<div class="level-item">
-								<button class="button is-danger" @click="deleteCategory(category.id)">Remove</button>
+								<button class="button is-danger"
+								v-bind:class="{'is-loading' : deleting && category.id === selectedCategoryId}"
+								@click="submitDeleteCategory(category.id)">
+								Remove
+								</button>
 							</div>
 							<div class="level-item">
 								<router-link
@@ -88,7 +92,7 @@
 				</div>
 				<div class="field">
 					<div class="control">
-						<input class="button is-primary" type="submit" value="Add">
+						<button class="button is-primary" :class="{'is-loading' : submitting}" type="submit">Add</button>
 					</div>
 				</div>
 			</form>
@@ -111,6 +115,9 @@ export default {
 			// Info for the "New Category" modal
 			createCategoryOpen: false,
 			categoryName: '',
+			submitting: false,
+			deleting: false,
+			selectedCategoryId: '',
 		};
 	},
 	computed: {
@@ -147,11 +154,31 @@ export default {
 				default: return 'Unknown entry type';
 			}
 		},
+		submitDeleteCategory(categoryID) {
+			this.deleting = true;
+			this.selectedCategoryId = categoryID;
+			setTimeout(async () => {
+				try {
+					await this.deleteCategory(categoryID);
+				}
+				finally {
+					this.deleting = false;
+				}
+			});
+		},
 		submitCreateCategory () {
-			this.createCategory({
-				name: this.categoryName,
-			}).then(() => {
-				this.createCategoryOpen = false;
+			this.createCategoryOpen = true;
+			this.submitting = true;
+			setTimeout(async () => {
+				try {
+					await this.createCategory({
+						name: this.categoryName
+					});
+				}
+				finally {
+					this.createCategoryOpen = false;
+					this.submitting = false;
+				}
 			});
 		},
 	},
