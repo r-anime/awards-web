@@ -130,7 +130,7 @@ export default {
 			// Info for the "New Category" modal
 			createCategoryOpen: false,
 			categoryName: '',
-			newEntryType: '',
+			newEntryType: 'shows',
 			submitting: false,
 			deleting: false,
 			selectedCategoryId: '',
