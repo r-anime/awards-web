@@ -86,8 +86,23 @@
 				@submit.prevent="submitCreateCategory"
 			>
 				<div class="field">
+					<label class="label">Name</label>
 					<div class="control">
 						<input class="input" type="text" v-model="categoryName" placeholder="Genre Awards"/>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Entry Type</label>
+					<div class="control">
+						<div class="select">
+						<select v-model="newEntryType">
+							<option disabled>Select one</option>
+							<option value="shows">Shows</option>
+							<option value="characters">Characters</option>
+							<option value="vas">VA Performances</option>
+							<option value="themes">OPs/EDs</option>
+						</select>
+						</div>
 					</div>
 				</div>
 				<div class="field">
@@ -115,6 +130,7 @@ export default {
 			// Info for the "New Category" modal
 			createCategoryOpen: false,
 			categoryName: '',
+			newEntryType: '',
 			submitting: false,
 			deleting: false,
 			selectedCategoryId: '',
@@ -172,7 +188,10 @@ export default {
 			setTimeout(async () => {
 				try {
 					await this.createCategory({
-						name: this.categoryName
+						data: {
+							name: this.categoryName,
+							entryType: this.newEntryType,
+						},
 					});
 				}
 				finally {

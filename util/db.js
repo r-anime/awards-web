@@ -48,7 +48,7 @@ const deleteUserQuery = db.prepare('DELETE FROM users WHERE reddit=?');
 const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=?');
 const getCategoryByRowidQuery = db.prepare('SELECT * FROM categories WHERE rowid=?');
 const getAllCategoriesQuery = db.prepare('SELECT * FROM categories');
-const insertCategoryQuery = db.prepare('INSERT INTO categories (name) VALUES (:name)');
+const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType) VALUES (:name,:entryType)');
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries WHERE id=:id');
 const deleteCategoryQuery = db.prepare('DELETE FROM categories WHERE id=?');
 

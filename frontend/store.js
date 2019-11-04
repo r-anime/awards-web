@@ -96,7 +96,7 @@ const store = new Vuex.Store({
 			const categories = await makeRequest('/api/categories');
 			commit('GET_CATEGORIES', categories);
 		},
-		async createCategory ({commit}, data) {
+		async createCategory ({commit}, {data}) {
 			const category = await makeRequest('/api/category', 'POST', data);
 			commit('CREATE_CATEGORY', category);
 		},
