@@ -4,10 +4,17 @@
 			v-if="category.entryType === 'shows'"
 			v-model="selections"
 		/>
+		<char-picker
+			v-else-if="category.entryType === 'characters'"
+			v-model="selections"
+		/>
+		<VAPicker
+			v-else-if="category.entryType === 'vas'"
+			v-model="selections"
+		/>
 		<h2 class="title" v-else>
-			This is a non-show category, editing is not yet supported
+			OP/ED entries are yet to be supported.
 		</h2>
-
 		<div class="submit-wrapper">
 			<button
 				class="button is-success"
@@ -22,11 +29,15 @@
 
 <script>
 import {mapActions} from 'vuex';
-import ShowPicker from './ShowPicker';
+import ShowPicker from './EntryLayouts/ShowPicker';
+import CharPicker from './EntryLayouts/CharPicker';
+import VAPicker from './EntryLayouts/VAPicker';
 
 export default {
 	components: {
 		ShowPicker,
+		CharPicker,
+		VAPicker,
 	},
 	props: {
 		category: Object,
