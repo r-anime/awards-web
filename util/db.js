@@ -5,6 +5,7 @@ const config = require('../config');
 const db = bettersqlite3(path.join(config.db.path, config.db.filename));
 
 // Initial setup of the database
+/*
 db.exec(`
 	CREATE TABLE IF NOT EXISTS users (
 		reddit
@@ -38,6 +39,7 @@ db.exec(`
 			DEFAULT ''
 	);
 `);
+*/
 
 // Define all our queries
 const getUserQuery = db.prepare('SELECT * FROM users WHERE reddit=?');
@@ -45,12 +47,12 @@ const getAllUsersQuery = db.prepare('SELECT * FROM users');
 const insertUserQuery = db.prepare('INSERT INTO users (reddit, level, flags) VALUES (:reddit, :level, :flags)');
 const deleteUserQuery = db.prepare('DELETE FROM users WHERE reddit=?');
 
-const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=?');
-const getCategoryByRowidQuery = db.prepare('SELECT * FROM categories WHERE rowid=?');
-const getAllCategoriesQuery = db.prepare('SELECT * FROM categories');
+const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=? AND active=1');
+const getCategoryByRowidQuery = db.prepare('SELECT * FROM categories WHERE rowid=? AND active=1');
+const getAllCategoriesQuery = db.prepare('SELECT * FROM categories WHERE active=1');
 const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType) VALUES (:name,:entryType)');
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries WHERE id=:id');
-const deleteCategoryQuery = db.prepare('DELETE FROM categories WHERE id=?');
+const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
 module.exports = {
 	getUser: getUserQuery.get.bind(getUserQuery),
