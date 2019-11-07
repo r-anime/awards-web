@@ -66,6 +66,13 @@
 								</button>
 							</div>
 							<div class="level-item">
+								<button class="button is-info"
+								v-bind:class="{'is-loading' : duplicating && category.id === selectedCategoryId}"
+								@click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries)">
+								Duplicate
+								</button>
+							</div>
+							<div class="level-item">
 								<router-link
 									:to="{name: 'category', params: {categoryId: category.id}}"
 									class="button is-info"
@@ -133,6 +140,7 @@ export default {
 			newEntryType: 'shows',
 			submitting: false,
 			deleting: false,
+			duplicating: false,
 			selectedCategoryId: '',
 		};
 	},
@@ -182,6 +190,25 @@ export default {
 				}
 			});
 		},
+		submitDuplicateCategory(categoryID, categoryName, categoryType, categoryEntries) {
+			this.duplicating = true;
+			this.selectedCategoryId = categoryID;
+			var newName = categoryName + " copy";
+			setTimeout(async () => {
+				try {
+					await this.createCategory({
+						data: {
+							name: newName,
+							entryType: categoryType,
+							entries: categoryEntries
+						}
+					});
+				}
+				finally {
+					this.duplicating = false;
+				}
+			});
+		},
 		submitCreateCategory () {
 			this.createCategoryOpen = true;
 			this.submitting = true;
@@ -191,6 +218,7 @@ export default {
 						data: {
 							name: this.categoryName,
 							entryType: this.newEntryType,
+							entries: "",
 						},
 					});
 				}
