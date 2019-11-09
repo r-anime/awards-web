@@ -31,6 +31,7 @@
     "better-sqlite3": "^5.4.0",
     "bulma": "^0.7.5",
     "connect-sqlite3": "^0.9.11",
+    "csv-parse": "^4.6.5",
     "db-migrate": "^0.11.6",
     "db-migrate-sqlite3": "^0.4.0",
     "express-session": "^1.15.6",
