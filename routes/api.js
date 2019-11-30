@@ -2,6 +2,7 @@ const log = require('another-logger');
 const apiApp = require('polka')();
 const superagent = require('superagent');
 const db = require('../util/db');
+const parse = require('../themes/parser');
 
 apiApp.get('/me', async (request, response) => {
 	if (!request.session.redditAccessToken) {
@@ -90,6 +91,7 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 apiApp.get('/categories', (request, response) => {
 	try {
 		response.json(db.getAllCategories());
+		log.success(db.getAllCategories());
 	} catch (error) {
 		response.error(error);
 	}
@@ -138,6 +140,15 @@ apiApp.delete('/category/:id', async (request, response) => {
 	try {
 		db.deleteCategory(request.params.id);
 		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/themes/op', async (request, response) => {
+	const op = await parse.getThemes('./themes/OP.csv');
+	try {
+		response.json(op);
 	} catch (error) {
 		response.error(error);
 	}

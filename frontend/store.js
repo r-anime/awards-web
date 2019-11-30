@@ -28,6 +28,7 @@ const store = new Vuex.Store({
 		me: null,
 		users: null,
 		categories: null,
+		op: null,
 	},
 	getters: {
 		isHost (state) {
@@ -70,6 +71,9 @@ const store = new Vuex.Store({
 			const index = state.categories.findIndex(cat => cat.id === categoryId);
 			state.categories.splice(index, 1);
 		},
+		GET_OP (state, op) {
+			state.op = op;
+		}
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -109,6 +113,10 @@ const store = new Vuex.Store({
 		async deleteCategory ({commit}, categoryId) {
 			await makeRequest(`/api/category/${categoryId}`, 'DELETE');
 			commit('DELETE_CATEGORY', categoryId);
+		},
+		async getOP ({commit}) {
+			const op = await makeRequest('/api/themes/op');
+			commit('GET_OP',op);
 		},
 	},
 });
