@@ -21,17 +21,6 @@ function idGetter (arr) {
 }
 
 async function readThemes(file) {
-    fs.readFile(file,'utf-8', (err,fileData) => {
-        if (err) throw err;
-        parser(fileData, {
-            comment: '#',
-            skip_empty_lines: true,
-        }, function (err,output) {
-            if (err) throw err;
-            idGetter(output);
-            data = output;
-        });
-    });
 
     return new Promise(function (resolve,reject) {
         fs.readFile(file,'utf-8', (err,fileData) => {
