@@ -20,9 +20,51 @@ function idGetter (arr) {
       }
 }
 
-async function readThemes(file) {
+function themeType (file) {
+    switch (true) {
+        case file.includes('OP.csv'):
+            return 'op';
+        case file.includes('ED.csv'):
+            return 'ed';
+        case file.includes('ED.csv'):
+            return 'ost';
+    }
+}
 
-    return new Promise(function (resolve,reject) {
+function themeNo (num,type) {
+    if (type === 'ost') {
+        return ``;
+    }
+    else if (num != '' && num.includes('.')) {
+        const arr = num.split('.');
+        return `${type.toUpperCase()}${arr[0]} v${arr[1]}`;
+    }
+    else if (num === '') {
+        return `${type.toUpperCase()}1`;
+    }
+    else {
+        return `${type.toUpperCase()}${num}`;
+    }
+}
+
+function objectify (themeArray,file) {
+    let objectArray = [];
+    let type = themeType(file);
+    themeArray.forEach((theme,index) => {
+        objectArray[index] = {
+            title: theme[0],
+            themeType: type,
+            anilistID: parseInt(theme[1]),
+            themeNo: themeNo(theme[2],type),
+            link: theme[3],
+        };
+    });
+    return objectArray;
+}
+
+async function readThemes(file) {
+    let objectOut = [];
+    await new Promise(function (resolve,reject) {
         fs.readFile(file,'utf-8', (err,fileData) => {
             if (err) throw err;
             parser(fileData, {
@@ -31,21 +73,14 @@ async function readThemes(file) {
             }, function (err,output) {
                 if (err) throw err;
                 idGetter(output);
-                resolve(output);
+                objectOut = objectify(output,file);
+                resolve(objectOut);
             });
         });
     });
-}
-
-function getThemes(file) {
-    var promise = readThemes(file);
-    promise.then((result) => {
-        themes = result;
-        console.log(themes);
-    });
-    return themes;
+    return objectOut;
 }
 
 module.exports = {
-    getThemes,
+    readThemes,
 }

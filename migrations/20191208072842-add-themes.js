@@ -20,7 +20,7 @@ exports.up = function(db) {
     title: {type: 'string'},
     themeType: {type: 'string', notNull: true, defaultValue: ''},
     anilistID: {type: 'int', notNull: true},
-    themeNo: {type: 'int'},
+    themeNo: {type: 'string'},
     link: {type: 'string', defaultValue: ''}
   });
 };

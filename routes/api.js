@@ -145,10 +145,22 @@ apiApp.delete('/category/:id', async (request, response) => {
 	}
 });
 
-apiApp.get('/themes/op', async (request, response) => {
-	const op = await parse.getThemes('./themes/OP.csv');
+apiApp.post('/themes/create', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to modify themes'});
+	}
+	const req = await request.json();
+	const themes = await parse.readThemes(`./themes/${req.themeType.toUpperCase()}.csv`);
 	try {
-		response.json(op);
+		const promise = new Promise((resolve,reject) => {
+			themes.forEach(theme => {
+				db.insertThemes(theme);
+			});
+			resolve();
+		});
+		promise.then(() => {
+			response.json(db.getThemes({themeType: req.themeType}));
+		});
 	} catch (error) {
 		response.error(error);
 	}

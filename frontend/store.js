@@ -28,7 +28,7 @@ const store = new Vuex.Store({
 		me: null,
 		users: null,
 		categories: null,
-		op: null,
+		themes: null,
 	},
 	getters: {
 		isHost (state) {
@@ -56,7 +56,6 @@ const store = new Vuex.Store({
 			const index = state.users.findIndex(user => user.reddit === reddit);
 			state.users.splice(index, 1);
 		},
-
 		GET_CATEGORIES (state, categories) {
 			state.categories = categories;
 		},
@@ -71,8 +70,11 @@ const store = new Vuex.Store({
 			const index = state.categories.findIndex(cat => cat.id === categoryId);
 			state.categories.splice(index, 1);
 		},
-		GET_OP (state, op) {
-			state.op = op;
+		CREATE_THEMES (state, themeData) {
+			state.themes.push(themeData);
+		},
+		GET_THEMES (state, themeData) {
+			state.themes = themeData;
 		},
 	},
 	actions: {
@@ -114,9 +116,9 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/category/${categoryId}`, 'DELETE');
 			commit('DELETE_CATEGORY', categoryId);
 		},
-		async getOP ({commit}) {
-			const op = await makeRequest('/api/themes/op');
-			commit('GET_OP', op);
+		async createThemes ({commit},{data}) {
+			const themeData = await makeRequest('/api/themes/create', 'POST', data);
+			commit('CREATE_THEMES', themeData);
 		},
 	},
 });

@@ -48,13 +48,12 @@ db.exec(`
 		themeType
 			TEXT
 			NOT NULL
-			CHECK(themeType in ('op', 'ed', 'ost'))
 			DEFAULT '',
 		anilistID
 			INTEGER
 			NOT NULL,
 		themeNo
-			INTEGER,
+			TEXT,
 		link
 			TEXT
 			DEFAULT ''
@@ -75,7 +74,8 @@ const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType,e
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries WHERE id=:id');
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
-const getThemeQuery = db.prepare('SELECT * FROM themes WHERE themeType=:themeType');
+const getThemesQuery = db.prepare('SELECT * FROM themes WHERE themeType=:themeType');
+const insertThemesQuery = db.prepare('INSERT INTO themes (title,themeType,anilistID,themeNo,link) VALUES (:title,:themeType,:anilistID,:themeNo,:link)');
 
 module.exports = {
 	getUser: getUserQuery.get.bind(getUserQuery),
@@ -89,5 +89,6 @@ module.exports = {
 	insertCategory: insertCategoryQuery.run.bind(insertCategoryQuery),
 	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery), // TODO: I don't like that the id and the data are in the same object here
 	deleteCategory: deleteCategoryQuery.run.bind(deleteCategoryQuery),
-	getTheme: getThemeQuery.get.bind(getThemeQuery),
+	getThemes: getThemesQuery.get.bind(getThemesQuery),
+	insertThemes: insertThemesQuery.run.bind(insertThemesQuery),
 };
