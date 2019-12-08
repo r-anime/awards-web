@@ -70,11 +70,8 @@ const store = new Vuex.Store({
 			const index = state.categories.findIndex(cat => cat.id === categoryId);
 			state.categories.splice(index, 1);
 		},
-		CREATE_THEMES (state, themeData) {
-			state.themes.push(themeData);
-		},
-		GET_THEMES (state, themeData) {
-			state.themes = themeData;
+		UPDATE_THEMES (state, themes) {
+			state.themes = themes;
 		},
 	},
 	actions: {
@@ -117,8 +114,8 @@ const store = new Vuex.Store({
 			commit('DELETE_CATEGORY', categoryId);
 		},
 		async createThemes ({commit},{data}) {
-			const themeData = await makeRequest('/api/themes/create', 'POST', data);
-			commit('CREATE_THEMES', themeData);
+			const themes = await makeRequest('/api/themes/create', 'POST', data);
+			commit('UPDATE_THEMES', themes);
 		},
 	},
 });
