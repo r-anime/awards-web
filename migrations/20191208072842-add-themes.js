@@ -15,11 +15,18 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.createTable('themes',{
+    id: {type: 'int', primaryKey: true, autoIncrement: true},
+    title: {type: 'string'},
+    themeType: {type: 'string', notNull: true, defaultValue: ''},
+    anilistID: {type: 'int', notNull: true},
+    themeNo: {type: 'int'},
+    link: {type: 'string', defaultValue: ''}
+  });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('themes');
 };
 
 exports._meta = {

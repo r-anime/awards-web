@@ -73,7 +73,7 @@ const store = new Vuex.Store({
 		},
 		GET_OP (state, op) {
 			state.op = op;
-		}
+		},
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -116,7 +116,7 @@ const store = new Vuex.Store({
 		},
 		async getOP ({commit}) {
 			const op = await makeRequest('/api/themes/op');
-			commit('GET_OP',op);
+			commit('GET_OP', op);
 		},
 	},
 });
