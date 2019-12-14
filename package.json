@@ -5,7 +5,8 @@
   "scripts": {
     "start": "webpack && node index.js",
     "build": "webpack",
-    "serve": "node index.js"
+    "serve": "node index.js",
+    "migrate": "db-migrate up"
   },
   "license": "MIT",
   "devDependencies": {
