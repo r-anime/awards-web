@@ -17,6 +17,7 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
   return db.createTable('themes',{
     id: {type: 'int', primaryKey: true, autoIncrement: true},
+    anime: {type: 'string', notNull: true, defaultValue: ''},
     title: {type: 'string'},
     themeType: {type: 'string', notNull: true, defaultValue: ''},
     anilistID: {type: 'int', notNull: true},

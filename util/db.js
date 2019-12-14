@@ -5,6 +5,7 @@ const config = require('../config');
 const db = bettersqlite3(path.join(config.db.path, config.db.filename));
 
 // Initial setup of the database
+// eslint-disable-next-line multiline-comment-style
 /*
 db.exec(`
 	CREATE TABLE IF NOT EXISTS users (
@@ -43,6 +44,10 @@ db.exec(`
 			INTEGER
 			PRIMARY KEY
 			AUTOINCREMENT,
+		anime
+			TEXT
+			NOT NULL
+			DEFAULT '',
 		title
 			TEXT,
 		themeType
@@ -74,7 +79,7 @@ const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType,e
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries WHERE id=:id');
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
-const getThemesQuery = db.prepare('SELECT * FROM themes WHERE themeType=:themeType');
+const getAllThemesQuery = db.prepare('SELECT * FROM themes');
 const insertThemesQuery = db.prepare('INSERT INTO themes (title,themeType,anilistID,themeNo,link) VALUES (:title,:themeType,:anilistID,:themeNo,:link)');
 
 module.exports = {
@@ -89,6 +94,6 @@ module.exports = {
 	insertCategory: insertCategoryQuery.run.bind(insertCategoryQuery),
 	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery), // TODO: I don't like that the id and the data are in the same object here
 	deleteCategory: deleteCategoryQuery.run.bind(deleteCategoryQuery),
-	getThemes: getThemesQuery.get.bind(getThemesQuery),
+	getAllThemes: getAllThemesQuery.all.bind(getAllThemesQuery),
 	insertThemes: insertThemesQuery.run.bind(insertThemesQuery),
 };

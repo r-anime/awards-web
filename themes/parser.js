@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require('fs');
 const parser = require('csv-parse');
 
@@ -31,7 +32,7 @@ function themeType (file) {
     }
 }
 
-function themeNo (num,type) {
+function themeNo (num, type) {
     if (type === 'ost') {
         return ``;
     }
@@ -52,11 +53,12 @@ function objectify (themeArray,file) {
     let type = themeType(file);
     themeArray.forEach((theme,index) => {
         objectArray[index] = {
-            title: theme[0],
+            anime: theme[0],
+            title: theme[1],
             themeType: type,
-            anilistID: parseInt(theme[1]),
-            themeNo: themeNo(theme[2],type),
-            link: theme[3],
+            anilistID: parseInt(theme[2]),
+            themeNo: themeNo(theme[3],type),
+            link: theme[4],
         };
     });
     return objectArray;
@@ -82,5 +84,5 @@ async function readThemes(file) {
 }
 
 module.exports = {
-    readThemes,
-}
+	readThemes,
+};

@@ -18,6 +18,7 @@ async function makeRequest (path, method = 'GET', body) {
 		}
 		return await result.json();
 	} catch (error) {
+		// eslint-disable-next-line no-alert
 		window.alert(error);
 		throw error;
 	}
@@ -113,7 +114,11 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/category/${categoryId}`, 'DELETE');
 			commit('DELETE_CATEGORY', categoryId);
 		},
-		async createThemes ({commit},{data}) {
+		async getThemes ({commit}) {
+			const themes = await makeRequest('/api/themes');
+			commit('UPDATE_THEMES', themes);
+		},
+		async createThemes ({commit}, {data}) {
 			const themes = await makeRequest('/api/themes/create', 'POST', data);
 			commit('UPDATE_THEMES', themes);
 		},
