@@ -7,7 +7,7 @@ themes = [];
 function idGetter (arr) {
     const regex = /(?!\/)\d+(?=\/)/gm;
     for (i of arr) {
-        while ((m = regex.exec(i[1])) !== null) {
+        while ((m = regex.exec(i[2])) !== null) {
             // This is necessary to avoid infinite loops with zero-width matches
             if (m.index === regex.lastIndex) {
                 regex.lastIndex++;
@@ -15,7 +15,7 @@ function idGetter (arr) {
             
             // The result can be accessed through the `m`-variable.
             m.forEach((match) => {
-                i[1] = `${match}`;
+                i[2] = `${match}`;
             });
         }
       }
@@ -70,7 +70,6 @@ async function readThemes(file) {
         fs.readFile(file,'utf-8', (err,fileData) => {
             if (err) throw err;
             parser(fileData, {
-                comment: '#',
                 skip_empty_lines: true,
             }, function (err,output) {
                 if (err) throw err;

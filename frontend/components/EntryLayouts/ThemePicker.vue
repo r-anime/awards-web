@@ -35,14 +35,14 @@
 							class="button is-small is-static"
 							:class="{'is-loading': !loaded}"
 						>
-							{{total}} show{{total === 1 ? '' : 's'}}
+							{{total}} theme{{total === 1 ? '' : 's'}}
 						</span>
 					</div>
 				</div>
 			</div>
 
 			<div v-if="loaded && shows.length" class="show-picker-entries">
-				<show-picker-entry
+				<ThemePickerEntry
 					v-for="show in shows"
 					:key="show.id"
 					:show="show"
@@ -59,7 +59,7 @@
 		</div>
 		<div v-else-if="value.length" class="show-picker-overflow-wrap">
 			<div class="show-picker-entries">
-				<show-picker-entry
+				<ThemePickerEntry
 					v-for="show in value"
 					:key="'selected' + show.id"
 					:show="show"
@@ -75,88 +75,68 @@
 </template>
 
 <script>
-import ShowPickerEntry from './ShowPickerEntry';
+import ThemePickerEntry from './ThemePickerEntry';
+import {mapActions, mapState} from 'vuex';
+const Fuse = require('fuse.js');
 
-const showSearchQuery = `
-    query ($search: String) {
-        anime: Page (page: 1, perPage: 50) {
-            pageInfo {
-                total
-            }
-            results: media (type: ANIME, search: $search) {
-                id
-                format
-                startDate {
-                    year
-                }
-                title {
-                    romaji
-                    english
-                    native
-                    userPreferred
-                }
-                coverImage {
-                    large
-                }
-                siteUrl
-            }
-        }
-    }
-`;
+const options = {
+    shouldSort: true,
+    threshold: 0.3,
+    location: 0,
+    distance: 70,
+    maxPatternLength: 64,
+    minMatchCharLength: 1,
+    keys: [
+      "title",
+      "anime"
+    ]
+};
 
 export default {
 	components: {
-		ShowPickerEntry,
+		ThemePickerEntry,
 	},
 	props: {
 		value: Array,
-	},
+    },
+    computed: {
+        ...mapState([
+            'themes'
+        ]),
+    },
 	data () {
 		return {
 			loaded: true,
 			typingTimeout: null,
-			search: '',
-			shows: [],
+            search: '',
+            shows: [],
 			total: 'No',
 			selectedTab: 'selections',
 		};
 	},
 	methods: {
+        ...mapActions(['getThemes']),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
 			this.loaded = false;
 			clearTimeout(this.typingTimeout);
 			this.typingTimeout = setTimeout(() => {
-				this.sendQuery();
+				this.searchThemes();
 			}, 750);
-		},
-		async sendQuery () {
-			if (!this.search) {
+        },
+        searchThemes () {
+            if (!this.search) {
 				this.loaded = true;
 				this.shows = [];
 				this.total = 'No';
 				return;
-			}
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: showSearchQuery,
-					variables: {
-						search: this.search,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.shows = data.data.anime.results;
-			this.total = data.data.anime.pageInfo.total || 'No';
-			this.loaded = true;
-		},
+            }
+            var fuse = new Fuse(this.themes, options);
+            this.shows = fuse.search(this.search);
+            this.total = this.shows.length;
+            this.loaded = true;
+        },
 		showSelected (show) {
 			return this.value.some(s => s.id === show.id);
 		},
@@ -172,7 +152,12 @@ export default {
 				this.$emit('input', arr);
 			}
 		},
-	},
+    },
+    mounted () {
+        if (!this.themes) {
+            this.getThemes();
+        }
+    },
 };
 </script>
 

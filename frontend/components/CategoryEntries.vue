@@ -12,9 +12,10 @@
 			v-else-if="category.entryType === 'vas'"
 			v-model="selections"
 		/>
-		<h2 class="title" v-else>
-			OP/ED entries are yet to be supported.
-		</h2>
+		<ThemePicker
+			v-else-if="category.entryType === 'themes'"
+			v-model="selections"
+		/>
 		<div class="submit-wrapper">
 			<button
 				class="button is-success"
@@ -32,12 +33,14 @@ import {mapActions} from 'vuex';
 import ShowPicker from './EntryLayouts/ShowPicker';
 import CharPicker from './EntryLayouts/CharPicker';
 import VAPicker from './EntryLayouts/VAPicker';
+import ThemePicker from './EntryLayouts/ThemePicker';
 
 export default {
 	components: {
 		ShowPicker,
 		CharPicker,
 		VAPicker,
+		ThemePicker,
 	},
 	props: {
 		category: Object,

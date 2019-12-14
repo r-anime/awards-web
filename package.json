@@ -35,6 +35,7 @@
     "db-migrate": "^0.11.6",
     "db-migrate-sqlite3": "^0.4.0",
     "express-session": "^1.15.6",
+    "fuse.js": "^3.4.6",
     "polka": "^0.5.2",
     "rethinkdbdash": "^2.3.31",
     "sirv": "^0.2.2",
