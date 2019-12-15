@@ -5,10 +5,15 @@
 			<button class="button">Import entries from category</button>
 			<button class="button">Import entries from text</button>
 			<button class="button">Export entries to text</button>
-			<button class="button" v-bind:class="{'is-loading' : submitting}" @click="submitCreateThemes('op')" v-if="category.entryType == 'themes'">Import OPs</button>
-			<button class="button" @click="submitCreateThemes('ed')" v-if="category.entryType == 'themes'" disabled>Import EDs</button>
-			<button class="button" v-if="category.entryType == 'themes'" disabled>Import OSTs</button>
-			<h2 class="title is-6">OPs and EDs are only meant to be imported once. After importing, they will become available across all categories. Deleting all OP/ED entries is not yet supported.</h2>
+		</div>
+		<div class="buttons" v-if="category.entryType == 'themes'">
+			<button class="button is-primary" v-bind:class="{'is-loading' : submitting}" @click="submitCreateThemes('op')">Import OPs</button>
+			<button class="button is-primary" @click="submitCreateThemes('ed')" disabled>Import EDs</button>
+			<button class="button is-primary" disabled>Import OSTs</button>
+			<button class="button is-danger" v-bind:class="{'is-loading' : deleting}" @click="submitDeleteThemes('op')">Delete OPs</button>
+			<button class="button is-danger" @click="submitDeleteThemes('ed')" disabled>Delete EDs</button>
+			<button class="button is-danger" @click="submitDeleteThemes('ost')" disabled>Delete OSTs</button>
+			<h2 class="title is-6">OPs and EDs are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs before re-importing to avoid duplicates.</h2>
 		</div>
 	</div>
 </template>
@@ -20,6 +25,7 @@ export default {
 	data () {
 		return {
 			submitting: false,
+			deleting: false,
 		}
 	},
 	watch: {
@@ -32,8 +38,8 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['createThemes']),
-		submitCreateThemes(type) {
+		...mapActions(['createThemes','deleteThemes']),
+		submitCreateThemes (type) {
 			this.submitting = true;
 			setTimeout(async () => {
 				try {
@@ -41,6 +47,17 @@ export default {
 				}
 				finally {
 					this.submitting = false;
+				}
+			});
+		},
+		submitDeleteThemes (type) {
+			this.deleting = true;
+			setTimeout(async () => {
+				try {
+					await this.deleteThemes({data: {themeType: type}});
+				}
+				finally {
+					this.deleting = false;
 				}
 			});
 		},

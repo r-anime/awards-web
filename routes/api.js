@@ -146,8 +146,8 @@ apiApp.delete('/category/:id', async (request, response) => {
 });
 
 apiApp.post('/themes/create', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
-		return response.json(401, {error: 'You must be a host to modify themes'});
+	if (!await request.authenticate({level: 4})) {
+		return response.json(401, {error: 'You must be an admin to modify themes'});
 	}
 	const req = await request.json();
 	const themes = await parse.readThemes(`./themes/${req.themeType.toUpperCase()}.csv`);
@@ -173,6 +173,28 @@ apiApp.post('/themes/create', async (request, response) => {
 apiApp.get('/themes', async (request, response) => {
 	try {
 		response.json(await db.getAllThemes());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/themes/delete', async (request, response) => {
+	if (!await request.authenticate({level: 4})) {
+		return response.json(401, {error: 'You must be an admin to delete themes'});
+	}
+	const req = await request.json();
+	try {
+		const promise = new Promise((resolve, reject) => {
+			try {
+				db.deleteThemes(req.themeType);
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		promise.then(() => {
+			response.json(201);
+		});
 	} catch (error) {
 		response.error(error);
 	}
