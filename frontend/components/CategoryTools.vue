@@ -7,11 +7,22 @@
 			<button class="button">Export entries to text</button>
 		</div>
 		<div class="buttons" v-if="category.entryType == 'themes'">
-			<button class="button is-primary" v-bind:class="{'is-loading' : submitting}" @click="submitCreateThemes('op')">Import OPs</button>
-			<button class="button is-primary" @click="submitCreateThemes('ed')" disabled>Import EDs</button>
+			<!--I really need to handle this better-->
+			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'op'}"
+			:disabled="submitting && submitType != 'op'" @click="submitCreateThemes('op')">Import OPs</button>
+
+			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'ed'}"
+			:disabled="submitting && submitType != 'ed'" @click="submitCreateThemes('ed')">Import EDs</button>
+
 			<button class="button is-primary" disabled>Import OSTs</button>
-			<button class="button is-danger" v-bind:class="{'is-loading' : deleting}" @click="submitDeleteThemes('op')">Delete OPs</button>
-			<button class="button is-danger" @click="submitDeleteThemes('ed')" disabled>Delete EDs</button>
+
+			<!--This too tbh-->
+
+			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'op'}"
+			:disabled="deleting && deleteType != 'op'" @click="submitDeleteThemes('op')">Delete OPs</button>
+
+			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'ed'}"
+			:disabled="deleting && deleteType != 'ed'" @click="submitDeleteThemes('ed')">Delete EDs</button>
 			<button class="button is-danger" @click="submitDeleteThemes('ost')" disabled>Delete OSTs</button>
 			<h2 class="title is-6">OPs and EDs are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs before re-importing to avoid duplicates.</h2>
 		</div>
@@ -25,6 +36,8 @@ export default {
 	data () {
 		return {
 			submitting: false,
+			submitType: '',
+			deleteType: '',
 			deleting: false,
 		}
 	},
@@ -39,25 +52,61 @@ export default {
 	},
 	methods: {
 		...mapActions(['createThemes','deleteThemes']),
+		disableButtons (type,action) {
+			if (action === 'create') {
+				switch (type) {
+					case 'op':
+						this.submitType = 'op';
+						break;
+					case 'ed':
+						this.submitType = 'ed';
+						break;
+					case 'ost':
+						this.submitType = 'ost';
+						break;
+				}
+			}
+			else if (action === 'delete') {
+				switch (type) {
+					case 'op':
+						this.deleteType = 'op';
+						break;
+					case 'ed':
+						this.deleteType = 'ed';
+						break;
+					case 'ost':
+						this.deleteType = 'ost';
+						break;
+				}
+			}
+		},
+		releaseButtons () {
+			this.deleteType = '';
+			this.submitType = '';
+		},
 		submitCreateThemes (type) {
 			this.submitting = true;
+			this.disableButtons(type,'create');
 			setTimeout(async () => {
 				try {
 					await this.createThemes({data: {themeType: type}});
 				}
 				finally {
 					this.submitting = false;
+					this.releaseButtons();
 				}
 			});
 		},
 		submitDeleteThemes (type) {
 			this.deleting = true;
+			this.disableButtons(type,'delete');
 			setTimeout(async () => {
 				try {
-					await this.deleteThemes({data: {themeType: type}});
+					await this.deleteThemes(type);
 				}
 				finally {
 					this.deleting = false;
+					this.releaseButtons();
 				}
 			});
 		},

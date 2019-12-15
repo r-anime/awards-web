@@ -178,22 +178,22 @@ apiApp.get('/themes', async (request, response) => {
 	}
 });
 
-apiApp.post('/themes/delete', async (request, response) => {
+apiApp.delete('/themes/delete/:themeType', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to delete themes'});
 	}
-	const req = await request.json();
 	try {
 		const promise = new Promise((resolve, reject) => {
 			try {
-				db.deleteThemes(req.themeType);
+				log.success(request.params.themeType);
+				db.deleteThemes(request.params.themeType);
 				resolve();
 			} catch (err) {
 				reject(err);
 			}
 		});
 		promise.then(() => {
-			response.json(201);
+			response.empty();
 		});
 	} catch (error) {
 		response.error(error);
