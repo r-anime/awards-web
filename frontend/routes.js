@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
+import Voting from './pages/Voting';
 import AllCategories from './pages/host/AllCategories';
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
@@ -112,12 +113,12 @@ export default new VueRouter({
 				},
 			],
 		},
-		// // Layout for juror things
-		// {
-		// 	path: '/juror',
-		// 	component: JurorLayout,
-		// 	children: [],
-		// },
+
+		// Stuff for nomination things
+		{
+			path: '/vote',
+			component: Voting,
+		},
 
 		// 404 route - keep last
 		{path: '*', component: NotFound},

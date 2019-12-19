@@ -1,29 +1,11 @@
 <template>
     <div class="app">
-        <div class="hero is-dark">
-            <div class="hero-body">
-                <div class="container">
-                    <h2 class="title is-size-1 is-size-2-mobile">Genre Awards</h2>
-                    <p class="subtitle is-size-4 is-size-5-mobile">Pick the shows in each genre grouping below that stood above the rest this year.</p>
-                </div>
-            </div>
-            <div class="hero-foot">
-                <div class="container">
-                    <tab-bar
-                        :tabs="[
-                            'Action',
-                            'Adventure/Fantasy',
-                            'Comedy',
-                            'Drama',
-                            'Romance',
-                            'Slice of Life',
-                            'Thriller/Mystery'
-                        ]"
-                        v-model="selectedTab"
-                    />
-                </div>
-            </div>
-        </div>
+        <category-group-header title="Genres" subtitle="Something catchy">
+            <template v-slot:tab-bar>
+                <category-group-tab-bar :tabs="['thing', 'stuff']"/>
+            </template>
+        </category-group-header>
+
         <section class="section" id="shows">
             <div class="container">
                 <div class="level">
@@ -69,15 +51,21 @@
 
 <script>
 import Vue from 'vue';
-import {shuffle, stringMatchesArray} from '../../util';
+import {shuffle, stringMatchesArray} from '../util';
+import CategoryGroupHeader from '../components/CategoryGroupHeader';
+import CategoryGroupTabBar from '../components/CategoryGroupTabBar';
 
 export default {
+	components: {
+		CategoryGroupHeader,
+		CategoryGroupTabBar,
+	},
 	data () {
 		return {
 			selectedTab: 'Action',
 			shows: [],
 			filter: '',
-			selections: JSON.parse(showsJSON).data || {},
+			selections: {},
 			showSelected: false,
 			saveButtonText: 'Save Selections',
 			changesSinceSave: false,
@@ -130,11 +118,11 @@ export default {
 	},
 };
 
-window.onbeforeunload = function () {
-	if (app.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
-};
+// window.onbeforeunload = function () {
+// 	if (app.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
+// };
 
-fetch('/data/test.json').then(res => res.json()).then(({shows}) => {
-	app.shows = shuffle(shows);
-});
+// fetch('/data/test.json').then(res => res.json()).then(({shows}) => {
+// 	app.shows = shuffle(shows);
+// });
 </script>
