@@ -61,7 +61,7 @@
 			<div class="show-picker-entries">
 				<ThemePickerEntry
 					v-for="show in value"
-					:key="show.id"
+					:key="'selected' + show.id"
 					:show="show"
 					:selected="showSelected(show)"
 					@action="toggleShow(show, $event)"
