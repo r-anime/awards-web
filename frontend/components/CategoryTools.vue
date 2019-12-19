@@ -5,10 +5,26 @@
 			<button class="button">Import entries from category</button>
 			<button class="button">Import entries from text</button>
 			<button class="button">Export entries to text</button>
-			<button class="button" v-bind:class="{'is-loading' : submitting}" @click="submitCreateThemes('op')" v-if="category.entryType == 'themes'">Import OPs</button>
-			<button class="button" @click="submitCreateThemes('ed')" v-if="category.entryType == 'themes'" disabled>Import EDs</button>
-			<button class="button" v-if="category.entryType == 'themes'" disabled>Import OSTs</button>
-			<h2 class="title is-6">OPs and EDs are only meant to be imported once. After importing, they will become available across all categories. Deleting all OP/ED entries is not yet supported.</h2>
+		</div>
+		<div class="buttons" v-if="category.entryType == 'themes'">
+			<!--I really need to handle this better-->
+			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'op'}"
+			:disabled="submitting && submitType != 'op'" @click="submitCreateThemes('op')">Import OPs</button>
+
+			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'ed'}"
+			:disabled="submitting && submitType != 'ed'" @click="submitCreateThemes('ed')">Import EDs</button>
+
+			<button class="button is-primary" disabled>Import OSTs</button>
+
+			<!--This too tbh-->
+
+			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'op'}"
+			:disabled="deleting && deleteType != 'op'" @click="submitDeleteThemes('op')">Delete OPs</button>
+
+			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'ed'}"
+			:disabled="deleting && deleteType != 'ed'" @click="submitDeleteThemes('ed')">Delete EDs</button>
+			<button class="button is-danger" @click="submitDeleteThemes('ost')" disabled>Delete OSTs</button>
+			<h2 class="title is-6">OPs and EDs are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs before re-importing to avoid duplicates.</h2>
 		</div>
 	</div>
 </template>
@@ -20,6 +36,9 @@ export default {
 	data () {
 		return {
 			submitting: false,
+			submitType: '',
+			deleteType: '',
+			deleting: false,
 		}
 	},
 	watch: {
@@ -32,15 +51,62 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['createThemes']),
-		submitCreateThemes(type) {
+		...mapActions(['createThemes','deleteThemes']),
+		disableButtons (type,action) {
+			if (action === 'create') {
+				switch (type) {
+					case 'op':
+						this.submitType = 'op';
+						break;
+					case 'ed':
+						this.submitType = 'ed';
+						break;
+					case 'ost':
+						this.submitType = 'ost';
+						break;
+				}
+			}
+			else if (action === 'delete') {
+				switch (type) {
+					case 'op':
+						this.deleteType = 'op';
+						break;
+					case 'ed':
+						this.deleteType = 'ed';
+						break;
+					case 'ost':
+						this.deleteType = 'ost';
+						break;
+				}
+			}
+		},
+		releaseButtons () {
+			this.deleteType = '';
+			this.submitType = '';
+		},
+		submitCreateThemes (type) {
 			this.submitting = true;
+			this.disableButtons(type,'create');
 			setTimeout(async () => {
 				try {
 					await this.createThemes({data: {themeType: type}});
 				}
 				finally {
 					this.submitting = false;
+					this.releaseButtons();
+				}
+			});
+		},
+		submitDeleteThemes (type) {
+			this.deleting = true;
+			this.disableButtons(type,'delete');
+			setTimeout(async () => {
+				try {
+					await this.deleteThemes(type);
+				}
+				finally {
+					this.deleting = false;
+					this.releaseButtons();
 				}
 			});
 		},
