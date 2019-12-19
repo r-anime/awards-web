@@ -122,6 +122,10 @@ const store = new Vuex.Store({
 			const themes = await makeRequest('/api/themes/create', 'POST', data);
 			commit('UPDATE_THEMES', themes);
 		},
+		async deleteThemes ({commit}, themeType) {
+			const themes = await makeRequest(`/api/themes/delete/${themeType}`, 'DELETE');
+			commit('UPDATE_THEMES', themes);
+		},
 	},
 });
 
