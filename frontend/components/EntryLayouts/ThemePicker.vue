@@ -61,7 +61,7 @@
 			<div class="show-picker-entries">
 				<ThemePickerEntry
 					v-for="show in value"
-					:key="'selected' + show.id"
+					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
 					@action="toggleShow(show, $event)"
@@ -87,10 +87,33 @@ const options = {
     maxPatternLength: 64,
     minMatchCharLength: 1,
     keys: [
-      "title",
-      "anime"
+      'title',
+      'anime',
     ]
 };
+
+const themeSearchQuery = `query ($id: [Int]) {
+  Page {
+    media(id_in: $id) {
+      id
+      format
+      startDate {
+        year
+      }
+      title {
+        romaji
+        english
+        native
+        userPreferred
+      }
+      coverImage {
+        large
+      }
+      siteUrl
+    }
+  }
+}
+`;
 
 export default {
 	components: {
@@ -101,7 +124,7 @@ export default {
     },
     computed: {
         ...mapState([
-            'themes'
+            'themes',
         ]),
     },
 	data () {
@@ -109,9 +132,12 @@ export default {
 			loaded: true,
 			typingTimeout: null,
             search: '',
-            shows: [],
+			shows: [],
+			showData: [],
+			themeData: [],
 			total: 'No',
 			selectedTab: 'selections',
+			idArr: [],
 		};
 	},
 	methods: {
@@ -124,18 +150,41 @@ export default {
 			this.typingTimeout = setTimeout(() => {
 				this.searchThemes();
 			}, 750);
-        },
-        searchThemes () {
+		},
+		async sendQuery () {
+			const response = await fetch('https://graphql.anilist.co', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({
+					query: themeSearchQuery,
+					variables: {
+						id: this.idArr,
+					},
+				}),
+			});
+			if (!response.ok) return alert('no bueno');
+			const data = await response.json();
+			this.showData = data.data.Page.media;
+			this.loaded = true;
+		},
+        async searchThemes () {
             if (!this.search) {
 				this.loaded = true;
-				this.shows = [];
+				this.themeData = [];
 				this.total = 'No';
 				return;
             }
-            var fuse = new Fuse(this.themes, options);
-            this.shows = fuse.search(this.search);
-            this.total = this.shows.length;
-            this.loaded = true;
+            const fuse = new Fuse(this.themes, options);
+            this.themeData = fuse.search(this.search);
+			this.total = this.themeData.length;
+			this.themeData.forEach(element => {
+				this.idArr.push(element.anilistID);
+			});
+			await this.sendQuery();
+			this.squashObjects();
         },
 		showSelected (show) {
 			return this.value.some(s => s.id === show.id);
@@ -151,6 +200,19 @@ export default {
 				arr.splice(index, 1);
 				this.$emit('input', arr);
 			}
+		},
+		requiredShowData (index) {
+			const found = this.showData.find(show => {
+				return show.id === this.themeData[index].anilistID;
+			});
+			return found;
+		},
+		// I hate what I'm about to do here
+		squashObjects () {
+			this.themeData.forEach((element, index) => {
+				const fetchData = this.requiredShowData(index);
+				this.shows.push({...fetchData, ...element});
+			});
 		},
     },
     mounted () {

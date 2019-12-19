@@ -34,67 +34,37 @@
 </template>
 
 <script>
-const themeSearchQuery = `query ($id: Int) {
-  Media(id: $id) {
-    id
-    format
-    startDate {
-      year
-    }
-    title {
-      romaji
-      english
-      native
-      userPreferred
-    }
-    coverImage {
-      large
-    }
-    siteUrl
-  }
-}
-`;
+const readableFormats = {
+	TV: 'TV',
+	TV_SHORT: 'TV Short',
+	MOVIE: 'Movie',
+	SPECIAL: 'Special',
+	OVA: 'OVA',
+	ONA: 'ONA',
+	MUSIC: 'Music',
+};
 
 export default {
 	props: {
 		show: Object,
         selected: Boolean,
-    },
-    data () {
-        return {
-            name: '',
-            coverURI: '',
-            anilistLink: '',
-        }
-    },
+	},
+	computed: {
+		format () {
+			return readableFormats[this.show.format];
+		},
+		coverURI () {
+			return this.show.coverImage.large;
+		},
+		anilistLink () {
+			return this.show.siteUrl;
+		},
+	},
 	methods: {
 		checkboxChange (event) {
 			event.target.checked = this.selected;
 			this.$emit('action', !this.selected);
         },
-        async sendQuery () {
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: themeSearchQuery,
-					variables: {
-						id: this.show.anilistID,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.name = data.data.Media.title.romaji;
-            this.coverURI = data.data.Media.coverImage.large;
-            this.anilistLink = data.data.Media.siteUrl;
-        },
-    },
-    mounted () {
-        this.sendQuery();
     },
 };
 </script>
