@@ -24,6 +24,20 @@
 			>
 				Update Entries
 			</button>
+
+			<button
+				class="button is-primary"
+				@click="selectAll"
+			>
+				Select All
+			</button>
+
+			<button
+				class="button is-primary"
+				@click="unselectAll"
+			>
+				Unselect All
+			</button>
 		</div>
 	</div>
 </template>
@@ -68,6 +82,20 @@ export default {
 				this.submitting = false;
 			}
 		},
+		selectAll() {
+			var entries = document.querySelectorAll('.item-picker-entry-cb'), i;
+
+			for (i = 0; i < entries.length; ++i) {
+				entries[i].checked = true;
+			}
+		},
+		unselectAll() {
+			var entries = document.querySelectorAll('.item-picker-entry-cb'), i;
+
+			for (i = 0; i < entries.length; ++i) {
+				entries[i].checked = false;
+			}
+		}
 	},
 };
 </script>

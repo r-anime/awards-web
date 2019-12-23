@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="media-right">
-					<input type="checkbox" @change="checkboxChange" :checked="selected"/>
+					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected"/>
 				</div>
 			</div>
 		</div>
