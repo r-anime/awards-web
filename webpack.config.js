@@ -49,6 +49,12 @@ module.exports = {
 					'babel-loader',
 				],
 			},
+			{
+				test: /\.(png|svg|jpg|gif)$/,
+				use: [
+					'url-loader',
+				],
+			},
 		],
 	},
 	plugins: [
