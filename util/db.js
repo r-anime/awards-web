@@ -37,7 +37,15 @@ db.exec(`
 		entries
 			TEXT
 			NOT NULL
-			DEFAULT ''
+			DEFAULT '',
+		active
+			INTEGER
+			NOT NULL
+			DEFAULT 1
+		awardsGroup
+			TEXT
+			NOT NULL
+			DEFAULT 'genre',
 	);
 	CREATE TABLE IF NOT EXISTS themes (
 		id
@@ -63,6 +71,25 @@ db.exec(`
 			TEXT
 			DEFAULT ''
 	);
+	CREATE TABLE IF NOT EXISTS public-votes (
+		id
+			INTEGER
+			PRIMARY KEY
+			AUTOINCREMENT,
+		reddit_user
+			TEXT
+			NOT NULL,
+		user_id
+			INTEGER,
+		category_id
+			INTEGER
+			NOT NULL,
+		entry_id
+			INTEGER
+			NOT NULL,
+		anilist_id
+			INTEGER
+	);
 `);
 */
 
@@ -75,8 +102,8 @@ const deleteUserQuery = db.prepare('DELETE FROM users WHERE reddit=?');
 const getCategoryQuery = db.prepare('SELECT * FROM categories WHERE id=? AND active=1');
 const getCategoryByRowidQuery = db.prepare('SELECT * FROM categories WHERE rowid=? AND active=1');
 const getAllCategoriesQuery = db.prepare('SELECT * FROM categories WHERE active=1');
-const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType,entries) VALUES (:name,:entryType,:entries)');
-const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries WHERE id=:id');
+const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType,entries,awardsGroup) VALUES (:name,:entryType,:entries,:awardsGroup)');
+const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries, awardsGroup=:awardsGroup WHERE id=:id');
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
 const getAllThemesQuery = db.prepare('SELECT * FROM themes');

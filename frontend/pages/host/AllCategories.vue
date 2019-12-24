@@ -49,6 +49,9 @@
 								<span class="tag">{{categoryEntryType(category)}}</span>
 							</div>
 							<div class="level-item">
+								<span class="tag">{{categoryGroup(category)}}</span>
+							</div>
+							<div class="level-item">
 								<router-link
 									:to="{name: 'categoryEntries', params: {categoryId: category.id}}"
 									class="tag"
@@ -71,7 +74,7 @@
 							<div class="level-item">
 								<button class="button is-info"
 								v-bind:class="{'is-loading' : duplicating && category.id === selectedCategoryId}"
-								@click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries)">
+								@click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries, category.group)">
 								Copy
 								</button>
 							</div>
@@ -98,7 +101,7 @@
 				<div class="field">
 					<label class="label">Name</label>
 					<div class="control">
-						<input class="input" type="text" v-model="categoryName" placeholder="Genre Awards"/>
+						<input class="input" type="text" v-model="categoryName" placeholder="Action, Animation, AotY..."/>
 					</div>
 				</div>
 				<div class="field">
@@ -111,6 +114,21 @@
 							<option value="characters">Characters</option>
 							<option value="vas">VA Performances</option>
 							<option value="themes">OPs/EDs</option>
+						</select>
+						</div>
+					</div>
+				</div>
+				<div class="field">
+					<label class="label">Awards Group</label>
+					<div class="control">
+						<div class="select">
+						<select v-model="newEntryGroup">
+							<option disabled>Select one</option>
+							<option value="genre">Genre Awards</option>
+							<option value="character">Character Awards</option>
+							<option value="production">Production Awards</option>
+							<option value="test">Test Category</option>
+							<option value="main">Main Awards</option>
 						</select>
 						</div>
 					</div>
@@ -141,6 +159,7 @@ export default {
 			createCategoryOpen: false,
 			categoryName: '',
 			newEntryType: 'shows',
+			newEntryGroup: 'genre',
 			submitting: false,
 			deleting: false,
 			duplicating: false,
@@ -163,7 +182,6 @@ export default {
 	methods: {
 		...mapActions([
 			'getCategories',
-			'getGroups',
 			'createCategory',
 			'deleteCategory',
 		]),
@@ -182,33 +200,42 @@ export default {
 				default: return 'Unknown entry type';
 			}
 		},
-		submitDeleteCategory(categoryID) {
+		categoryGroup (category) {
+			switch (category.awardsGroup) {
+				case 'genre': return 'Genre Awards';
+				case 'character': return 'Character Awards';
+				case 'production': return 'Production Awards';
+				case 'test': return 'Test Category';
+				case 'main': return 'Main Awards';
+				default: return 'Unknown Group';
+			}
+		},
+		submitDeleteCategory (categoryID) {
 			this.deleting = true;
 			this.selectedCategoryId = categoryID;
 			setTimeout(async () => {
 				try {
 					await this.deleteCategory(categoryID);
-				}
-				finally {
+				} finally {
 					this.deleting = false;
 				}
 			});
 		},
-		submitDuplicateCategory(categoryID, categoryName, categoryType, categoryEntries) {
+		submitDuplicateCategory (categoryID, categoryName, categoryType, categoryEntries, categoryGroup) {
 			this.duplicating = true;
 			this.selectedCategoryId = categoryID;
-			var newName = categoryName + " copy";
+			const newName = `${categoryName} copy`;
 			setTimeout(async () => {
 				try {
 					await this.createCategory({
 						data: {
 							name: newName,
 							entryType: categoryType,
-							entries: categoryEntries
-						}
+							entries: categoryEntries,
+							awardsGroup: categoryGroup,
+						},
 					});
-				}
-				finally {
+				} finally {
 					this.duplicating = false;
 				}
 			});
@@ -222,11 +249,11 @@ export default {
 						data: {
 							name: this.categoryName,
 							entryType: this.newEntryType,
-							entries: "",
+							entries: '',
+							awardsGroup: this.newEntryGroup,
 						},
 					});
-				}
-				finally {
+				} finally {
 					this.createCategoryOpen = false;
 					this.submitting = false;
 				}

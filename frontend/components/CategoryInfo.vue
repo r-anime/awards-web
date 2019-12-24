@@ -25,6 +25,22 @@
 				<p class="help">What type of entries can be included in this category</p>
 			</div>
 			<div class="field">
+				<label class="label">Awards Group</label>
+				<div class="control">
+					<div class="select">
+					<select v-model="newEntryGroup">
+						<option disabled>Select one</option>
+						<option value="genre">Genre Awards</option>
+						<option value="character">Character Awards</option>
+						<option value="production">Production Awards</option>
+						<option value="test">Test Category</option>
+						<option value="main">Main Awards</option>
+					</select>
+					</div>
+				</div>
+				<p class="help">What Awards Group this category belongs to (Genre, Character, Production)</p>
+			</div>
+			<div class="field">
 				<div class="control">
 					<button
 						type="submit"
@@ -47,6 +63,7 @@ export default {
 		return {
 			newCategoryName: this.category.name,
 			newEntryType: this.category.entryType,
+			newEntryGroup: this.category.awardsGroup,
 			submitting: false,
 		};
 	},
@@ -66,6 +83,7 @@ export default {
 						data: {
 							name: this.newCategoryName,
 							entryType: this.newEntryType,
+							awardsGroup: this.newEntryGroup,
 						},
 					});
 				} finally {
