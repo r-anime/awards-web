@@ -57,19 +57,22 @@
 								</router-link>
 							</div>
 						</div>
+					</div>
+					<div class="level is-mobile">
+						<div class="level-left"></div>
 						<div class="level-right">
 							<div class="level-item">
 								<button class="button is-danger"
 								v-bind:class="{'is-loading' : deleting && category.id === selectedCategoryId}"
 								@click="submitDeleteCategory(category.id)">
-								Remove
+								Delete
 								</button>
 							</div>
 							<div class="level-item">
 								<button class="button is-info"
 								v-bind:class="{'is-loading' : duplicating && category.id === selectedCategoryId}"
 								@click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries)">
-								Duplicate
+								Copy
 								</button>
 							</div>
 							<div class="level-item">
@@ -160,6 +163,7 @@ export default {
 	methods: {
 		...mapActions([
 			'getCategories',
+			'getGroups',
 			'createCategory',
 			'deleteCategory',
 		]),
