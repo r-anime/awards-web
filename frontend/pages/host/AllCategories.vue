@@ -74,7 +74,7 @@
 							<div class="level-item">
 								<button class="button is-info"
 								v-bind:class="{'is-loading' : duplicating && category.id === selectedCategoryId}"
-								@click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries, category.group)">
+								@click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries, category.awardsGroup)">
 								Copy
 								</button>
 							</div>
