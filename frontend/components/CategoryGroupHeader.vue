@@ -22,7 +22,3 @@ export default {
 	},
 };
 </script>
-
-<style>
-@import "../styles/old-public-voting-styles.scss";
-</style>

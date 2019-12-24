@@ -1,5 +1,5 @@
 <template>
-    <div class="app">
+    <body>
         <category-group-header title="Genres" subtitle="Something catchy">
             <template v-slot:tab-bar>
                 <category-group-tab-bar :tabs="['thing', 'stuff']"/>
@@ -46,7 +46,7 @@
         <div class="save-footer">
             <button class="button is-success save-button" @click="save">{{saveButtonText}}</button>
         </div>
-    </div>
+    </body>
 </template>
 
 <script>
