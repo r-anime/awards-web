@@ -21,6 +21,8 @@ import CategoryEntries from './components/CategoryEntries';
 import CategoryInfo from './components/CategoryInfo';
 import CategoryTools from './components/CategoryTools';
 
+import GroupDisplay from './components/GroupDisplay';
+
 export default new VueRouter({
 	mode: 'history',
 	routes: [
@@ -118,6 +120,15 @@ export default new VueRouter({
 		{
 			path: '/vote',
 			component: Voting,
+			redirect: '/vote/main',
+			children: [
+				{
+					path: ':group',
+					component: GroupDisplay,
+					name: 'GroupDisplay',
+					props: true,
+				},
+			],
 		},
 
 		// 404 route - keep last

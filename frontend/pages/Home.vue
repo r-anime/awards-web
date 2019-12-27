@@ -9,7 +9,7 @@
 				<div class="column is-5-tablet is-4-desktop is-3-widescreen">
 					<div class="content has-text-centered" v-if="me">
 					<h3>Hello, /u/{{me.reddit.name}}</h3>
-					<div class="buttons">
+					<div class="buttons is-centered">
 					<div v-if="me.level >= 2">
 						<router-link to="/host">
 							<button class="button is-primary is-large">Host Dashboard</button>

@@ -3,7 +3,6 @@
         <div class="hero-body">
             <div class="container">
                 <h2 class="title is-size-1 is-size-2-mobile">{{title}}</h2>
-                <p class="subtitle is-size-4 is-size-5-mobile">{{subtitle}}</p>
             </div>
         </div>
         <div class="hero-foot">
@@ -18,7 +17,6 @@
 export default {
 	props: {
 		title: String,
-		subtitle: String,
 	},
 };
 </script>

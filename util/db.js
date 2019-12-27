@@ -106,6 +106,8 @@ const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType,e
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries, awardsGroup=:awardsGroup WHERE id=:id');
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
+const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
+
 const getAllThemesQuery = db.prepare('SELECT * FROM themes');
 const insertThemesQuery = db.prepare('INSERT INTO themes (anime,title,themeType,anilistID,themeNo,link) VALUES (:anime,:title,:themeType,:anilistID,:themeNo,:link)');
 const deleteThemesQuery = db.prepare('DELETE FROM themes WHERE themeType=?');
@@ -126,4 +128,6 @@ module.exports = {
 	getAllThemes: getAllThemesQuery.all.bind(getAllThemesQuery),
 	insertThemes: insertThemesQuery.run.bind(insertThemesQuery),
 	deleteThemes: deleteThemesQuery.run.bind(deleteThemesQuery),
+
+	getCategoryByGroup: getCategoryByGroupQuery.all.bind(getCategoryByGroupQuery),
 };
