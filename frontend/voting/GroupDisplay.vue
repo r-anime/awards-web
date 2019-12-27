@@ -21,8 +21,8 @@
 import {mapActions, mapState} from 'vuex';
 import Vue from 'vue';
 import {shuffle, stringMatchesArray} from '../util';
-import categoryGroupHeader from '../components/CategoryGroupHeader';
-import categoryGroupTabBar from '../components/CategoryGroupTabBar';
+import categoryGroupHeader from './CategoryGroupHeader';
+import categoryGroupTabBar from './CategoryGroupTabBar';
 
 export default {
 	components: {

@@ -21,7 +21,7 @@ import CategoryEntries from './components/CategoryEntries';
 import CategoryInfo from './components/CategoryInfo';
 import CategoryTools from './components/CategoryTools';
 
-import GroupDisplay from './components/GroupDisplay';
+import GroupDisplay from './voting/GroupDisplay';
 
 export default new VueRouter({
 	mode: 'history',
