@@ -14,12 +14,12 @@
 	<div class="is-full-height">
 		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 		is better solved by v-if's so here's yet another hack-->
-		<CharPicker v-if="group === 'char'" v-model="selections"/>
-		<MusicPicker v-else-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
+		<MusicPicker v-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
 		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
 		<ShowPicker v-else-if="showQueryCat" v-model="selections"/>
 		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="selections"/>
 		<TestPicker v-else-if="group === 'test'" v-model="selections"/>
+		<CharPicker v-else-if="group === 'char'" v-model="selections"/>
 	</div>
 	<div class="submit-wrapper">
 		<button
@@ -115,6 +115,8 @@ export default {
 			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
 				return true;
 			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
+				return true;
+			} else if (this.group === 'char' && this.selectedCategory.name.includes('Cast')) {
 				return true;
 			}
 			return false;
