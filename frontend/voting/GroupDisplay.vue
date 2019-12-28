@@ -2,7 +2,7 @@
 <body v-if="this.votingCats && selectedTab">
     <category-group-header :title="groupName">
             <template v-slot:tab-bar>
-                <category-group-tab-bar :tabs="mappedCategories"/>
+                <category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
             </template>
         </category-group-header>
 
@@ -10,8 +10,25 @@
 	<div class="intro">
         <h2 class="is-size-2 is-size-3-mobile">{{selectedTab}}</h2>
     </div>
-	<div class="full-height-content">
-		<router-view/>
+	<div class="is-full-height">
+		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
+		is better solved by v-if's so here's yet another hack-->
+		<GenrePicker v-if="group === 'genre'" :category ="selectedCategory" v-model="selections"/>
+		<CharPicker v-else-if="group === 'char'" v-model="selections"/>
+		<MainPicker v-else-if="group === 'main'" v-model="selections"/>
+		<MusicPicker v-else-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
+		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
+		<ProdPicker v-else-if="group === 'prod'" v-model="selections"/>
+		<TestPicker v-else-if="group === 'test'" v-model="selections"/>
+	</div>
+	<div class="submit-wrapper">
+		<button
+			class="button is-success"
+			:class="{'is-loading': submitting}"
+			@click="submit"
+		>
+			Save Entries
+		</button>
 	</div>
 	</div>
 </body>
@@ -24,10 +41,26 @@ import {shuffle, stringMatchesArray} from '../util';
 import categoryGroupHeader from './CategoryGroupHeader';
 import categoryGroupTabBar from './CategoryGroupTabBar';
 
+// Import all the entry components here, there's a better way to do this but fuck that
+import GenrePicker from './EntryLayouts/GenrePicker';
+import CharPicker from './EntryLayouts/CharPicker';
+import MainPicker from './EntryLayouts/MainPicker';
+import MusicPicker from './EntryLayouts/MusicPicker';
+import ProdPicker from './EntryLayouts/ProdPicker';
+import TestPicker from './EntryLayouts/TestPicker';
+import VAPicker from './EntryLayouts/VAPicker';
+
 export default {
 	components: {
 		categoryGroupHeader,
 		categoryGroupTabBar,
+		GenrePicker,
+		CharPicker,
+		MainPicker,
+		MusicPicker,
+		ProdPicker,
+		TestPicker,
+		VAPicker,
 	},
 	props: ['group'],
 	data () {
@@ -35,10 +68,11 @@ export default {
 			selectedTab: null,
 			shows: [],
 			filter: '',
-			selections: {},
 			showSelected: false,
 			saveButtonText: 'Save Selections',
 			changesSinceSave: false,
+			selections: [], // Probably all their selections or some shit
+			submitting: false,
 		};
 	},
 	computed: {
@@ -75,6 +109,9 @@ export default {
 		mappedCategories () {
 			return this.votingCats.map(cat => cat.name);
 		},
+		selectedCategory () {
+			return this.votingCats.find(cat => cat.name === this.selectedTab);
+		},
 	},
 	watch: {
 		selections: {
@@ -101,7 +138,11 @@ export default {
 				Vue.set(this.selections, id, category);
 			}
 		},
-		save () {
+		submit () {
+			// Do stuff
+		},
+		// eslint-disable-next-line multiline-comment-style
+		/* save () {
 			this.saveButtonText = 'Saving...';
 			submit('/response/genres', {
 				data: this.selections,
@@ -115,7 +156,7 @@ export default {
 				this.saveButtonText = 'Save Selections';
 				alert('Failed to save, try again');
 			});
-		},
+		},*/
 	},
 	async mounted () {
 		if (!this.votingCats) {

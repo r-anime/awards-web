@@ -17,7 +17,7 @@
 					</div>
 					<div>
 						<router-link to="/vote">
-							<button class="button is-primary is-large" disabled>Click here to vote</button>
+							<button class="button is-primary is-large">Click here to vote</button>
 						</router-link>
 					</div>
 					</div>

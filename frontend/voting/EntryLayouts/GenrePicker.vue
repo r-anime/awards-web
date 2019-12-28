@@ -1,4 +1,4 @@
-<!--PEntries pulled from the dashboard, this code needs to be changed, will use ShowPickerEntry.-->
+<!--Entries pulled from the dashboard, this code needs to be changed, will use ShowPickerEntry.-->
 <template>
 	<div class="show-picker">
 		<div class="tabs is-centered show-picker-tabs">
@@ -70,40 +70,29 @@
 			</div>
 		</div>
 		<div v-else class="show-picker-text">
-			Nothing's in this category yet! Select entries from the "Search" tab, or use the "Tools" page to import entries from another category.
+			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
 	</div>
 </template>
 
 <script>
 import ShowPickerEntry from './ShowPickerEntry';
+const Fuse = require('fuse.js');
 
-const showSearchQuery = `
-    query ($search: String) {
-        anime: Page (page: 1, perPage: 50) {
-            pageInfo {
-                total
-            }
-            results: media (type: ANIME, search: $search) {
-                id
-                format
-                startDate {
-                    year
-                }
-                title {
-                    romaji
-                    english
-                    native
-                    userPreferred
-                }
-                coverImage {
-                    large
-                }
-                siteUrl
-            }
-        }
-    }
-`;
+const options = {
+	shouldSort: true,
+	threshold: 0.3,
+	location: 0,
+	distance: 70,
+	maxPatternLength: 64,
+	minMatchCharLength: 1,
+	keys: [
+		'title.romaji',
+		'title.english',
+		'title.native',
+		'title.userPreferred',
+	],
+};
 
 export default {
 	components: {
@@ -111,6 +100,7 @@ export default {
 	},
 	props: {
 		value: Array,
+		category: Object,
 	},
 	data () {
 		return {
@@ -132,30 +122,17 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		async sendQuery () {
+		sendQuery () {
 			if (!this.search) {
 				this.loaded = true;
 				this.shows = [];
 				this.total = 'No';
 				return;
 			}
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: showSearchQuery,
-					variables: {
-						search: this.search,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.shows = data.data.anime.results;
-			this.total = data.data.anime.pageInfo.total || 'No';
+			const entries = JSON.parse(this.category.entries);
+			const fuse = new Fuse(entries, options);
+			this.shows = fuse.search(this.search);
+			this.total = this.shows.length;
 			this.loaded = true;
 		},
 		showSelected (show) {

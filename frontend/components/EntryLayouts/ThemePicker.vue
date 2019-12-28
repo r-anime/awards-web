@@ -80,16 +80,16 @@ import {mapActions, mapState} from 'vuex';
 const Fuse = require('fuse.js');
 
 const options = {
-    shouldSort: true,
-    threshold: 0.3,
-    location: 0,
-    distance: 70,
-    maxPatternLength: 64,
-    minMatchCharLength: 1,
-    keys: [
-      'title',
-      'anime',
-    ]
+	shouldSort: true,
+	threshold: 0.3,
+	location: 0,
+	distance: 70,
+	maxPatternLength: 64,
+	minMatchCharLength: 1,
+	keys: [
+		'title',
+		'anime',
+	],
 };
 
 const themeSearchQuery = `query ($id: [Int]) {
@@ -121,17 +121,17 @@ export default {
 	},
 	props: {
 		value: Array,
-    },
-    computed: {
-        ...mapState([
-            'themes',
-        ]),
-    },
+	},
+	computed: {
+		...mapState([
+			'themes',
+		]),
+	},
 	data () {
 		return {
 			loaded: true,
 			typingTimeout: null,
-            search: '',
+			search: '',
 			shows: [],
 			showData: [],
 			themeData: [],
@@ -141,7 +141,7 @@ export default {
 		};
 	},
 	methods: {
-        ...mapActions(['getThemes']),
+		...mapActions(['getThemes']),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -170,22 +170,22 @@ export default {
 			this.showData = data.data.Page.media;
 			this.loaded = true;
 		},
-        async searchThemes () {
-            if (!this.search) {
+		async searchThemes () {
+			if (!this.search) {
 				this.loaded = true;
 				this.themeData = [];
 				this.total = 'No';
 				return;
-            }
-            const fuse = new Fuse(this.themes, options);
-            this.themeData = fuse.search(this.search);
+			}
+			const fuse = new Fuse(this.themes, options);
+			this.themeData = fuse.search(this.search);
 			this.total = this.themeData.length;
 			this.themeData.forEach(element => {
 				this.idArr.push(element.anilistID);
 			});
 			await this.sendQuery();
 			this.squashObjects();
-        },
+		},
 		showSelected (show) {
 			return this.value.some(s => s.id === show.id);
 		},
@@ -214,12 +214,12 @@ export default {
 				this.shows.push({...fetchData, ...element});
 			});
 		},
-    },
-    mounted () {
-        if (!this.themes) {
-            this.getThemes();
-        }
-    },
+	},
+	mounted () {
+		if (!this.themes) {
+			this.getThemes();
+		}
+	},
 };
 </script>
 
