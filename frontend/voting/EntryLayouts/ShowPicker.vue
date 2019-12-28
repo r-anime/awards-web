@@ -1,6 +1,6 @@
 <template>
-	<div class="char-picker">
-		<div class="tabs is-centered char-picker-tabs">
+	<div class="show-picker">
+		<div class="tabs is-centered show-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
 					<a @click="selectedTab = 'selections'">
@@ -15,8 +15,8 @@
 			</ul>
 		</div>
 
-		<div v-if="selectedTab === 'search'" class="char-picker-overflow-wrap">
-			<div class="char-picker-search-bar">
+		<div v-if="selectedTab === 'search'" class="show-picker-overflow-wrap">
+			<div class="show-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
@@ -35,84 +35,52 @@
 							class="button is-small is-static"
 							:class="{'is-loading': !loaded}"
 						>
-							{{total}} character{{total === 1 ? '' : 's'}}
+							{{total}} show{{total === 1 ? '' : 's'}}
 						</span>
 					</div>
 				</div>
 			</div>
 
-			<div v-if="loaded && chars.length" class="char-picker-entries">
-				<char-picker-entry
-					v-for="char in chars"
-					:key="char.id"
-					:char="char"
-					:selected="showSelected(char)"
-					@action="toggleShow(char, $event)"
+			<div v-if="loaded && shows.length" class="show-picker-entries">
+				<show-picker-entry
+					v-for="show in shows"
+					:key="show.id"
+					:show="show"
+					:selected="showSelected(show)"
+					@action="toggleShow(show, $event)"
 				/>
 			</div>
-			<div v-else-if="loaded" class="char-picker-text">
+			<div v-else-if="loaded" class="show-picker-text">
 				{{search ? 'No results :(' : ''}}
 			</div>
-			<div v-else class="char-picker-text">
+			<div v-else class="show-picker-text">
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="char-picker-overflow-wrap">
-			<div class="char-picker-entries">
-				<char-picker-entry
-					v-for="char in value"
-					:key="'selected' + char.id"
-					:char="char"
-					:selected="showSelected(char)"
-					@action="toggleShow(char, $event)"
+		<div v-else-if="value.length" class="show-picker-overflow-wrap">
+			<div class="show-picker-entries">
+				<show-picker-entry
+					v-for="show in value"
+					:key="'selected' + show.id"
+					:show="show"
+					:selected="showSelected(show)"
+					@action="toggleShow(show, $event)"
 				/>
 			</div>
 		</div>
-		<div v-else class="char-picker-text">
+		<div v-else class="show-picker-text">
 			Nothing's in this category yet! Select entries from the "Search" tab, or use the "Tools" page to import entries from another category.
 		</div>
 	</div>
 </template>
 
 <script>
-import CharPickerEntry from './CharPickerEntry';
-
-const charSearchQuery = `query ($search: String) {
-  character: Page(page: 1, perPage: 50) {
-    pageInfo {
-      total
-    }
-    results: characters(search: $search, sort: [SEARCH_MATCH]) {
-      id
-      name {
-        full
-      }
-      image {
-        large
-      }
-      media(sort: [END_DATE_DESC,START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
-        nodes {
-          id
-          title {
-            romaji
-            english
-            userPreferred
-          }
-        }
-        edges {
-          id
-          characterRole
-        }
-      }
-      siteUrl
-    }
-  }
-}
-`;
+import ShowPickerEntry from './ShowPickerEntry';
+const queries = require('../anilistQueries');
 
 export default {
 	components: {
-		CharPickerEntry,
+		ShowPickerEntry,
 	},
 	props: {
 		value: Array,
@@ -122,7 +90,7 @@ export default {
 			loaded: true,
 			typingTimeout: null,
 			search: '',
-			chars: [],
+			shows: [],
 			total: 'No',
 			selectedTab: 'selections',
 		};
@@ -140,7 +108,7 @@ export default {
 		async sendQuery () {
 			if (!this.search) {
 				this.loaded = true;
-				this.chars = [];
+				this.shows = [];
 				this.total = 'No';
 				return;
 			}
@@ -151,7 +119,7 @@ export default {
 					'Accept': 'application/json',
 				},
 				body: JSON.stringify({
-					query: charSearchQuery,
+					query: queries.showQuery,
 					variables: {
 						search: this.search,
 					},
@@ -159,20 +127,20 @@ export default {
 			});
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
-			this.chars = data.data.character.results;
-			this.total = data.data.character.pageInfo.total || 'No';
+			this.shows = data.data.anime.results;
+			this.total = data.data.anime.pageInfo.total || 'No';
 			this.loaded = true;
 		},
-		showSelected (char) {
-			return this.value.some(s => s.id === char.id);
+		showSelected (show) {
+			return this.value.some(s => s.id === show.id);
 		},
-		toggleShow (char, select = true) {
+		toggleShow (show, select = true) {
 			if (select) {
-				if (this.showSelected(char)) return;
-				this.$emit('input', [...this.value, char]);
+				if (this.showSelected(show)) return;
+				this.$emit('input', [...this.value, show]);
 			} else {
-				if (!this.showSelected(char)) return;
-				const index = this.value.findIndex(s => s.id === char.id);
+				if (!this.showSelected(show)) return;
+				const index = this.value.findIndex(s => s.id === show.id);
 				const arr = [...this.value];
 				arr.splice(index, 1);
 				this.$emit('input', arr);
@@ -183,25 +151,25 @@ export default {
 </script>
 
 <style lang="scss">
-.tabs.char-picker-tabs {
+.tabs.show-picker-tabs {
 	margin-bottom: 0 !important;
 }
-.char-picker-overflow-wrap {
+.show-picker-overflow-wrap {
 	/* TODO hardcode bad */
 	height: calc(100vh - 141px - 46px);
 	overflow-y: auto;
 }
-.char-picker-search-bar {
+.show-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;
 	padding: 0.75rem 0.75rem 0;
 }
-.char-picker-entries {
+.show-picker-entries {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 0.375rem;
 }
-.char-picker-entry {
+.show-picker-entry {
 	flex: 0 0 calc(100% / 3);
 	padding: 0.375rem;
 
@@ -209,7 +177,7 @@ export default {
 		height: 100%;
 	}
 }
-.char-picker-text {
+.show-picker-text {
 	flex: 0 1 100%;
 	padding: 0.75rem;
 	text-align: center;

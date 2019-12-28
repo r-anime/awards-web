@@ -15,10 +15,10 @@
 		is better solved by v-if's so here's yet another hack-->
 		<GenrePicker v-if="group === 'genre'" :category ="selectedCategory" v-model="selections"/>
 		<CharPicker v-else-if="group === 'char'" v-model="selections"/>
-		<MainPicker v-else-if="group === 'main'" v-model="selections"/>
 		<MusicPicker v-else-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
 		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
-		<ProdPicker v-else-if="group === 'prod'" v-model="selections"/>
+		<ShowPicker v-else-if="showQueryCat" v-model="selections"/>
+		<MainPicker v-else-if="group === 'main'" v-model="selections"/>
 		<TestPicker v-else-if="group === 'test'" v-model="selections"/>
 	</div>
 	<div class="submit-wrapper">
@@ -46,9 +46,9 @@ import GenrePicker from './EntryLayouts/GenrePicker';
 import CharPicker from './EntryLayouts/CharPicker';
 import MainPicker from './EntryLayouts/MainPicker';
 import MusicPicker from './EntryLayouts/MusicPicker';
-import ProdPicker from './EntryLayouts/ProdPicker';
 import TestPicker from './EntryLayouts/TestPicker';
 import VAPicker from './EntryLayouts/VAPicker';
+import ShowPicker from './EntryLayouts/ShowPicker';
 
 export default {
 	components: {
@@ -58,9 +58,9 @@ export default {
 		CharPicker,
 		MainPicker,
 		MusicPicker,
-		ProdPicker,
 		TestPicker,
 		VAPicker,
+		ShowPicker,
 	},
 	props: ['group'],
 	data () {
@@ -96,7 +96,7 @@ export default {
 					return 'Main Awards';
 				case 'genre':
 					return 'Genre Awards';
-				case 'prod':
+				case 'production':
 					return 'Production Awards';
 				case 'char':
 					return 'Character Awards';
@@ -111,6 +111,16 @@ export default {
 		},
 		selectedCategory () {
 			return this.votingCats.find(cat => cat.name === this.selectedTab);
+		},
+		showQueryCat () {
+			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
+				return true;
+			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
+				return true;
+			} else if (this.group === 'test' && this.selectedCategory.name.includes('Script')) {
+				return true;
+			}
+			return false;
 		},
 	},
 	watch: {
