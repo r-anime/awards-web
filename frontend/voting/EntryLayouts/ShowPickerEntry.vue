@@ -1,3 +1,4 @@
+<!--Probably used for everything that's a show so like whatever just figure it out-->
 <template>
 	<label class="show-picker-entry">
 		<div class="box">

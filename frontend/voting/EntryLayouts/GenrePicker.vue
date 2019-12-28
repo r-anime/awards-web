@@ -1,3 +1,4 @@
+<!--PEntries pulled from the dashboard, this code needs to be changed, will use ShowPickerEntry.-->
 <template>
 	<div class="show-picker">
 		<div class="tabs is-centered show-picker-tabs">
