@@ -1,5 +1,6 @@
 <template>
-<body v-if="this.votingCats && selectedTab">
+<body>
+	<div v-if="votingCats && selectedCategory">
     <category-group-header :title="groupName">
             <template v-slot:tab-bar>
                 <category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
@@ -17,7 +18,7 @@
 		<MusicPicker v-else-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
 		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
 		<ShowPicker v-else-if="showQueryCat" v-model="selections"/>
-		<DashboardPicker v-else-if="group === 'main' || group === 'genre'" v-model="selections"/>
+		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="selections"/>
 		<TestPicker v-else-if="group === 'test'" v-model="selections"/>
 	</div>
 	<div class="submit-wrapper">
@@ -28,6 +29,7 @@
 		>
 			Save Entries
 		</button>
+	</div>
 	</div>
 	</div>
 </body>
@@ -114,7 +116,15 @@ export default {
 				return true;
 			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
 				return true;
-			} else if (this.group === 'test' && this.selectedCategory.name.includes('Script')) {
+			}
+			return false;
+		},
+		dashboardCat () {
+			if (this.group === 'genre') {
+				return true;
+			} else if (this.group === 'main' && this.selectedCategory.name !== 'Anime of the Year') {
+				return true;
+			} else if (this.group === 'test' && this.selectedCategory.name.includes('Sports')) {
 				return true;
 			}
 			return false;
@@ -166,10 +176,8 @@ export default {
 		},*/
 	},
 	async mounted () {
-		if (!this.votingCats) {
-			await this.getVotingCategories(this.group);
-			this.selectedTab = this.votingCats[0].name;
-		}
+		await this.getVotingCategories(this.group);
+		this.selectedTab = this.votingCats[0].name;
 	},
 };
 </script>
