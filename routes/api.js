@@ -200,4 +200,12 @@ apiApp.delete('/themes/delete/:themeType', async (request, response) => {
 	}
 });
 
+apiApp.get('/categories/:group', async (request, response) => {
+	try {
+		response.json(await db.getCategoryByGroup(request.params.group));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 module.exports = apiApp;

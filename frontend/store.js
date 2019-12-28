@@ -30,6 +30,7 @@ const store = new Vuex.Store({
 		users: null,
 		categories: null,
 		themes: null,
+		votingCats: null,
 	},
 	getters: {
 		isHost (state) {
@@ -73,6 +74,9 @@ const store = new Vuex.Store({
 		},
 		UPDATE_THEMES (state, themes) {
 			state.themes = themes;
+		},
+		GET_VOTING_CATEGORIES (state, votingCats) {
+			state.votingCats = votingCats;
 		},
 	},
 	actions: {
@@ -125,6 +129,10 @@ const store = new Vuex.Store({
 		async deleteThemes ({commit}, themeType) {
 			const themes = await makeRequest(`/api/themes/delete/${themeType}`, 'DELETE');
 			commit('UPDATE_THEMES', themes);
+		},
+		async getVotingCategories ({commit}, group) {
+			const votingCats = await makeRequest(`/api/categories/${group}`);
+			commit('GET_VOTING_CATEGORIES', votingCats);
 		},
 	},
 });

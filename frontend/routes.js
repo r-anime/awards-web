@@ -14,11 +14,14 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
+import Voting from './pages/Voting';
 import AllCategories from './pages/host/AllCategories';
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
 import CategoryInfo from './components/CategoryInfo';
 import CategoryTools from './components/CategoryTools';
+
+import GroupDisplay from './voting/GroupDisplay';
 
 export default new VueRouter({
 	mode: 'history',
@@ -65,6 +68,7 @@ export default new VueRouter({
 							meta: {
 								title ({$store, $route}) {
 									if (!$store.state.categories) return '...';
+									// eslint-disable-next-line eqeqeq
 									const category = $store.state.categories.find(cat => `${cat.id}` == $route.params.categoryId);
 									return category ? category.name : '(Unknown category)';
 								},
@@ -112,12 +116,21 @@ export default new VueRouter({
 				},
 			],
 		},
-		// // Layout for juror things
-		// {
-		// 	path: '/juror',
-		// 	component: JurorLayout,
-		// 	children: [],
-		// },
+
+		// Stuff for nomination things
+		{
+			path: '/vote',
+			component: Voting,
+			redirect: '/vote/main',
+			children: [
+				{
+					path: ':group',
+					component: GroupDisplay,
+					name: 'GroupDisplay',
+					props: true,
+				},
+			],
+		},
 
 		// 404 route - keep last
 		{path: '*', component: NotFound},

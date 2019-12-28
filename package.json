@@ -18,6 +18,7 @@
     "eslint-plugin-vue": "^5.1.0",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "url-loader": "^3.0.0",
     "vue": "^2.6.5",
     "vue-loader": "^15.6.2",
     "vue-router": "^3.0.2",
