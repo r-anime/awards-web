@@ -14,6 +14,7 @@ jobs:
     - run: |
         ssh -o StrictHostKeyChecking=no root@159.203.108.203 << EOF
           cd /home/george/animeawards-mkii
-          git pull
+          git fetch --all
+          git reset --hard origin/master
           systemctl restart animeawards
         EOF
