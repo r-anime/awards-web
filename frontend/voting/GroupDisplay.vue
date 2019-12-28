@@ -13,12 +13,11 @@
 	<div class="is-full-height">
 		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 		is better solved by v-if's so here's yet another hack-->
-		<GenrePicker v-if="group === 'genre'" :category ="selectedCategory" v-model="selections"/>
-		<CharPicker v-else-if="group === 'char'" v-model="selections"/>
+		<CharPicker v-if="group === 'char'" v-model="selections"/>
 		<MusicPicker v-else-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
 		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
 		<ShowPicker v-else-if="showQueryCat" v-model="selections"/>
-		<MainPicker v-else-if="group === 'main'" v-model="selections"/>
+		<DashboardPicker v-else-if="group === 'main' || group === 'genre'" v-model="selections"/>
 		<TestPicker v-else-if="group === 'test'" v-model="selections"/>
 	</div>
 	<div class="submit-wrapper">
@@ -42,9 +41,8 @@ import categoryGroupHeader from './CategoryGroupHeader';
 import categoryGroupTabBar from './CategoryGroupTabBar';
 
 // Import all the entry components here, there's a better way to do this but fuck that
-import GenrePicker from './EntryLayouts/GenrePicker';
+import DashboardPicker from './EntryLayouts/DashboardPicker';
 import CharPicker from './EntryLayouts/CharPicker';
-import MainPicker from './EntryLayouts/MainPicker';
 import MusicPicker from './EntryLayouts/MusicPicker';
 import TestPicker from './EntryLayouts/TestPicker';
 import VAPicker from './EntryLayouts/VAPicker';
@@ -54,9 +52,8 @@ export default {
 	components: {
 		categoryGroupHeader,
 		categoryGroupTabBar,
-		GenrePicker,
+		DashboardPicker,
 		CharPicker,
-		MainPicker,
 		MusicPicker,
 		TestPicker,
 		VAPicker,
