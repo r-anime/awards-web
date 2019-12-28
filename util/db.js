@@ -112,6 +112,8 @@ const getAllThemesQuery = db.prepare('SELECT * FROM themes');
 const insertThemesQuery = db.prepare('INSERT INTO themes (anime,title,themeType,anilistID,themeNo,link) VALUES (:anime,:title,:themeType,:anilistID,:themeNo,:link)');
 const deleteThemesQuery = db.prepare('DELETE FROM themes WHERE themeType=?');
 
+const deleteAllVotesFromUserQuery = db.prepare('DELETE FROM "public-votes" WHERE reddit_user=?');
+
 module.exports = {
 	getUser: getUserQuery.get.bind(getUserQuery),
 	getAllUsers: getAllUsersQuery.all.bind(getAllUsersQuery),
@@ -125,9 +127,11 @@ module.exports = {
 	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery), // TODO: I don't like that the id and the data are in the same object here
 	deleteCategory: deleteCategoryQuery.run.bind(deleteCategoryQuery),
 
+	getCategoryByGroup: getCategoryByGroupQuery.all.bind(getCategoryByGroupQuery),
+
 	getAllThemes: getAllThemesQuery.all.bind(getAllThemesQuery),
 	insertThemes: insertThemesQuery.run.bind(insertThemesQuery),
 	deleteThemes: deleteThemesQuery.run.bind(deleteThemesQuery),
 
-	getCategoryByGroup: getCategoryByGroupQuery.all.bind(getCategoryByGroupQuery),
+	deleteAllVotesFromUser: deleteAllVotesFromUserQuery.run.bind(deleteAllVotesFromUserQuery),
 };

@@ -78,12 +78,11 @@ const requestHelpers = {
 	json () {
 		return this.body().then(body => JSON.parse(body));
 	},
-	async authenticate ({level}) {
+	async authenticate ({level, name}) {
 		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
 		const userInfo = db.getUser(redditInfo.name);
-		log.debug('target level', level);
-		log.debug('actual level', userInfo.level);
-		if (level && userInfo.level < level) return false;
+		if (level && (!userInfo || userInfo.level < level)) return false;
+		if (name && redditInfo.name !== name) return false;
 		return true;
 	},
 };

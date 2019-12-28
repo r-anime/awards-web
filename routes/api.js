@@ -208,4 +208,17 @@ apiApp.get('/categories/:group', async (request, response) => {
 	}
 });
 
+apiApp.post('/deleteaccount', async (request, response) => {
+	const name = (await request.reddit().get('/api/v1/me')).body.name;
+	try {
+		db.deleteUser(name);
+		db.deleteAllVotesFromUser(name);
+		request.session.destroy(() => {
+			response.empty();
+		});
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 module.exports = apiApp;
