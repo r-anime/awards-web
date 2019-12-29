@@ -1,6 +1,6 @@
 <!--God there's VAs too. Pull from anilist-->
 <template>
-	<div class="va-picker" v-if="value[category.name]">
+	<div class="va-picker">
 		<div class="tabs is-centered va-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -154,11 +154,6 @@ export default {
 				this.$emit('input', this.value);
 			}
 		},
-	},
-	mounted () {
-		if (!this.value.hasOwnProperty(this.category.name)) {
-			this.value[this.category.name] = [];
-		}
 	},
 };
 </script>

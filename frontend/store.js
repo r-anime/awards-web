@@ -31,6 +31,7 @@ const store = new Vuex.Store({
 		categories: null,
 		themes: null,
 		votingCats: null,
+		selections: null,
 	},
 	getters: {
 		isHost (state) {
@@ -77,6 +78,9 @@ const store = new Vuex.Store({
 		},
 		GET_VOTING_CATEGORIES (state, votingCats) {
 			state.votingCats = votingCats;
+		},
+		UPDATE_SELECTIONS (state, selections) {
+			state.selections = selections;
 		},
 	},
 	actions: {
@@ -133,6 +137,14 @@ const store = new Vuex.Store({
 		async getVotingCategories ({commit}, group) {
 			const votingCats = await makeRequest(`/api/categories/${group}`);
 			commit('GET_VOTING_CATEGORIES', votingCats);
+		},
+		async initializeSelections ({commit}) {
+			const categories = await makeRequest('/api/categories');
+			const selections = {};
+			categories.forEach(cat => {
+				selections[cat.name] = [];
+			});
+			commit('UPDATE_SELECTIONS', selections);
 		},
 	},
 });

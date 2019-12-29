@@ -1,6 +1,6 @@
 <!--This is insane. Entries are pulled from anilist but there's locks between comedic and dramatic while antag is unlocked???-->
 <template>
-	<div class="char-picker" v-if="value[category.name]">
+	<div class="char-picker">
 		<div class="tabs is-centered char-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -72,7 +72,7 @@
 		<div v-else class="char-picker-text">
 			Nothing's in this category yet! Select entries from the "Search" tab, or use the "Tools" page to import entries from another category.
 		</div>
-	</div>
+		</div>
 </template>
 
 <script>
@@ -154,11 +154,6 @@ export default {
 				this.$emit('input', this.value);
 			}
 		},
-	},
-	mounted () {
-		if (!this.value.hasOwnProperty(this.category.name)) {
-			this.value[this.category.name] = [];
-		}
 	},
 };
 </script>

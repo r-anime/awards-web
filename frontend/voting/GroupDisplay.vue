@@ -1,6 +1,6 @@
 <template>
 <body>
-	<div v-if="votingCats && selectedCategory">
+	<div v-if="votingCats && selectedCategory && selections">
     <category-group-header :title="groupName">
             <template v-slot:tab-bar>
                 <category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
@@ -70,13 +70,14 @@ export default {
 			showSelected: false,
 			saveButtonText: 'Save Selections',
 			changesSinceSave: false,
-			selections: {}, // A massive object recording user selections in every category. Every property is a category name and its values are arrays corresponding to entries.
 			submitting: false,
 		};
 	},
 	computed: {
 		...mapState([
 			'votingCats',
+			'categories',
+			'selections',
 		]),
 		_filteredShows () {
 			return this.shows.filter(show => stringMatchesArray(this.filter, show.terms))
@@ -149,6 +150,8 @@ export default {
 	methods: {
 		...mapActions([
 			'getVotingCategories',
+			'getCategories',
+			'initializeSelections',
 		]),
 		setShow (id, category) {
 			if (this.selections[id] === category) {
@@ -179,8 +182,8 @@ export default {
 	},
 	async mounted () {
 		await this.getVotingCategories(this.group);
+		await this.initializeSelections();
 		this.selectedTab = this.votingCats[0].name;
-		// There needs to be a way to pull the user votes and initialize the selections object with their selections here.
 	},
 };
 </script>

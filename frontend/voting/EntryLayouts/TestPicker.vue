@@ -1,6 +1,6 @@
 <!--Haha test categories have completely different type of entries. Very fun. ShowPickerEntry will probably work here.-->
 <template>
-	<div class="show-picker" v-if="value[category.name]">
+	<div class="show-picker">
 		<div class="tabs is-centered show-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -150,11 +150,6 @@ export default {
 				this.$emit('input', this.value);
 			}
 		},
-	},
-	mounted () {
-		if (!this.value.hasOwnProperty(this.category.name)) {
-			this.value[this.category.name] = [];
-		}
 	},
 };
 </script>

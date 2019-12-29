@@ -1,6 +1,6 @@
 <!--This one pulls music from the DB and stuff. Should be straightforward.-->
 <template>
-	<div class="show-picker" v-if="themes && value[category.name]">
+	<div class="show-picker">
 		<div class="tabs is-centered show-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -222,9 +222,6 @@ export default {
 	mounted () {
 		if (!this.themes) {
 			this.getThemes();
-		}
-		if (!this.value.hasOwnProperty(this.category.name)) {
-			this.value[this.category.name] = [];
 		}
 	},
 };
