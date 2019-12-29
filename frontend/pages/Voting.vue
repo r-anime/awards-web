@@ -1,5 +1,5 @@
 <template>
-	<body>
+	<body class="voting-page-css-class-hack">
 		<nav-bar
 			class="is-dark"
 			:routes="[
@@ -39,7 +39,8 @@ export default {
 // });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.voting-page-css-class-hack {
 .navbar .avatar {
 	border-radius: 5px;
 	margin-right: 10px;
@@ -166,5 +167,6 @@ export default {
 
 .app {
 	margin-bottom: 70px;
+}
 }
 </style>
