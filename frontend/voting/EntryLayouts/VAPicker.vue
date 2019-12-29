@@ -1,6 +1,6 @@
 <!--God there's VAs too. Pull from anilist-->
 <template>
-	<div class="va-picker">
+	<div class="va-picker" v-if="value[category.name]">
 		<div class="tabs is-centered va-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -58,10 +58,10 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="va-picker-overflow-wrap">
+		<div v-else-if="value[category.name].length" class="va-picker-overflow-wrap">
 			<div class="va-picker-entries">
 				<VAPickerEntry
-					v-for="va in value"
+					v-for="va in value[category.name]"
 					:key="'selected' + va.id"
 					:va="va"
 					:selected="showSelected(va)"
@@ -84,7 +84,8 @@ export default {
 		VAPickerEntry,
 	},
 	props: {
-		value: Array,
+		value: Object,
+		category: Object,
 	},
 	data () {
 		return {
@@ -137,20 +138,27 @@ export default {
 			this.filterVAs();
 		},
 		showSelected (va) {
-			return this.value.some(s => s.id === va.id);
+			return this.value[this.category.name].some(s => s.id === va.id);
 		},
 		toggleShow (va, select = true) {
 			if (select) {
 				if (this.showSelected(va)) return;
-				this.$emit('input', [...this.value, va]);
+				this.value[this.category.name].push(va);
+				this.$emit('input', this.value);
 			} else {
 				if (!this.showSelected(va)) return;
-				const index = this.value.findIndex(s => s.id === va.id);
-				const arr = [...this.value];
+				const index = this.value[this.category.name].findIndex(v => v.id === va.id);
+				const arr = [...this.value[this.category.name]];
 				arr.splice(index, 1);
-				this.$emit('input', arr);
+				this.value[this.category.name] = arr;
+				this.$emit('input', this.value);
 			}
 		},
+	},
+	mounted () {
+		if (!this.value.hasOwnProperty(this.category.name)) {
+			this.value[this.category.name] = [];
+		}
 	},
 };
 </script>

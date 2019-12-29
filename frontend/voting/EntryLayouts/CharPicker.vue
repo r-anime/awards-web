@@ -1,6 +1,6 @@
 <!--This is insane. Entries are pulled from anilist but there's locks between comedic and dramatic while antag is unlocked???-->
 <template>
-	<div class="char-picker">
+	<div class="char-picker" v-if="value[category.name]">
 		<div class="tabs is-centered char-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -58,10 +58,10 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="char-picker-overflow-wrap">
+		<div v-else-if="value[category.name].length" class="char-picker-overflow-wrap">
 			<div class="char-picker-entries">
 				<char-picker-entry
-					v-for="char in value"
+					v-for="char in value[category.name]"
 					:key="'selected' + char.id"
 					:char="char"
 					:selected="showSelected(char)"
@@ -84,8 +84,8 @@ export default {
 		CharPickerEntry,
 	},
 	props: {
-		value: Array,
 		category: Object,
+		value: Object,
 	},
 	data () {
 		return {
@@ -138,20 +138,27 @@ export default {
 			this.filterChars();
 		},
 		showSelected (char) {
-			return this.value.some(s => s.id === char.id);
+			return this.value[this.category.name].some(s => s.id === char.id);
 		},
 		toggleShow (char, select = true) {
 			if (select) {
 				if (this.showSelected(char)) return;
-				this.$emit('input', [...this.value, char]);
+				this.value[this.category.name].push(char);
+				this.$emit('input', this.value);
 			} else {
 				if (!this.showSelected(char)) return;
-				const index = this.value.findIndex(s => s.id === char.id);
-				const arr = [...this.value];
+				const index = this.value[this.category.name].findIndex(c => c.id === char.id);
+				const arr = [...this.value[this.category.name]];
 				arr.splice(index, 1);
-				this.$emit('input', arr);
+				this.value[this.category.name] = arr;
+				this.$emit('input', this.value);
 			}
 		},
+	},
+	mounted () {
+		if (!this.value.hasOwnProperty(this.category.name)) {
+			this.value[this.category.name] = [];
+		}
 	},
 };
 </script>

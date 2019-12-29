@@ -14,12 +14,12 @@
 	<div class="is-full-height">
 		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 		is better solved by v-if's so here's yet another hack-->
-		<ThemePicker v-if="selectedCategory.entryType === 'themes'" v-model="categorySelections"/>
-		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="categorySelections"/>
-		<ShowPicker v-else-if="showQueryCat" v-model="categorySelections"/>
-		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="categorySelections"/>
-		<TestPicker v-else-if="group === 'test'" v-model="categorySelections"/>
-		<CharPicker v-else-if="group === 'char'" v-model="categorySelections"/>
+		<ThemePicker v-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" v-model="selections"/>
+		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" v-model="selections"/>
+		<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" v-model="selections"/>
+		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="selections"/>
+		<TestPicker v-else-if="group === 'test'" :category="selectedCategory" v-model="selections"/>
+		<CharPicker v-else-if="group === 'char'" :category="selectedCategory" v-model="selections"/>
 	</div>
 	<div class="submit-wrapper">
 		<button
@@ -77,7 +77,6 @@ export default {
 	computed: {
 		...mapState([
 			'votingCats',
-			'categories',
 		]),
 		_filteredShows () {
 			return this.shows.filter(show => stringMatchesArray(this.filter, show.terms))
@@ -150,14 +149,7 @@ export default {
 	methods: {
 		...mapActions([
 			'getVotingCategories',
-			'getCategories',
 		]),
-		categorySelections () {
-			if (!this.selections.hasOwnProperty(this.selectedCategory.name)) {
-				this.selections[this.selectedCategory.name] = [];
-			}
-			return this.selections[this.selectedCategory];
-		},
 		setShow (id, category) {
 			if (this.selections[id] === category) {
 				Vue.set(this.selections, id, null);
@@ -188,9 +180,6 @@ export default {
 	async mounted () {
 		await this.getVotingCategories(this.group);
 		this.selectedTab = this.votingCats[0].name;
-		if (!this.categories) {
-			this.getCategories();
-		}
 		// There needs to be a way to pull the user votes and initialize the selections object with their selections here.
 	},
 };

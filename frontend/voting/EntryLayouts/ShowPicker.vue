@@ -1,5 +1,5 @@
 <template>
-	<div class="show-picker">
+	<div class="show-picker" v-if="value[category.name]">
 		<div class="tabs is-centered show-picker-tabs">
 			<ul>
 				<li :class="{'is-active': selectedTab === 'selections'}">
@@ -57,10 +57,10 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="show-picker-overflow-wrap">
+		<div v-else-if="value[category.name].length" class="show-picker-overflow-wrap">
 			<div class="show-picker-entries">
 				<show-picker-entry
-					v-for="show in value"
+					v-for="show in value[category.name]"
 					:key="'selected' + show.id"
 					:show="show"
 					:selected="showSelected(show)"
@@ -83,7 +83,8 @@ export default {
 		ShowPickerEntry,
 	},
 	props: {
-		value: Array,
+		value: Object,
+		category: Object,
 	},
 	data () {
 		return {
@@ -132,20 +133,27 @@ export default {
 			this.loaded = true;
 		},
 		showSelected (show) {
-			return this.value.some(s => s.id === show.id);
+			return this.value[this.category.name].some(s => s.id === show.id);
 		},
 		toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
-				this.$emit('input', [...this.value, show]);
+				this.value[this.category.name].push(show);
+				this.$emit('input', this.value);
 			} else {
 				if (!this.showSelected(show)) return;
-				const index = this.value.findIndex(s => s.id === show.id);
-				const arr = [...this.value];
+				const index = this.value[this.category.name].findIndex(s => s.id === show.id);
+				const arr = [...this.value[this.category.name]];
 				arr.splice(index, 1);
-				this.$emit('input', arr);
+				this.value[this.category.name] = arr;
+				this.$emit('input', this.value);
 			}
 		},
+	},
+	mounted () {
+		if (!this.value.hasOwnProperty(this.category.name)) {
+			this.value[this.category.name] = [];
+		}
 	},
 };
 </script>

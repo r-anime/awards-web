@@ -61,8 +61,7 @@ export default {
 		},
 	},
 	methods: {
-		checkboxChange (event) {
-			event.target.checked = this.selected;
+		checkboxChange () {
 			this.$emit('action', !this.selected);
 		},
 	},
