@@ -221,4 +221,12 @@ apiApp.post('/deleteaccount', async (request, response) => {
 	}
 });
 
+apiApp.post('/votes/submit', async (request, response) => {
+	const userInfo = (await request.reddit().get('/api/v1/me')).body;
+	if (!await request.authenticate({name: userInfo.name})) {
+		return response.json(401, {error: 'Something went wrong.'});
+	}
+	response.empty(); // Gonna do stuff here later
+});
+
 module.exports = apiApp;
