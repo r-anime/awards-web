@@ -1,4 +1,3 @@
-<!--Haha test categories have completely different type of entries. Very fun. ShowPickerEntry will probably work here.-->
 <template>
 	<div class="show-picker">
 		<div class="tabs is-centered show-picker-tabs">
@@ -84,8 +83,7 @@ export default {
 		ShowPickerEntry,
 	},
 	props: {
-        value: Array,
-        category: Object,
+		value: Array,
 	},
 	data () {
 		return {
@@ -121,7 +119,7 @@ export default {
 					'Accept': 'application/json',
 				},
 				body: JSON.stringify({
-					query: queries.testQuery,
+					query: queries.showQuery,
 					variables: {
 						search: this.search,
 					},

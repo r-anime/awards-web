@@ -108,7 +108,6 @@ const charSearchQuery = `query ($search: String) {
     }
   }
 }
-
 `;
 
 export default {
