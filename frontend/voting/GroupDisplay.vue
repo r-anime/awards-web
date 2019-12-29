@@ -1,38 +1,38 @@
 <template>
-<body>
-	<div v-if="votingCats && selectedCategory && selections">
-    <category-group-header :title="groupName">
-            <template v-slot:tab-bar>
-                <category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
-            </template>
-        </category-group-header>
+	<body>
+		<div v-if="votingCats && selectedCategory && selections">
+			<category-group-header :title="groupName">
+				<template v-slot:tab-bar>
+					<category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
+				</template>
+			</category-group-header>
 
-	<div class="container">
-	<div class="intro">
-        <h2 class="is-size-2 is-size-3-mobile">{{selectedTab}}</h2>
-    </div>
-	<div class="is-full-height">
-		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
-		is better solved by v-if's so here's yet another hack-->
-		<ThemePicker v-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
-		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" :value="selections"/>
-		<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
-		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
-		<TestPicker v-else-if="group === 'test'" :category="selectedCategory" :value="selections"/>
-		<CharPicker v-else-if="group === 'character'" :category="selectedCategory" :value="selections"/>
-	</div>
-	<div class="submit-wrapper">
-		<button
-			class="button is-success"
-			:class="{'is-loading': submitting}"
-			@click="submit"
-		>
-			Save Entries
-		</button>
-	</div>
-	</div>
-	</div>
-</body>
+			<div class="container">
+				<div class="intro">
+					<h2 class="is-size-2 is-size-3-mobile">{{selectedTab}}</h2>
+				</div>
+				<div class="is-full-height">
+					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
+					is better solved by v-if's so here's yet another hack-->
+					<ThemePicker v-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
+					<VAPicker v-else-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" :value="selections"/>
+					<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
+					<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
+					<TestPicker v-else-if="group === 'test'" :category="selectedCategory" :value="selections"/>
+					<CharPicker v-else-if="group === 'character'" :category="selectedCategory" :value="selections"/>
+				</div>
+				<div class="submit-wrapper">
+					<button
+						class="button is-success"
+						:class="{'is-loading': submitting}"
+						@click="submit"
+					>
+						Save Entries
+					</button>
+				</div>
+			</div>
+		</div>
+	</body>
 </template>
 
 <script>
@@ -161,7 +161,7 @@ export default {
 			}
 		},
 		submit () {
-			
+
 			// Do stuff
 		},
 		// eslint-disable-next-line multiline-comment-style
