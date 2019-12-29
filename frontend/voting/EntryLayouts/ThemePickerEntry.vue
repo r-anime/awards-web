@@ -11,10 +11,10 @@
 					<div class="content">
 						<p>
 							<em class="show-title">
-								{{show.anime}} {{show.themeNo}}
+								{{show.anime}} {{show.themeNo || ''}}
 							</em>
 							<br/>
-							{{show.title}} &bull;
+							{{show.title || ''}} &bull;
 							<a
 								@click.stop
 								target="_blank"

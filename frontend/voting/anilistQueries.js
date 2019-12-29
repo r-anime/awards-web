@@ -72,7 +72,7 @@ const charQuery = `query ($search: String) {
 		image {
 		  large
 		}
-		results: media(sort: [END_DATE_DESC, START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
+		media(sort: [END_DATE_DESC, START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
 		  nodes {
 			id
 			title {
@@ -95,8 +95,7 @@ const charQuery = `query ($search: String) {
 		siteUrl
 	  }
 	}
-  }
-  `;
+  }`;
 
 const vaQuery = `query ($search: String) {
 	character: Page(page: 1, perPage: 50) {

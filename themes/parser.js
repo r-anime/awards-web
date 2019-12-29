@@ -27,7 +27,7 @@ function themeType (file) {
             return 'op';
         case file.includes('ED.csv'):
             return 'ed';
-        case file.includes('ED.csv'):
+        case file.includes('OST.csv'):
             return 'ost';
     }
 }

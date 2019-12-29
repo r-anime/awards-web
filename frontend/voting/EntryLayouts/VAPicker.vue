@@ -107,10 +107,14 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		filterVAs () {
-			this.vas = this.vas.filter(va => queries.eligibilityStart <= new Date(va.media.nodes[0].endDate.year, va.media.nodes[0].endDate.month, va.media.nodes[0].endDate.day) <= queries.eligibilityEnd);
-			this.total = this.vas.length;
-			this.loaded = true;
+		findDate (va) {
+			let date;
+			try {
+				date = new Date(va.nodes[0].endDate.year, va.nodes[0].endDate.month, va.nodes[0].endDate.day);
+			} catch (err) {
+				date = new Date(2016, 0, 0);
+			}
+			return date;
 		},
 		async sendQuery () {
 			if (!this.search) {
@@ -135,7 +139,21 @@ export default {
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.vas = data.data.character.results;
-			this.filterVAs();
+			const promise = new Promise((resolve, reject) => {
+				try {
+					this.vas = this.vas.filter(va => {
+						const date = this.findDate(va.media);
+						return va.media.nodes.length !== 0 && queries.eligibilityStart <= date && date <= queries.eligibilityEnd;
+					});
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			promise.then(() => {
+				this.total = this.vas.length;
+				this.loaded = true;
+			});
 		},
 		showSelected (va) {
 			return this.value[this.category.name].some(s => s.id === va.id);

@@ -107,10 +107,14 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		filterChars () {
-			this.chars = this.chars.filter(char => queries.eligibilityStart <= new Date(char.media.nodes[0].endDate.year, char.media.nodes[0].endDate.month, char.media.nodes[0].endDate.day) <= queries.eligibilityEnd);
-			this.total = this.chars.length;
-			this.loaded = true;
+		findDate (char) {
+			let date;
+			try {
+				date = new Date(char.nodes[0].endDate.year, char.nodes[0].endDate.month, char.nodes[0].endDate.day);
+			} catch (err) {
+				date = new Date(2016, 0, 0);
+			}
+			return date;
 		},
 		async sendQuery () {
 			if (!this.search) {
@@ -135,7 +139,22 @@ export default {
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.chars = data.data.character.results;
-			this.filterChars();
+			const promise = new Promise((resolve, reject) => {
+				try {
+					this.chars = this.chars.filter(char => {
+						const date = this.findDate(char.media);
+						return char.media.nodes.length !== 0 && queries.eligibilityStart <= date && date <= queries.eligibilityEnd;
+					});
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			promise.then(() => {
+				console.log(this.chars);
+				this.total = this.chars.length;
+				this.loaded = true;
+			});
 		},
 		showSelected (char) {
 			return this.value[this.category.name].some(s => s.id === char.id);

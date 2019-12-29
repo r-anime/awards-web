@@ -37,6 +37,7 @@
 </template>
 
 <script>
+const queries = require('../anilistQueries');
 
 export default {
 	props: {

@@ -19,7 +19,7 @@
 		<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
 		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
 		<TestPicker v-else-if="group === 'test'" :category="selectedCategory" :value="selections"/>
-		<CharPicker v-else-if="group === 'char'" :category="selectedCategory" :value="selections"/>
+		<CharPicker v-else-if="group === 'character'" :category="selectedCategory" :value="selections"/>
 	</div>
 	<div class="submit-wrapper">
 		<button
@@ -98,7 +98,7 @@ export default {
 					return 'Genre Awards';
 				case 'production':
 					return 'Production Awards';
-				case 'char':
+				case 'character':
 					return 'Character Awards';
 				case 'test':
 					return 'Test Categories';
@@ -117,7 +117,7 @@ export default {
 				return true;
 			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
 				return true;
-			} else if (this.group === 'char' && this.selectedCategory.name.includes('Cast')) {
+			} else if (this.group === 'character' && this.selectedCategory.name.includes('Cast')) {
 				return true;
 			}
 			return false;
