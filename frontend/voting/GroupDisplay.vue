@@ -154,6 +154,7 @@ export default {
 			'initializeSelections',
 		]),
 		setShow (id, category) {
+			// note - these lines are modifying an object in the vuex store
 			if (this.selections[id] === category) {
 				Vue.set(this.selections, id, null);
 			} else if (!this.selections[id] || confirm(`You have already selected this show for the ${this.selections[id]} category. You can only nominate a show for one category. Would you like to change it to ${category}?`)) {

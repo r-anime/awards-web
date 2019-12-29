@@ -138,11 +138,13 @@ const store = new Vuex.Store({
 			const votingCats = await makeRequest(`/api/categories/${group}`);
 			commit('GET_VOTING_CATEGORIES', votingCats);
 		},
-		async initializeSelections ({commit}) {
-			const categories = await makeRequest('/api/categories');
+		async initializeSelections ({commit, state, dispatch}) {
+			if (!state.categories) {
+				await dispatch('getCategories');
+			}
 			const selections = {};
-			categories.forEach(cat => {
-				selections[cat.name] = [];
+			state.categories.forEach(cat => {
+				selections[cat.id] = [];
 			});
 			commit('UPDATE_SELECTIONS', selections);
 		},
