@@ -108,6 +108,8 @@ export default {
 		},
 		filterVAs () {
 			this.vas = this.vas.filter(va => queries.eligibilityStart <= new Date(va.media.nodes[0].endDate.year, va.media.nodes[0].endDate.month, va.media.nodes[0].endDate.day) <= queries.eligibilityEnd);
+			this.total = this.vas.length;
+			this.loaded = true;
 		},
 		async sendQuery () {
 			if (!this.search) {
@@ -132,10 +134,7 @@ export default {
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.vas = data.data.character.results;
-			this.endDate = this.vas.media.nodes[0].endDate;
-			await this.filterVAs();
-			this.total = data.data.character.pageInfo.total || 'No';
-			this.loaded = true;
+			this.filterVAs();
 		},
 		showSelected (va) {
 			return this.value.some(s => s.id === va.id);
