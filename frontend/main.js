@@ -1,6 +1,5 @@
 // Import style stuff
 import './styles/main.scss';
-import './styles/old-public-voting-styles.scss';
 
 // Import libraries
 import Vue from 'vue';
