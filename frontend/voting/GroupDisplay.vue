@@ -14,12 +14,12 @@
 	<div class="is-full-height">
 		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 		is better solved by v-if's so here's yet another hack-->
-		<ThemePicker v-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" v-model="selections"/>
-		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" v-model="selections"/>
-		<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" v-model="selections"/>
-		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="selections"/>
-		<TestPicker v-else-if="group === 'test'" :category="selectedCategory" v-model="selections"/>
-		<CharPicker v-else-if="group === 'char'" :category="selectedCategory" v-model="selections"/>
+		<ThemePicker v-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
+		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" :value="selections"/>
+		<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
+		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
+		<TestPicker v-else-if="group === 'test'" :category="selectedCategory" :value="selections"/>
+		<CharPicker v-else-if="group === 'char'" :category="selectedCategory" :value="selections"/>
 	</div>
 	<div class="submit-wrapper">
 		<button
@@ -161,6 +161,7 @@ export default {
 			}
 		},
 		submit () {
+			
 			// Do stuff
 		},
 		// eslint-disable-next-line multiline-comment-style
