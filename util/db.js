@@ -4,95 +4,6 @@ const config = require('../config');
 
 const db = bettersqlite3(path.join(config.db.path, config.db.filename));
 
-// Initial setup of the database
-// eslint-disable-next-line multiline-comment-style
-/*
-db.exec(`
-	CREATE TABLE IF NOT EXISTS users (
-		reddit
-			TEXT
-			PRIMARY KEY,
-		level
-			INTEGER
-			NOT NULL
-			DEFAULT 0,
-		flags
-			INTEGER
-			NOT NULL
-			DEFAULT 0
-	);
-	CREATE TABLE IF NOT EXISTS categories (
-		id
-			INTEGER
-			PRIMARY KEY
-			AUTOINCREMENT,
-		name
-			TEXT
-			NOT NULL,
-		entryType
-			TEXT
-			NOT NULL
-			CHECK(entryType in ('shows', 'characters', 'vas', 'themes'))
-			DEFAULT 'shows',
-		entries
-			TEXT
-			NOT NULL
-			DEFAULT '',
-		active
-			INTEGER
-			NOT NULL
-			DEFAULT 1
-		awardsGroup
-			TEXT
-			NOT NULL
-			DEFAULT 'genre',
-	);
-	CREATE TABLE IF NOT EXISTS themes (
-		id
-			INTEGER
-			PRIMARY KEY
-			AUTOINCREMENT,
-		anime
-			TEXT
-			NOT NULL
-			DEFAULT '',
-		title
-			TEXT,
-		themeType
-			TEXT
-			NOT NULL
-			DEFAULT '',
-		anilistID
-			INTEGER
-			NOT NULL,
-		themeNo
-			TEXT,
-		link
-			TEXT
-			DEFAULT ''
-	);
-	CREATE TABLE IF NOT EXISTS public-votes (
-		id
-			INTEGER
-			PRIMARY KEY
-			AUTOINCREMENT,
-		reddit_user
-			TEXT
-			NOT NULL,
-		user_id
-			INTEGER,
-		category_id
-			INTEGER
-			NOT NULL,
-		entry_id
-			INTEGER
-			NOT NULL,
-		anilist_id
-			INTEGER
-	);
-`);
-*/
-
 // Define all our queries
 const getUserQuery = db.prepare('SELECT * FROM users WHERE reddit=?');
 const getAllUsersQuery = db.prepare('SELECT * FROM users');
@@ -126,7 +37,7 @@ module.exports = {
 	getCategoryByRowid: getCategoryByRowidQuery.get.bind(getCategoryByRowidQuery),
 	getAllCategories: getAllCategoriesQuery.all.bind(getAllCategoriesQuery),
 	insertCategory: insertCategoryQuery.run.bind(insertCategoryQuery),
-	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery), // TODO: I don't like that the id and the data are in the same object here
+	updateCategory: updateCategoryQuery.run.bind(updateCategoryQuery),
 	deleteCategory: deleteCategoryQuery.run.bind(deleteCategoryQuery),
 
 	getCategoryByGroup: getCategoryByGroupQuery.all.bind(getCategoryByGroupQuery),
