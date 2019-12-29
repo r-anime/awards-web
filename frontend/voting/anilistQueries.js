@@ -1,4 +1,8 @@
-// Remember to fix the eligibility period on these two queries.
+// Remember to fix the eligibility period on these two queries and these variables.
+
+const eligibilityStart = new Date(2019, 1, 1); // Year, Month, Day
+const eligibilityEnd = new Date(2020, 1, 1);
+
 const showQuery = `query ($search: String) {
 	anime: Page(page: 1, perPage: 50) {
 	  pageInfo {
@@ -51,6 +55,8 @@ const testQuery = `query ($search: String) {
   `;
 
 // The catch here is that there's literally no filtering on these. The endDate object needs to be filtered client-side for both these queries.
+// Essentially the check is super weird to perform. JS's Date() object can work. One of these needs to be the beginning of the eligibility criteria
+// and the other needs to be the end. You create another date object for the character or VA and check if it lies between and filter by that.
 const charQuery = `query ($search: String) {
 	character: Page(page: 1, perPage: 50) {
 	  pageInfo {
@@ -60,6 +66,8 @@ const charQuery = `query ($search: String) {
 		id
 		name {
 		  full
+		  alternative
+		  native
 		}
 		image {
 		  large
@@ -70,6 +78,7 @@ const charQuery = `query ($search: String) {
 			title {
 			  romaji
 			  english
+			  native
 			  userPreferred
 			}
 			endDate {
@@ -86,7 +95,8 @@ const charQuery = `query ($search: String) {
 		siteUrl
 	  }
 	}
-  }`;
+  }
+  `;
 
 const vaQuery = `query ($search: String) {
 	character: Page(page: 1, perPage: 50) {
@@ -107,6 +117,8 @@ const vaQuery = `query ($search: String) {
 			title {
 			  romaji
 			  english
+			  native
+			  userPreferred
 			}
 			endDate {
 			  year
@@ -124,6 +136,8 @@ const vaQuery = `query ($search: String) {
 			  id
 			  name {
 				full
+				alternative
+				native
 			  }
 			}
 		  }
@@ -131,11 +145,14 @@ const vaQuery = `query ($search: String) {
 		siteUrl
 	  }
 	}
-  }`;
+  }
+  `;
 
 module.exports = {
 	showQuery,
 	charQuery,
 	vaQuery,
 	testQuery,
+	eligibilityStart,
+	eligibilityEnd,
 };

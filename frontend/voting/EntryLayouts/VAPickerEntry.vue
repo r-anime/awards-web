@@ -1,20 +1,23 @@
+<!--I swear I didn't copy and paste everything here because I'm too lazy to figure out proper routing. In any case, if stuff changes, do stuff here.-->
 <template>
-	<label class="show-picker-entry">
+	<label class="va-picker-entry">
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
-					<figure class="image show-cover">
+					<figure class="image va-cover">
 						<img :src="coverURI"/>
 					</figure>
 				</div>
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="show-title">
-								{{show.anime}} {{show.themeNo}}
+							<em class="va-title">
+								{{name}} ({{voiceActor}})
 							</em>
 							<br/>
-							{{show.title}} &bull;
+							{{anime}}
+							<br/>
+							&bull;
 							<a
 								@click.stop
 								target="_blank"
@@ -34,30 +37,27 @@
 </template>
 
 <script>
-const readableFormats = {
-	TV: 'TV',
-	TV_SHORT: 'TV Short',
-	MOVIE: 'Movie',
-	SPECIAL: 'Special',
-	OVA: 'OVA',
-	ONA: 'ONA',
-	MUSIC: 'Music',
-};
 
 export default {
 	props: {
-		show: Object,
+		va: Object,
 		selected: Boolean,
 	},
 	computed: {
-		format () {
-			return readableFormats[this.show.format];
+		name () {
+			return this.va.name.full;
+		},
+		anime () {
+			return this.va.media.nodes[0].title.romaji;
+		},
+		voiceActor () {
+			return this.va.media.edges[0].voiceActors[0].name.full;
 		},
 		coverURI () {
-			return this.show.coverImage.large;
+			return this.va.image.large;
 		},
 		anilistLink () {
-			return this.show.siteUrl;
+			return this.va.siteUrl;
 		},
 	},
 	methods: {
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss">
-.show-cover {
+.va-cover {
     width: 64px;
     margin-right: 0.4rem;
     border-radius: 3px;

@@ -14,7 +14,7 @@
 	<div class="is-full-height">
 		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 		is better solved by v-if's so here's yet another hack-->
-		<MusicPicker v-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
+		<ThemePicker v-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
 		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
 		<ShowPicker v-else-if="showQueryCat" v-model="selections"/>
 		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="selections"/>
@@ -45,7 +45,7 @@ import categoryGroupTabBar from './CategoryGroupTabBar';
 // Import all the entry components here, there's a better way to do this but fuck that
 import DashboardPicker from './EntryLayouts/DashboardPicker';
 import CharPicker from './EntryLayouts/CharPicker';
-import MusicPicker from './EntryLayouts/MusicPicker';
+import ThemePicker from './EntryLayouts/ThemePicker';
 import TestPicker from './EntryLayouts/TestPicker';
 import VAPicker from './EntryLayouts/VAPicker';
 import ShowPicker from './EntryLayouts/ShowPicker';
@@ -56,7 +56,7 @@ export default {
 		categoryGroupTabBar,
 		DashboardPicker,
 		CharPicker,
-		MusicPicker,
+		ThemePicker,
 		TestPicker,
 		VAPicker,
 		ShowPicker,
