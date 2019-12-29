@@ -26,7 +26,6 @@
 			<div class="field">
 				<div class="control">
 					<button
-						disabled
 						class="button is-danger"
 						@click="deleteAccount"
 					>
@@ -51,6 +50,15 @@ export default {
 		]),
 		redditLink () {
 			return `https://www.reddit.com/user/${this.me.reddit.name}`;
+		},
+	},
+	methods: {
+		deleteAccount () {
+			fetch('/api/deleteaccount', {
+				method: 'POST',
+			}).then(() => {
+				window.location.pathname = '/';
+			});
 		},
 	},
 };

@@ -1,4 +1,5 @@
 const path = require('path');
+// const fs = require('fs');
 
 const port = process.env.PORT || 4567;
 
@@ -24,4 +25,10 @@ module.exports = {
 		clientSecret: 'Reddit application client secret',
 		userAgent: 'web:geo1088/animeawards-mkii:0.0.1 (by /u/YOURNAMEGOESHERE)',
 	},
+	// Un-comment this in production to enable HTTPS support
+	// https: {
+	// 	port: 443,
+	// 	key: fs.readFileSync('/etc/letsencrypt/path/to/key.pem'),
+	// 	cert: fs.readFileSync('/etc/letsencrypt/path/to/cert.pem'),
+	// },
 };

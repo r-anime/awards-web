@@ -1,4 +1,5 @@
 const fs = require('fs');
+const https = require('https');
 const path = require('path');
 
 const polka = require('polka'); // Web server
@@ -52,3 +53,15 @@ app.use('/auth', auth);
 app.listen(config.port, () => {
 	log.success(`Listening on port ${config.port}~!`);
 });
+
+// If we're using HTTPS, create an HTTPS server
+if (config.https) {
+	const httpsOptions = {
+		key: config.https.key,
+		cert: config.https.cert,
+	};
+	const httpsApp = https.createServer(httpsOptions, app.handler);
+	httpsApp.listen(config.https.port, () => {
+		log.success(`HTTPS listening on port ${config.https.port}`);
+	});
+}
