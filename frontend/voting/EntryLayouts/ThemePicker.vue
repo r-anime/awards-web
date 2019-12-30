@@ -127,7 +127,7 @@ export default {
 	computed: {
 		...mapState([
 			'themes',
-			'selections'
+			'selections',
 		]),
 	},
 	data () {
@@ -207,9 +207,7 @@ export default {
 			}
 		},
 		requiredShowData (index) {
-			const found = this.showData.find(show => {
-				return show.id === this.themeData[index].anilistID;
-			});
+			const found = this.showData.find(show => show.id === this.themeData[index].anilistID);
 			return found;
 		},
 		// I hate what I'm about to do here
@@ -225,6 +223,12 @@ export default {
 			this.getThemes();
 		}
 		console.log(this.selections);
+	},
+	watch: {
+		category () {
+			this.search = '';
+			this.selectedTab = 'selections';
+		},
 	},
 };
 </script>

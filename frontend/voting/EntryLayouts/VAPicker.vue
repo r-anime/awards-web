@@ -173,6 +173,12 @@ export default {
 			}
 		},
 	},
+	watch: {
+		category () {
+			this.search = '';
+			this.selectedTab = 'selections';
+		},
+	},
 };
 </script>
 
