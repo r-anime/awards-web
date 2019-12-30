@@ -4,9 +4,9 @@ The way different categories are switching between components on the fly and the
 
 - **DashboardPicker** is all genre cats, all main awards cats that aren't AotY and the Sports test cat.
 - **CharPicker** is all character cats except cast.
-- **ShowPicker** is AotY and all production cats with entryType `shows`, also cast because shit's fucked up.
+- **ShowPicker** is AotY and all production cats with entryType `shows`, also Cast and OST because shit's fucked up.
 - **VAPicker** is cats with entryType `vas`.
-- **MusicPicker** is cats with entryType `themes`.
+- **MusicPicker** is cats with entryType `themes` except OST.
 - **TestPicker** is test categories that aren't Sports.
 
 I hope I haven't coded up a nightmare.
@@ -19,6 +19,6 @@ There's a few categories that need to be filled up in the dashboard and a few ca
 - **Chara cats** pull from AniList so leave them untouched.
 - **Main Awards** pull from the dashboard except AotY. Fill up all of these except AotY.
 - **Test cats** pull from the dashboard for Sports and AniList for the rest. Only fill up sports.
-- **Production cats** pull from AniList while themes pull from the CSV sheet. No need to fill these up.
+- **Production cats** pull from AniList while themes pull from the CSV sheet. OST needs to be filled up as it pulls from the dashboard.
 
 DO NOT TOUCH THE BEST OST CATEGORY AT ALL.

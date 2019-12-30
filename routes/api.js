@@ -227,6 +227,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 	if (!await request.authenticate({name: userName})) {
 		return response.json(401, {error: 'Something went wrong.'});
 	}
+	await db.deleteAllVotesFromUser(userName);
 	const req = Object.entries(await request.json());
 	const categories = await db.getAllCategories();
 	// This entire loop needs to be a promise
@@ -236,7 +237,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 				if (entries.length === 0) {
 					continue;
 				}
-				const category = categories.find(cat => cat.id == id);
+				const category = categories.find(cat => cat.id == id); // The eqeq is very important
 				for (const entry of entries) {
 					if (voteHelpers.isOPED(category)) {
 						db.pushUserThemeVotes({
@@ -249,7 +250,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 						db.pushUserDashboardVotes({
 							redditUser: userName,
 							categoryId: category.id,
-							entryId: req[id].indexOf(entry),
+							entryId: entries.indexOf(entry),
 						});
 					} else {
 						db.pushUserVotes({
