@@ -3,13 +3,13 @@
 		<div v-if="votingCats && selectedCategory && selections">
 			<category-group-header :title="groupName">
 				<template v-slot:tab-bar>
-					<category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
+					<category-group-tab-bar v-model="selectedTab" :tabs="votingCats"/>
 				</template>
 			</category-group-header>
 
 			<div class="container">
 				<div class="intro">
-					<h2 class="is-size-2 is-size-3-mobile">{{selectedTab}}</h2>
+					<h2 class="is-size-2 is-size-3-mobile">{{selectedCategory.name}}</h2>
 				</div>
 				<div class="is-full-height">
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
@@ -106,18 +106,15 @@ export default {
 					return 'Unknown Group';
 			}
 		},
-		mappedCategories () {
-			return this.votingCats.map(cat => cat.name);
-		},
 		selectedCategory () {
-			return this.votingCats.find(cat => cat.name === this.selectedTab);
+			return this.votingCats.find(cat => cat.id === this.selectedTab);
 		},
 		showQueryCat () {
-			if (this.group === 'main' && this.selectedcategory.id === 'Anime of the Year') {
+			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
 				return true;
 			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
 				return true;
-			} else if (this.group === 'character' && this.selectedcategory.id.includes('Cast')) {
+			} else if (this.group === 'character' && this.selectedCategory.name.includes('Cast')) {
 				return true;
 			}
 			return false;
@@ -125,9 +122,9 @@ export default {
 		dashboardCat () {
 			if (this.group === 'genre') {
 				return true;
-			} else if (this.group === 'main' && this.selectedcategory.id !== 'Anime of the Year') {
+			} else if (this.group === 'main' && this.selectedCategory.name !== 'Anime of the Year') {
 				return true;
-			} else if (this.group === 'test' && this.selectedcategory.id.includes('Sports')) {
+			} else if (this.group === 'test' && this.selectedCategory.name.includes('Sports')) {
 				return true;
 			}
 			return false;
@@ -143,7 +140,7 @@ export default {
 		group: {
 			async handler (newGroup) {
 				await this.getVotingCategories(newGroup);
-				this.selectedTab = this.votingCats[0].name;
+				this.selectedTab = this.votingCats[0].id;
 			},
 		},
 	},
@@ -177,7 +174,7 @@ export default {
 	async mounted () {
 		await this.getVotingCategories(this.group);
 		await this.initializeSelections();
-		this.selectedTab = this.votingCats[0].name;
+		this.selectedTab = this.votingCats[0].id;
 	},
 };
 </script>
