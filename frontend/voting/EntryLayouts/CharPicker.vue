@@ -58,10 +58,10 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value[category.name].length" class="char-picker-overflow-wrap">
+		<div v-else-if="value[category.id].length" class="char-picker-overflow-wrap">
 			<div class="char-picker-entries">
 				<char-picker-entry
-					v-for="char in value[category.name]"
+					v-for="char in value[category.id]"
 					:key="'selected' + char.id"
 					:char="char"
 					:selected="showSelected(char)"
@@ -157,19 +157,19 @@ export default {
 			});
 		},
 		showSelected (char) {
-			return this.value[this.category.name].some(s => s.id === char.id);
+			return this.value[this.category.id].some(s => s.id === char.id);
 		},
 		toggleShow (char, select = true) {
 			if (select) {
 				if (this.showSelected(char)) return;
-				this.value[this.category.name].push(char);
+				this.value[this.category.id].push(char);
 				this.$emit('input', this.value);
 			} else {
 				if (!this.showSelected(char)) return;
-				const index = this.value[this.category.name].findIndex(c => c.id === char.id);
-				const arr = [...this.value[this.category.name]];
+				const index = this.value[this.category.id].findIndex(c => c.id === char.id);
+				const arr = [...this.value[this.category.id]];
 				arr.splice(index, 1);
-				this.value[this.category.name] = arr;
+				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
 			}
 		},

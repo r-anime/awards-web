@@ -113,11 +113,11 @@ export default {
 			return this.votingCats.find(cat => cat.name === this.selectedTab);
 		},
 		showQueryCat () {
-			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
+			if (this.group === 'main' && this.selectedcategory.id === 'Anime of the Year') {
 				return true;
 			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
 				return true;
-			} else if (this.group === 'character' && this.selectedCategory.name.includes('Cast')) {
+			} else if (this.group === 'character' && this.selectedcategory.id.includes('Cast')) {
 				return true;
 			}
 			return false;
@@ -125,9 +125,9 @@ export default {
 		dashboardCat () {
 			if (this.group === 'genre') {
 				return true;
-			} else if (this.group === 'main' && this.selectedCategory.name !== 'Anime of the Year') {
+			} else if (this.group === 'main' && this.selectedcategory.id !== 'Anime of the Year') {
 				return true;
-			} else if (this.group === 'test' && this.selectedCategory.name.includes('Sports')) {
+			} else if (this.group === 'test' && this.selectedcategory.id.includes('Sports')) {
 				return true;
 			}
 			return false;
