@@ -14,6 +14,7 @@
 				<div class="is-full-height">
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 					is better solved by v-if's so here's yet another hack-->
+					<!-- it's okay this is exactly how i did it last year too lol -->
 					<ThemePicker v-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
 					<VAPicker v-else-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" :value="selections"/>
 					<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
@@ -37,8 +38,7 @@
 
 <script>
 import {mapActions, mapState} from 'vuex';
-import Vue from 'vue';
-import {shuffle, stringMatchesArray} from '../util';
+import {stringMatchesArray} from '../util';
 import categoryGroupHeader from './CategoryGroupHeader';
 import categoryGroupTabBar from './CategoryGroupTabBar';
 
@@ -153,14 +153,6 @@ export default {
 			'getCategories',
 			'initializeSelections',
 		]),
-		setShow (id, category) {
-			// note - these lines are modifying an object in the vuex store
-			if (this.selections[id] === category) {
-				Vue.set(this.selections, id, null);
-			} else if (!this.selections[id] || confirm(`You have already selected this show for the ${this.selections[id]} category. You can only nominate a show for one category. Would you like to change it to ${category}?`)) {
-				Vue.set(this.selections, id, category);
-			}
-		},
 		submit () {
 
 			// Do stuff
