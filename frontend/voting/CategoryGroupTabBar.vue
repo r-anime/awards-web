@@ -5,7 +5,7 @@
 				v-for="tab in tabs"
 				:key="tab.id"
 				:class="{'is-active': tab.id === selectedTab}"
-				@click="$emit('change', tab)"
+				@click="$emit('change', tab.id)"
 			>
 				<a>{{tab.name}}</a>
 			</li>

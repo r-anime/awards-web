@@ -24,8 +24,9 @@ const insertThemesQuery = db.prepare('INSERT INTO themes (anime,title,themeType,
 const deleteThemesQuery = db.prepare('DELETE FROM themes WHERE themeType=?');
 
 const deleteAllVotesFromUserQuery = db.prepare('DELETE FROM votes WHERE reddit_user=?');
-const pushUserVotesQuery = db.prepare('INSERT INTO votes (reddit_user,user_id,category_id,anilist_id) VALUES (:redditUser,:userId,:categoryId,:anilistId)');
-const pushUserThemeVotesQuery = db.prepare('INSERT INTO votes (reddit_user,user_id,category_id,entry_id,theme_name) VALUES (:redditUser,:userId,:categoryId,:entryId,:themeName)');
+const pushUserVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,anilist_id) VALUES (:redditUser,:categoryId,:anilistId)');
+const pushUserThemeVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id,theme_name) VALUES (:redditUser,:categoryId,:entryId,:themeName)');
+const pushUserDashboardVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id) VALUES (:redditUser,:categoryId,:entryId)');
 
 module.exports = {
 	getUser: getUserQuery.get.bind(getUserQuery),
@@ -49,4 +50,5 @@ module.exports = {
 	deleteAllVotesFromUser: deleteAllVotesFromUserQuery.run.bind(deleteAllVotesFromUserQuery),
 	pushUserVotes: pushUserVotesQuery.run.bind(pushUserVotesQuery),
 	pushUserThemeVotes: pushUserThemeVotesQuery.run.bind(pushUserThemeVotesQuery),
+	pushUserDashboardVotes: pushUserDashboardVotesQuery.run.bind(pushUserDashboardVotesQuery),
 };

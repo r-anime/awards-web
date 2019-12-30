@@ -222,11 +222,26 @@ apiApp.post('/deleteaccount', async (request, response) => {
 });
 
 apiApp.post('/votes/submit', async (request, response) => {
-	const userInfo = (await request.reddit().get('/api/v1/me')).body;
-	if (!await request.authenticate({name: userInfo.name})) {
+	const userName = (await request.reddit().get('/api/v1/me')).body.name;
+	if (!await request.authenticate({name: userName})) {
 		return response.json(401, {error: 'Something went wrong.'});
 	}
-	response.empty(); // Gonna do stuff here later
+	const categories = await db.getAllCategories();
+	const req = await request.json();
+	// This entire loop needs to be a promise
+	for (const id in req) {
+		if (req[id].length === 0) {
+			continue;
+		}
+		const category = categories.find(cat => cat.id === id);
+		for (const entry of req[id]) {
+			if (category.entryType === 'themes' && category.name.includes('OST')) {
+				db.pushUserThemeVotes(userName, category.id, entry.id, entry.title);
+			} else if (category.name.includes('OST')) {
+				db.pushUserDashboardVotes(userName, category.id, entry.id);
+			}
+		}
+	}
 });
 
 module.exports = apiApp;
