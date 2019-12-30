@@ -154,9 +154,17 @@ export default {
 			'getCategories',
 			'initializeSelections',
 		]),
-		submit () {
+		async submit () {
+			this.submitting = true;
+			try {
+				await fetch('/api/votes/submit', {
+					method: 'POST',
+					body: JSON.stringify(this.selections),
+				});
+			} finally {
+				this.submitting = false;
+			}
 
-			// Do stuff
 		},
 		// eslint-disable-next-line multiline-comment-style
 		/* save () {

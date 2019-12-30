@@ -3,6 +3,7 @@ const apiApp = require('polka')();
 const superagent = require('superagent');
 const db = require('../util/db');
 const parse = require('../themes/parser');
+const voteHelpers = require('../util/voteHelpers');
 
 apiApp.get('/me', async (request, response) => {
 	if (!request.session.redditAccessToken) {
@@ -226,22 +227,45 @@ apiApp.post('/votes/submit', async (request, response) => {
 	if (!await request.authenticate({name: userName})) {
 		return response.json(401, {error: 'Something went wrong.'});
 	}
+	const req = Object.entries(await request.json());
 	const categories = await db.getAllCategories();
-	const req = await request.json();
 	// This entire loop needs to be a promise
-	for (const id in req) {
-		if (req[id].length === 0) {
-			continue;
-		}
-		const category = categories.find(cat => cat.id === id);
-		for (const entry of req[id]) {
-			if (category.entryType === 'themes' && category.name.includes('OST')) {
-				db.pushUserThemeVotes(userName, category.id, entry.id, entry.title);
-			} else if (category.name.includes('OST')) {
-				db.pushUserDashboardVotes(userName, category.id, entry.id);
+	const promise = new Promise((resolve, reject) => {
+		try {
+			for (const [id, entries] of req) {
+				if (entries.length === 0) {
+					continue;
+				}
+				const category = categories.find(cat => cat.id == id);
+				for (const entry of entries) {
+					if (voteHelpers.isOPED(category)) {
+						db.pushUserThemeVotes({
+							redditUser: userName,
+							categoryId: category.id,
+							entryId: entry.id,
+							themeName: entry.title,
+						});
+					} else if (voteHelpers.isDashboard(category)) {
+						db.pushUserDashboardVotes({
+							redditUser: userName,
+							categoryId: category.id,
+							entryId: req[id].indexOf(entry),
+						});
+					} else {
+						db.pushUserVotes({
+							redditUser: userName,
+							categoryId: category.id,
+							entryId: entry.id,
+						});
+					}
+				}
 			}
+			resolve();
+		} catch (err) {
+			reject(err);
 		}
-	}
+	});
+	promise.then(() => response.empty());
 });
 
 module.exports = apiApp;
