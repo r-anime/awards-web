@@ -20,5 +20,3 @@ There's a few categories that need to be filled up in the dashboard and a few ca
 - **Main Awards** pull from the dashboard except AotY. Fill up all of these except AotY.
 - **Test cats** pull from the dashboard for Sports and AniList for the rest. Only fill up sports.
 - **Production cats** pull from AniList while themes pull from the CSV sheet. OST needs to be filled up as it pulls from the dashboard.
-
-DO NOT TOUCH THE BEST OST CATEGORY AT ALL.

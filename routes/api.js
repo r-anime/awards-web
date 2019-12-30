@@ -251,6 +251,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 							redditUser: userName,
 							categoryId: category.id,
 							entryId: entries.indexOf(entry),
+							anilistId: entry.id,
 						});
 					} else {
 						db.pushUserVotes({

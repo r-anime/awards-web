@@ -26,7 +26,7 @@ const deleteThemesQuery = db.prepare('DELETE FROM themes WHERE themeType=?');
 const deleteAllVotesFromUserQuery = db.prepare('DELETE FROM votes WHERE reddit_user=?');
 const pushUserVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id) VALUES (:redditUser,:categoryId,:entryId)');
 const pushUserThemeVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id,theme_name) VALUES (:redditUser,:categoryId,:entryId,:themeName)');
-const pushUserDashboardVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id) VALUES (:redditUser,:categoryId,:entryId)');
+const pushUserDashboardVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id,anilist_id) VALUES (:redditUser,:categoryId,:entryId,:anilistId)');
 
 module.exports = {
 	getUser: getUserQuery.get.bind(getUserQuery),
