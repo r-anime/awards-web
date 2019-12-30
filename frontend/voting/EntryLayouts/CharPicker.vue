@@ -47,8 +47,8 @@
 					v-for="char in chars"
 					:key="char.id"
 					:char="char"
-					:selected="showSelected(char)"
-					@action="toggleShow(char, $event)"
+					:selected="characterSelected(char)"
+					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
 			<div v-else-if="loaded" class="char-picker-text">
@@ -64,15 +64,15 @@
 					v-for="char in value[category.id]"
 					:key="'selected' + char.id"
 					:char="char"
-					:selected="showSelected(char)"
-					@action="toggleShow(char, $event)"
+					:selected="characterSelected(char)"
+					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
 		</div>
 		<div v-else class="char-picker-text">
 			Nothing's in this category yet! Select entries from the "Search" tab, or use the "Tools" page to import entries from another category.
 		</div>
-		</div>
+	</div>
 </template>
 
 <script>
@@ -162,12 +162,12 @@ export default {
 				this.loaded = true;
 			});
 		},
-		showSelected (char) {
+		characterSelected (char) {
 			return this.value[this.category.id].some(s => s.id === char.id);
 		},
-		toggleShow (char, select = true) {
+		toggleCharacter (char, select = true) {
 			if (select) {
-				if (this.showSelected(char)) return;
+				if (this.characterSelected(char)) return;
 
 				// Check if the character is selected in another character
 				// category (other than antag)
@@ -193,7 +193,7 @@ export default {
 				this.value[this.category.id].push(char);
 				this.$emit('input', this.value);
 			} else {
-				if (!this.showSelected(char)) return;
+				if (!this.characterSelected(char)) return;
 				const index = this.value[this.category.id].findIndex(c => c.id === char.id);
 				const arr = [...this.value[this.category.id]];
 				arr.splice(index, 1);

@@ -164,7 +164,6 @@ export default {
 			} finally {
 				this.submitting = false;
 			}
-
 		},
 		// eslint-disable-next-line multiline-comment-style
 		/* save () {
