@@ -1,7 +1,7 @@
 // Remember to fix the eligibility period on these two queries and these variables.
 
 const eligibilityStart = new Date(2019, 1, 1); // Year, Month, Day
-const eligibilityEnd = new Date(2020, 1, 1);
+const eligibilityEnd = new Date(2020, 1, 12);
 
 const showQuery = `query ($search: String) {
 	anime: Page(page: 1, perPage: 50) {
@@ -147,6 +147,123 @@ const vaQuery = `query ($search: String) {
   }
   `;
 
+const showByIDQuery = `query ($id: [Int]) {
+	anime: Page(page: 1, perPage: 50) {
+	  pageInfo {
+		total
+	  }
+	  results: media(type: ANIME, id_in: $id) {
+		id
+		format
+		startDate {
+		  year
+		}
+		title {
+		  romaji
+		  english
+		  native
+		  userPreferred
+		}
+		coverImage {
+		  large
+		}
+		siteUrl
+	  }
+	}
+  }
+  `;
+
+const charByIDQuery = `query ($id: [Int]) {
+	character: Page(page: 1, perPage: 50) {
+	  pageInfo {
+		total
+	  }
+	  results: characters(id_in: $id) {
+		id
+		name {
+		  full
+		  alternative
+		  native
+		}
+		image {
+		  large
+		}
+		media(sort: [END_DATE_DESC, START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
+		  nodes {
+			id
+			title {
+			  romaji
+			  english
+			  native
+			  userPreferred
+			}
+			endDate {
+			  year
+			  month
+			  day
+			}
+		  }
+		  edges {
+			id
+			characterRole
+		  }
+		}
+		siteUrl
+	  }
+	}
+  }
+  `;
+
+const vaByIDQuery = `query ($id: [Int]) {
+	character: Page(page: 1, perPage: 50) {
+	  pageInfo {
+		total
+	  }
+	  results: characters(id_in: $id) {
+		id
+		name {
+		  full
+		}
+		image {
+		  large
+		}
+		media(sort: [END_DATE_DESC, START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
+		  nodes {
+			id
+			title {
+			  romaji
+			  english
+			  native
+			  userPreferred
+			}
+			endDate {
+			  year
+			  month
+			  day
+			}
+		  }
+		  edges {
+			id
+			node {
+			  id
+			}
+			characterRole
+			voiceActors(language: JAPANESE) {
+			  id
+			  name {
+				full
+				alternative
+				native
+			  }
+			}
+		  }
+		}
+		siteUrl
+	  }
+	}
+  }
+  `;
+
 module.exports = {
 	showQuery,
 	charQuery,
@@ -154,4 +271,7 @@ module.exports = {
 	testQuery,
 	eligibilityStart,
 	eligibilityEnd,
+	showByIDQuery,
+	charByIDQuery,
+	vaByIDQuery,
 };
