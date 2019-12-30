@@ -76,6 +76,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
 const queries = require('../anilistQueries');
 
@@ -96,6 +97,11 @@ export default {
 			total: 'No',
 			selectedTab: 'selections',
 		};
+	},
+	computed: {
+		...mapState([
+			'votingCats',
+		]),
 	},
 	methods: {
 		handleInput (event) {
@@ -162,6 +168,28 @@ export default {
 		toggleShow (char, select = true) {
 			if (select) {
 				if (this.showSelected(char)) return;
+
+				// Check if the character is selected in another character
+				// category (other than antag)
+				if (!this.category.name.includes('Antagonist')) {
+					// Get all the other character categories, other than antagonist
+					const charCats = this.votingCats.filter(cat => cat.entryType === 'characters' && !cat.name.includes('Antagonist') && cat.id !== this.category.id);
+					for (const cat of charCats) {
+						// Search for this character in the other categories
+						const charIndex = this.value[cat.id].findIndex(character => character.id === char.id);
+						if (charIndex !== -1) { // If we find it...
+							// Confirm that the user wants to move their vote
+							if (confirm(`This character is already selected in the ${cat.name} category. Do you want to remove your vote for them in that category?`)) {
+								// If they want to move it, we need to update the entry in the other category
+								this.value[cat.id].splice(charIndex, 1);
+							} else {
+								// If they cancel out, return to abort the change
+								return;
+							}
+						}
+					}
+				}
+
 				this.value[this.category.id].push(char);
 				this.$emit('input', this.value);
 			} else {
