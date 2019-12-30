@@ -1,7 +1,7 @@
 // Remember to fix the eligibility period on these two queries and these variables.
 
 const eligibilityStart = new Date(2019, 1, 1); // Year, Month, Day
-const eligibilityEnd = new Date(2020, 1, 1);
+const eligibilityEnd = new Date(2020, 1, 12);
 
 const showQuery = `query ($search: String) {
 	anime: Page(page: 1, perPage: 50) {
