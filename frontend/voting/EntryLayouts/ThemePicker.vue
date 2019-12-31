@@ -182,6 +182,7 @@ export default {
 			}
 			const fuse = new Fuse(this.themes, options);
 			this.themeData = fuse.search(this.search);
+			this.themeData = this.themeData.filter(theme => this.category.name.includes(theme.themeType.toUpperCase()));
 			this.total = this.themeData.length;
 			this.themeData.forEach(element => {
 				this.idArr.push(element.anilistID);
@@ -227,6 +228,9 @@ export default {
 		category () {
 			this.search = '';
 			this.selectedTab = 'selections';
+			this.shows = [];
+			this.showData = [];
+			this.themeData = [];
 		},
 	},
 };

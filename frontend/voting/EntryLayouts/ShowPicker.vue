@@ -154,6 +154,7 @@ export default {
 		category () {
 			this.search = '';
 			this.selectedTab = 'selections';
+			this.shows = [];
 		},
 	},
 };
