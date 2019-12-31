@@ -1,6 +1,6 @@
 // Remember to fix the eligibility period on these two queries and these variables.
 
-const eligibilityStart = new Date(2019, 1, 1); // Year, Month, Day
+const eligibilityStart = new Date(2019, 1, 8); // Year, Month, Day
 const eligibilityEnd = new Date(2020, 1, 12);
 
 const showQuery = `query ($search: String) {
@@ -8,7 +8,7 @@ const showQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190000, endDate_lesser: 20199999, duration_greater: 15, episodes_greater: 1) {
+	  results: media(type: ANIME, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1) {
 		id
 		format
 		startDate {
@@ -33,7 +33,7 @@ const testQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, search: $search, endDate_greater: 20190000, endDate_lesser: 20199999) {
+	  results: media(type: ANIME, search: $search, endDate_greater: 20190108, endDate_lesser: 20200112) {
 		id
 		format
 		startDate {
