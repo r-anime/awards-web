@@ -222,7 +222,6 @@ export default {
 		if (!this.themes) {
 			this.getThemes();
 		}
-		console.log(this.selections);
 	},
 	watch: {
 		category () {

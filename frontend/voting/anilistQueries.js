@@ -148,7 +148,7 @@ const vaQuery = `query ($search: String) {
   `;
 
 const showByIDQuery = `query ($id: [Int]) {
-	anime: Page(page: 1, perPage: 50) {
+	Page {
 	  pageInfo {
 		total
 	  }
@@ -170,11 +170,10 @@ const showByIDQuery = `query ($id: [Int]) {
 		siteUrl
 	  }
 	}
-  }
-  `;
+  }`;
 
 const charByIDQuery = `query ($id: [Int]) {
-	character: Page(page: 1, perPage: 50) {
+	Page {
 	  pageInfo {
 		total
 	  }
@@ -215,7 +214,7 @@ const charByIDQuery = `query ($id: [Int]) {
   `;
 
 const vaByIDQuery = `query ($id: [Int]) {
-	character: Page(page: 1, perPage: 50) {
+	Page {
 	  pageInfo {
 		total
 	  }
@@ -264,6 +263,29 @@ const vaByIDQuery = `query ($id: [Int]) {
   }
   `;
 
+const themeByIDQuery = `query ($id: [Int]) {
+	Page {
+	  results: media(id_in: $id) {
+		id
+		format
+		startDate {
+		  year
+		}
+		title {
+		  romaji
+		  english
+		  native
+		  userPreferred
+		}
+		coverImage {
+		  large
+		}
+		siteUrl
+	  }
+	}
+  }
+  `;
+
 module.exports = {
 	showQuery,
 	charQuery,
@@ -274,4 +296,5 @@ module.exports = {
 	showByIDQuery,
 	charByIDQuery,
 	vaByIDQuery,
+	themeByIDQuery,
 };
