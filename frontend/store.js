@@ -143,9 +143,13 @@ const store = new Vuex.Store({
 				await dispatch('getCategories');
 			}
 			const selections = {};
-			state.categories.forEach(cat => {
+			for (const cat of state.categories) {
 				selections[cat.id] = [];
-			});
+			}
+			const votes = await makeRequest('/api/votes/get');
+			if (!votes.length === 0) {
+				// Big fucking messy code
+			}
 			commit('UPDATE_SELECTIONS', selections);
 		},
 	},

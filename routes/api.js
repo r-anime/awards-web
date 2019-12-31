@@ -246,7 +246,7 @@ apiApp.post('/deleteaccount', async (request, response) => {
 apiApp.post('/votes/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName})) {
-		return response.json(401, {error: 'Something went wrong.'});
+		return response.json(401, {error: 'Invalid user.'});
 	}
 	await db.deleteAllVotesFromUser(userName);
 	let req;
@@ -294,6 +294,18 @@ apiApp.post('/votes/submit', async (request, response) => {
 		}
 	});
 	promise.then(() => response.empty());
+});
+
+apiApp.get('/votes/get', async (request, response) => {
+	const userName = (await request.reddit().get('/api/v1/me')).body.name;
+	if (!await request.authenticate({name: userName})) {
+		return response.json(401, {error: 'Invalid user.'});
+	}
+	try {
+		response.json(db.getAllUserVotes(userName));
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 module.exports = apiApp;
