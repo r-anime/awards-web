@@ -271,6 +271,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 							categoryId: category.id,
 							entryId: entry.id,
 							themeName: entry.title,
+							anilistId: entry.anilistID,
 						});
 					} else if (voteHelpers.isDashboard(category)) {
 						db.pushUserDashboardVotes({
