@@ -160,14 +160,13 @@ const store = new Vuex.Store({
 				selections[cat.id] = [];
 			}
 			const votes = await makeRequest('/api/votes/get');
-			// Haha yes, this just had to become EVEN FUCKING SLOWER
-			if (!state.themes) {
-				await dispatch('getThemes');
-			}
 			// Check if user has voted
 			if (votes.length !== 0) {
 				// Big fucking messy code that I will surely end myself after writing
-				// We begin by checking every vote and doing various things
+				// Haha yes, this just had to become EVEN FUCKING SLOWER, we basically need theme info to load votes
+				if (!state.themes) {
+					await dispatch('getThemes');
+				}
 				for (const vote of votes) {
 					const category = state.categories.find(cat => cat.id === vote.category_id); // retrieve category associated with the vote
 					if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only

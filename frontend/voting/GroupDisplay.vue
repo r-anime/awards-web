@@ -33,12 +33,23 @@
 				</div>
 			</div>
 		</div>
+		<section v-else class="hero">
+			<div class="hero-body">
+				<div class="columns is-centered">
+					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
+						<div class="loading-text">
+						Please wait while your selections are being initialized. Thank you for your patience.
+						</div>
+						<img :src="snooImage"/>
+					</div>
+				</div>
+			</div>
+		</section>
 	</body>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex';
-import {stringMatchesArray} from '../util';
 import categoryGroupHeader from './CategoryGroupHeader';
 import categoryGroupTabBar from './CategoryGroupTabBar';
 
@@ -49,6 +60,8 @@ import ThemePicker from './EntryLayouts/ThemePicker';
 import TestPicker from './EntryLayouts/TestPicker';
 import VAPicker from './EntryLayouts/VAPicker';
 import ShowPicker from './EntryLayouts/ShowPicker';
+
+import snoo from '../../img/bannerSnooJump.png';
 
 export default {
 	components: {
@@ -80,17 +93,6 @@ export default {
 			'categories',
 			'selections',
 		]),
-		_filteredShows () {
-			return this.shows.filter(show => stringMatchesArray(this.filter, show.terms))
-				.filter(show => show.format !== 'MUSIC')
-				.filter(show => this.showSelected ? this.selections[show.id] === this.selectedTab : true);
-		},
-		filteredShows () {
-			return this.showSelected ? this._filteredShows : this._filteredShows.slice(0, 50);
-		},
-		moreItems () {
-			return this._filteredShows.length - this.filteredShows.length;
-		},
 		groupName () {
 			switch (this.group) {
 				case 'main':
@@ -132,6 +134,9 @@ export default {
 			}
 			return false;
 		},
+		snooImage () {
+			return snoo;
+		},
 	},
 	watch: {
 		selections: {
@@ -165,22 +170,6 @@ export default {
 				this.submitting = false;
 			}
 		},
-		// eslint-disable-next-line multiline-comment-style
-		/* save () {
-			this.saveButtonText = 'Saving...';
-			submit('/response/genres', {
-				data: this.selections,
-			}).then(() => {
-				this.changesSinceSave = false;
-				this.saveButtonText = 'Saved!';
-				setTimeout(() => {
-					this.saveButtonText = 'Save Selections';
-				}, 1500);
-			}).catch(() => {
-				this.saveButtonText = 'Save Selections';
-				alert('Failed to save, try again');
-			});
-		},*/
 	},
 	async mounted () {
 		await this.getVotingCategories(this.group);
@@ -190,3 +179,11 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss">
+.loading-text {
+	flex: 0 1 100%;
+	padding: 0.75rem;
+	text-align: center;
+}
+</style>
