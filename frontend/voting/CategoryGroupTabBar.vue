@@ -3,11 +3,11 @@
 		<ul>
 			<li
 				v-for="tab in tabs"
-				:key="tab"
-				:class="{'is-active': tab === selectedTab}"
-				@click="$emit('change', tab)"
+				:key="tab.id"
+				:class="{'is-active': tab.id === selectedTab}"
+				@click="$emit('change', tab.id)"
 			>
-				<a>{{tab}}</a>
+				<a>{{tab.name}}</a>
 			</li>
 		</ul>
 	</div>
@@ -21,7 +21,7 @@ export default {
 	},
 	props: {
 		tabs: Array,
-		selectedTab: String,
+		selectedTab: Number,
 	},
 };
 </script>

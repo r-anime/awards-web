@@ -14,7 +14,8 @@
 			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'ed'}"
 			:disabled="submitting && submitType != 'ed'" @click="submitCreateThemes('ed')">Import EDs</button>
 
-			<button class="button is-primary" disabled>Import OSTs</button>
+			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'ost'}"
+			:disabled="submitting && submitType != 'ost'" @click="submitCreateThemes('ost')">Import OSTs</button>
 
 			<!--This too tbh-->
 
@@ -23,8 +24,9 @@
 
 			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'ed'}"
 			:disabled="deleting && deleteType != 'ed'" @click="submitDeleteThemes('ed')">Delete EDs</button>
-			<button class="button is-danger" @click="submitDeleteThemes('ost')" disabled>Delete OSTs</button>
-			<h2 class="title is-6">OPs and EDs are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs before re-importing to avoid duplicates.</h2>
+			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'ost'}"
+			:disabled="deleting && deleteType != 'ost'" @click="submitDeleteThemes('ost')">Delete OSTs</button>
+			<h2 class="title is-6">Themes are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs/OSTs before re-importing to avoid duplicates.</h2>
 		</div>
 	</div>
 </template>
@@ -51,7 +53,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['createThemes','deleteThemes']),
+		...mapActions(['createThemes', 'deleteThemes']),
 		disableButtons (type,action) {
 			if (action === 'create') {
 				switch (type) {
@@ -65,8 +67,7 @@ export default {
 						this.submitType = 'ost';
 						break;
 				}
-			}
-			else if (action === 'delete') {
+			} else if (action === 'delete') {
 				switch (type) {
 					case 'op':
 						this.deleteType = 'op';
@@ -90,8 +91,7 @@ export default {
 			setTimeout(async () => {
 				try {
 					await this.createThemes({data: {themeType: type}});
-				}
-				finally {
+				} finally {
 					this.submitting = false;
 					this.releaseButtons();
 				}
@@ -103,8 +103,7 @@ export default {
 			setTimeout(async () => {
 				try {
 					await this.deleteThemes(type);
-				}
-				finally {
+				} finally {
 					this.deleting = false;
 					this.releaseButtons();
 				}

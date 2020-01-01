@@ -11,10 +11,10 @@
 					<div class="content">
 						<p>
 							<em class="show-title">
-								{{show.anime}} {{show.themeNo}}
+								{{show.anime}} {{show.themeNo || ''}}
 							</em>
 							<br/>
-							{{show.title}} &bull;
+							{{show.title || ''}} &bull;
 							<a
 								@click.stop
 								target="_blank"
@@ -47,7 +47,7 @@ const readableFormats = {
 export default {
 	props: {
 		show: Object,
-        selected: Boolean,
+		selected: Boolean,
 	},
 	computed: {
 		format () {
@@ -64,8 +64,8 @@ export default {
 		checkboxChange (event) {
 			event.target.checked = this.selected;
 			this.$emit('action', !this.selected);
-        },
-    },
+		},
+	},
 };
 </script>
 

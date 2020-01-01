@@ -1,15 +1,20 @@
-async function makeQuery (query, variables) {
+async function makeQuery (query, idArr) {
 	const response = await fetch('https://graphql.anilist.co', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
 		},
-		body: JSON.stringify({query, variables}),
+		body: JSON.stringify({
+			query,
+			variables: {
+				id: idArr,
+			},
+		}),
 	});
 	if (!response.ok) return alert('no bueno');
 	const data = await response.json();
-	return data.data;
+	return data.data.Page.results; // bad hardcode for the bad function
 }
 
 // Begin stuff that got imported from the old public voting site and hasn't been used yet
@@ -52,10 +57,22 @@ function submit (url, data) {
 
 // End old stuff
 
+function isShowCat (category) {
+	if (category.group === 'main' && category.name === 'Anime of the Year') {
+		return true;
+	} else if (category.group === 'production' && category.entryType !== 'themes' && !category.name.includes('OST') && category.entryType !== 'vas') {
+		return true;
+	} else if (category.group === 'character' && category.name.includes('Cast')) {
+		return true;
+	}
+	return false;
+}
+
 module.exports = {
 	makeQuery,
 	fuzzyMatch,
 	stringMatchesArray,
 	shuffle,
 	submit,
+	isShowCat,
 };

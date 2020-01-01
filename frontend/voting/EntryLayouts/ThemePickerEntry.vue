@@ -1,23 +1,20 @@
 <template>
-	<label class="char-picker-entry">
+	<label class="show-picker-entry">
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
-					<figure class="image char-cover">
+					<figure class="image show-cover">
 						<img :src="coverURI"/>
 					</figure>
 				</div>
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="char-title">
-								{{name}}
+							<em class="show-title">
+								{{show.anime}} {{show.themeNo || ''}}
 							</em>
 							<br/>
-							{{anime}}
-							<br/>
-							{{role}}
-							&bull;
+							{{show.title || ''}} &bull;
 							<a
 								@click.stop
 								target="_blank"
@@ -37,27 +34,30 @@
 </template>
 
 <script>
+const readableFormats = {
+	TV: 'TV',
+	TV_SHORT: 'TV Short',
+	MOVIE: 'Movie',
+	SPECIAL: 'Special',
+	OVA: 'OVA',
+	ONA: 'ONA',
+	MUSIC: 'Music',
+};
 
 export default {
 	props: {
-		char: Object,
+		show: Object,
 		selected: Boolean,
 	},
 	computed: {
-		name () {
-			return this.char.name.full;
-		},
-		anime () {
-			return this.char.media.nodes[0].title.romaji;
-		},
-		role () {
-			return this.char.media.edges[0].characterRole;
+		format () {
+			return readableFormats[this.show.format];
 		},
 		coverURI () {
-			return this.char.image.large;
+			return this.show.coverImage.large;
 		},
 		anilistLink () {
-			return this.char.siteUrl;
+			return this.show.siteUrl;
 		},
 	},
 	methods: {
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss">
-.char-cover {
+.show-cover {
     width: 64px;
     margin-right: 0.4rem;
     border-radius: 3px;

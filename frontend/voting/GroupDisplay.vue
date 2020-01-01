@@ -1,54 +1,67 @@
 <template>
-<body>
-	<div v-if="votingCats && selectedCategory">
-    <category-group-header :title="groupName">
-            <template v-slot:tab-bar>
-                <category-group-tab-bar v-model="selectedTab" :tabs="mappedCategories"/>
-            </template>
-        </category-group-header>
+	<body>
+		<div v-if="votingCats && selectedCategory && selections">
+			<category-group-header :title="groupName">
+				<template v-slot:tab-bar>
+					<category-group-tab-bar v-model="selectedTab" :tabs="votingCats"/>
+				</template>
+			</category-group-header>
 
-	<div class="container">
-	<div class="intro">
-        <h2 class="is-size-2 is-size-3-mobile">{{selectedTab}}</h2>
-    </div>
-	<div class="is-full-height">
-		<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
-		is better solved by v-if's so here's yet another hack-->
-		<MusicPicker v-if="selectedCategory.entryType === 'themes'" v-model="selections"/>
-		<VAPicker v-else-if="selectedCategory.entryType === 'vas'" v-model="selections"/>
-		<ShowPicker v-else-if="showQueryCat" v-model="selections"/>
-		<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" v-model="selections"/>
-		<TestPicker v-else-if="group === 'test'" v-model="selections"/>
-		<CharPicker v-else-if="group === 'char'" v-model="selections"/>
-	</div>
-	<div class="submit-wrapper">
-		<button
-			class="button is-success"
-			:class="{'is-loading': submitting}"
-			@click="submit"
-		>
-			Save Entries
-		</button>
-	</div>
-	</div>
-	</div>
-</body>
+			<div class="container">
+				<div class="intro">
+					<h2 class="is-size-2 is-size-3-mobile">{{selectedCategory.name}}</h2>
+				</div>
+				<div class="is-full-height">
+					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
+					is better solved by v-if's so here's yet another hack-->
+					<!-- it's okay this is exactly how i did it last year too lol -->
+					<VAPicker v-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" :value="selections"/>
+					<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
+					<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
+					<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
+					<TestPicker v-else-if="group === 'test'" :category="selectedCategory" :value="selections"/>
+					<CharPicker v-else-if="group === 'character'" :category="selectedCategory" :value="selections"/>
+				</div>
+				<div class="submit-wrapper">
+					<button
+						class="button is-success"
+						:class="{'is-loading': submitting}"
+						@click="submit"
+					>
+						Save Entries
+					</button>
+				</div>
+			</div>
+		</div>
+		<section v-else class="hero">
+			<div class="hero-body">
+				<div class="columns is-centered">
+					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
+						<div class="loading-text">
+						Please wait while your selections are being initialized. Thank you for your patience.
+						</div>
+						<img :src="snooImage"/>
+					</div>
+				</div>
+			</div>
+		</section>
+	</body>
 </template>
 
 <script>
 import {mapActions, mapState} from 'vuex';
-import Vue from 'vue';
-import {shuffle, stringMatchesArray} from '../util';
 import categoryGroupHeader from './CategoryGroupHeader';
 import categoryGroupTabBar from './CategoryGroupTabBar';
 
 // Import all the entry components here, there's a better way to do this but fuck that
 import DashboardPicker from './EntryLayouts/DashboardPicker';
 import CharPicker from './EntryLayouts/CharPicker';
-import MusicPicker from './EntryLayouts/MusicPicker';
+import ThemePicker from './EntryLayouts/ThemePicker';
 import TestPicker from './EntryLayouts/TestPicker';
 import VAPicker from './EntryLayouts/VAPicker';
 import ShowPicker from './EntryLayouts/ShowPicker';
+
+import snoo from '../../img/bannerSnooJump.png';
 
 export default {
 	components: {
@@ -56,7 +69,7 @@ export default {
 		categoryGroupTabBar,
 		DashboardPicker,
 		CharPicker,
-		MusicPicker,
+		ThemePicker,
 		TestPicker,
 		VAPicker,
 		ShowPicker,
@@ -70,25 +83,16 @@ export default {
 			showSelected: false,
 			saveButtonText: 'Save Selections',
 			changesSinceSave: false,
-			selections: [], // Probably all their selections or some shit
 			submitting: false,
+			SelectedTabName: null,
 		};
 	},
 	computed: {
 		...mapState([
 			'votingCats',
+			'categories',
+			'selections',
 		]),
-		_filteredShows () {
-			return this.shows.filter(show => stringMatchesArray(this.filter, show.terms))
-				.filter(show => show.format !== 'MUSIC')
-				.filter(show => this.showSelected ? this.selections[show.id] === this.selectedTab : true);
-		},
-		filteredShows () {
-			return this.showSelected ? this._filteredShows : this._filteredShows.slice(0, 50);
-		},
-		moreItems () {
-			return this._filteredShows.length - this.filteredShows.length;
-		},
 		groupName () {
 			switch (this.group) {
 				case 'main':
@@ -97,7 +101,7 @@ export default {
 					return 'Genre Awards';
 				case 'production':
 					return 'Production Awards';
-				case 'char':
+				case 'character':
 					return 'Character Awards';
 				case 'test':
 					return 'Test Categories';
@@ -105,18 +109,15 @@ export default {
 					return 'Unknown Group';
 			}
 		},
-		mappedCategories () {
-			return this.votingCats.map(cat => cat.name);
-		},
 		selectedCategory () {
-			return this.votingCats.find(cat => cat.name === this.selectedTab);
+			return this.votingCats.find(cat => cat.id === this.selectedTab);
 		},
 		showQueryCat () {
 			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
 				return true;
-			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && this.selectedCategory.entryType !== 'vas') {
+			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && !this.selectedCategory.name.includes('OST') && this.selectedCategory.entryType !== 'vas') {
 				return true;
-			} else if (this.group === 'char' && this.selectedCategory.name.includes('Cast')) {
+			} else if (this.group === 'character' && this.selectedCategory.name.includes('Cast')) {
 				return true;
 			}
 			return false;
@@ -128,8 +129,13 @@ export default {
 				return true;
 			} else if (this.group === 'test' && this.selectedCategory.name.includes('Sports')) {
 				return true;
+			} else if (this.selectedCategory.name.includes('OST') && this.group === 'production') {
+				return true;
 			}
 			return false;
+		},
+		snooImage () {
+			return snoo;
 		},
 	},
 	watch: {
@@ -142,44 +148,42 @@ export default {
 		group: {
 			async handler (newGroup) {
 				await this.getVotingCategories(newGroup);
-				this.selectedTab = this.votingCats[0].name;
+				this.selectedTab = this.votingCats[0].id;
+				this.selectedTabName = this.votingCats[0].name;
 			},
 		},
 	},
 	methods: {
 		...mapActions([
 			'getVotingCategories',
+			'getCategories',
+			'initializeSelections',
 		]),
-		setShow (id, category) {
-			if (this.selections[id] === category) {
-				Vue.set(this.selections, id, null);
-			} else if (!this.selections[id] || confirm(`You have already selected this show for the ${this.selections[id]} category. You can only nominate a show for one category. Would you like to change it to ${category}?`)) {
-				Vue.set(this.selections, id, category);
+		async submit () {
+			this.submitting = true;
+			try {
+				await fetch('/api/votes/submit', {
+					method: 'POST',
+					body: JSON.stringify(this.selections),
+				});
+			} finally {
+				this.submitting = false;
 			}
 		},
-		submit () {
-			// Do stuff
-		},
-		// eslint-disable-next-line multiline-comment-style
-		/* save () {
-			this.saveButtonText = 'Saving...';
-			submit('/response/genres', {
-				data: this.selections,
-			}).then(() => {
-				this.changesSinceSave = false;
-				this.saveButtonText = 'Saved!';
-				setTimeout(() => {
-					this.saveButtonText = 'Save Selections';
-				}, 1500);
-			}).catch(() => {
-				this.saveButtonText = 'Save Selections';
-				alert('Failed to save, try again');
-			});
-		},*/
 	},
 	async mounted () {
 		await this.getVotingCategories(this.group);
-		this.selectedTab = this.votingCats[0].name;
+		await this.initializeSelections();
+		this.selectedTab = this.votingCats[0].id;
+		this.selectedTabName = this.votingCats[0].name;
 	},
 };
 </script>
+
+<style lang="scss">
+.loading-text {
+	flex: 0 1 100%;
+	padding: 0.75rem;
+	text-align: center;
+}
+</style>

@@ -3,11 +3,11 @@
 		<nav-bar
 			class="is-dark"
 			:routes="[
-			{name: 'Main Awards', path: '/vote/main', props: {group: 'main'}},
-			{name: 'Genre Awards', path: '/vote/genre', props: {group: 'genre'}},
-			{name: 'Production Awards', path: '/vote/prod', props: {group: 'prod'}},
-			{name: 'Character Awards', path: '/vote/char', props: {group: 'char'}},
-			{name: 'Test Categories', path: '/vote/test', props: {group: 'main'}},
+				{name: 'Main Awards', path: '/vote/main', props: {group: 'main'}},
+				{name: 'Genre Awards', path: '/vote/genre', props: {group: 'genre'}},
+				{name: 'Production Awards', path: '/vote/production', props: {group: 'production'}},
+				{name: 'Character Awards', path: '/vote/character', props: {group: 'character'}},
+				{name: 'Test Categories', path: '/vote/test', props: {group: 'main'}},
 			]"
 			fullwidth
 		>

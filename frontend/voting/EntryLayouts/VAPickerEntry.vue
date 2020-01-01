@@ -1,22 +1,22 @@
+<!--I swear I didn't copy and paste everything here because I'm too lazy to figure out proper routing. In any case, if stuff changes, do stuff here.-->
 <template>
-	<label class="char-picker-entry">
+	<label class="va-picker-entry">
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
-					<figure class="image char-cover">
+					<figure class="image va-cover">
 						<img :src="coverURI"/>
 					</figure>
 				</div>
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="char-title">
-								{{name}}
+							<em class="va-title">
+								{{name}} ({{voiceActor}})
 							</em>
 							<br/>
 							{{anime}}
 							<br/>
-							{{role}}
 							&bull;
 							<a
 								@click.stop
@@ -37,27 +37,28 @@
 </template>
 
 <script>
+const queries = require('../anilistQueries');
 
 export default {
 	props: {
-		char: Object,
+		va: Object,
 		selected: Boolean,
 	},
 	computed: {
 		name () {
-			return this.char.name.full;
+			return this.va.name.full;
 		},
 		anime () {
-			return this.char.media.nodes[0].title.romaji;
+			return this.va.media.nodes[0].title.romaji;
 		},
-		role () {
-			return this.char.media.edges[0].characterRole;
+		voiceActor () {
+			return this.va.media.edges[0].voiceActors[0].name.full;
 		},
 		coverURI () {
-			return this.char.image.large;
+			return this.va.image.large;
 		},
 		anilistLink () {
-			return this.char.siteUrl;
+			return this.va.siteUrl;
 		},
 	},
 	methods: {
@@ -69,7 +70,7 @@ export default {
 </script>
 
 <style lang="scss">
-.char-cover {
+.va-cover {
     width: 64px;
     margin-right: 0.4rem;
     border-radius: 3px;
