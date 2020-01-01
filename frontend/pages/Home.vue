@@ -20,6 +20,10 @@
 							<button class="button is-primary is-large">Click here to vote</button>
 						</router-link>
 					</div>
+					<div v-if="me.level >= 4">
+						<button @click="deleteVotes" class="button is-danger is-large"
+						:class="{'is-loading': deleting}">Delete All Votes</button>
+					</div>
 					</div>
 					</div>
 					<div class="content has-text-centered" v-else>
@@ -42,6 +46,11 @@ import {mapState} from 'vuex';
 import snoo from '../../img/bannerSnooJump.png';
 
 export default {
+	data () {
+		return {
+			deleting: false,
+		};
+	},
 	computed: {
 		...mapState([
 			'me',
@@ -51,6 +60,15 @@ export default {
 		},
 		snooImage () {
 			return snoo;
+		},
+	},
+	methods: {
+		async deleteVotes () {
+			this.deleting = true;
+			await fetch('/api/votes/all/delete', {
+				method: 'GET',
+			});
+			this.deleting = false;
 		},
 	},
 };
