@@ -137,8 +137,11 @@ const store = new Vuex.Store({
 			const themes = await makeRequest(`/api/themes/delete/${themeType}`, 'DELETE');
 			commit('UPDATE_THEMES', themes);
 		},
-		async getVotingCategories ({commit}, group) {
-			const votingCats = await makeRequest(`/api/categories/${group}`);
+		async getVotingCategories ({commit, state, dispatch}, group) {
+			if (!state.categories) {
+				await dispatch('getCategories');
+			}
+			const votingCats = state.categories.filter(cat => cat.awardsGroup === group);
 			commit('GET_VOTING_CATEGORIES', votingCats);
 		},
 		async initializeSelections ({commit, state, dispatch}) {
