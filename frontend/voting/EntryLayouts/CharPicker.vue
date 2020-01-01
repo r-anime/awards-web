@@ -113,10 +113,10 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		findDate (char) {
+		findDate (node) {
 			let date;
 			try {
-				date = new Date(char.nodes[0].endDate.year, char.nodes[0].endDate.month, char.nodes[0].endDate.day);
+				date = new Date(node.endDate.year, node.endDate.month, node.endDate.day);
 			} catch (err) {
 				date = new Date(2016, 0, 0);
 			}
@@ -147,17 +147,20 @@ export default {
 			this.chars = data.data.character.results;
 			const promise = new Promise((resolve, reject) => {
 				try {
-					this.chars = this.chars.filter(char => {
-						const date = this.findDate(char.media);
-						return char.media.nodes.length !== 0 && queries.eligibilityStart <= date && date <= queries.eligibilityEnd;
-					});
+					for (const char of this.chars) {
+						if (this.category.name.includes('Main')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'MAIN');
+						else if (this.category.name.includes('Supporting')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'SUPPORTING');
+					}
+					for (const char of this.chars) {
+						char.media.nodes = char.media.nodes.filter(node => queries.eligibilityStart <= this.findDate(node) && this.findDate(node) <= queries.eligibilityEnd);
+					}
+					this.chars = this.chars.filter(char => char.media.nodes.length !== 0 && char.media.edges.length !== 0);
 					resolve();
 				} catch (err) {
 					reject(err);
 				}
 			});
 			promise.then(() => {
-				console.log(this.chars);
 				this.total = this.chars.length;
 				this.loaded = true;
 			});

@@ -107,10 +107,10 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		findDate (va) {
+		findDate (node) {
 			let date;
 			try {
-				date = new Date(va.nodes[0].endDate.year, va.nodes[0].endDate.month, va.nodes[0].endDate.day);
+				date = new Date(node.endDate.year, node.endDate.month, node.endDate.day);
 			} catch (err) {
 				date = new Date(2016, 0, 0);
 			}
@@ -141,16 +141,17 @@ export default {
 			this.vas = data.data.character.results;
 			const promise = new Promise((resolve, reject) => {
 				try {
-					this.vas = this.vas.filter(va => {
-						const date = this.findDate(va.media);
-						return va.media.nodes.length !== 0 && queries.eligibilityStart <= date && date <= queries.eligibilityEnd;
-					});
+					for (const va of this.vas) {
+						va.media.nodes = va.media.nodes.filter(node => queries.eligibilityStart <= this.findDate(node) && this.findDate(node) <= queries.eligibilityEnd);
+					}
+					this.vas = this.vas.filter(va => va.media.nodes.length !== 0);
 					resolve();
 				} catch (err) {
 					reject(err);
 				}
 			});
 			promise.then(() => {
+				console.log(this.vas);
 				this.total = this.vas.length;
 				this.loaded = true;
 			});
