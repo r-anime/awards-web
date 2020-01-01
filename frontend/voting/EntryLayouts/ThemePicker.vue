@@ -177,9 +177,11 @@ export default {
 			if (!this.search) {
 				this.loaded = true;
 				this.themeData = [];
+				this.themeData = [];
 				this.total = 'No';
 				return;
 			}
+			this.shows = [];
 			const fuse = new Fuse(this.themes, options);
 			this.themeData = fuse.search(this.search);
 			this.themeData = this.themeData.filter(theme => this.category.name.includes(theme.themeType.toUpperCase()));
