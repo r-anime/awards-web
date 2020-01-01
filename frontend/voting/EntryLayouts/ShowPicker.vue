@@ -120,7 +120,7 @@ export default {
 					'Accept': 'application/json',
 				},
 				body: JSON.stringify({
-					query: queries.showQuery,
+					query: this.category.awardsGroup === 'production' ? queries.prodQuery : queries.showQuery,
 					variables: {
 						search: this.search,
 					},

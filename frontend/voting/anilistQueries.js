@@ -4,11 +4,36 @@ const eligibilityStart = new Date(2019, 1, 8); // Year, Month, Day
 const eligibilityEnd = new Date(2020, 1, 12);
 
 const showQuery = `query ($search: String) {
-	anime: Page(page: 1, perPage: 50, isAdult: false) {
+	anime: Page(page: 1, perPage: 50) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1) {
+	  results: media(type: ANIME, isAdult:false, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1) {
+		id
+		format
+		startDate {
+		  year
+		}
+		title {
+		  romaji
+		  english
+		  native
+		  userPreferred
+		}
+		coverImage {
+		  large
+		}
+		siteUrl
+	  }
+	}
+  }`;
+
+const prodQuery = `query ($search: String) {
+	anime: Page(page: 1, perPage: 50) {
+	  pageInfo {
+		total
+	  }
+	  results: media(type: ANIME, search: $search, isAdult: false, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, episodes_greater: 1) {
 		id
 		format
 		startDate {
@@ -291,6 +316,7 @@ module.exports = {
 	charQuery,
 	vaQuery,
 	testQuery,
+	prodQuery,
 	eligibilityStart,
 	eligibilityEnd,
 	showByIDQuery,
