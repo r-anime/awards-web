@@ -8,7 +8,7 @@ const showQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, isAdult:false, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1) {
+	  results: media(type: ANIME, isAdult:false, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1, countryOfOrigin:JP) {
 		id
 		format
 		startDate {
@@ -33,7 +33,7 @@ const prodQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, search: $search, isAdult: false, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, episodes_greater: 1) {
+	  results: media(type: ANIME, search: $search, isAdult: false, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, episodes_greater: 1, countryOfOrigin:JP) {
 		id
 		format
 		startDate {
@@ -58,7 +58,7 @@ const testQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL, MOVIE],search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false) {
+	  results: media(type: ANIME, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL, MOVIE],search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false, countryOfOrigin:JP) {
 		id
 		format
 		startDate {
