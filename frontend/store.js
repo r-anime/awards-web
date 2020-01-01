@@ -190,10 +190,15 @@ const store = new Vuex.Store({
 					}
 				}
 				// Check if user actually voted for any OPs/EDs
-				if (themeObject.op.length !== 0 && themeObject.ed.length !== 0) {
+				if (themeObject.op.length !== 0 || themeObject.ed.length !== 0) {
 					// Pull anilist IDs of themes
-					const themeArr = themeObject.op.map(theme => theme.anilistID);
-					themeArr.concat(themeObject.ed.map(theme => theme.anilistID)); // Push the two arrays together so we only send one query
+					let themeArr = [];
+					if (themeObject.op.length !== 0) {
+						themeArr = themeArr.concat(themeObject.op.map(theme => theme.anilistID));
+					}
+					if (themeObject.ed.length !== 0) {
+						themeArr = themeArr.concat(themeObject.ed.map(theme => theme.anilistID));
+					}
 					const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
 					const edCat = state.categories.find(cat => cat.name.includes('ED'));
 					const anilistData = await util.makeQuery(queries.themeByIDQuery, themeArr); // await ahhhhhh
