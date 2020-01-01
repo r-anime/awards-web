@@ -107,7 +107,7 @@ export default {
 			loaded: true,
 			typingTimeout: null,
 			search: '',
-			shows: [],
+			shows: JSON.parse(this.category.entries),
 			total: 'No',
 			selectedTab: 'selections',
 		};
@@ -157,7 +157,7 @@ export default {
 		category () {
 			this.search = '';
 			this.selectedTab = 'selections';
-			this.shows = [];
+			this.shows = JSON.parse(this.category.entries);
 		},
 	},
 };
