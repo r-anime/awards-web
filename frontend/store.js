@@ -173,9 +173,8 @@ const store = new Vuex.Store({
 				for (const vote of votes) {
 					const category = state.categories.find(cat => cat.id === vote.category_id); // retrieve category associated with the vote
 					if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
-						// Dashboard categories just need their right objects back
-						const entries = JSON.parse(category.entries);
-						selections[category.id].push(entries[vote.entry_id]); // push the entry into the object
+						// Dashboard categories have their anilist stored elsewhere
+						allIDs.shows.push(vote.anilist_id);
 					} else if (vote.theme_name) {
 						// Theme category so we're gonna push the whole theme and SQUASH this shit later
 						const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
@@ -217,8 +216,10 @@ const store = new Vuex.Store({
 				const vaData = allIDs.vas.length === 0 ? [] : await util.makeQuery(queries.vaByIDQuery, allIDs.vas);
 				for (const vote of votes) {
 					const category = state.categories.find(cat => cat.id === vote.category_id); // find category associated with vote
-					if (!vote.theme_name && !vote.anilist_id) { // This condition determines if it needs anilist data or already got data above
-						if (category.entryType === 'shows') {
+					if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
+						if (vote.anilist_id && !vote.theme_name) { // if dashboard cat, compare anilist_id instead
+							selections[category.id].push(showsData.find(show => show.id === vote.anilist_id));
+						} else if (category.entryType === 'shows') {
 							selections[category.id].push(showsData.find(show => show.id === vote.entry_id)); // just push stuff into objects
 						} else if (category.entryType === 'characters') {
 							selections[category.id].push(charData.find(char => char.id === vote.entry_id));
