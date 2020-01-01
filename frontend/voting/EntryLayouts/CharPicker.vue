@@ -183,7 +183,8 @@ export default {
 								// If they want to move it, we need to update the entry in the other category
 								this.value[cat.id].splice(charIndex, 1);
 							} else {
-								// If they cancel out, return to abort the change
+								// If they cancel out, return and change tab to avoid visual glitch
+								this.selectedTab = 'selections';
 								return;
 							}
 						}
