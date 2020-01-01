@@ -125,7 +125,7 @@ export default {
 		sendQuery () {
 			if (!this.search) {
 				this.loaded = true;
-				this.shows = [];
+				this.shows = JSON.parse(this.category.entries);
 				this.total = 'No';
 				return;
 			}
