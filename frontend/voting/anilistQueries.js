@@ -4,7 +4,7 @@ const eligibilityStart = new Date(2019, 1, 8); // Year, Month, Day
 const eligibilityEnd = new Date(2020, 1, 12);
 
 const showQuery = `query ($search: String) {
-	anime: Page(page: 1, perPage: 50) {
+	anime: Page(page: 1, perPage: 50, isAdult: false) {
 	  pageInfo {
 		total
 	  }
@@ -33,7 +33,7 @@ const testQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, search: $search, endDate_greater: 20190108, endDate_lesser: 20200112) {
+	  results: media(type: ANIME, search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false) {
 		id
 		format
 		startDate {
