@@ -16,7 +16,6 @@
 							<br/>
 							{{anime}}
 							<br/>
-							{{role}}
 							&bull;
 							<a
 								@click.stop
