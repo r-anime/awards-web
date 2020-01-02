@@ -22,6 +22,7 @@ import CategoryInfo from './components/CategoryInfo';
 import CategoryTools from './components/CategoryTools';
 
 import GroupDisplay from './voting/GroupDisplay';
+import Instructions from './voting/Instructions';
 
 export default new VueRouter({
 	mode: 'history',
@@ -130,6 +131,10 @@ export default new VueRouter({
 					props: true,
 				},
 			],
+		},
+		{
+			path: '/instructions',
+			component: Instructions,
 		},
 
 		// 404 route - keep last

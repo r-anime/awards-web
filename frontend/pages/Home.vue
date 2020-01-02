@@ -16,8 +16,8 @@
 						</router-link>.
 					</div>
 					<div>
-						<router-link to="/vote">
-							<button class="button is-primary is-large">Click here to vote</button>
+						<router-link to="/instructions">
+							<button class="button is-primary is-large">Vote Here!</button>
 						</router-link>
 					</div>
 					<div v-if="me.level >= 4">
