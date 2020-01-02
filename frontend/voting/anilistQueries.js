@@ -3,6 +3,9 @@
 const eligibilityStart = new Date(2019, 1, 8); // Year, Month, Day
 const eligibilityEnd = new Date(2020, 1, 12);
 
+// Blacklist of all the unsubbed anime, note for next year: make this array separate for shows and other stuff
+const blacklist = [101115, 102005, 101228, 108734, 106607, 110124, 110201, 109931, 104562, 107858, 107860, 107859, 104329, 100269, 107908, 101992, 107012, 99425, 103221, 98784, 107252, 107864, 107208, 105018, 102976, 106286, 109190, 105143, 106240, 107727, 108735, 107905, 108553, 100675, 108577, 108626, 108487, 101610, 110413, 111290, 112732, 112308, 105596, 111905];
+
 const showQuery = `query ($search: String) {
 	anime: Page(page: 1, perPage: 50) {
 	  pageInfo {
@@ -323,4 +326,5 @@ module.exports = {
 	charByIDQuery,
 	vaByIDQuery,
 	themeByIDQuery,
+	blacklist,
 };

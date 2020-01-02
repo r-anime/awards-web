@@ -11,16 +11,24 @@
 					<div class="content">
 						<p>
 							<em class="show-title">
-								{{show.anime}} {{show.themeNo || ''}}
+								{{anime}} {{show.themeNo || ''}}
 							</em>
 							<br/>
-							{{show.title || ''}} &bull;
+							{{show.title}} &bull;
 							<a
 								@click.stop
 								target="_blank"
 								:href="anilistLink"
 							>
 								AniList
+							</a>
+							&bull;
+							<a v-if="themeLink != ''"
+								@click.stop
+								target="_blank"
+								:href="themeLink"
+							>
+								Video
 							</a>
 						</p>
 					</div>
@@ -58,6 +66,12 @@ export default {
 		},
 		anilistLink () {
 			return this.show.siteUrl;
+		},
+		anime () {
+			return this.show.anime.split('%')[0];
+		},
+		themeLink () {
+			return this.show.link;
 		},
 	},
 	methods: {

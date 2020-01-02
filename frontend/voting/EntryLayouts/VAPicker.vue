@@ -145,13 +145,15 @@ export default {
 						va.media.nodes = va.media.nodes.filter(node => queries.eligibilityStart <= this.findDate(node) && this.findDate(node) <= queries.eligibilityEnd);
 					}
 					this.vas = this.vas.filter(va => va.media.nodes.length !== 0);
+					for (const [count, va] of this.vas.entries()) {
+						if (queries.blacklist.includes(va.media.nodes[0].id)) this.vas.splice(count, 1);
+					}
 					resolve();
 				} catch (err) {
 					reject(err);
 				}
 			});
 			promise.then(() => {
-				console.log(this.vas);
 				this.total = this.vas.length;
 				this.loaded = true;
 			});

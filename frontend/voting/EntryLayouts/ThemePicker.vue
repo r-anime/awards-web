@@ -86,7 +86,7 @@ const options = {
 	location: 0,
 	distance: 70,
 	maxPatternLength: 64,
-	minMatchCharLength: 1,
+	minMatchCharLength: 3,
 	keys: [
 		'title',
 		'anime',

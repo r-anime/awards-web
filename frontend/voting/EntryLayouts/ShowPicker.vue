@@ -129,7 +129,12 @@ export default {
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.shows = data.data.anime.results;
-			this.total = data.data.anime.pageInfo.total || 'No';
+			for (const [count, show] of this.shows.entries()) {
+				if (queries.blacklist.includes(show.id)) {
+					this.shows.splice(count, 1);
+				}
+			}
+			this.total = this.shows.length;
 			this.loaded = true;
 		},
 		showSelected (show) {

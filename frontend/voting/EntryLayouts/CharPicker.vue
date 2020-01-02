@@ -150,11 +150,13 @@ export default {
 					for (const char of this.chars) {
 						if (this.category.name.includes('Main')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'MAIN');
 						else if (this.category.name.includes('Supporting')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'SUPPORTING');
-					}
-					for (const char of this.chars) {
 						char.media.nodes = char.media.nodes.filter(node => queries.eligibilityStart <= this.findDate(node) && this.findDate(node) <= queries.eligibilityEnd);
 					}
 					this.chars = this.chars.filter(char => char.media.nodes.length !== 0 && char.media.edges.length !== 0);
+					// this loop really needs to run after the first one to avoid errors
+					for (const [count, char] of this.chars.entries()) {
+						if (queries.blacklist.includes(char.media.nodes[0].id)) this.chars.splice(count, 1);
+					}
 					resolve();
 				} catch (err) {
 					reject(err);
