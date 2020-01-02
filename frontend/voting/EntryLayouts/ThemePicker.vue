@@ -199,6 +199,12 @@ export default {
 		toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
+				// Limit number of nominations
+				if (this.value[this.category.id].length >= 50) {
+					alert("You cannot vote for any more entries.");
+					this.selectedTab = 'selections';
+					return;
+				}
 				const themeIndex = this.value[this.category.id].findIndex(theme => theme.title === show.title);
 				if (themeIndex !== -1) { // If we find it...
 					// Confirm that the user wants to move their vote

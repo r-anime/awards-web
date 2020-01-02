@@ -164,6 +164,12 @@ export default {
 		toggleShow (va, select = true) {
 			if (select) {
 				if (this.showSelected(va)) return;
+				// Limit number of nominations
+				if (this.value[this.category.id].length >= 50) {
+					alert("You cannot vote for any more entries.");
+					this.selectedTab = 'selections';
+					return;
+				}
 				this.value[this.category.id].push(va);
 				this.$emit('input', this.value);
 			} else {

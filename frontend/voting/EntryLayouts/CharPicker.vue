@@ -173,6 +173,12 @@ export default {
 		toggleCharacter (char, select = true) {
 			if (select) {
 				if (this.characterSelected(char)) return;
+				// Limit number of nominations
+				if (this.value[this.category.id].length >= 50) {
+					alert("You cannot vote for any more entries.");
+					this.selectedTab = 'selections';
+					return;
+				}
 
 				// Check if the character is selected in another character
 				// category (other than antag)
