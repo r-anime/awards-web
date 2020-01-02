@@ -123,10 +123,10 @@ export default {
 			}, 750);
 		},
 		sendQuery () {
-			if (!this.search) {
-				this.loaded = true;
+			if (!this.search || this.search.length <= 2) {
 				this.shows = JSON.parse(this.category.entries);
-				this.total = 'No';
+				this.total = this.shows.length;
+				this.loaded = true;
 				return;
 			}
 			const entries = JSON.parse(this.category.entries);

@@ -174,11 +174,12 @@ export default {
 			this.loaded = true;
 		},
 		async searchThemes () {
-			if (!this.search) {
-				this.loaded = true;
+			if (!this.search || this.search.length <= 2) {
 				this.themeData = [];
 				this.themeData = [];
+				this.shows = [];
 				this.total = 'No';
+				this.loaded = true;
 				return;
 			}
 			this.shows = [];
