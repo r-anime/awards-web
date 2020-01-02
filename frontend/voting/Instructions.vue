@@ -28,6 +28,7 @@
 					<li>Movies are not eligible in Production Awards except <b>OST/OP/ED</b>. You are limited to voting for only a single version of an OP/ED. <b>OST</b> shows are pre-allocated. There is no gender filtering between <b>Male and Female VAs</b> but we will not count incorrect votes.</li>
 					<li>For <b>Character Awards</b>, each character is pre-allocated into <i>Main</i> and <i>Supporting</i> roles according to AniList's database. Some characters have both Main and Supporting roles in different shows. You can only vote for a character into one character category, barring <b>Antagonist</b> where you can vote any appropriate character. In <b>Cast</b>, you nominate entire shows, not characters.</li>
 					<li><b>Sports</b> has its shows pre-allocated. Movies are eligible for both <b>Script</b> and <b>Sound Design</b>. Movies that have 2018 release dates are not eligible.</li>
+					<li>Note that all pre-allocated categories will display all their entries in the Search tab.</li>
 				</ul>
                 <br/>
             </content>
