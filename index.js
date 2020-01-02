@@ -1,4 +1,5 @@
 const fs = require('fs');
+const http = require('http');
 const https = require('https');
 const path = require('path');
 
@@ -50,12 +51,8 @@ app.use('/api', api);
 app.use('/auth', auth);
 
 // Start the server
-app.listen(config.port, () => {
-	log.success(`Listening on port ${config.port}~!`);
-});
-
-// If we're using HTTPS, create an HTTPS server
 if (config.https) {
+	// If we're using HTTPS, create an HTTPS server
 	const httpsOptions = {
 		key: config.https.key,
 		cert: config.https.cert,
@@ -63,5 +60,16 @@ if (config.https) {
 	const httpsApp = https.createServer(httpsOptions, app.handler);
 	httpsApp.listen(config.https.port, () => {
 		log.success(`HTTPS listening on port ${config.https.port}`);
+	});
+	// The HTTP server will just redirect to the HTTPS server
+	http.createServer((req, res) => {
+		res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`});
+		res.end();
+	}).listen(config.port, () => {
+		log.success(`HTTP redirect listening on port ${config.port}`);
+	});
+} else {
+	app.listen(config.port, () => {
+		log.success(`Listening on port ${config.port}~!`);
 	});
 }
