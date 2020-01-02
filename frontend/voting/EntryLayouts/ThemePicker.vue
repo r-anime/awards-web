@@ -199,6 +199,19 @@ export default {
 		toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
+				const themeIndex = this.value[this.category.id].findIndex(theme => theme.title === show.title);
+				if (themeIndex !== -1) { // If we find it...
+					// Confirm that the user wants to move their vote
+					if (confirm(`You have already selected another version of this theme. Do you want to move your vote to this version.`)) {
+						// If they want to move it, we need to update the entry in the other category
+						this.value[this.category.id].splice(themeIndex, 1);
+					} else {
+						// If they cancel out, return and change tab to avoid visual glitch
+						this.selectedTab = 'selections';
+						return;
+					}
+				}
+
 				this.value[this.category.id].push(show);
 				this.$emit('input', this.value);
 			} else {
