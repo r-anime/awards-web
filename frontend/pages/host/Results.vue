@@ -7,7 +7,14 @@
         <div v-else class="content">
             <h3>Overall</h3>
             <p>Total votes: {{voteSummary.votes}}</p>
-            <p>Users voted: {{voteSummary.users}}</p>\
+            <p>Users voted: {{voteSummary.users}}</p>
+            <div
+                v-for="category in categories"
+                :key="category.id"
+            >
+                <h3>{{category.name}}</h3>
+                <p>Total votes: {{votesFor(category).length}}</p>
+            </div>
         </div>
     </div>
 </template>
@@ -27,6 +34,9 @@ export default {
 			'getCategories',
 			'getVoteSummary',
 		]),
+		votesFor (category) {
+			return this.voteSummary.allVotes.filter(vote => vote.categoryId === category.id);
+		},
 	},
 	mounted () {
 		if (!this.categories) {
