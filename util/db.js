@@ -28,6 +28,7 @@ const pushUserVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_i
 const pushUserThemeVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id,theme_name,anilist_id) VALUES (:redditUser,:categoryId,:entryId,:themeName,:anilistId)');
 const pushUserDashboardVotesQuery = db.prepare('INSERT INTO votes (reddit_user,category_id,entry_id,anilist_id) VALUES (:redditUser,:categoryId,:entryId,:anilistId)');
 const getAllUserVotesQuery = db.prepare('SELECT * from votes WHERE reddit_user=?');
+const getAllVotesQuery = db.prepare('SELECT * FROM votes');
 
 // Purely for debugging and data purging reasons
 const deleteAllVotesQuery = db.prepare('DELETE FROM votes');
@@ -56,6 +57,7 @@ module.exports = {
 	pushUserThemeVotes: pushUserThemeVotesQuery.run.bind(pushUserThemeVotesQuery),
 	pushUserDashboardVotes: pushUserDashboardVotesQuery.run.bind(pushUserDashboardVotesQuery),
 	getAllUserVotes: getAllUserVotesQuery.all.bind(getAllUserVotesQuery),
+	getAllVotes: getAllVotesQuery.all.bind(getAllVotesQuery),
 
 	deleteAllVotes: deleteAllVotesQuery.run.bind(deleteAllVotesQuery),
 };

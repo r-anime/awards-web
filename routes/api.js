@@ -322,4 +322,32 @@ apiApp.get('/votes/all/delete', async (request, response) => {
 	}
 });
 
+apiApp.get('/voteSummary', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	const allVotes = db.getAllVotes();
+	const allUsers = {};
+	const voteSummary = {
+		votes: 0,
+		users: 0,
+		allVotes: [],
+	};
+	for (const vote of allVotes) {
+		voteSummary.votes += 1;
+		if (!allUsers[vote.reddit_user]) {
+			allUsers[vote.reddit_user] = true;
+			voteSummary.users += 1;
+		}
+		voteSummary.allVotes.push({
+			id: vote.id,
+			categoryId: vote.category_id,
+			entryId: vote.entry_id,
+			anilistId: vote.anilist_id,
+			themeName: vote.theme_name,
+		});
+	}
+	response.json(voteSummary);
+});
+
 module.exports = apiApp;
