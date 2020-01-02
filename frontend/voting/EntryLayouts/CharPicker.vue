@@ -175,7 +175,7 @@ export default {
 				if (this.characterSelected(char)) return;
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 50) {
-					alert("You cannot vote for any more entries.");
+					alert('You cannot vote for any more entries.');
 					this.selectedTab = 'selections';
 					return;
 				}
@@ -230,7 +230,7 @@ export default {
 }
 .char-picker-overflow-wrap {
 	/* TODO hardcode bad */
-	height: calc(100vh - 141px - 46px);
+	height: calc(100vh - 410px);
 	overflow-y: auto;
 }
 .char-picker-search-bar {

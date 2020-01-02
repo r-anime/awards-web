@@ -264,7 +264,7 @@ export default {
 }
 .show-picker-overflow-wrap {
 	/* TODO hardcode bad */
-	height: calc(100vh - 141px - 46px);
+	height: calc(100vh - 410px);
 	overflow-y: auto;
 }
 .show-picker-search-bar {
