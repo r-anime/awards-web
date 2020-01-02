@@ -35,6 +35,7 @@ const store = new Vuex.Store({
 		themes: null,
 		votingCats: null,
 		selections: null,
+		voteSummary: null,
 	},
 	getters: {
 		isHost (state) {
@@ -84,6 +85,10 @@ const store = new Vuex.Store({
 		},
 		UPDATE_SELECTIONS (state, selections) {
 			state.selections = selections;
+		},
+
+		GET_VOTE_SUMMARY (state, voteSummary) {
+			state.voteSummary = voteSummary;
 		},
 	},
 	actions: {
@@ -230,6 +235,11 @@ const store = new Vuex.Store({
 				}
 			}
 			commit('UPDATE_SELECTIONS', selections);
+		},
+
+		async getVoteSummary ({commit}) {
+			const voteSummary = await makeRequest('/api/voteSummary');
+			commit('GET_VOTE_SUMMARY', voteSummary);
 		},
 	},
 });
