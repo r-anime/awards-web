@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "db-migrate up && webpack && node index.js",
+    "deploy": "webpack && node index.js",
     "build": "webpack",
     "serve": "node index.js",
     "migrate": "db-migrate up"
