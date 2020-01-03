@@ -41,7 +41,7 @@
     "fuse.js": "^3.4.6",
     "polka": "^0.5.2",
     "rethinkdbdash": "^2.3.31",
-    "sirv": "^0.2.2",
+    "sirv": "^0.4.2",
     "superagent": "^5.0.2",
     "vuex": "^3.1.1"
   }
