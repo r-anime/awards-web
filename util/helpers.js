@@ -4,7 +4,7 @@ const log = require('another-logger');
 const config = require('../config');
 const db = require('./db');
 
-const maxAccountDate = 1393170856; // sync with frontend/store.js
+const maxAccountDate = 1578009600; // sync with frontend/store.js
 
 const requestHelpers = {
 	reddit () {

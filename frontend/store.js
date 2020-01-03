@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const util = require('./util');
 const queries = require('./voting/anilistQueries');
 
-const maxAccountDate = 1393170856; // sync with util/helpers.js for backend
+const maxAccountDate = 1578009600; // sync with util/helpers.js for backend
 
 async function makeRequest (path, method = 'GET', body) {
 	if (typeof body === 'object' && body != null) {
