@@ -77,6 +77,7 @@
 <script>
 import ShowPickerEntry from './ShowPickerEntry';
 const queries = require('../anilistQueries');
+import {shuffle} from '../../util';
 
 export default {
 	components: {
@@ -202,7 +203,7 @@ export default {
 		});
 		if (!nextResponse.ok) return alert('no bueno');
 		const data = await nextResponse.json();
-		this.defaultShows = data.data.anime.results;
+		this.defaultShows = shuffle(data.data.anime.results);
 		this.loaded = true;
 	},
 };
