@@ -10,7 +10,9 @@
 		<router-view/>
 		<footer class="footer">
 			<div class="content has-text-centered">
-				<a href="/about">About/Credits</a>
+				<router-link to="/about" style="color:inherit">
+					<a>About/Credits</a>
+				</router-link>
 			</div>
 		</footer>
 	</body>
