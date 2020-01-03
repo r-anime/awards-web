@@ -30,10 +30,10 @@
 				<h3 class="title is-3">Category-specific Instructions</h3>
 				<ul>
 					<li>You can vote for any <strong>eligible TV Anime</strong> that ended in 2019 for AotY. All other Main Awards such as Shortform, Movies and Original are pre-allocated.</li>
-					<li><strong>Genre Awards</strong> are pre-allocated by hosts. Each category displays a list of all eligible shows in that category when you go into the Search tab. A show is only eligible for a single genre.</li>
-					<li>Movies are not eligible in Production Awards except <strong>OST/OP/ED</strong>. You are limited to voting for only a single version of an OP/ED. <strong>OST</strong> shows are pre-allocated based on whether the full soundtrack released in 2019. There is no gender filtering between <strong>Male and Female VAs</strong> but we will not count incorrect votes.</li>
+					<li><strong>Genre Awards</strong> and the test category <strong>Sports</strong> are pre-allocated by hosts. Each category displays a list of all eligible shows in that category when you go into the Search tab. A show is only eligible for a single genre.</li>
+					<li>Movies are not eligible in Production Awards except <strong>OST/OP/ED</strong> and the test categories <strong>Script</strong> and <strong>Sound Design</strong>. You are limited to voting for only a single version of an OP/ED. <strong>OST</strong> shows are pre-allocated based on whether the full soundtrack released in 2019. There is no gender filtering between <strong>Male and Female VAs</strong> but we will not count incorrect votes.</li>
 					<li>For <strong>Character Awards</strong>, each character is pre-allocated into <em>Main</em> and <em>Supporting</em> roles according to AniList's database. On the other hand, the allocation of <em>Dramatic</em> vs <em>Comedic</em> for characters is handled by the voters and the jurors. Some characters have both <em>Main</em> and <em>Supporting</em> roles in different shows. You can only vote for a character into one character category, barring <strong>Antagonist</strong> where you can vote for any appropriate character. For our <strong>Cast</strong> category, you are nominating a show's overall cast of characters, therefore instead of picking a specific character you are nominating an entire show.</li>
-					<li><strong>Sports</strong> has its shows pre-allocated. Movies are eligible for both <strong>Script</strong> and <strong>Sound Design</strong>. Only Movies that became available online with English subtitles in 2019 are eligible.  Camripped movies, even with subtitles, are not eligible.</li>
+					<li>Movies are eligible for both <strong>Script</strong> and <strong>Sound Design</strong>. Only Movies that became available online with English subtitles in 2019 are eligible.  Camripped movies, even with subtitles, are not eligible.</li>
 					<li>Note that pre-allocated categories will display all their entries in the Search tab. Some categories will randomly display eligible anime.</li>
 				</ul>
                 <br/>
@@ -68,7 +68,7 @@ export default {
 		},
 		anilistSubmission () {
 			return 'https://anilist.co/edit/anime/new';
-		}
+		},
 	},
 };
 </script>
