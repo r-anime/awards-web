@@ -8,13 +8,6 @@
 			</template>
 		</nav-bar>
 		<router-view/>
-		<footer class="footer">
-			<div class="content has-text-centered">
-				<router-link to="/about" style="color:inherit">
-					<a>About/Credits</a>
-				</router-link>
-			</div>
-		</footer>
 	</body>
 </template>
 
@@ -43,5 +36,6 @@ export default {
 body {
 	margin: 0;
 	font-family: sans-serif;
+	height: calc(100vh-186px);
 }
 </style>

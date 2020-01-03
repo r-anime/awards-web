@@ -42,6 +42,13 @@
 				</div>
 			</div>
 		</div>
+		<footer class="hero-foot footer">
+			<div class="content has-text-centered">
+				<router-link to="/about" style="color:inherit">
+					<a>About/Credits</a>
+				</router-link>
+			</div>
+		</footer>
 	</section>
 </template>
 
