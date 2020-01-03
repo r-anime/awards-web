@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && node index.js",
+    "start": "db-migrate up && webpack && node index.js",
     "build": "webpack",
     "serve": "node index.js",
     "migrate": "db-migrate up"

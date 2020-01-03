@@ -28,6 +28,7 @@ apiApp.get('/me', async (request, response) => {
 		reddit: {
 			name: redditorInfo.name,
 			avatar: redditorInfo.subreddit.icon_img,
+			created: redditorInfo.created_utc,
 		},
 		level: userInfo.level,
 		flags: userInfo.flags,
@@ -245,8 +246,8 @@ apiApp.post('/deleteaccount', async (request, response) => {
 
 apiApp.post('/votes/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName})) {
-		return response.json(401, {error: 'Invalid user.'});
+	if (!await request.authenticate({name: userName, oldEnough: true})) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	await db.deleteAllVotesFromUser(userName);
 	let req;
@@ -299,8 +300,8 @@ apiApp.post('/votes/submit', async (request, response) => {
 
 apiApp.get('/votes/get', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName})) {
-		return response.json(401, {error: 'Invalid user.'});
+	if (!await request.authenticate({name: userName, oldEnough: true})) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	try {
 		response.json(db.getAllUserVotes(userName));

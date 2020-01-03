@@ -4,6 +4,8 @@ const log = require('another-logger');
 const config = require('../config');
 const db = require('./db');
 
+const maxAccountDate = 1393170856; // sync with frontend/store.js
+
 const requestHelpers = {
 	reddit () {
 		const originalRequest = this;
@@ -78,11 +80,12 @@ const requestHelpers = {
 	json () {
 		return this.body().then(body => JSON.parse(body));
 	},
-	async authenticate ({level, name}) {
+	async authenticate ({level, name, oldEnough}) {
 		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
 		const userInfo = db.getUser(redditInfo.name);
 		if (level && (!userInfo || userInfo.level < level)) return false;
 		if (name && redditInfo.name !== name) return false;
+		if (oldEnough && redditInfo.created_utc >= maxAccountDate) return false;
 		return true;
 	},
 };
