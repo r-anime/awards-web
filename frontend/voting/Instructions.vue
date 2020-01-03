@@ -12,7 +12,7 @@
 		<div class="container">
             <content class="content">
 				<h1 class="title is-1">Voting Instructions</h1>
-                Welcome to the /r/anime Awards 2019 Nominations Website! Here you can vote for your favourite shows or characters in a variety of categories and help choose the nominations of the year. Simply click on the various category tabs and select your favourite entries to vote. Below are a few instructions to help you out with navigating the website. You can proceed to vote by clicking the below button:
+                <p>Welcome to the /r/anime Awards 2019 Nominations Website! Here you can vote for your favourite shows or characters in a variety of categories and help choose the nominations of the year. Simply click on the various category tabs and select your favourite entries to vote. Below are a few instructions to help you out with navigating the website. You can proceed to vote by clicking the below button:</p>
 				<br/>
 				<div>
                 	<router-link to="/vote/main">
@@ -29,7 +29,7 @@
                 </ul>
 				<h3 class="title is-3">Category-specific Instructions</h3>
 				<ul>
-					<li>You can vote for any <strong>eligible TV Anime</strong> that ended in 2019 for AotY. All other Main Awards such as Shortform, Movies and Original etc. are pre-allocated.</li>
+					<li>You can vote for any <strong>eligible TV Anime</strong> that ended in 2019 for AotY. All other Main Awards such as Shortform, Movies and Original are pre-allocated.</li>
 					<li><strong>Genre Awards</strong> are pre-allocated by hosts. Each category displays a list of all eligible shows in that category when you go into the Search tab. A show is only eligible for a single genre.</li>
 					<li>Movies are not eligible in Production Awards except <strong>OST/OP/ED</strong>. You are limited to voting for only a single version of an OP/ED. <strong>OST</strong> shows are pre-allocated based on whether the full soundtrack released in 2019. There is no gender filtering between <strong>Male and Female VAs</strong> but we will not count incorrect votes.</li>
 					<li>For <strong>Character Awards</strong>, each character is pre-allocated into <em>Main</em> and <em>Supporting</em> roles according to AniList's database. Some characters have both Main and Supporting roles in different shows. You can only vote for a character into one character category, barring <strong>Antagonist</strong> where you can vote any appropriate character. In <strong>Cast</strong>, you nominate entire shows, not characters.</li>

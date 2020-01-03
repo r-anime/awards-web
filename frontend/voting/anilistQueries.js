@@ -61,7 +61,7 @@ const testQuery = `query ($search: String) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, sort:[SEARCH_MATCH], format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL, MOVIE],search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false, countryOfOrigin:JP) {
+	  results: media(type: ANIME, sort:[SEARCH_MATCH], format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL, MOVIE], search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false, countryOfOrigin:JP) {
 		id
 		format
 		startDate {

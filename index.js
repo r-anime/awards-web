@@ -43,7 +43,7 @@ app.use(
 		}),
 	}),
 	// Static assets
-	sirv(config.publicDir, {dev: true}),
+	sirv(config.publicDir, {dev: false}),
 );
 
 // Register the API routes and auth routes
