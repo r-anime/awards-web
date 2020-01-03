@@ -178,7 +178,6 @@ export default {
 		},
 	},
 	async mounted () {
-		debugger;
 		const response = await fetch('https://graphql.anilist.co', {
 			method: 'POST',
 			headers: {
