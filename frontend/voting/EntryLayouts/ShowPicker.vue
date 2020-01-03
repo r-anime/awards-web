@@ -41,9 +41,9 @@
 				</div>
 			</div>
 
-			<div v-if="loaded && shows.length" class="show-picker-entries">
+			<div v-if="loaded && displayedShows.length" class="show-picker-entries">
 				<show-picker-entry
-					v-for="show in shows"
+					v-for="show in displayedShows"
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
@@ -88,13 +88,22 @@ export default {
 	},
 	data () {
 		return {
-			loaded: true,
+			loaded: false,
 			typingTimeout: null,
 			search: '',
 			shows: [],
+			defaultShows: [],
 			total: 'No',
 			selectedTab: 'selections',
 		};
+	},
+	computed: {
+		displayedShows () {
+			return this.search ? this.shows : this.defaultShows;
+		},
+		correctQuery () {
+			return this.category.awardsGroup === 'production' ? queries.prodQuery : queries.showQuery;
+		},
 	},
 	methods: {
 		handleInput (event) {
@@ -120,7 +129,7 @@ export default {
 					'Accept': 'application/json',
 				},
 				body: JSON.stringify({
-					query: this.category.awardsGroup === 'production' ? queries.prodQuery : queries.showQuery,
+					query: this.correctQuery,
 					variables: {
 						search: this.search,
 					},
@@ -167,6 +176,35 @@ export default {
 			this.selectedTab = 'selections';
 			this.shows = [];
 		},
+	},
+	async mounted () {
+		debugger;
+		const response = await fetch('https://graphql.anilist.co', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+			},
+			body: JSON.stringify({
+				query: this.correctQuery.replace(/, search: \$search|\(\$search: String\) /g, ''), // lol
+			}),
+		});
+		if (!response.ok) return alert('no bueno');
+		const totalShows = (await response.json()).data.anime.pageInfo.total;
+		const nextResponse = await fetch('https://graphql.anilist.co', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+			},
+			body: JSON.stringify({
+				query: this.correctQuery.replace(/, search: \$search|\(\$search: String\) /g, '').replace('1', Math.floor(Math.random() * Math.ceil(totalShows / 50) + 1)), // i wish for death
+			}),
+		});
+		if (!nextResponse.ok) return alert('no bueno');
+		const data = await nextResponse.json();
+		this.defaultShows = data.data.anime.results;
+		this.loaded = true;
 	},
 };
 </script>
