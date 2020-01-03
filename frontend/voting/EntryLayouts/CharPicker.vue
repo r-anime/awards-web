@@ -1,4 +1,3 @@
-<!--This is insane. Entries are pulled from anilist but there's locks between comedic and dramatic while antag is unlocked???-->
 <template>
 	<div class="char-picker">
 		<div class="tabs is-centered char-picker-tabs">

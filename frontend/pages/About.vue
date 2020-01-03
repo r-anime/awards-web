@@ -3,13 +3,13 @@
 	<div class="hero-body">
 		<div class="container">
             <content class="content">
-				<h1 class="h1">Welcome back to the /r/Anime Awards!</h1>
-				<p>As the name suggests, the /r/Anime awards are created to honor the best anime of the year from the perspective of the /r/anime subreddit. We will be choosing the best shows, characters, soundtracks, and many other categories that you can find on this website. /r/Anime is its own community, and there’s not going to be a single reviewer or awards show whose verdict we will agree with completely, so we've made our own! This is our fourth year, and we're striving to make it even better this time around.</p>
+				<h1 class="h1">Welcome back to the /r/anime Awards!</h1>
+				<p>As the name suggests, the /r/anime awards are created to honor the best anime of the year from the perspective of the /r/anime subreddit. We will be choosing the best shows, characters, soundtracks, and many other categories that you can find on this website. /r/anime is its own community, and there’s not going to be a single reviewer or awards show whose verdict we will agree with completely, so we've made our own! This is our fourth year, and we're striving to make it even better this time around.</p>
 				Your hosts for this year are:
 				<ul v-for="host in hosts" :key="host">
 					<li><a @click.stop target="_blank" :href="redditLink(host)">/u/{{host}}</a></li>
 				</ul>
-				<p>The hosts have been your feedback-collectors, master-planners, and jury-wranglers and were chosen from interested 2018 jurors by the subreddit mods, who have been gracious enough to oversee the entire process. The hosts also oversaw website development and provided much need help and engagement to the dev team.</p>
+				<p>The hosts have been your feedback-collectors, master-planners, and jury-wranglers and were chosen from interested 2018 jurors by the subreddit mods, who have been gracious enough to oversee the entire process. The hosts also oversaw website development and provided much needed help and engagement to the dev team.</p>
 				<h2 class="h2">Credits</h2>
 				<p>Special shoutout to the following people who worked on the website:</p>
 				<ul v-for="helper in helpers" :key="helper.name">
