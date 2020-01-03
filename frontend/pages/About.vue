@@ -34,6 +34,10 @@ export default {
 			hosts: ['Aztecopi', 'Cryzzalis', 'DrJWilson', 'Isrozzis', 'MalacostracaFlame', 'MetaSoshi9', 'PandavengerX', 'Patureau', 'Raging_SEAn', 'RHINN0', 'Vaxivop'],
 			helpers: [
 				{
+					name: 'CommanderSevan',
+					role: 'Art/Design',
+				},
+				{
 					name: 'EpicTroll27',
 					role: 'Development',
 				},
