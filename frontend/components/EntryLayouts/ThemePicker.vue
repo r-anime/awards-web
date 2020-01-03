@@ -69,7 +69,7 @@
 			</div>
 		</div>
 		<div v-else class="show-picker-text">
-			Nothing's in this category yet! Select entries from the "Search" tab, or use the "Tools" page to import entries from another category.
+			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
 	</div>
 </template>
