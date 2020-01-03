@@ -8,6 +8,11 @@
 			</template>
 		</nav-bar>
 		<router-view/>
+		<footer class="footer">
+			<div class="content has-text-centered">
+				<a href="/about">About/Credits</a>
+			</div>
+		</footer>
 	</body>
 </template>
 
@@ -25,6 +30,7 @@ export default {
 		routes () {
 			return [
 				this.me && this.me.level >= 2 && {name: 'Host Dashboard', path: '/host'},
+				{name: 'About/Credits', path: '/about'},
 			].filter(s => s);
 		},
 	},

@@ -18,6 +18,11 @@
 			</template>
 		</nav-bar>
 		<router-view/>
+		<footer class="footer">
+			<div class="content has-text-centered">
+				<a href="/about">About/Credits</a>
+			</div>
+		</footer>
 	</body>
 </template>
 
