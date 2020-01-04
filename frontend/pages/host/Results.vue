@@ -6,6 +6,8 @@
         </div>
         <div v-else class="content">
             <h3>Overall</h3>
+			<p>Total votes: {{voteSummary.votes}}</p>
+            <p>Users voted: {{voteSummary.users}}</p>
             <div
                 v-for="category in categories"
                 :key="category.id"
@@ -119,6 +121,7 @@ export default {
 			'categories',
 			'voteTotals',
 			'themes',
+			'voteSummary',
 		]),
 	},
 	methods: {
@@ -126,6 +129,7 @@ export default {
 			'getCategories',
 			'getVoteTotals',
 			'getThemes',
+			'getVoteSummary',
 		]),
 		votesFor (category) {
 			const allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
@@ -232,6 +236,9 @@ export default {
 			await this.getThemes();
 		}
 		this.sendQueries();
+		if (!this.voteSummary) {
+			this.getVoteSummary();
+		}
 	},
 };
 </script>
