@@ -20,7 +20,7 @@ authApp.get('/reddit', (request, response) => {
 		duration: 'permanent',
 		scope: 'identity',
 	});
-	response.redirect(`https://reddit.com/api/v1/authorize?${queryString}`);
+	response.redirect(`https://old.reddit.com/api/v1/authorize?${queryString}`);
 });
 authApp.get('/reddit/callback', async (request, response) => {
 	const {error, state, code} = request.query;
