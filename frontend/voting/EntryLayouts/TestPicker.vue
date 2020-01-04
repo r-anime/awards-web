@@ -139,6 +139,9 @@ export default {
 			this.shows = data.data.anime.results;
 			for (const [count, show] of this.shows.entries()) {
 				if (queries.blacklist.includes(show.id)) this.shows.splice(count, 1);
+				if (queries.splitCours.includes(show.id)) {
+					this.shows.splice(count, 1);
+				}
 			}
 			this.total = this.shows.length;
 			this.loaded = true;
@@ -200,6 +203,14 @@ export default {
 		if (!nextResponse.ok) return alert('no bueno');
 		const data = await nextResponse.json();
 		this.defaultShows = data.data.anime.results;
+		for (const [count, show] of this.defaultShows.entries()) {
+			if (queries.blacklist.includes(show.id)) {
+				this.shows.splice(count, 1);
+			}
+			if (queries.splitCours.includes(show.id)) {
+				this.shows.splice(count, 1);
+			}
+		}
 		this.loaded = true;
 	},
 };

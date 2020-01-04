@@ -49,6 +49,18 @@ const blacklist = [
 	112308,
 	105596,
 	111905,
+	111944,
+	104307,
+	101425,
+	102927,
+	101555,
+	99720,
+	21778,
+	111789,
+	110261,
+];
+
+const splitCours = [
 	107447,
 	110229,
 	108810,
@@ -78,11 +90,6 @@ const blacklist = [
 	105245,
 	107138,
 	110382,
-	111944,
-	104307,
-	101425,
-	102927,
-	101555,
 ];
 
 const showQuery = `query ($search: String) {
@@ -406,4 +413,5 @@ module.exports = {
 	vaByIDQuery,
 	themeByIDQuery,
 	blacklist,
+	splitCours,
 };
