@@ -26,7 +26,8 @@
                     <li>The voting interface consists of a <em>Selections</em> tab and a <em>Search</em> tab. The <em>Selections</em> tab will display all your selections in that category. The <em>Search</em> tab will allow you to search for eligible shows in that category.</li>
 					<li>You can click the entries you want to nominate and they will be added to your selections on the <em>Selections</em> tab. <strong>Make sure you click "Save Selections" at the bottom after voting or your selections will be lost when the website is closed.</strong></li>
 					<li>If something you want to nominate isn't there, then it's probably not eligible. See <a @click.stop target="_blank" :href="allocationsLink">Allocations</a> and <a @click.stop target="_blank" :href="ineligibleLink">Ineligible Anime</a>. If something you want to vote for isn't in the Anilist Database, you can <a @click.stop target="_blank" :href="anilistSubmission">submit it</a>.</li>
-                </ul>
+					<li>Try searching a show/character by its full name on AniList if partial searches don't work.</li>
+				</ul>
 				<h3 class="title is-3">Category-specific Instructions</h3>
 				<ul>
 					<li>You can vote for any <strong>eligible TV Anime</strong> that ended in 2019 for AotY. All other Main Awards such as Shortform, Movies and Original are pre-allocated.</li>
