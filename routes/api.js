@@ -265,6 +265,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 				}
 				const category = categories.find(cat => cat.id == id); // The eqeq is very important
 				for (const entry of entries) {
+					if (entry == null) continue;
 					if (voteHelpers.isOPED(category)) {
 						db.pushUserThemeVotes({
 							redditUser: userName,
