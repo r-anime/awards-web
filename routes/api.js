@@ -28,6 +28,7 @@ apiApp.get('/me', async (request, response) => {
 		reddit: {
 			name: redditorInfo.name,
 			avatar: redditorInfo.subreddit.icon_img,
+			created: redditorInfo.created_utc,
 		},
 		level: userInfo.level,
 		flags: userInfo.flags,
@@ -97,7 +98,6 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 apiApp.get('/categories', (request, response) => {
 	try {
 		response.json(db.getAllCategories());
-		log.success(db.getAllCategories());
 	} catch (error) {
 		response.error(error);
 	}
@@ -245,8 +245,8 @@ apiApp.post('/deleteaccount', async (request, response) => {
 
 apiApp.post('/votes/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName})) {
-		return response.json(401, {error: 'Invalid user.'});
+	if (!await request.authenticate({name: userName, oldEnough: true})) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	await db.deleteAllVotesFromUser(userName);
 	let req;
@@ -265,6 +265,7 @@ apiApp.post('/votes/submit', async (request, response) => {
 				}
 				const category = categories.find(cat => cat.id == id); // The eqeq is very important
 				for (const entry of entries) {
+					if (entry == null) continue;
 					if (voteHelpers.isOPED(category)) {
 						db.pushUserThemeVotes({
 							redditUser: userName,
@@ -299,8 +300,8 @@ apiApp.post('/votes/submit', async (request, response) => {
 
 apiApp.get('/votes/get', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName})) {
-		return response.json(401, {error: 'Invalid user.'});
+	if (!await request.authenticate({name: userName, oldEnough: true})) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	try {
 		response.json(db.getAllUserVotes(userName));
@@ -313,13 +314,14 @@ apiApp.get('/votes/all/delete', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to delete all votes.'});
 	}
+	return response.json(400, {error: "I don't think you want to do that"});
 
-	try {
-		db.deleteAllVotes();
-		response.empty();
-	} catch (error) {
-		response.error(error);
-	}
+	// try {
+	// 	db.deleteAllVotes();
+	// 	response.empty();
+	// } catch (error) {
+	// 	response.error(error);
+	// }
 });
 
 apiApp.get('/voteSummary', async (request, response) => {

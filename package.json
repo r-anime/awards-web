@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "webpack && node index.js",
+    "start": "db-migrate up && webpack && node index.js",
+    "deploy": "webpack && node index.js",
     "build": "webpack",
     "serve": "node index.js",
     "migrate": "db-migrate up"
@@ -40,7 +41,7 @@
     "fuse.js": "^3.4.6",
     "polka": "^0.5.2",
     "rethinkdbdash": "^2.3.31",
-    "sirv": "^0.2.2",
+    "sirv": "^0.4.2",
     "superagent": "^5.0.2",
     "vuex": "^3.1.1"
   }

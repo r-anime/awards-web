@@ -1,4 +1,3 @@
-<!--This is insane. Entries are pulled from anilist but there's locks between comedic and dramatic while antag is unlocked???-->
 <template>
 	<div class="char-picker">
 		<div class="tabs is-centered char-picker-tabs">
@@ -17,6 +16,10 @@
 		</div>
 
 		<div v-if="selectedTab === 'search'" class="char-picker-overflow-wrap">
+			<br>
+			<div class="is-size-7 is-centered has-text-centered">
+				Try searching a show/character by its full name on AniList if partial searches don't work.
+			</div>
 			<div class="char-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
@@ -70,8 +73,9 @@
 			</div>
 		</div>
 		<div v-else class="char-picker-text">
-			Nothing's in this category yet! Select entries from the "Search" tab, or use the "Tools" page to import entries from another category.
+			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
+		<a href="https://forms.gle/GzkoRQmuF6G8bLE78" style="display: block; text-align: center; margin-bottom: 2px;">Are we missing something?</a>
 	</div>
 </template>
 
@@ -155,7 +159,7 @@ export default {
 					this.chars = this.chars.filter(char => char.media.nodes.length !== 0 && char.media.edges.length !== 0);
 					// this loop really needs to run after the first one to avoid errors
 					for (const [count, char] of this.chars.entries()) {
-						if (queries.blacklist.includes(char.media.nodes[0].id)) this.chars.splice(count, 1);
+						if (!char.media.nodes.some(media => !queries.blacklist.includes(media.id))) this.chars.splice(count, 1);
 					}
 					resolve();
 				} catch (err) {

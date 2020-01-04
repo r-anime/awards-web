@@ -72,6 +72,7 @@
 		<div v-else class="va-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
+		<a href="https://forms.gle/GzkoRQmuF6G8bLE78" style="display: block; text-align: center; margin-bottom: 2px;">Are we missing something?</a>
 	</div>
 </template>
 
@@ -146,7 +147,7 @@ export default {
 					}
 					this.vas = this.vas.filter(va => va.media.nodes.length !== 0);
 					for (const [count, va] of this.vas.entries()) {
-						if (queries.blacklist.includes(va.media.nodes[0].id)) this.vas.splice(count, 1);
+						if (!va.media.nodes.some(node => !queries.blacklist.includes(node.id))) this.vas.splice(count, 1);
 					}
 					resolve();
 				} catch (err) {

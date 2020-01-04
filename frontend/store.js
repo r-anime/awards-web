@@ -6,6 +6,8 @@ Vue.use(Vuex);
 const util = require('./util');
 const queries = require('./voting/anilistQueries');
 
+const maxAccountDate = 1578009600; // sync with util/helpers.js for backend
+
 async function makeRequest (path, method = 'GET', body) {
 	if (typeof body === 'object' && body != null) {
 		body = JSON.stringify(body);
@@ -46,6 +48,9 @@ const store = new Vuex.Store({
 		},
 		isAdmin (state) {
 			return state.me && state.me.level >= 4;
+		},
+		accountOldEnough (state) {
+			return state.me && state.me.reddit && state.me.reddit.created < maxAccountDate;
 		},
 	},
 	mutations: {

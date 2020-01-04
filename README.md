@@ -12,6 +12,8 @@ Requires Node 10+ and SQLite3.
 $ cp sample.config.js config.js && $EDITOR config.js
 # Install dependencies
 $ yarn
+# Get migrations
+$ db-migrate up
 # Build and run
 $ yarn start
 # Just build the frontend

@@ -4112,10 +4112,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
-sirv@^0.2.2:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/sirv/-/sirv-0.2.5.tgz#da56a42e5f60b0822456cee7bf53e217305f4c3b"
-  integrity sha512-q7F1VElkj/WPrXwWsdHK9gqi2rd94oaMQc3VtN8N1TNHrKxlsd7hGsPFiOIodRxre8eHCV1XK1iqC1BDaZ+IKA==
+sirv@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/sirv/-/sirv-0.4.2.tgz#842ed22f3aab58faee84eea66cf66066e123d6db"
+  integrity sha512-dQbZnsMaIiTQPZmbGmktz+c74zt/hyrJEB4tdp2Jj0RNv9J6B/OWR5RyrZEvIn9fyh9Zlg2OlE2XzKz6wMKGAw==
   dependencies:
     "@polka/url" "^0.5.0"
     mime "^2.3.1"

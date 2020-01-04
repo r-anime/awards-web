@@ -25,6 +25,7 @@ export default {
 		routes () {
 			return [
 				this.me && this.me.level >= 2 && {name: 'Host Dashboard', path: '/host'},
+				{name: 'About/Credits', path: '/about'},
 			].filter(s => s);
 		},
 	},
@@ -35,5 +36,6 @@ export default {
 body {
 	margin: 0;
 	font-family: sans-serif;
+	height: calc(100vh-186px);
 }
 </style>
