@@ -84,6 +84,7 @@ const blacklist = [
 	102927,
 	101555,
 	99720,
+	21778,
 ];
 
 const showQuery = `query ($search: String) {
