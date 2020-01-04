@@ -147,7 +147,7 @@ export default {
 					}
 					this.vas = this.vas.filter(va => va.media.nodes.length !== 0);
 					for (const [count, va] of this.vas.entries()) {
-						if (queries.blacklist.includes(va.media.nodes[0].id)) this.vas.splice(count, 1);
+						if (!va.media.nodes.some(node => !queries.blacklist.includes(node.id))) this.vas.splice(count, 1);
 					}
 					resolve();
 				} catch (err) {
