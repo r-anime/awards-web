@@ -19,7 +19,7 @@
 					<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
 					<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
 					<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
-					<TestPicker v-else-if="group === 'test'" :category="selectedCategory" :value="selections"/>
+					<TestPicker v-else-if="group === 'test' || selectedCategory.name.includes('Cast')" :category="selectedCategory" :value="selections"/>
 					<CharPicker v-else-if="group === 'character'" :category="selectedCategory" :value="selections"/>
 				</div>
 				<div class="submit-wrapper">
@@ -116,8 +116,6 @@ export default {
 			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
 				return true;
 			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && !this.selectedCategory.name.includes('OST') && this.selectedCategory.entryType !== 'vas') {
-				return true;
-			} else if (this.group === 'character' && this.selectedCategory.name.includes('Cast')) {
 				return true;
 			}
 			return false;
