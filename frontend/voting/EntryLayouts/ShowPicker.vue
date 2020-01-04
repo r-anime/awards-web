@@ -204,6 +204,11 @@ export default {
 		if (!nextResponse.ok) return alert('no bueno');
 		const data = await nextResponse.json();
 		this.defaultShows = shuffle(data.data.anime.results);
+		for (const [count, show] of this.defaultShows.entries()) {
+			if (queries.blacklist.includes(show.id)) {
+				this.shows.splice(count, 1);
+			}
+		}
 		this.loaded = true;
 	},
 };
