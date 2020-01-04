@@ -24,10 +24,6 @@
 									Your Reddit account is too new to cast votes for the awards. Accounts must have been created before the beginning of the vote.<br>
 									<strong>If you're signed in with the wrong account,</strong> you can sign out from the user menu in the top right. Sign into the correct account on Reddit before trying to sign into this site again.
 								</div>
-								<div v-if="me.level >= 4">
-									<button @click="deleteVotes" class="button is-danger is-large"
-									:class="{'is-loading': deleting}">Delete All Votes</button>
-								</div>
 							</div>
 						</div>
 						<div class="content has-text-centered" v-else>

@@ -314,13 +314,14 @@ apiApp.get('/votes/all/delete', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to delete all votes.'});
 	}
+	return response.json(400, {error: "I don't think you want to do that"});
 
-	try {
-		db.deleteAllVotes();
-		response.empty();
-	} catch (error) {
-		response.error(error);
-	}
+	// try {
+	// 	db.deleteAllVotes();
+	// 	response.empty();
+	// } catch (error) {
+	// 	response.error(error);
+	// }
 });
 
 module.exports = apiApp;
