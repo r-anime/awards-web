@@ -143,6 +143,9 @@ export default {
 				if (queries.blacklist.includes(show.id)) {
 					this.shows.splice(count, 1);
 				}
+				if (queries.splitCours.includes(show.id)) {
+					this.shows.splice(count, 1);
+				}
 			}
 			this.total = this.shows.length;
 			this.loaded = true;
@@ -206,6 +209,9 @@ export default {
 		this.defaultShows = shuffle(data.data.anime.results);
 		for (const [count, show] of this.defaultShows.entries()) {
 			if (queries.blacklist.includes(show.id)) {
+				this.shows.splice(count, 1);
+			}
+			if (queries.splitCours.includes(show.id)) {
 				this.shows.splice(count, 1);
 			}
 		}
