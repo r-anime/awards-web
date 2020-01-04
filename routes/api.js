@@ -98,7 +98,6 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 apiApp.get('/categories', (request, response) => {
 	try {
 		response.json(db.getAllCategories());
-		log.success(db.getAllCategories());
 	} catch (error) {
 		response.error(error);
 	}
