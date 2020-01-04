@@ -16,6 +16,10 @@
 		</div>
 
 		<div v-if="selectedTab === 'search'" class="char-picker-overflow-wrap">
+			<br>
+			<div class="is-size-7 is-centered has-text-centered">
+				Try searching a show/character by its full name on AniList if partial searches don't work.
+			</div>
 			<div class="char-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
