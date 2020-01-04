@@ -155,7 +155,7 @@ export default {
 					this.chars = this.chars.filter(char => char.media.nodes.length !== 0 && char.media.edges.length !== 0);
 					// this loop really needs to run after the first one to avoid errors
 					for (const [count, char] of this.chars.entries()) {
-						if (!char.media.nodes.some(media => queries.blacklist.includes(media.id))) this.chars.splice(count, 1);
+						if (!char.media.nodes.some(media => !queries.blacklist.includes(media.id))) this.chars.splice(count, 1);
 					}
 					resolve();
 				} catch (err) {
