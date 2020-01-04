@@ -38,6 +38,7 @@ const store = new Vuex.Store({
 		votingCats: null,
 		selections: null,
 		voteSummary: null,
+		voteTotals: null,
 	},
 	getters: {
 		isHost (state) {
