@@ -136,7 +136,7 @@ export default {
 			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test'){
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
 				//console.log('dashboard');
-			} else if (category.entryType == 'themes'){
+			} else if ((!category.entries || category.entries == '[]') && category.entryType == 'themes'){
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
 			}
 			else{
