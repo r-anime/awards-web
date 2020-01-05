@@ -442,10 +442,12 @@ const themeByIDQuery = `query ($id: [Int]) {
   }
   `;
 
-  const showQuerySimple = `query ($id: [Int]) {
-	Page {
+  const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
+	Page (page: $page, perPage: $perPage) {
 	  pageInfo {
 		total
+		currentPage
+		lastPage
 	  }
 	  results: media(type: ANIME, id_in: $id) {
 		id

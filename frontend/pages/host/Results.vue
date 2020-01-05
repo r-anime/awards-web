@@ -170,21 +170,38 @@ export default {
 				}
 			}
 
-			const showResponse = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: showQuery,
-					variables: {
-						id: showIDs,
+			var lastPage = false;
+			var page = 1;
+			this.showData = new Array();
+
+			while (!lastPage){
+				const showResponse = await fetch('https://graphql.anilist.co', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
 					},
-				}),
-			});
-			if (!showResponse.ok) return alert('no bueno');
-			this.showData = (await showResponse.json()).data.Page.results;
+					body: JSON.stringify({
+						query: showQuery,
+						variables: {
+							id: showIDs,
+							page: page,
+							perPage: 50,
+						},
+					}),
+				});
+				if (!showResponse.ok) return alert('no bueno');
+				const returnData = await showResponse.json();
+				this.showData = this.showData.concat(returnData.data.Page.results);
+
+				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
+				console.log(returnData);
+				page++;
+			}
+
+			console.log(this.showData);
+			
+			
 			const charaResponse = await fetch('https://graphql.anilist.co', {
 				method: 'POST',
 				headers: {
@@ -222,7 +239,7 @@ export default {
 			this.getVoteSummary();
 		}
 
-		console.log(groupedThemeVotes);
+		console.log(this.groupedThemeVotes);
 	},
 };
 </script>
