@@ -87,7 +87,7 @@ export default {
 			'voteSummary',
 		]),
 		groupedThemeVotes: function(){
-			const themeVotes = this.voteTotals;
+			const themeVotes = this.voteTotals.filter(vote => (vote.theme_name));
 			const themeVotesGrouped = new Array();
 			for (const vote of themeVotes){
 				if (!vote) continue;
@@ -108,7 +108,7 @@ export default {
 			return themeVotesGrouped;
 		},
 		groupedDashboardVotes: function(){
-			const dashboardVotes = this.voteTotals.filter(vote => (vote.anilist_id && !vote.theme_name));
+			const dashboardVotes = this.voteTotals;
 			const dashboardVotesGrouped = new Array();
 			for (const vote of dashboardVotes){
 				if (!vote) continue;
