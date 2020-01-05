@@ -5,108 +5,70 @@
             <p>Loading...</p>
         </div>
         <div v-else class="content">
-            <h3>Overall</h3>
-			<p>Total votes: {{voteSummary.votes}}</p>
-            <p>Users voted: {{voteSummary.users}}</p>
-            <div
-                v-for="category in categories"
-                :key="category.id"
-            >
-                <h3>{{category.name}}</h3>
-				<table class="table is-hoverable is-fullwidth">
-					<tbody>
-					<tr>
-						<th>Rank</th>
-						<th>Entry Name</th>
-						<th>Vote Count</th>
-					</tr>
-					<tr v-for="(votes, index) in votesFor(category)" :key="index">
-						<td>#{{index+1}}</td>
-						<td>{{votes.name}}</td>
-						<td>{{votes.vote_count}}</td>
-					</tr>
-					</tbody>
-				</table>
-            </div>
+            <div class="field is-grouped is-grouped-multiline">
+				<div class="control">
+					<div class="tags has-addons are-medium">
+						<span class="tag is-dark">Total Votes</span>
+						<span class="tag is-primary">{{voteSummary.votes}}</span>
+					</div>
+				</div>
+				<div class="control">
+					<div class="tags has-addons are-medium">
+						<span class="tag is-dark">Total Users</span>
+						<span class="tag is-primary">{{voteSummary.users}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="columns is-multiline">
+				<div
+					v-for="category in categories"
+					:key="category.id"
+
+					class="column is-6 is-4-desktop is-3-widescreen"
+				>
+					<div class="card">
+						<header class="card-header has-background-light">
+							<div class="card-header-title">
+								<p class="title is-4">{{category.name}}</p>
+							</div>
+						</header>
+						<div class="card-content is-fixed-height-scrollable-300">
+							<div class="content">
+								<ul>
+									<li v-for="(votes, index) in votesFor(category)" :key="index" class="mb-1 has-no-bullet">
+										{{votes.name}}
+										<br>
+										<small class="tag is-small">{{votes.vote_count}} votes</small>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
     </div>
 </template>
 
+<style>
+.is-fixed-height-scrollable-300 {
+	height: 300px;
+	overflow: auto;
+}
+.has-no-bullet{
+	list-style: none;
+}
+.mb-1{
+	margin-bottom: 0.5rem;
+}
+</style>
+
 <script>
 import {mapActions, mapState} from 'vuex';
+import * as aq from '../../voting/anilistQueries';
 
-const showQuery = `query ($id: [Int]) {
-	Page {
-	  pageInfo {
-		total
-	  }
-	  results: media(type: ANIME, id_in: $id) {
-		id
-		format
-		startDate {
-		  year
-		}
-		title {
-		  romaji
-		  english
-		  native
-		  userPreferred
-		}
-		coverImage {
-		  large
-		}
-		siteUrl
-	  }
-	}
-  }`;
-const charQuery = `query ($id: [Int]) {
-	Page {
-	  pageInfo {
-		total
-	  }
-	  results: characters(id_in: $id) {
-		id
-		name {
-		  full
-		}
-		image {
-		  large
-		}
-		media(sort: [END_DATE_DESC, START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
-		  nodes {
-			id
-			title {
-			  romaji
-			  english
-			  native
-			  userPreferred
-			}
-			endDate {
-			  year
-			  month
-			  day
-			}
-		  }
-		  edges {
-			id
-			node {
-			  id
-			}
-			characterRole
-			voiceActors(language: JAPANESE) {
-			  id
-			  name {
-				full
-				alternative
-				native
-			  }
-			}
-		  }
-		}
-		siteUrl
-	  }
-	}
-  }`;
+const showQuery = aq.showQuerySimple;
+const charQuery = aq.charQuerySimple;
 
 export default {
 	data () {
@@ -138,36 +100,47 @@ export default {
 				if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
 					// Dashboard categories have their anilist stored here
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredShow.title.romaji}`,
-					});
+					if (requiredShow){
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredShow.title.romaji}`,
+							image: `${requiredShow.coverImage.large}`,
+						});
+					}
 				} else if (vote.theme_name) { // redundant condition for theme cats
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 					const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
-					});
+					if (requiredShow && requiredTheme){
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
+							image: `${requiredShow.coverImage.large}`,
+						});
+					}
 				} else if (category.entryType === 'shows' || category.name.includes('Cast')) { // If it's an anilist show cat
 					const requiredShow = this.showData.find(show => show.id === vote.entry_id);
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredShow.title.romaji}`,
-					});
+					if (requiredShow){
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredShow.title.romaji}`,
+							image: `${requiredShow.coverImage.large}`,
+						});
+					}
 				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
+					//console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full}`,
+						image: `${requiredChar.image.large}`,
 					});
 				} else if (category.entryType === 'vas') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
+					//console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
+						image: `${requiredChar.image.large}`,
 					});
 				}
 			}
@@ -220,8 +193,10 @@ export default {
 			});
 			if (!charaResponse.ok) return alert('no bueno');
 			this.charData = (await charaResponse.json()).data.Page.results;
-			console.log(this.showData);
-			console.log(this.charData);
+			//console.log(this.showData);
+			//console.log(this.charData);
+			//console.log(this.voteTotals);
+			//console.log(this.categories);
 			this.loaded = true;
 		},
 	},

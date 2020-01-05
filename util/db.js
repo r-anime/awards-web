@@ -30,6 +30,7 @@ const pushUserDashboardVotesQuery = db.prepare('INSERT INTO votes (reddit_user,c
 const getAllUserVotesQuery = db.prepare('SELECT * from votes WHERE reddit_user=?');
 
 const getVoteTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` GROUP BY `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
+const getVoteUserCountQuery = db.prepare('SELECT COUNT(DISTINCT `reddit_user`) as `count` FROM `votes`');
 const getAllVotesQuery = db.prepare('SELECT * FROM votes');
 
 // Purely for debugging and data purging reasons
@@ -60,6 +61,7 @@ module.exports = {
 	pushUserDashboardVotes: pushUserDashboardVotesQuery.run.bind(pushUserDashboardVotesQuery),
 
 	getAllUserVotes: getAllUserVotesQuery.all.bind(),
+	getVoteUserCount: getVoteUserCountQuery.all.bind(getVoteUserCountQuery),
 	getVoteTotals: getVoteTotalsQuery.all.bind(getVoteTotalsQuery),
 	getAllVotes: getAllVotesQuery.all.bind(getAllVotesQuery),
 	deleteAllVotes: deleteAllVotesQuery.run.bind(deleteAllVotesQuery),
