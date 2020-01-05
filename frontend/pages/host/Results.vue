@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 <template>
     <div class="section">
         <h2 class="title">Results</h2>
@@ -86,15 +87,15 @@ export default {
 			'themes',
 			'voteSummary',
 		]),
-		groupedThemeVotes: function(){
-			const themeVotes = this.voteTotals.filter(vote => (vote.theme_name));
-			const themeVotesGrouped = new Array();
-			for (var vote of themeVotes){
+		groupedThemeVotes () {
+			const themeVotes = this.voteTotals.filter(vote => vote.theme_name);
+			const themeVotesGrouped = [];
+			for (const vote of themeVotes) {
 				if (!vote) continue;
-				const gvoteIndex = themeVotesGrouped.findIndex(gvote => (gvote.theme_name == vote.theme_name));
-				
-				if (gvoteIndex > -1){
-					if (themeVotesGrouped[gvoteIndex].vote_count < vote.vote_count){
+				const gvoteIndex = themeVotesGrouped.findIndex(gvote => gvote.theme_name == vote.theme_name);
+
+				if (gvoteIndex > -1) {
+					if (themeVotesGrouped[gvoteIndex].vote_count < vote.vote_count) {
 						themeVotesGrouped[gvoteIndex].entry_id = vote.entry_id;
 					}
 					themeVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
@@ -102,27 +103,27 @@ export default {
 					themeVotesGrouped.push(vote);
 				}
 			}
-			//console.log(themeVotesGrouped);
-			themeVotesGrouped.sort((a,b) => (b.vote_count - a.vote_count));
+			// console.log(themeVotesGrouped);
+			themeVotesGrouped.sort((a, b) => b.vote_count - a.vote_count);
 
 			return themeVotesGrouped;
 		},
-		groupedDashboardVotes: function(){
-			const dashboardVotes = this.voteTotals.filter(vote => (vote.anilist_id && !vote.theme_name));
-			const dashboardVotesGrouped = new Array();
-			for (var vote of dashboardVotes){
+		groupedDashboardVotes () {
+			const dashboardVotes = this.voteTotals.filter(vote => vote.anilist_id && !vote.theme_name);
+			const dashboardVotesGrouped = [];
+			for (const vote of dashboardVotes) {
 				if (!vote) continue;
-				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id && gvote.category_id == vote.category_id));
-				if (gvoteIndex > -1){
+				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => gvote.anilist_id == vote.anilist_id && gvote.category_id == vote.category_id);
+				if (gvoteIndex > -1) {
 					dashboardVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
 				} else {
 					dashboardVotesGrouped.push(vote);
 				}
 			}
-			//console.log(dashboardVotesGrouped);
-			dashboardVotesGrouped.sort((a,b) => (b.vote_count - a.vote_count));
+			// console.log(dashboardVotesGrouped);
+			dashboardVotesGrouped.sort((a, b) => b.vote_count - a.vote_count);
 			return dashboardVotesGrouped;
-		}
+		},
 	},
 	methods: {
 		...mapActions([
@@ -132,16 +133,15 @@ export default {
 			'getVoteSummary',
 		]),
 		votesFor (category) {
-			var allVotes = new Array();
+			let allVotes = [];
 			console.log(category.name);
-			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test'){
+			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test') {
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
 				console.log('dashboard');
-			} else if ((category.entryType == 'themes') || ((category.entries && category.entries != '[]') && category.awardsGroup == 'production')){
+			} else if (category.entryType == 'themes' || (category.entries && category.entries != '[]') && category.awardsGroup == 'production') {
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
 				console.log('op/ed');
-			}
-			else{
+			} else {
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
 				console.log('other');
 			}
@@ -150,7 +150,7 @@ export default {
 				if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
 					// Dashboard categories have their anilist stored here
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-					if (requiredShow){
+					if (requiredShow) {
 						entries.push({
 							vote_count: vote.vote_count,
 							name: `${requiredShow.title.romaji}`,
@@ -160,7 +160,7 @@ export default {
 				} else if (vote.theme_name) { // redundant condition for theme cats
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 					const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
-					if (requiredShow && requiredTheme){
+					if (requiredShow && requiredTheme) {
 						entries.push({
 							vote_count: vote.vote_count,
 							name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
@@ -169,7 +169,7 @@ export default {
 					}
 				} else if (category.entryType === 'shows' || category.name.includes('Cast')) { // If it's an anilist show cat
 					const requiredShow = this.showData.find(show => show.id === vote.entry_id);
-					if (requiredShow){
+					if (requiredShow) {
 						entries.push({
 							vote_count: vote.vote_count,
 							name: `${requiredShow.title.romaji}`,
@@ -178,7 +178,7 @@ export default {
 					}
 				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					//console.log(requiredChar);
+					// console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full}`,
@@ -186,7 +186,7 @@ export default {
 					});
 				} else if (category.entryType === 'vas') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					//console.log(requiredChar);
+					// console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
@@ -215,11 +215,11 @@ export default {
 				}
 			}
 
-			var lastPage = false;
-			var page = 1;
-			this.showData = new Array();
+			let lastPage = false;
+			let page = 1;
+			this.showData = [];
 
-			while (!lastPage){
+			while (!lastPage) {
 				const showResponse = await fetch('https://graphql.anilist.co', {
 					method: 'POST',
 					headers: {
@@ -230,7 +230,7 @@ export default {
 						query: showQuery,
 						variables: {
 							id: showIDs,
-							page: page,
+							page,
 							perPage: 50,
 						},
 					}),
@@ -239,17 +239,17 @@ export default {
 				const returnData = await showResponse.json();
 				this.showData = this.showData.concat(returnData.data.Page.results);
 
-				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
-				//console.log(returnData);
+				lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
+				// console.log(returnData);
 				page++;
 			}
 
-			//console.log(this.showData);
-			
+			// console.log(this.showData);
+
 			lastPage = false;
 			page = 1;
 			this.charData = new Array();
-			while (!lastPage){
+			while (!lastPage) {
 				const charaResponse = await fetch('https://graphql.anilist.co', {
 					method: 'POST',
 					headers: {
@@ -260,7 +260,7 @@ export default {
 						query: charQuery,
 						variables: {
 							id: charIDs,
-							page: page,
+							page,
 							perPage: 50,
 						},
 					}),
@@ -269,14 +269,14 @@ export default {
 				const returnData = await charaResponse.json();
 				this.charData = this.charData.concat(returnData.data.Page.results);
 
-				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
-				//console.log(returnData);
+				lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
+				// console.log(returnData);
 				page++;
 			}
-			//console.log(this.showData);
-			//console.log(this.charData);
-			//console.log(this.voteTotals);
-			//console.log(this.categories);
+			// console.log(this.showData);
+			// console.log(this.charData);
+			// console.log(this.voteTotals);
+			// console.log(this.categories);
 			this.loaded = true;
 		},
 	},
@@ -295,7 +295,7 @@ export default {
 			this.getVoteSummary();
 		}
 
-		//console.log(this.groupedThemeVotes);
+		// console.log(this.groupedThemeVotes);
 	},
 };
 </script>
