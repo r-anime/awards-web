@@ -14,6 +14,7 @@ import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Categories from './pages/host/Categories';
 import Users from './pages/host/Users';
+import Results from './pages/host/Results';
 import Voting from './pages/Voting';
 import AllCategories from './pages/host/AllCategories';
 import SingleCategory from './components/SingleCategory';
@@ -113,6 +114,13 @@ export default new VueRouter({
 					component: Users,
 					meta: {
 						title: 'Users',
+					},
+				},
+				{
+					path: 'results',
+					component: Results,
+					meta: {
+						title: 'Results Summary',
 					},
 				},
 			],

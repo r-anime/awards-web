@@ -84,7 +84,6 @@ const blacklist = [
 	102801,
 	108767,
 	99995,
-
 ];
 
 const splitCours = [
@@ -443,9 +442,85 @@ const themeByIDQuery = `query ($id: [Int]) {
   }
   `;
 
+  const showQuerySimple = `query ($id: [Int]) {
+	Page {
+	  pageInfo {
+		total
+	  }
+	  results: media(type: ANIME, id_in: $id) {
+		id
+		format
+		startDate {
+		  year
+		}
+		title {
+		  romaji
+		  english
+		  native
+		  userPreferred
+		}
+		coverImage {
+		  large
+		}
+		siteUrl
+	  }
+	}
+  }`;
+
+const charQuerySimple = `query ($id: [Int]) {
+	Page {
+	  pageInfo {
+		total
+	  }
+	  results: characters(id_in: $id) {
+		id
+		name {
+		  full
+		}
+		image {
+		  large
+		}
+		media(sort: [END_DATE_DESC, START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
+		  nodes {
+			id
+			title {
+			  romaji
+			  english
+			  native
+			  userPreferred
+			}
+			endDate {
+			  year
+			  month
+			  day
+			}
+		  }
+		  edges {
+			id
+			node {
+			  id
+			}
+			characterRole
+			voiceActors(language: JAPANESE) {
+			  id
+			  name {
+				full
+				alternative
+				native
+			  }
+			}
+		  }
+		}
+		siteUrl
+	  }
+	}
+  }`;
+
 module.exports = {
 	showQuery,
+	showQuerySimple,
 	charQuery,
+	charQuerySimple,
 	vaQuery,
 	testQuery,
 	prodQuery,

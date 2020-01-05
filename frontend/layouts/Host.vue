@@ -4,6 +4,7 @@
 			:routes="[
 				{name: 'Categories', path: '/host/categories'},
 				{name: 'Users', path: '/host/users'},
+				{name: 'Results Summary', path: '/host/results'}
 			]"
 			class="is-dark"
 			fullwidth
