@@ -134,20 +134,13 @@ export default {
 					query: this.correctQuery,
 					variables: {
 						search: this.search,
+						blacklist: queries.allBlacklist,
 					},
 				}),
 			});
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.shows = data.data.anime.results;
-			for (const [count, show] of this.shows.entries()) {
-				if (queries.blacklist.includes(show.id)) {
-					this.shows.splice(count, 1);
-				}
-				if (queries.splitCours.includes(show.id)) {
-					this.shows.splice(count, 1);
-				}
-			}
 			this.total = this.shows.length;
 			this.loaded = true;
 		},
@@ -190,7 +183,8 @@ export default {
 				'Accept': 'application/json',
 			},
 			body: JSON.stringify({
-				query: this.correctQuery.replace(/, search: \$search|\(\$search: String\) /g, ''), // lol
+				query: this.correctQuery.replace(/search: \$search, |\$search: String, /g, ''), // lol
+				blacklist: queries.allBlacklist,
 			}),
 		});
 		if (!response.ok) return alert('no bueno');
@@ -202,20 +196,13 @@ export default {
 				'Accept': 'application/json',
 			},
 			body: JSON.stringify({
-				query: this.correctQuery.replace(/, search: \$search|\(\$search: String\) /g, '').replace('1', Math.floor(Math.random() * Math.ceil(totalShows / 50) + 1)), // i wish for death
+				query: this.correctQuery.replace(/search: \$search, |\$search: String, /g, '').replace('1', Math.floor(Math.random() * Math.ceil(totalShows / 50) + 1)), // i wish for death
+				blacklist: queries.allBlacklist,
 			}),
 		});
 		if (!nextResponse.ok) return alert('no bueno');
 		const data = await nextResponse.json();
 		this.defaultShows = shuffle(data.data.anime.results);
-		for (const [count, show] of this.defaultShows.entries()) {
-			if (queries.blacklist.includes(show.id)) {
-				this.shows.splice(count, 1);
-			}
-			if (queries.splitCours.includes(show.id)) {
-				this.shows.splice(count, 1);
-			}
-		}
 		this.loaded = true;
 	},
 };

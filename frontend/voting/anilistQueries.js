@@ -134,12 +134,14 @@ const splitCours = [
 	108942,
 ];
 
-const showQuery = `query ($search: String) {
+const allBlacklist = blacklist.concat(splitCours);
+
+const showQuery = `query ($search: String, $blacklist: [Int]) {
 	anime: Page(page: 1, perPage: 50) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, sort:[SEARCH_MATCH], isAdult:false, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1, countryOfOrigin:JP) {
+	  results: media(type: ANIME, id_not_in: $blacklist, sort: [SEARCH_MATCH], isAdult: false, search: $search, format_in: [TV, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, duration_greater: 15, episodes_greater: 1, countryOfOrigin: JP) {
 		id
 		format
 		startDate {
@@ -157,14 +159,15 @@ const showQuery = `query ($search: String) {
 		siteUrl
 	  }
 	}
-  }`;
+  }
+  `;
 
-const prodQuery = `query ($search: String) {
+const prodQuery = `query ($search: String, $blacklist: [Int]) {
 	anime: Page(page: 1, perPage: 50) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, search: $search, sort:[SEARCH_MATCH], isAdult: false, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, episodes_greater: 1, countryOfOrigin:JP) {
+	  results: media(type: ANIME, id_not_in: $blacklist, search: $search, sort: [SEARCH_MATCH], isAdult: false, format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL], endDate_greater: 20190108, endDate_lesser: 20200112, episodes_greater: 1, countryOfOrigin: JP) {
 		id
 		format
 		startDate {
@@ -182,14 +185,15 @@ const prodQuery = `query ($search: String) {
 		siteUrl
 	  }
 	}
-  }`;
+  }
+  `;
 
-const testQuery = `query ($search: String) {
+const testQuery = `query ($search: String, $blacklist: [Int]) {
 	anime: Page(page: 1, perPage: 50) {
 	  pageInfo {
 		total
 	  }
-	  results: media(type: ANIME, sort:[SEARCH_MATCH], format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL, MOVIE], search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false, countryOfOrigin:JP) {
+	  results: media(type: ANIME, id_not_in: $blacklist, sort: [SEARCH_MATCH], format_in: [TV, TV_SHORT, ONA, OVA, SPECIAL, MOVIE], search: $search, endDate_greater: 20190108, endDate_lesser: 20200112, isAdult: false, countryOfOrigin: JP) {
 		id
 		format
 		startDate {
@@ -442,7 +446,7 @@ const themeByIDQuery = `query ($id: [Int]) {
   }
   `;
 
-  const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
+const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 	Page (page: $page, perPage: $perPage) {
 	  pageInfo {
 		total
@@ -536,4 +540,5 @@ module.exports = {
 	themeByIDQuery,
 	blacklist,
 	splitCours,
+	allBlacklist,
 };
