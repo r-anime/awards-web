@@ -201,8 +201,8 @@ export default {
 
 			//console.log(this.showData);
 			
-			var lastPage = false;
-			var page = 1;
+			lastPage = false;
+			page = 1;
 			this.charData = new Array();
 			while (!lastPage){
 				const charaResponse = await fetch('https://graphql.anilist.co', {
@@ -215,6 +215,8 @@ export default {
 						query: charQuery,
 						variables: {
 							id: charIDs,
+							page: page,
+							perPage: 50,
 						},
 					}),
 				});
@@ -223,7 +225,7 @@ export default {
 				this.charData = this.charData.concat(returnData.data.Page.results);
 
 				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
-				//console.log(returnData);
+				console.log(returnData);
 				page++;
 			}
 			//console.log(this.showData);
