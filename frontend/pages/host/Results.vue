@@ -134,16 +134,16 @@ export default {
 		]),
 		votesFor (category) {
 			let allVotes = [];
-			console.log(category.name);
+			// console.log(category.name);
 			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test') {
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
-				console.log('dashboard');
+				// console.log('dashboard');
 			} else if (category.entryType == 'themes' || (category.entries && category.entries != '[]') && category.awardsGroup == 'production') {
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
-				console.log('op/ed');
+				// console.log('op/ed');
 			} else {
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
-				console.log('other');
+				// console.log('other');
 			}
 			const entries = [];
 			for (const vote of allVotes) {
@@ -194,8 +194,8 @@ export default {
 					});
 				}
 			}
-			console.log(allVotes);
-			console.log(entries);
+			// console.log(allVotes);
+			// console.log(entries);
 			return entries;
 		},
 		async sendQueries () {
