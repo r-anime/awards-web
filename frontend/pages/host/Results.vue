@@ -1,7 +1,7 @@
 <template>
     <div class="section">
         <h2 class="title">Results</h2>
-        <div v-if="!voteTotals || !categories || !loaded" class="content">
+        <div v-if="!voteTotals && !categories && !loaded" class="content">
             <p>Loading...</p>
         </div>
         <div v-else class="content">
