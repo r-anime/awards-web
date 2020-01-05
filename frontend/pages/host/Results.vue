@@ -133,7 +133,7 @@ export default {
 		]),
 		votesFor (category) {
 			var allVotes = new Array();
-			if (category.entries && category.entries != '[]'){
+			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test'){
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
 				//console.log('dashboard');
 			} else if (category.entryType == 'themes'){
