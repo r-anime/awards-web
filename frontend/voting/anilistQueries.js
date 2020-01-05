@@ -473,6 +473,8 @@ const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 	Page (page: $page, perPage: $perPage) {
 	  pageInfo {
 		total
+		currentPage
+		lastPage
 	  }
 	  results: characters(id_in: $id) {
 		id
