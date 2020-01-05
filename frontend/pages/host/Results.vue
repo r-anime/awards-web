@@ -87,7 +87,7 @@ export default {
 			'voteSummary',
 		]),
 		groupedThemeVotes: function(){
-			const themeVotes = this.voteTotals.filter(vote => (vote.theme_name));
+			const themeVotes = this.voteTotals;
 			const themeVotesGrouped = new Array();
 			for (const vote of themeVotes){
 				if (!vote) continue;
@@ -134,10 +134,10 @@ export default {
 		votesFor (category) {
 			var allVotes = new Array();
 			console.log(category.name);
-			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test' && category.awardsGroup != 'production'){
+			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test'){
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
 				console.log('dashboard');
-			} else if ((!category.entries || category.entries === '[]') && category.entryType == 'themes'){
+			} else if ((category.entryType == 'themes') || ((category.entries && category.entries != '[]') && category.awardsGroup == 'production')){
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
 				console.log('op/ed');
 			}
