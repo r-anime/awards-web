@@ -102,7 +102,8 @@ export default {
 					themeVotesGrouped.push(vote);
 				}
 			}
-			console.log(themeVotesGrouped);
+			//console.log(themeVotesGrouped);
+			themeVotesGrouped.sort((a,b) => (b.vote_count - a.vote_count));
 
 			return themeVotesGrouped;
 		},
@@ -119,6 +120,7 @@ export default {
 				}
 			}
 			//console.log(dashboardVotesGrouped);
+			dashboardVotesGrouped.sort((a,b) => (b.vote_count - a.vote_count));
 			return dashboardVotesGrouped;
 		}
 	},
