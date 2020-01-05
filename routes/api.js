@@ -325,8 +325,8 @@ apiApp.get('/voteSummary', async (request, response) => {
 			users: allUsers[0]['count'],
 			allVotes: [],
 		};
-		
-		/*for (const vote of allVotes) {
+		// eslint-disable-next-line multiline-comment-style
+		/* for (const vote of allVotes) {
 			voteSummary.votes += 1;
 			if (!allUsers[vote.reddit_user]) {
 				allUsers[vote.reddit_user] = true;
@@ -341,7 +341,7 @@ apiApp.get('/voteSummary', async (request, response) => {
 			});
 		}*/
 		response.json(voteSummary);
-	} catch (error){
+	} catch (error) {
 		response.error(error);
 	}
 });
