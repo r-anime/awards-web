@@ -133,14 +133,17 @@ export default {
 		]),
 		votesFor (category) {
 			var allVotes = new Array();
-			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test'){
+			console.log(category.name);
+			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test' && category.awardsGroup != 'production'){
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
-				//console.log('dashboard');
-			} else if ((!category.entries || category.entries == '[]') && category.entryType == 'themes'){
+				console.log('dashboard');
+			} else if ((!category.entries || category.entries === '[]') && category.entryType == 'themes'){
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
+				console.log('op/ed');
 			}
 			else{
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
+				console.log('other');
 			}
 			const entries = [];
 			for (const vote of allVotes) {
@@ -191,6 +194,8 @@ export default {
 					});
 				}
 			}
+			console.log(allVotes);
+			console.log(entries);
 			return entries;
 		},
 		async sendQueries () {
@@ -290,7 +295,7 @@ export default {
 			this.getVoteSummary();
 		}
 
-		console.log(this.groupedThemeVotes);
+		//console.log(this.groupedThemeVotes);
 	},
 };
 </script>
