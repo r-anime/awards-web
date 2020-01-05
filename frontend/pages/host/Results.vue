@@ -135,10 +135,10 @@ export default {
 		votesFor (category) {
 			let allVotes = [];
 			// console.log(category.name);
-			if (category.entries && category.entries != '[]' && category.awardsGroup != 'test') {
+			if (category.entries && category.entries !== '[]' && category.name !== 'Sound Design' && category.name !== 'Script') {
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
 				// console.log('dashboard');
-			} else if (category.entryType == 'themes' || (category.entries && category.entries != '[]') && category.awardsGroup == 'production') {
+			} else if (category.entryType === 'themes' || category.entries && category.entries !== '[]' && category.awardsGroup === 'production') {
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
 				// console.log('op/ed');
 			} else {
