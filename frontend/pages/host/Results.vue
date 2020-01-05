@@ -1,7 +1,7 @@
 <template>
     <div class="section">
         <h2 class="title">Results</h2>
-        <div v-if="!voteTotals && !categories && !loaded" class="content">
+        <div v-if="!voteTotals || !categories || !loaded" class="content">
             <p>Loading...</p>
         </div>
         <div v-else class="content">
@@ -195,28 +195,37 @@ export default {
 				this.showData = this.showData.concat(returnData.data.Page.results);
 
 				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
-				console.log(returnData);
+				//console.log(returnData);
 				page++;
 			}
 
-			console.log(this.showData);
+			//console.log(this.showData);
 			
-			
-			const charaResponse = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: charQuery,
-					variables: {
-						id: charIDs,
+			var lastPage = false;
+			var page = 1;
+			this.charData = new Array();
+			while (!lastPage){
+				const charaResponse = await fetch('https://graphql.anilist.co', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'Accept': 'application/json',
 					},
-				}),
-			});
-			if (!charaResponse.ok) return alert('no bueno');
-			this.charData = (await charaResponse.json()).data.Page.results;
+					body: JSON.stringify({
+						query: charQuery,
+						variables: {
+							id: charIDs,
+						},
+					}),
+				});
+				if (!charaResponse.ok) return alert('no bueno');
+				const returnData = await charaResponse.json();
+				this.charData = this.charData.concat(returnData.data.Page.results);
+
+				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
+				//console.log(returnData);
+				page++;
+			}
 			//console.log(this.showData);
 			//console.log(this.charData);
 			//console.log(this.voteTotals);

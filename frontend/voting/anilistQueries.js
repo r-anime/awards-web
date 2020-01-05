@@ -469,8 +469,8 @@ const themeByIDQuery = `query ($id: [Int]) {
 	}
   }`;
 
-const charQuerySimple = `query ($id: [Int]) {
-	Page {
+const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
+	Page (page: $page, perPage: $perPage) {
 	  pageInfo {
 		total
 	  }
