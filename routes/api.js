@@ -304,7 +304,7 @@ apiApp.get('/votes/get', async (request, response) => {
 		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	try {
-		response.json(db.getAllUserVotes(userName));
+		response.json(await db.getAllUserVotes(userName));
 	} catch (error) {
 		response.error(error);
 	}
@@ -351,7 +351,7 @@ apiApp.get('/votes/all/get', async (request, response) => {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
-		response.json(db.getVoteTotals());
+		response.json(await db.getVoteTotals());
 	} catch (error) {
 		response.error(error);
 	}

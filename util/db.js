@@ -60,7 +60,7 @@ module.exports = {
 	pushUserThemeVotes: pushUserThemeVotesQuery.run.bind(pushUserThemeVotesQuery),
 	pushUserDashboardVotes: pushUserDashboardVotesQuery.run.bind(pushUserDashboardVotesQuery),
 
-	getAllUserVotes: getAllUserVotesQuery.all.bind(),
+	getAllUserVotes: getAllUserVotesQuery.all.bind(getAllUserVotesQuery),
 	getVoteUserCount: getVoteUserCountQuery.all.bind(getVoteUserCountQuery),
 	getVoteTotals: getVoteTotalsQuery.all.bind(getVoteTotalsQuery),
 	getAllVotes: getAllVotesQuery.all.bind(getAllVotesQuery),
