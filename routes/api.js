@@ -304,11 +304,59 @@ apiApp.get('/votes/get', async (request, response) => {
 		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	try {
-		response.json(db.getAllUserVotes(userName));
+		response.json(await db.getAllUserVotes(userName));
 	} catch (error) {
 		response.error(error);
 	}
 });
+
+apiApp.get('/voteSummary', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	try {
+		const allVotes = await db.getAllVotes();
+		const allUsers = await db.getVoteUserCount();
+
+		console.log(allUsers);
+
+		const voteSummary = {
+			votes: allVotes.length,
+			users: allUsers[0]['count'],
+			allVotes: [],
+		};
+		// eslint-disable-next-line multiline-comment-style
+		/* for (const vote of allVotes) {
+			voteSummary.votes += 1;
+			if (!allUsers[vote.reddit_user]) {
+				allUsers[vote.reddit_user] = true;
+				voteSummary.users += 1;
+			}
+			voteSummary.allVotes.push({
+				id: vote.id,
+				categoryId: vote.category_id,
+				entryId: vote.entry_id,
+				anilistId: vote.anilist_id,
+				themeName: vote.theme_name,
+			});
+		}*/
+		response.json(voteSummary);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/votes/all/get', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		response.json(401, {error: 'You must be an host to see vote totals.'});
+	}
+	try {
+		response.json(await db.getVoteTotals());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 
 apiApp.get('/votes/all/delete', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {

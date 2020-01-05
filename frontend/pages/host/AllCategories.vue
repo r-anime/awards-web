@@ -141,137 +141,135 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import ModalGeneric from "../../components/ModalGeneric";
+import {mapState, mapGetters, mapActions} from 'vuex';
+import ModalGeneric from '../../components/ModalGeneric';
 
 export default {
-  components: {
-    ModalGeneric
-  },
-  data() {
-    return {
-      // A string to filter the displayed list
-      categoryFilter: "",
-      // Info for the "New Category" modal
-      createCategoryOpen: false,
-      categoryName: "",
-      newEntryType: "shows",
-      newEntryGroup: "genre",
-      submitting: false,
-      deleting: false,
-      duplicating: false,
-      selectedCategoryId: ""
-    };
-  },
-  computed: {
-    // Pull in stuff from Vuex
-    ...mapState(["categories"]),
-    ...mapGetters(["isHost"]),
-    filteredCategories() {
-      if (!this.categoryFilter) return this.categories;
-      return this.categories.filter(cat =>
-        cat.id.toLowerCase().includes(this.categoryFilter.toLowerCase())
-      );
-    }
-  },
-  methods: {
-    ...mapActions(["getCategories", "createCategory", "deleteCategory"]),
-    categoryEntryCount(category) {
-      if (!category.entries) return "No entries";
-      const entries = JSON.parse(category.entries);
-      if (!entries || !entries.length) return "No entries";
-      return `${entries.length} entr${entries.length === 1 ? "y" : "ies"}`;
-    },
-    categoryEntryType(category) {
-      switch (category.entryType) {
-        case "shows":
-          return "Shows";
-        case "characters":
-          return "Characters";
-        case "vas":
-          return "VA Performances";
-        case "themes":
-          return "OPs/EDs";
-        default:
-          return "Unknown entry type";
-      }
-    },
-    categoryGroup(category) {
-      switch (category.awardsGroup) {
-        case "genre":
-          return "Genre Awards";
-        case "character":
-          return "Character Awards";
-        case "production":
-          return "Production Awards";
-        case "test":
-          return "Test Category";
-        case "main":
-          return "Main Awards";
-        default:
-          return "Unknown Group";
-      }
-    },
-    submitDeleteCategory(categoryID) {
-      this.deleting = true;
-      this.selectedCategoryId = categoryID;
-      setTimeout(async () => {
-        try {
-          await this.deleteCategory(categoryID);
-        } finally {
-          this.deleting = false;
-        }
-      });
-    },
-    submitDuplicateCategory(
-      categoryID,
-      categoryName,
-      categoryType,
-      categoryEntries,
-      categoryGroup
-    ) {
-      this.duplicating = true;
-      this.selectedCategoryId = categoryID;
-      const newName = `${categoryName} copy`;
-      setTimeout(async () => {
-        try {
-          await this.createCategory({
-            data: {
-              name: newName,
-              entryType: categoryType,
-              entries: categoryEntries,
-              awardsGroup: categoryGroup
-            }
-          });
-        } finally {
-          this.duplicating = false;
-        }
-      });
-    },
-    submitCreateCategory() {
-      this.createCategoryOpen = true;
-      this.submitting = true;
-      setTimeout(async () => {
-        try {
-          await this.createCategory({
-            data: {
-              name: this.categoryName,
-              entryType: this.newEntryType,
-              entries: "",
-              awardsGroup: this.newEntryGroup
-            }
-          });
-        } finally {
-          this.createCategoryOpen = false;
-          this.submitting = false;
-        }
-      });
-    }
-  },
-  mounted() {
-    if (!this.categories) {
-      this.getCategories();
-    }
-  }
+	components: {
+		ModalGeneric,
+	},
+	data () {
+		return {
+			// A string to filter the displayed list
+			categoryFilter: '',
+			// Info for the "New Category" modal
+			createCategoryOpen: false,
+			categoryName: '',
+			newEntryType: 'shows',
+			newEntryGroup: 'genre',
+			submitting: false,
+			deleting: false,
+			duplicating: false,
+			selectedCategoryId: '',
+		};
+	},
+	computed: {
+		// Pull in stuff from Vuex
+		...mapState(['categories']),
+		...mapGetters(['isHost']),
+		filteredCategories () {
+			if (!this.categoryFilter) return this.categories;
+			return this.categories.filter(cat => cat.id.toLowerCase().includes(this.categoryFilter.toLowerCase()));
+		},
+	},
+	methods: {
+		...mapActions(['getCategories', 'createCategory', 'deleteCategory']),
+		categoryEntryCount (category) {
+			if (!category.entries) return 'No entries';
+			const entries = JSON.parse(category.entries);
+			if (!entries || !entries.length) return 'No entries';
+			return `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}`;
+		},
+		categoryEntryType (category) {
+			switch (category.entryType) {
+				case 'shows':
+					return 'Shows';
+				case 'characters':
+					return 'Characters';
+				case 'vas':
+					return 'VA Performances';
+				case 'themes':
+					return 'OPs/EDs';
+				default:
+					return 'Unknown entry type';
+			}
+		},
+		categoryGroup (category) {
+			switch (category.awardsGroup) {
+				case 'genre':
+					return 'Genre Awards';
+				case 'character':
+					return 'Character Awards';
+				case 'production':
+					return 'Production Awards';
+				case 'test':
+					return 'Test Category';
+				case 'main':
+					return 'Main Awards';
+				default:
+					return 'Unknown Group';
+			}
+		},
+		submitDeleteCategory (categoryID) {
+			this.deleting = true;
+			this.selectedCategoryId = categoryID;
+			setTimeout(async () => {
+				try {
+					await this.deleteCategory(categoryID);
+				} finally {
+					this.deleting = false;
+				}
+			});
+		},
+		submitDuplicateCategory (
+			categoryID,
+			categoryName,
+			categoryType,
+			categoryEntries,
+			categoryGroup
+		) {
+			this.duplicating = true;
+			this.selectedCategoryId = categoryID;
+			const newName = `${categoryName} copy`;
+			setTimeout(async () => {
+				try {
+					await this.createCategory({
+						data: {
+							name: newName,
+							entryType: categoryType,
+							entries: categoryEntries,
+							awardsGroup: categoryGroup,
+						},
+					});
+				} finally {
+					this.duplicating = false;
+				}
+			});
+		},
+		submitCreateCategory () {
+			this.createCategoryOpen = true;
+			this.submitting = true;
+			setTimeout(async () => {
+				try {
+					await this.createCategory({
+						data: {
+							name: this.categoryName,
+							entryType: this.newEntryType,
+							entries: '',
+							awardsGroup: this.newEntryGroup,
+						},
+					});
+				} finally {
+					this.createCategoryOpen = false;
+					this.submitting = false;
+				}
+			});
+		},
+	},
+	mounted () {
+		if (!this.categories) {
+			this.getCategories();
+		}
+	},
 };
 </script>
