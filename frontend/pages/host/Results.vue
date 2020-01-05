@@ -89,7 +89,7 @@ export default {
 		groupedThemeVotes: function(){
 			const themeVotes = this.voteTotals.filter(vote => (vote.theme_name));
 			const themeVotesGrouped = new Array();
-			for (const vote of themeVotes){
+			for (var vote of themeVotes){
 				if (!vote) continue;
 				const gvoteIndex = themeVotesGrouped.findIndex(gvote => (gvote.theme_name == vote.theme_name));
 				
@@ -108,9 +108,9 @@ export default {
 			return themeVotesGrouped;
 		},
 		groupedDashboardVotes: function(){
-			const dashboardVotes = this.voteTotals.filter(vote => (!vote.theme_name));
+			const dashboardVotes = this.voteTotals.filter(vote => (vote.anilist_id && !vote.theme_name));
 			const dashboardVotesGrouped = new Array();
-			for (const vote of dashboardVotes){
+			for (var vote of dashboardVotes){
 				if (!vote) continue;
 				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id && gvote.category_id == vote.category_id));
 				if (gvoteIndex > -1){
