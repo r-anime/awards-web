@@ -91,7 +91,7 @@ export default {
 			const themeVotesGrouped = new Array();
 			for (const vote of themeVotes){
 				if (!vote) continue;
-				const gvoteIndex = themeVotesGrouped.findIndex(gvote => (gvote.theme_name == vote.theme_name));
+				const gvoteIndex = themeVotesGrouped.findIndex(gvote => (gvote.theme_name == vote.theme_name && gvote.category_id === vote.category_id));
 				
 				if (gvoteIndex > -1){
 					if (themeVotesGrouped[gvoteIndex].vote_count < vote.vote_count){
@@ -112,7 +112,7 @@ export default {
 			const dashboardVotesGrouped = new Array();
 			for (const vote of dashboardVotes){
 				if (!vote) continue;
-				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id));
+				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id && gvote.category_id === vote.category_id));
 				if (gvoteIndex > -1){
 					dashboardVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
 				} else {
@@ -122,7 +122,7 @@ export default {
 			//console.log(dashboardVotesGrouped);
 			dashboardVotesGrouped.sort((a,b) => (b.vote_count - a.vote_count));
 			return dashboardVotesGrouped;
-		}
+		},
 	},
 	methods: {
 		...mapActions([
