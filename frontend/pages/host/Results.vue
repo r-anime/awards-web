@@ -88,9 +88,38 @@ export default {
 		]),
 		groupedThemeVotes: function(){
 			const themeVotes = this.voteTotals.filter(vote => (vote.theme_name));
-			const themeVotesGrouped = themeVotes;
+			const themeVotesGrouped = new Array();
+			for (const vote of themeVotes){
+				if (!vote) continue;
+				const gvoteIndex = themeVotesGrouped.findIndex(gvote => (gvote.theme_name == vote.theme_name));
+				
+				if (gvoteIndex > -1){
+					if (themeVotesGrouped[gvoteIndex].vote_count < vote.vote_count){
+						themeVotesGrouped[gvoteIndex].entry_id = vote.entry_id;
+					}
+					themeVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
+				} else {
+					themeVotesGrouped.push(vote);
+				}
+			}
+			console.log(themeVotesGrouped);
 
 			return themeVotesGrouped;
+		},
+		groupedDashboardVotes: function(){
+			const dashboardVotes = this.voteTotals.filter(vote => (vote.anilist_id && !vote.theme_name));
+			const dashboardVotesGrouped = new Array();
+			for (const vote of dashboardVotes){
+				if (!vote) continue;
+				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id));
+				if (gvoteIndex > -1){
+					dashboardVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
+				} else {
+					dashboardVotesGrouped.push(vote);
+				}
+			}
+			//console.log(dashboardVotesGrouped);
+			return dashboardVotesGrouped;
 		}
 	},
 	methods: {
@@ -101,7 +130,16 @@ export default {
 			'getVoteSummary',
 		]),
 		votesFor (category) {
-			const allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
+			var allVotes = new Array();
+			if (category.entries && category.entries != '[]'){
+				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
+				//console.log('dashboard');
+			} else if (category.entryType == 'themes'){
+				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
+			}
+			else{
+				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
+			}
 			const entries = [];
 			for (const vote of allVotes) {
 				if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
@@ -225,7 +263,7 @@ export default {
 				this.charData = this.charData.concat(returnData.data.Page.results);
 
 				lastPage = (returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage);
-				console.log(returnData);
+				//console.log(returnData);
 				page++;
 			}
 			//console.log(this.showData);

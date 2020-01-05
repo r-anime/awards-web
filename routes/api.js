@@ -318,7 +318,7 @@ apiApp.get('/voteSummary', async (request, response) => {
 		const allVotes = await db.getAllVotes();
 		const allUsers = await db.getVoteUserCount();
 
-		console.log(allUsers);
+		//console.log(allUsers);
 
 		const voteSummary = {
 			votes: allVotes.length,
