@@ -63,6 +63,10 @@ import ShowPicker from './EntryLayouts/ShowPicker';
 
 import snoo from '../../img/bannerSnooJump.png';
 
+window.onbeforeunload = function () {
+	if (app.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
+};
+
 export default {
 	components: {
 		categoryGroupHeader,
@@ -157,6 +161,11 @@ export default {
 			'getCategories',
 			'initializeSelections',
 		]),
+		leave () {
+			if (this.changesSinceSave) {
+				return 'Are you sure you want to leave without saving your selections?';
+			}
+		},
 		async submit () {
 			this.submitting = true;
 			try {
@@ -165,6 +174,7 @@ export default {
 					body: JSON.stringify(this.selections),
 				});
 			} finally {
+				this.changesSinceSave = false;
 				this.submitting = false;
 			}
 		},
@@ -172,8 +182,14 @@ export default {
 	async mounted () {
 		await this.getVotingCategories(this.group);
 		await this.initializeSelections();
+		this.changesSinceSave = false;
 		this.selectedTab = this.votingCats[0].id;
 		this.selectedTabName = this.votingCats[0].name;
+	},
+	created () {
+		window.onbeforeunload = () => {
+			if (this.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
+		};
 	},
 };
 </script>
