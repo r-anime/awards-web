@@ -89,7 +89,7 @@ export default {
 		]),
 		groupedThemeVotes () {
 			const themeVotes = this.voteTotals.filter(vote => vote.theme_name);
-			const themeVotesGrouped = [];
+			const themeVotesGrouped = new Array();
 			for (const vote of themeVotes) {
 				if (!vote) continue;
 				const gvoteIndex = themeVotesGrouped.findIndex(gvote => gvote.theme_name == vote.theme_name);
@@ -110,12 +110,13 @@ export default {
 		},
 		groupedDashboardVotes () {
 			const dashboardVotes = this.voteTotals.filter(vote => vote.anilist_id && !vote.theme_name);
-			const dashboardVotesGrouped = [];
+			const dashboardVotesGrouped = new Array();
 			for (const vote of dashboardVotes) {
 				if (!vote) continue;
-				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => gvote.entry_id == vote.entry_id && gvote.category_id == vote.category_id);
-				if (gvoteIndex > -1) {
+				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id && gvote.category_id == vote.category_id));
+				if (gvoteIndex >= 0) {
 					dashboardVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
+					console.log(dashboardVotesGrouped[gvoteIndex].vote_count, vote.anilist_id);
 				} else {
 					dashboardVotesGrouped.push(vote);
 				}
