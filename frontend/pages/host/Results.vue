@@ -113,7 +113,7 @@ export default {
 			const dashboardVotesGrouped = [];
 			for (const vote of dashboardVotes) {
 				if (!vote) continue;
-				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => gvote.anilist_id == vote.anilist_id && gvote.category_id == vote.category_id);
+				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => gvote.entry_id == vote.entry_id && gvote.category_id == vote.category_id);
 				if (gvoteIndex > -1) {
 					dashboardVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
 				} else {
