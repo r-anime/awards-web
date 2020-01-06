@@ -6,6 +6,7 @@ const eligibilityEnd = new Date(2020, 1, 12);
 // Blacklist of all the unsubbed anime, note for next year: make this array separate for shows and other stuff
 const blacklist = [
 	101115,
+	105018,
 	102005,
 	101228,
 	108734,
