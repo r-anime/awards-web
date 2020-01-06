@@ -2,7 +2,7 @@
 <template>
     <div class="section">
         <h2 class="title">Results</h2>
-        <div v-if="!voteTotals || !categories || !loaded" class="content">
+        <div v-if="!loaded || !dashTotals || !opedTotals" class="content">
             <p>Loading...</p>
         </div>
         <div v-else class="content">
@@ -86,9 +86,12 @@ export default {
 		...mapState([
 			'categories',
 			'voteTotals',
+			'dashTotals',
+			'opedTotals',
 			'themes',
 			'voteSummary',
 		]),
+		/*
 		groupedThemeVotes () {
 			const themeVotes = this.voteTotals.filter(vote => vote.theme_name);
 			const themeVotesGrouped = new Array();
@@ -107,7 +110,7 @@ export default {
 			}
 			// console.log(themeVotesGrouped);
 			themeVotesGrouped.sort((a, b) => b.vote_count - a.vote_count);
-
+			this.gtvloaded = true;
 			return themeVotesGrouped;
 		},
 		groupedDashboardVotes () {
@@ -118,35 +121,39 @@ export default {
 				const gvoteIndex = dashboardVotesGrouped.findIndex(gvote => (gvote.anilist_id == vote.anilist_id && gvote.category_id == vote.category_id));
 				if (gvoteIndex >= 0) {
 					dashboardVotesGrouped[gvoteIndex].vote_count += vote.vote_count;
-					console.log(dashboardVotesGrouped[gvoteIndex].vote_count, vote.anilist_id);
+					//console.log(dashboardVotesGrouped[gvoteIndex].vote_count, vote.anilist_id);
 				} else {
 					dashboardVotesGrouped.push(vote);
 				}
 			}
 			// console.log(dashboardVotesGrouped);
 			dashboardVotesGrouped.sort((a, b) => b.vote_count - a.vote_count);
+			this.gdvloaded = true;
 			return dashboardVotesGrouped;
 		},
+		*/
 	},
 	methods: {
 		...mapActions([
 			'getCategories',
 			'getVoteTotals',
+			'getDashboardTotals',
+			'getOPEDTotals',
 			'getThemes',
 			'getVoteSummary',
 		]),
 		votesFor (category) {
 			let allVotes = new Array();
-			console.log(category.name);
+			//console.log(category.name);
 			if (category.entries && category.entries !== '[]' && category.name !== 'Sound Design' && category.name !== 'Script') {
-				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
-				console.log('dashboard');
+				allVotes = this.dashTotals.filter(vote => vote.category_id === category.id);
+				//console.log('dashboard');
 			} else if (category.entryType === 'themes' || category.entries && category.entries !== '[]' && category.awardsGroup === 'production') {
-				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
-				console.log('op/ed');
+				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
+				//console.log('op/ed');
 			} else {
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
-				console.log('other');
+				//console.log('other');
 			}
 			const entries = [];
 			for (const vote of allVotes) {
@@ -197,7 +204,7 @@ export default {
 					});
 				}
 			}
-			console.log(allVotes);
+			//console.log(allVotes);
 			// console.log(entries);
 			return entries;
 		},
@@ -286,17 +293,29 @@ export default {
 	async mounted () {
 		if (!this.categories) {
 			await this.getCategories();
+			//console.log('cat');
 		}
 		if (!this.voteTotals) {
 			await this.getVoteTotals();
+			//console.log('votes');
 		}
 		if (!this.themes) {
 			await this.getThemes();
+			//console.log('themes');
+		}
+		if (!this.dashTotals) {
+			await this.getDashboardTotals();
+			//console.log('dash');
+		}
+		if (!this.opedTotals) {
+			await this.getOPEDTotals();
+			//console.log('oped');
+		}
+		if (!this.voteSummary) {
+			await this.getVoteSummary();
+			//console.log('summary');
 		}
 		this.sendQueries();
-		if (!this.voteSummary) {
-			this.getVoteSummary();
-		}
 
 		// console.log(this.groupedThemeVotes);
 	},

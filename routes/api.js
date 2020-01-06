@@ -357,6 +357,28 @@ apiApp.get('/votes/all/get', async (request, response) => {
 	}
 });
 
+apiApp.get('/votes/dashboard/get', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		response.json(401, {error: 'You must be an host to see vote totals.'});
+	}
+	try {
+		response.json(await db.getDashboardTotals());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/votes/oped/get', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		response.json(401, {error: 'You must be an host to see vote totals.'});
+	}
+	try {
+		response.json(await db.getOPEDTotals());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 
 apiApp.get('/votes/all/delete', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {

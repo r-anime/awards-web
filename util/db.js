@@ -30,6 +30,8 @@ const pushUserDashboardVotesQuery = db.prepare('INSERT INTO votes (reddit_user,c
 const getAllUserVotesQuery = db.prepare('SELECT * from votes WHERE reddit_user=?');
 
 const getVoteTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` GROUP BY `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
+const getDashboardTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` WHERE `votes`.`anilist_id` IS NOT NULL AND `votes`.`theme_name` IS NULL GROUP BY `votes`.`category_id`, `votes`.`anilist_id` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
+const getOPEDTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` WHERE `votes`.`theme_name` IS NOT NULL GROUP BY `votes`.`category_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
 const getVoteUserCountQuery = db.prepare('SELECT COUNT(DISTINCT `reddit_user`) as `count` FROM `votes`');
 const getAllVotesQuery = db.prepare('SELECT * FROM votes');
 
@@ -63,6 +65,9 @@ module.exports = {
 	getAllUserVotes: getAllUserVotesQuery.all.bind(getAllUserVotesQuery),
 	getVoteUserCount: getVoteUserCountQuery.all.bind(getVoteUserCountQuery),
 	getVoteTotals: getVoteTotalsQuery.all.bind(getVoteTotalsQuery),
+	getDashboardTotals: getDashboardTotalsQuery.all.bind(getDashboardTotalsQuery),
+	getOPEDTotals: getOPEDTotalsQuery.all.bind(getOPEDTotalsQuery),
+
 	getAllVotes: getAllVotesQuery.all.bind(getAllVotesQuery),
 	deleteAllVotes: deleteAllVotesQuery.run.bind(deleteAllVotesQuery),
 };
