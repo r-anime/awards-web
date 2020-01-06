@@ -40,7 +40,9 @@
 									<li v-for="(votes, index) in votesFor(category)" :key="index" class="mb-1 has-no-bullet">
 										{{votes.name}}
 										<br>
-										<small class="tag is-small">{{votes.vote_count}} votes</small>
+										<div class="tags">
+											<small class="tag is-small">{{votes.vote_count}} votes</small>
+										</div>
 									</li>
 								</ul>
 							</div>
@@ -134,17 +136,17 @@ export default {
 			'getVoteSummary',
 		]),
 		votesFor (category) {
-			let allVotes = [];
-			// console.log(category.name);
+			let allVotes = new Array();
+			console.log(category.name);
 			if (category.entries && category.entries !== '[]' && category.name !== 'Sound Design' && category.name !== 'Script') {
 				allVotes = this.groupedDashboardVotes.filter(vote => vote.category_id === category.id);
-				// console.log('dashboard');
+				console.log('dashboard');
 			} else if (category.entryType === 'themes' || category.entries && category.entries !== '[]' && category.awardsGroup === 'production') {
 				allVotes = this.groupedThemeVotes.filter(vote => vote.category_id === category.id);
-				// console.log('op/ed');
+				console.log('op/ed');
 			} else {
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
-				// console.log('other');
+				console.log('other');
 			}
 			const entries = [];
 			for (const vote of allVotes) {
@@ -195,7 +197,7 @@ export default {
 					});
 				}
 			}
-			// console.log(allVotes);
+			console.log(allVotes);
 			// console.log(entries);
 			return entries;
 		},
