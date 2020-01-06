@@ -141,11 +141,8 @@ export default {
 		},
 	},
 	watch: {
-		selections: {
-			handler () {
-				this.changesSinceSave = true;
-			},
-			deep: true,
+		selections () {
+			this.changesSinceSave = true;
 		},
 		group: {
 			async handler (newGroup) {
