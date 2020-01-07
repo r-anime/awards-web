@@ -190,6 +190,7 @@ export default {
 					}
 				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
+					console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full}`,
@@ -328,6 +329,8 @@ export default {
 					}
 				});
 				Promise.all([showPromise, charPromise]).then(() => {
+					console.log(this.showData);
+					console.log(this.charData);
 					this.loaded = true;
 				});
 			});
