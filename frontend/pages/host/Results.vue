@@ -144,13 +144,25 @@ export default {
 			'getThemes',
 			'getVoteSummary',
 		]),
+		isDashboard (category) {
+			if (category.awardsGroup === 'genre') {
+				return true;
+			} else if (category.awardsGroup === 'main' && category.name !== 'Anime of the Year') {
+				return true;
+			} else if (category.awardsGroup === 'test' && category.name.includes('Sports')) {
+				return true;
+			} else if (category.name.includes('OST') && category.awardsGroup === 'production') {
+				return true;
+			}
+			return false;
+		},
 		votesFor (category) {
 			let allVotes = [];
 			//console.log(category.name);
-			if (category.entries && category.entries !== '[]' && category.name !== 'Sound Design' && category.name !== 'Script') {
+			if (this.isDashboard(category)) {
 				allVotes = this.dashTotals.filter(vote => vote.category_id === category.id);
 				//console.log('dashboard');
-			} else if (category.entryType === 'themes' || category.entries && category.entries !== '[]' && category.awardsGroup === 'production') {
+			} else if (category.entryType === 'themes') {
 				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
 				//console.log('op/ed');
 			} else {
@@ -290,7 +302,7 @@ export default {
 			Promise.all([catPromise, votesPromise]).then(() => {
 				for (const vote of this.voteTotals) {
 					const category = this.categories.find(cat => cat.id === vote.category_id);
-					if (vote.anilist_id && !vote.theme_name && category.entryType === 'shows') { // This condition is fulfilled for dashboard cats only
+					if (this.isDashboard(category)) { // This condition is fulfilled for dashboard cats only
 					// Dashboard categories have their anilist stored here
 						this.showIDs.push(vote.anilist_id);
 					} else if (vote.theme_name) { // redundant condition for theme cats
