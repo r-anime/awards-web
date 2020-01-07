@@ -190,7 +190,6 @@ export default {
 					}
 				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full}`,
@@ -198,7 +197,6 @@ export default {
 					});
 				} else if (category.entryType === 'vas') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
@@ -209,6 +207,60 @@ export default {
 			//console.log(allVotes);
 			// console.log(entries);
 			return entries;
+		},
+		fetchShows (page) {
+			return new Promise(async (resolve, reject) => {
+				try {
+					const showResponse = await fetch('https://graphql.anilist.co', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+						},
+						body: JSON.stringify({
+							query: showQuery,
+							variables: {
+								id: this.showIDs,
+								page,
+								perPage: 50,
+							},
+						}),
+					});
+					if (!showResponse.ok) return alert('no bueno');
+					const returnData = await showResponse.json();
+					this.showData = this.showData.concat(returnData.data.Page.results);
+					resolve(returnData);
+				} catch (err) {
+					reject(err);
+				}
+			});
+		},
+		fetchChars (page) {
+			return new Promise(async (resolve, reject) => {
+				try {
+					const charaResponse = await fetch('https://graphql.anilist.co', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+						},
+						body: JSON.stringify({
+							query: charQuery,
+							variables: {
+								id: this.charIDs,
+								page,
+								perPage: 50,
+							},
+						}),
+					});
+					if (!charaResponse.ok) return alert('no bueno');
+					const returnData = await charaResponse.json();
+					this.charData = this.charData.concat(returnData.data.Page.results);
+					resolve(returnData);
+				} catch (err) {
+					reject(err);
+				}
+			});
 		},
 		sendQueries () {
 			const catPromise = new Promise(async (resolve, reject) => {
@@ -251,26 +303,8 @@ export default {
 						let page = 1;
 						this.showData = [];
 						while (!lastPage) {
-							const showResponse = await fetch('https://graphql.anilist.co', {
-								method: 'POST',
-								headers: {
-									'Content-Type': 'application/json',
-									'Accept': 'application/json',
-								},
-								body: JSON.stringify({
-									query: showQuery,
-									variables: {
-										id: this.showIDs,
-										page,
-										perPage: 50,
-									},
-								}),
-							});
-							if (!showResponse.ok) return alert('no bueno');
-							const returnData = await showResponse.json();
-							this.showData = this.showData.concat(returnData.data.Page.results);
-
-							lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
+							const returnData = await this.fetchShows(page);
+							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
 							page++;
 						}
 						resolve();
@@ -284,26 +318,8 @@ export default {
 						let page = 1;
 						this.charData = [];
 						while (!lastPage) {
-							const charaResponse = await fetch('https://graphql.anilist.co', {
-								method: 'POST',
-								headers: {
-									'Content-Type': 'application/json',
-									'Accept': 'application/json',
-								},
-								body: JSON.stringify({
-									query: charQuery,
-									variables: {
-										id: this.charIDs,
-										page,
-										perPage: 50,
-									},
-								}),
-							});
-							if (!charaResponse.ok) return alert('no bueno');
-							const returnData = await charaResponse.json();
-							this.charData = this.charData.concat(returnData.data.Page.results);
-
-							lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
+							const returnData = await this.fetchChars(page);
+							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
 							page++;
 						}
 						resolve();
@@ -312,7 +328,6 @@ export default {
 					}
 				});
 				Promise.all([showPromise, charPromise]).then(() => {
-					console.log(this.charData);
 					this.loaded = true;
 				});
 			});
