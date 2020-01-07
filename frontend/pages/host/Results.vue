@@ -79,6 +79,8 @@ export default {
 		return {
 			showData: null,
 			charData: null,
+			showIDs: [],
+			charIDs: [],
 			loaded: false,
 		};
 	},
@@ -143,7 +145,7 @@ export default {
 			'getVoteSummary',
 		]),
 		votesFor (category) {
-			let allVotes = new Array();
+			let allVotes = [];
 			//console.log(category.name);
 			if (category.entries && category.entries !== '[]' && category.name !== 'Sound Design' && category.name !== 'Script') {
 				allVotes = this.dashTotals.filter(vote => vote.category_id === category.id);
@@ -208,116 +210,127 @@ export default {
 			// console.log(entries);
 			return entries;
 		},
-		async sendQueries () {
-			const showIDs = [];
-			const charIDs = [];
-			for (const vote of this.voteTotals) {
-				const category = this.categories.find(cat => cat.id === vote.category_id);
-				if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
-					// Dashboard categories have their anilist stored here
-					showIDs.push(vote.anilist_id);
-				} else if (vote.theme_name) { // redundant condition for theme cats
-					showIDs.push(vote.anilist_id);
-				} else if (category.entryType === 'shows') { // If it's an anilist show cat
-					showIDs.push(vote.entry_id);
-				} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-					charIDs.push(vote.entry_id);
+		sendQueries () {
+			const catPromise = new Promise(async (resolve, reject) => {
+				try {
+					if (!this.categories) {
+						await this.getCategories();
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
 				}
-			}
+			});
+			const votesPromise = new Promise(async (resolve, reject) => {
+				try {
+					if (!this.voteTotals) {
+						await this.getVoteTotals();
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			Promise.all([catPromise, votesPromise]).then(() => {
+				for (const vote of this.voteTotals) {
+					const category = this.categories.find(cat => cat.id === vote.category_id);
+					if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
+					// Dashboard categories have their anilist stored here
+						this.showIDs.push(vote.anilist_id);
+					} else if (vote.theme_name) { // redundant condition for theme cats
+						this.showIDs.push(vote.anilist_id);
+					} else if (category.entryType === 'shows') { // If it's an anilist show cat
+						this.showIDs.push(vote.entry_id);
+					} else if (category.entryType === 'characters' || category.entryType === 'vas') {
+						this.charIDs.push(vote.entry_id);
+					}
+				}
+				const showPromise = new Promise(async (resolve, reject) => {
+					try {
+						let lastPage = false;
+						let page = 1;
+						this.showData = [];
+						while (!lastPage) {
+							const showResponse = await fetch('https://graphql.anilist.co', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+									'Accept': 'application/json',
+								},
+								body: JSON.stringify({
+									query: showQuery,
+									variables: {
+										id: this.showIDs,
+										page,
+										perPage: 50,
+									},
+								}),
+							});
+							if (!showResponse.ok) return alert('no bueno');
+							const returnData = await showResponse.json();
+							this.showData = this.showData.concat(returnData.data.Page.results);
 
-			let lastPage = false;
-			let page = 1;
-			this.showData = [];
-
-			while (!lastPage) {
-				const showResponse = await fetch('https://graphql.anilist.co', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json',
-					},
-					body: JSON.stringify({
-						query: showQuery,
-						variables: {
-							id: showIDs,
-							page,
-							perPage: 50,
-						},
-					}),
+							lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
+							page++;
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
 				});
-				if (!showResponse.ok) return alert('no bueno');
-				const returnData = await showResponse.json();
-				this.showData = this.showData.concat(returnData.data.Page.results);
+				const charPromise = new Promise(async (resolve, reject) => {
+					try {
+						let lastPage = false;
+						let page = 1;
+						this.charData = [];
+						while (!lastPage) {
+							const charaResponse = await fetch('https://graphql.anilist.co', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+									'Accept': 'application/json',
+								},
+								body: JSON.stringify({
+									query: charQuery,
+									variables: {
+										id: this.charIDs,
+										page,
+										perPage: 50,
+									},
+								}),
+							});
+							if (!charaResponse.ok) return alert('no bueno');
+							const returnData = await charaResponse.json();
+							this.charData = this.charData.concat(returnData.data.Page.results);
 
-				lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
-				// console.log(returnData);
-				page++;
-			}
-
-			// console.log(this.showData);
-
-			lastPage = false;
-			page = 1;
-			this.charData = new Array();
-			while (!lastPage) {
-				const charaResponse = await fetch('https://graphql.anilist.co', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'Accept': 'application/json',
-					},
-					body: JSON.stringify({
-						query: charQuery,
-						variables: {
-							id: charIDs,
-							page,
-							perPage: 50,
-						},
-					}),
+							lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
+							page++;
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
 				});
-				if (!charaResponse.ok) return alert('no bueno');
-				const returnData = await charaResponse.json();
-				this.charData = this.charData.concat(returnData.data.Page.results);
-
-				lastPage = returnData.data.Page.pageInfo.currentPage == returnData.data.Page.pageInfo.lastPage;
-				// console.log(returnData);
-				page++;
-			}
-			// console.log(this.showData);
-			// console.log(this.charData);
-			// console.log(this.voteTotals);
-			// console.log(this.categories);
-			this.loaded = true;
+				Promise.all([showPromise, charPromise]).then(() => {
+					this.loaded = true;
+				});
+			});
 		},
 	},
-	async mounted () {
-		if (!this.categories) {
-			await this.getCategories();
-			//console.log('cat');
-		}
-		if (!this.voteTotals) {
-			await this.getVoteTotals();
-			//console.log('votes');
-		}
+	mounted () {
+		this.sendQueries();
 		if (!this.themes) {
-			await this.getThemes();
-			//console.log('themes');
+			this.getThemes();
 		}
 		if (!this.dashTotals) {
-			await this.getDashboardTotals();
-			//console.log('dash');
+			this.getDashboardTotals();
 		}
 		if (!this.opedTotals) {
-			await this.getOPEDTotals();
-			//console.log('oped');
+			this.getOPEDTotals();
 		}
 		if (!this.voteSummary) {
-			await this.getVoteSummary();
-			//console.log('summary');
+			this.getVoteSummary();
 		}
-		this.sendQueries();
-
-		// console.log(this.groupedThemeVotes);
 	},
 };
 </script>
