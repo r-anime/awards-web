@@ -190,19 +190,22 @@ export default {
 					}
 				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredChar.name.full}`,
-						image: `${requiredChar.image.large}`,
-					});
+					if (requiredChar) {
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredChar.name.full}`,
+							image: `${requiredChar.image.large}`,
+						});
+					}
 				} else if (category.entryType === 'vas') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
-						image: `${requiredChar.image.large}`,
-					});
+					if (requiredChar) {
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
+							image: `${requiredChar.image.large}`,
+						});
+					}
 				}
 			}
 			//console.log(allVotes);
@@ -329,8 +332,7 @@ export default {
 					}
 				});
 				Promise.all([showPromise, charPromise]).then(() => {
-					console.log(this.showData);
-					console.log(this.charData);
+					console.table(this.charData);
 					this.loaded = true;
 				});
 			});
