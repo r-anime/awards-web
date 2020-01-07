@@ -201,6 +201,7 @@ export default {
 						});
 					}
 				} else if (category.entryType === 'characters') {
+					if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					console.log(requiredChar);
 					console.log(vote.entry_id);
@@ -210,6 +211,7 @@ export default {
 						image: `${requiredChar.image.large}`,
 					});
 				} else if (category.entryType === 'vas') {
+					if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					console.log(requiredChar);
 					console.log(vote.entry_id);
