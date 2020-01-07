@@ -290,7 +290,7 @@ export default {
 			Promise.all([catPromise, votesPromise]).then(() => {
 				for (const vote of this.voteTotals) {
 					const category = this.categories.find(cat => cat.id === vote.category_id);
-					if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
+					if (vote.anilist_id && !vote.theme_name && category.entryType === 'shows') { // This condition is fulfilled for dashboard cats only
 					// Dashboard categories have their anilist stored here
 						this.showIDs.push(vote.anilist_id);
 					} else if (vote.theme_name) { // redundant condition for theme cats
@@ -333,7 +333,7 @@ export default {
 				});
 				Promise.all([showPromise, charPromise]).then(() => {
 					console.log(this.charIDs);
-					console.table(this.charData);
+					console.log(this.charData);
 					this.loaded = true;
 				});
 			});
