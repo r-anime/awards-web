@@ -77,8 +77,8 @@ const charQuery = aq.charQuerySimple;
 export default {
 	data () {
 		return {
-			showData: null,
-			charData: null,
+			showData: [],
+			charData: [],
 			showIDs: [],
 			charIDs: [],
 			loaded: false,
@@ -171,7 +171,7 @@ export default {
 			}
 			const entries = [];
 			for (const vote of allVotes) {
-				if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
+				if (this.isDashboard(category)) { // This condition is fulfilled for dashboard cats only
 					// Dashboard categories have their anilist stored here
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 					if (requiredShow) {
@@ -181,7 +181,7 @@ export default {
 							image: `${requiredShow.coverImage.large}`,
 						});
 					}
-				} else if (vote.theme_name) { // redundant condition for theme cats
+				} else if (category.entryType === 'themes') { // redundant condition for theme cats
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 					const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
 					if (requiredShow && requiredTheme) {
@@ -191,7 +191,7 @@ export default {
 							image: `${requiredShow.coverImage.large}`,
 						});
 					}
-				} else if (category.entryType === 'shows' || category.name.includes('Cast')) { // If it's an anilist show cat
+				} else if (category.entryType === 'shows') { // If it's an anilist show cat
 					const requiredShow = this.showData.find(show => show.id === vote.entry_id);
 					if (requiredShow) {
 						entries.push({
@@ -201,7 +201,7 @@ export default {
 						});
 					}
 				} else if (category.entryType === 'characters') {
-					if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
+					// if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					console.log(requiredChar);
 					console.log(vote.entry_id);
@@ -211,7 +211,7 @@ export default {
 						image: `${requiredChar.image.large}`,
 					});
 				} else if (category.entryType === 'vas') {
-					if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
+					// if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					console.log(requiredChar);
 					console.log(vote.entry_id);
@@ -246,7 +246,7 @@ export default {
 					});
 					if (!showResponse.ok) return alert('no bueno');
 					const returnData = await showResponse.json();
-					this.showData = this.showData.concat(returnData.data.Page.results);
+					this.showData = [...this.showData, ...returnData.data.Page.results];
 					resolve(returnData);
 				} catch (err) {
 					reject(err);
@@ -273,7 +273,7 @@ export default {
 					});
 					if (!charaResponse.ok) return alert('no bueno');
 					const returnData = await charaResponse.json();
-					this.charData = this.charData.concat(returnData.data.Page.results);
+					this.charData = [...this.charData, ...returnData.data.Page.results];
 					resolve(returnData);
 				} catch (err) {
 					reject(err);
@@ -307,7 +307,7 @@ export default {
 					if (this.isDashboard(category)) { // This condition is fulfilled for dashboard cats only
 					// Dashboard categories have their anilist stored here
 						this.showIDs.push(vote.anilist_id);
-					} else if (vote.theme_name) { // redundant condition for theme cats
+					} else if (category.entryType === 'themes') { // redundant condition for theme cats
 						this.showIDs.push(vote.anilist_id);
 					} else if (category.entryType === 'shows') { // If it's an anilist show cat
 						this.showIDs.push(vote.entry_id);
@@ -315,11 +315,12 @@ export default {
 						this.charIDs.push(vote.entry_id);
 					}
 				}
+				this.showIDs = [...new Set(this.showIDs)];
+				this.charIDs = [...new Set(this.charIDs)];
 				const showPromise = new Promise(async (resolve, reject) => {
 					try {
 						let lastPage = false;
 						let page = 1;
-						this.showData = [];
 						while (!lastPage) {
 							const returnData = await this.fetchShows(page);
 							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
@@ -334,7 +335,6 @@ export default {
 					try {
 						let lastPage = false;
 						let page = 1;
-						this.charData = [];
 						while (!lastPage) {
 							const returnData = await this.fetchChars(page);
 							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
@@ -346,8 +346,6 @@ export default {
 					}
 				});
 				Promise.all([showPromise, charPromise]).then(() => {
-					console.log(this.charIDs);
-					console.log(this.charData);
 					this.loaded = true;
 				});
 			});
