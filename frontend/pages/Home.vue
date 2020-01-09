@@ -15,14 +15,8 @@
 										<button class="button is-primary is-large">Host Dashboard</button>
 									</router-link>.
 								</div>
-								<div v-if="accountOldEnough">
-									<router-link to="/instructions">
-										<button class="button is-primary is-large">Vote Here!</button>
-									</router-link>
-								</div>
-								<div v-else class="notification is-danger">
-									Your Reddit account is too new to cast votes for the awards. Accounts must have been created before the beginning of the vote.<br>
-									<strong>If you're signed in with the wrong account,</strong> you can sign out from the user menu in the top right. Sign into the correct account on Reddit before trying to sign into this site again.
+								<div v-else class="content has-text-centered">
+									<p>Public voting has ended. Stay tuned for the results livestream on February 22, 2020!</p>
 								</div>
 							</div>
 						</div>

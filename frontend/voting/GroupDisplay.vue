@@ -63,10 +63,6 @@ import ShowPicker from './EntryLayouts/ShowPicker';
 
 import snoo from '../../img/bannerSnooJump.png';
 
-window.onbeforeunload = function () {
-	if (app.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
-};
-
 export default {
 	components: {
 		categoryGroupHeader,

@@ -2,7 +2,7 @@ const {VueLoaderPlugin} = require('vue-loader');
 const config = require('./config');
 
 module.exports = {
-	mode: 'production', // dev mode after noms
+	mode: 'development', // prod mode when deploying apparently does good things
 	entry: './frontend/main.js',
 	output: {
 		path: config.publicDir,

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-comment-style */
 const log = require('another-logger');
 const apiApp = require('polka')();
 const superagent = require('superagent');
@@ -243,6 +244,8 @@ apiApp.post('/deleteaccount', async (request, response) => {
 	}
 });
 
+// Public voting routes, should branch to separate file t b h
+/*
 apiApp.post('/votes/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName, oldEnough: true})) {
@@ -309,6 +312,7 @@ apiApp.get('/votes/get', async (request, response) => {
 		response.error(error);
 	}
 });
+*/
 
 apiApp.get('/voteSummary', async (request, response) => {
 	if (!await request.authenticate({level: 2})) {
@@ -318,7 +322,7 @@ apiApp.get('/voteSummary', async (request, response) => {
 		const allVotes = await db.getAllVotes();
 		const allUsers = await db.getVoteUserCount();
 
-		//console.log(allUsers);
+		// console.log(allUsers);
 
 		const voteSummary = {
 			votes: allVotes.length,
