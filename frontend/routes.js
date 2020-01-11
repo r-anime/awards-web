@@ -4,26 +4,27 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 // Layouts, pages, and routing
-import PublicLayout from './layouts/Public';
+const PublicLayout = () => import(/* webpackChunkName: "core" */ './layouts/Public');
 // import JurorLayout from './layout/Juror';
-import HostLayout from './layouts/Host';
+const HostLayout = () => import(/* webpackChunkName: "core" */ './layouts/Host');
 
-import Home from './pages/Home';
-import About from './pages/About';
-import Profile from './pages/Profile';
-import NotFound from './pages/NotFound';
-import Categories from './pages/host/Categories';
-import Users from './pages/host/Users';
-import Results from './pages/host/Results';
-import Voting from './pages/Voting';
-import AllCategories from './pages/host/AllCategories';
-import SingleCategory from './components/SingleCategory';
-import CategoryEntries from './components/CategoryEntries';
-import CategoryInfo from './components/CategoryInfo';
-import CategoryTools from './components/CategoryTools';
+const Home = () => import(/* webpackChunkName: "core" */ './pages/Home');
+const About = () => import(/* webpackChunkName: "core" */ './pages/About');
+const Profile = () => import(/* webpackChunkName: "core" */ './pages/Profile');
+const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
-import GroupDisplay from './voting/GroupDisplay';
-import Instructions from './voting/Instructions';
+const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
+const Users = () => import(/* webpackChunkName: "host" */ './pages/host/Users');
+const Results = () => import(/* webpackChunkName: "host" */ './pages/host/Results');
+const AllCategories = () => import(/* webpackChunkName: "host" */ './pages/host/AllCategories');
+const SingleCategory = () => import(/* webpackChunkName: "host" */ './components/SingleCategory');
+const CategoryEntries = () => import(/* webpackChunkName: "host" */ './components/CategoryEntries');
+const CategoryInfo = () => import(/* webpackChunkName: "host" */ './components/CategoryInfo');
+const CategoryTools = () => import(/* webpackChunkName: "host" */ './components/CategoryTools');
+
+const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
+const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
+const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
 
 export default new VueRouter({
 	mode: 'history',
@@ -138,11 +139,12 @@ export default new VueRouter({
 					name: 'GroupDisplay',
 					props: true,
 				},
+				{
+					path: 'instructions',
+					component: Instructions,
+					name: 'Instructions',
+				},
 			],
-		},
-		{
-			path: '/instructions',
-			component: Instructions,
 		},
 
 		// 404 route - keep last
