@@ -17,15 +17,16 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.addColumn('categories', 'awardsGroup', {
-    type: 'string',
-    notNull: true,
-    defaultValue: 'genre',
+  return db.createTable('nominations', {
+    id: { type: 'int', primaryKey: true, autoIncrement: true},
+    anilist_id: { type: 'int'},
+    theme_id: {type: 'int'},
+    entryType: { type: 'string', notNull: true, defaultValue: 'shows' },
   });
 };
 
 exports.down = function(db) {
-  return null;
+  return db.dropTable('nominations');
 };
 
 exports._meta = {

@@ -82,20 +82,20 @@ export default {
 				this.submitting = false;
 			}
 		},
-		selectAll() {
-			var entries = document.querySelectorAll('.item-picker-entry-cb'), i;
+		selectAll () {
+			const entries = document.querySelectorAll('.item-picker-entry-cb');
 
-			for (i = 0; i < entries.length; ++i) {
+			for (let i = 0; i < entries.length; ++i) {
 				entries[i].checked = true;
 			}
 		},
-		unselectAll() {
-			var entries = document.querySelectorAll('.item-picker-entry-cb'), i;
+		unselectAll () {
+			const entries = document.querySelectorAll('.item-picker-entry-cb');
 
-			for (i = 0; i < entries.length; ++i) {
+			for (let i = 0; i < entries.length; ++i) {
 				entries[i].checked = false;
 			}
-		}
+		},
 	},
 };
 </script>

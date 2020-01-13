@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
@@ -19,6 +21,7 @@ const Results = () => import(/* webpackChunkName: "host" */ './pages/host/Result
 const AllCategories = () => import(/* webpackChunkName: "host" */ './pages/host/AllCategories');
 const SingleCategory = () => import(/* webpackChunkName: "host" */ './components/SingleCategory');
 const CategoryEntries = () => import(/* webpackChunkName: "host" */ './components/CategoryEntries');
+const CategoryNominations = () => import(/* webpackChunkName: "host" */ './components/CategoryNominations');
 const CategoryInfo = () => import(/* webpackChunkName: "host" */ './components/CategoryInfo');
 const CategoryTools = () => import(/* webpackChunkName: "host" */ './components/CategoryTools');
 
@@ -96,6 +99,14 @@ export default new VueRouter({
 									component: CategoryEntries,
 									meta: {
 										title: 'Entries',
+									},
+								},
+								{
+									name: 'categoryNominations',
+									path: 'nominations',
+									component: CategoryNominations,
+									meta: {
+										title: 'nominations',
 									},
 								},
 								{
