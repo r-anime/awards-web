@@ -19,9 +19,11 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
   return db.createTable('nominations', {
     id: { type: 'int', primaryKey: true, autoIncrement: true},
+    category_id: {type: 'int', notNull: true},
     anilist_id: { type: 'int'},
     theme_id: {type: 'int'},
-    entryType: { type: 'string', notNull: true, defaultValue: 'shows' },
+    entry_type: { type: 'string', notNull: true, defaultValue: 'shows' },
+    active: { type: 'boolean', notNull: true, defaultValue: true},
   });
 };
 
