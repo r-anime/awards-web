@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapState, mapActions} from 'vuex';
 import ShowPicker from './EntryLayouts/ShowPicker';
 import CharPicker from './EntryLayouts/CharPicker';
 import VAPicker from './EntryLayouts/VAPicker';
@@ -65,9 +65,17 @@ export default {
 			submitting: false,
 		};
 	},
+	computed: {
+		...mapState([
+			'nominations',
+		]),
+	},
 	methods: {
 		...mapActions([
 			'updateCategory',
+			'getNominations',
+			'insertNomination',
+			'deleteNominations',
 		]),
 		async submit () {
 			this.submitting = true;
@@ -96,6 +104,11 @@ export default {
 				entries[i].checked = false;
 			}
 		},
+	},
+	mounted () {
+		if (!this.nominations || this.nominations[0].category_id !== this.category.id) {
+			this.getNominations(this.category.id);
+		}
 	},
 };
 </script>

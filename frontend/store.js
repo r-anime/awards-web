@@ -41,6 +41,7 @@ const store = new Vuex.Store({
 		voteTotals: null,
 		opedTotals: null,
 		dashTotals: null,
+		nominations: null,
 	},
 	getters: {
 		isHost (state) {
@@ -105,6 +106,18 @@ const store = new Vuex.Store({
 		},
 		GET_OPED_TOTALS (state, opedTotals) {
 			state.opedTotals = opedTotals;
+		},
+		GET_NOMINATIONS (state, nominations) {
+			state.nominations = nominations;
+		},
+		INSERT_NOMINATION (state, nomination) {
+			state.nominations.push(nomination);
+		},
+		DELETE_NOMINATIONS (state) {
+			state.nominations = [];
+		},
+		UPDATE_NOMINATIONS (state, nominations) {
+			state.nominations = nominations;
 		},
 	},
 	actions: {
@@ -252,7 +265,6 @@ const store = new Vuex.Store({
 			}
 			commit('UPDATE_SELECTIONS', selections);
 		},
-
 		async getVoteSummary ({commit}) {
 			const voteSummary = await makeRequest('/api/voteSummary');
 			commit('GET_VOTE_SUMMARY', voteSummary);
@@ -268,6 +280,18 @@ const store = new Vuex.Store({
 		async getOPEDTotals ({commit}) {
 			const opedTotals = await makeRequest('/api/votes/oped/get');
 			commit('GET_OPED_TOTALS', opedTotals);
+		},
+		async getNominations ({commit}, categoryId) {
+			const noms = await makeRequest(`/api/category/${categoryId}/nominations`);
+			commit('GET_NOMINATIONS', noms);
+		},
+		async insertNomination ({commit}, {id, nomination}) {
+			const nom = await makeRequest(`/api/category/${id}/nomination`, 'POST', nomination);
+			commit('INSERT_NOMINATION', nom);
+		},
+		async deleteNominations ({commit}, categoryId) {
+			await makeRequest(`/api/category/${categoryId}/nominations`, 'DELETE');
+			commit('DELETE_NOMINATIONS');
 		},
 	},
 });

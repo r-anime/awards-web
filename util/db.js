@@ -21,6 +21,7 @@ const getNominationsByCategoryQuery = db.prepare('SELECT * FROM nominations WHER
 const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, theme_id, entry_type, active) VALUES (:category_id, :anilist_id, :theme_id, :entry_type, :active)');
 const deactivateNominationsByCategoryQuery = db.prepare('UPDATE nominations SET active=0 WHERE category_id=?');
 const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET active=:active WHERE id=:id');
+const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE rowid=? AND active=1');
 
 const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
 
@@ -75,4 +76,10 @@ module.exports = {
 
 	getAllVotes: getAllVotesQuery.all.bind(getAllVotesQuery),
 	deleteAllVotes: deleteAllVotesQuery.run.bind(deleteAllVotesQuery),
+
+	getNominationsByCategory: getNominationsByCategoryQuery.all.bind(getNominationsByCategoryQuery),
+	insertNomination: insertNominationQuery.run.bind(insertNominationQuery),
+	deactivateNominationsByCategory: deactivateNominationsByCategoryQuery.all.bind(deactivateNominationsByCategoryQuery),
+	toggleActiveNominationsById: toggleActiveNominationsByIdQuery.run.bind(toggleActiveNominationsByIdQuery),
+	getNominationByRowId: getNominationByRowIdQuery.get.bind(getNominationByRowIdQuery),
 };
