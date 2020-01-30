@@ -293,6 +293,10 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/category/${categoryId}/nominations`, 'DELETE');
 			commit('DELETE_NOMINATIONS');
 		},
+		async toggleNominations ({commit}, {categoryId, active}) {
+			await makeRequest(`/api/category/${categoryId}/nominations`, 'PATCH', active);
+			commit('UPDATE_NOMINATIONS');
+		},
 	},
 });
 

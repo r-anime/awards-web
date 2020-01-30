@@ -4,6 +4,7 @@ const apiApp = require('polka')();
 const superagent = require('superagent');
 const db = require('../util/db');
 const parse = require('../themes/parser');
+// eslint-disable-next-line no-unused-vars
 const voteHelpers = require('../util/voteHelpers');
 
 apiApp.get('/me', async (request, response) => {
@@ -223,6 +224,25 @@ apiApp.patch('/category/:id/nominations', async (request, response) => {
 	}
 });
 
+apiApp.post('/category/:id/nominations/update', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to add nominations'});
+	}
+
+	let nomination;
+	try {
+		nomination = await request.json();
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		const {lastInsertRowId} = await db.insertNomination(nomination);
+		response.json(await db.getNominationByRowId(lastInsertRowId));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.post('/themes/create', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to modify themes'});
@@ -316,7 +336,7 @@ apiApp.get('/voteSummary', async (request, response) => {
 
 		const voteSummary = {
 			votes: allVotes.length,
-			users: allUsers[0]['count'],
+			users: allUsers[0].count,
 			allVotes: [],
 		};
 		// eslint-disable-next-line multiline-comment-style

@@ -1,114 +1,28 @@
 <template>
 	<div>
-		<show-picker
-			v-if="category.entryType === 'shows'"
-			v-model="selections"
-		/>
-		<char-picker
-			v-else-if="category.entryType === 'characters'"
-			v-model="selections"
-		/>
-		<VAPicker
-			v-else-if="category.entryType === 'vas'"
-			v-model="selections"
-		/>
-		<ThemePicker
-			v-else-if="category.entryType === 'themes'"
-			v-model="selections"
-		/>
-		<div class="submit-wrapper">
-			<button
-				class="button is-success"
-				:class="{'is-loading': submitting}"
-				@click="submit"
-			>
-				Update Entries
-			</button>
-
-			<button
-				class="button is-primary"
-				@click="selectAll"
-			>
-				Select All
-			</button>
-
-			<button
-				class="button is-primary"
-				@click="unselectAll"
-			>
-				Unselect All
-			</button>
+		<div ref="fieldcontainer">
 		</div>
+		<button @click="insertField">Add Field</button>
 	</div>
 </template>
 
 <script>
-import {mapState, mapActions} from 'vuex';
-import ShowPicker from './EntryLayouts/ShowPicker';
-import CharPicker from './EntryLayouts/CharPicker';
-import VAPicker from './EntryLayouts/VAPicker';
-import ThemePicker from './EntryLayouts/ThemePicker';
+import Vue from 'vue';
+import NominationsField from './CategoryNominationsField';
 
 export default {
 	components: {
-		ShowPicker,
-		CharPicker,
-		VAPicker,
-		ThemePicker,
-	},
-	props: {
-		category: Object,
-	},
-	data () {
-		return {
-			selections: this.category.entries ? JSON.parse(this.category.entries) : [],
-			submitting: false,
-		};
-	},
-	computed: {
-		...mapState([
-			'nominations',
-		]),
+		NominationsField,
 	},
 	methods: {
-		...mapActions([
-			'updateCategory',
-			'getNominations',
-			'insertNomination',
-			'deleteNominations',
-		]),
-		async submit () {
-			this.submitting = true;
-			try {
-				await this.updateCategory({
-					id: this.category.id,
-					data: {
-						entries: JSON.stringify(this.selections),
-					},
-				});
-			} finally {
-				this.submitting = false;
-			}
-		},
-		selectAll () {
-			const entries = document.querySelectorAll('.item-picker-entry-cb');
+		insertField () {
+			const ComponentClass = Vue.extend(NominationsField);
+			const inst = new ComponentClass();
+			inst.$mount();
+			console.log(inst);
 
-			for (let i = 0; i < entries.length; ++i) {
-				entries[i].checked = true;
-			}
+			this.$refs.fieldcontainer.appendChild(inst.$el);
 		},
-		unselectAll () {
-			const entries = document.querySelectorAll('.item-picker-entry-cb');
-
-			for (let i = 0; i < entries.length; ++i) {
-				entries[i].checked = false;
-			}
-		},
-	},
-	mounted () {
-		if (!this.nominations || this.nominations[0].category_id !== this.category.id) {
-			this.getNominations(this.category.id);
-		}
 	},
 };
 </script>

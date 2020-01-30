@@ -106,7 +106,7 @@ export default new VueRouter({
 									path: 'nominations',
 									component: CategoryNominations,
 									meta: {
-										title: 'nominations',
+										title: 'Nominations',
 									},
 								},
 								{
