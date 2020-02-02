@@ -224,25 +224,6 @@ apiApp.patch('/category/:id/nominations', async (request, response) => {
 	}
 });
 
-apiApp.post('/category/:id/nominations/update', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
-		return response.json(401, {error: 'You must be a host to add nominations'});
-	}
-
-	let nomination;
-	try {
-		nomination = await request.json();
-	} catch (error) {
-		response.error(error);
-	}
-	try {
-		const {lastInsertRowId} = await db.insertNomination(nomination);
-		response.json(await db.getNominationByRowId(lastInsertRowId));
-	} catch (error) {
-		response.error(error);
-	}
-});
-
 apiApp.post('/themes/create', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to modify themes'});

@@ -1,8 +1,10 @@
 <template>
 	<div>
-		<div ref="fieldcontainer">
+		<div class="section" ref="fieldcontainer">
 		</div>
-		<button @click="insertField">Add Field</button>
+		<div class="section">
+			<button class="button is-primary" @click="insertField">Add Nomination</button>
+		</div>
 	</div>
 </template>
 
@@ -16,6 +18,7 @@ export default {
 	},
 	methods: {
 		insertField () {
+			// fuck lenlo
 			const ComponentClass = Vue.extend(NominationsField);
 			const inst = new ComponentClass();
 			inst.$mount();
