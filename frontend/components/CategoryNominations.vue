@@ -2,7 +2,7 @@
 	<div>
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
-				<nominations-field v-for="(nom,index) in noms" :key="index" @toggle="updateData"></nominations-field>
+				<nominations-field v-for="(nom,index) in noms" :key="index" @toggle="updateData(index, $event)"></nominations-field>
 			</div>
 			<div class="section">
 				<button class="button is-primary" @click.prevent="insertField">Add Nomination</button>
@@ -42,7 +42,8 @@ export default {
 		saveNoms () {
 			console.log(this.nomdata);
 		},
-		updateData (data) {
+		updateData (index, data) {
+			console.log(index);
 			console.log(data);
 		},
 	},

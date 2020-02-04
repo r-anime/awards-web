@@ -60,8 +60,8 @@ export default {
 	},
 	methods: {
 		emitUpdate () {
-			console.log(this.$data);
-			this.$emit('toggle', 'test');
+			//console.log(this.$data);
+			this.$emit('toggle', this.$data);
 		},
 	},
 };
