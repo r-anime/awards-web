@@ -2,7 +2,7 @@
 	<div>
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
-				<nominations-field v-for="(nom,index) in noms" ref="nominations" :is="nom" :key="index" @updated="updateData"></nominations-field>
+				<nominations-field v-for="(nom,index) in noms" :key="index" @toggle="updateData"></nominations-field>
 			</div>
 			<div class="section">
 				<button class="button is-primary" @click.prevent="insertField">Add Nomination</button>

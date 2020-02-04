@@ -61,7 +61,7 @@ export default {
 	methods: {
 		emitUpdate () {
 			console.log(this.$data);
-			this.$emit('updated', 'test');
+			this.$emit('toggle', 'test');
 		},
 	},
 };
