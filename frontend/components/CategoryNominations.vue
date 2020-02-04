@@ -1,31 +1,53 @@
 <template>
 	<div>
-		<div class="section" ref="fieldcontainer">
-		</div>
-		<div class="section">
-			<button class="button is-primary" @click="insertField">Add Nomination</button>
-		</div>
+		<form @submit.prevent="saveNoms">
+			<div class="section columns is-multiline">
+				<nominations-field v-for="(nom,index) in noms" ref="nominations" :is="nom" :key="index" @updated="updateData"></nominations-field>
+			</div>
+			<div class="section">
+				<button class="button is-primary" @click.prevent="insertField">Add Nomination</button>
+				<input type="submit" class="button is-green" value="Save Nominations">
+			</div>
+		</form>
 	</div>
 </template>
 
 <script>
-import Vue from 'vue';
 import NominationsField from './CategoryNominationsField';
 
 export default {
 	components: {
 		NominationsField,
 	},
+	props: {
+		category: Object,
+	},
+	data () {
+		return {
+			noms: [],
+			nomdata: [],
+		};
+	},
 	methods: {
 		insertField () {
 			// fuck lenlo
-			const ComponentClass = Vue.extend(NominationsField);
-			const inst = new ComponentClass();
-			inst.$mount();
-			console.log(inst);
+			const renderNom = {
+				render (h) {
+					return h(NominationsField);
+				},
+			};
 
-			this.$refs.fieldcontainer.appendChild(inst.$el);
+			this.noms.push(renderNom);
 		},
+		saveNoms () {
+			console.log(this.nomdata);
+		},
+		updateData (data) {
+			console.log(data);
+		},
+	},
+	mounted () {
+		console.log(this.category);
 	},
 };
 </script>
