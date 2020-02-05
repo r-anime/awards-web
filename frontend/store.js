@@ -286,17 +286,10 @@ const store = new Vuex.Store({
 			const noms = await makeRequest(`/api/category/${categoryId}/nominations`);
 			commit('GET_NOMINATIONS', noms);
 		},
-		async insertNomination ({commit}, {id, nomination}) {
-			const nom = await makeRequest(`/api/category/${id}/nomination`, 'POST', nomination);
-			commit('INSERT_NOMINATION', nom);
-		},
 		async insertNominations ({commit}, {id, data}) {
 			console.log(data);
-			for (const datum in data) {
-				console.log(datum);
-				const nom = await makeRequest(`/api/category/${id}/nomination`, 'POST', datum);
-				commit('INSERT_NOMINATION', nom);
-			}
+			const noms = await makeRequest(`/api/category/${id}/nominations`, 'POST', data);
+			commit('UPDATE_NOMINATIONS', noms);
 		},
 		async deleteNominations ({commit}, categoryId) {
 			await makeRequest(`/api/category/${categoryId}/nominations`, 'DELETE');

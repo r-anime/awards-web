@@ -9,8 +9,8 @@
 			</div>
 			<div class="section">
 				<button class="button is-primary" @click.prevent="insertField">Add Nomination</button>
-				<input type="submit" class="button is-success"
-					:class="{'is-loading': submitting}" value="Save Nominations">
+				<button type="submit" class="button is-success"
+					:class="{'is-loading': submitting}">Save Nominations</button>
 			</div>
 		</form>
 	</div>
@@ -42,6 +42,7 @@ export default {
 			// fuck lenlo
 			this.nomdata.push({
 				categoryID: this.category.id,
+				entryType: this.category.entryType,
 				anilistID: -1,
 				characterID: -1,
 				themeID: -1,
@@ -53,7 +54,7 @@ export default {
 		async saveNoms () {
 			this.submitting = true;
 			console.log(this.nomdata);
-			
+
 			/* try {
 				await this.deleteNominations({
 					categoryId: this.category.id,

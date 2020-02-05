@@ -172,20 +172,43 @@ apiApp.get('/category/:id/nominations', (request, response) => {
 	}
 });
 
-apiApp.post('/category/:id/nomination', async (request, response) => {
+apiApp.post('/category/:id/nominations', async (request, response) => {
 	if (!await request.authenticate({level: 2})) {
 		return response.json(401, {error: 'You must be a host to add nominations'});
 	}
 
-	let nomination;
+	let nominations;
 	try {
-		nomination = await request.json();
+		nominations = await request.json();
+		log.success(nominations);
 	} catch (error) {
 		response.error(error);
 	}
 	try {
-		const {lastInsertRowId} = await db.insertNomination(nomination);
-		response.json(await db.getNominationByRowId(lastInsertRowId));
+		const promise = new Promise((resolve, reject) => {
+			try {
+				for (const nom of nominations) {
+					log.success(nom);
+					db.insertNomination({
+						categoryID: request.params.id,
+						anilistID: nom.anilistID,
+						themeID: nom.themeID,
+						entryType: nom.entryType,
+						active: 1,
+						writeup: nom.writeup,
+						juryRank: nom.juryRank,
+						publicVotes: nom.publicVotes,
+						characterID: nom.characterID,
+					});
+				}
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		promise.then(() => {
+			response.json(db.getNominationsByCategory(request.params.id));
+		});
 	} catch (error) {
 		response.error(error);
 	}
