@@ -2,7 +2,9 @@
 	<div>
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
-				<nominations-field v-for="(nom,index) in noms" :key="index" @toggle="updateData(index, $event)"></nominations-field>
+				<nominations-field v-for="(nom,index) in nomdata" :key="index"
+					:nom="nom"
+					@toggle="updateData(index, $event)" @delete="deleteNom(index)"></nominations-field>
 			</div>
 			<div class="section">
 				<button class="button is-primary" @click.prevent="insertField">Add Nomination</button>
@@ -24,31 +26,34 @@ export default {
 	},
 	data () {
 		return {
-			noms: [],
 			nomdata: [],
 		};
 	},
 	methods: {
 		insertField () {
 			// fuck lenlo
-			const renderNom = {
-				render (h) {
-					return h(NominationsField);
-				},
-			};
-
-			this.noms.push(renderNom);
+			this.nomdata.push({
+				anilistID: -1,
+				characterID: -1,
+				themeID: -1,
+				juryRank: -1,
+				publicVotes: -1,
+				writeup: '',
+			});
 		},
 		saveNoms () {
 			console.log(this.nomdata);
 		},
 		updateData (index, data) {
+			this.nomdata[index] = data;
+		},
+		deleteNom (index) {
 			console.log(index);
-			console.log(data);
+			this.nomdata.splice(index, 1);
 		},
 	},
 	mounted () {
-		console.log(this.category);
+		//console.log(this.category);
 	},
 };
 </script>
