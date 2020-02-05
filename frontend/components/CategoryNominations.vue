@@ -4,17 +4,20 @@
 			<div class="section columns is-multiline">
 				<nominations-field v-for="(nom,index) in nomdata" :key="index"
 					:nom="nom"
-					@toggle="updateData(index, $event)" @delete="deleteNom(index)"></nominations-field>
+					@toggle="updateData(index, $event)" @delete="deleteNom(index)">
+				</nominations-field>
 			</div>
 			<div class="section">
 				<button class="button is-primary" @click.prevent="insertField">Add Nomination</button>
-				<input type="submit" class="button is-green" value="Save Nominations">
+				<input type="submit" class="button is-success"
+					:class="{'is-loading': submitting}" value="Save Nominations">
 			</div>
 		</form>
 	</div>
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 import NominationsField from './CategoryNominationsField';
 
 export default {
@@ -27,12 +30,18 @@ export default {
 	data () {
 		return {
 			nomdata: [],
+			submitting: false,
 		};
 	},
 	methods: {
+		...mapActions([
+			'insertNominations',
+			'deleteNominations',
+		]),
 		insertField () {
 			// fuck lenlo
 			this.nomdata.push({
+				categoryID: this.category.id,
 				anilistID: -1,
 				characterID: -1,
 				themeID: -1,
@@ -41,8 +50,25 @@ export default {
 				writeup: '',
 			});
 		},
-		saveNoms () {
+		async saveNoms () {
+			this.submitting = true;
 			console.log(this.nomdata);
+			
+			/* try {
+				await this.deleteNominations({
+					categoryId: this.category.id,
+				});
+			} finally {
+				// do nothing
+			} */
+			try {
+				await this.insertNominations({
+					id: this.category.id,
+					data: this.nomdata,
+				});
+			} finally {
+				this.submitting = false;
+			}
 		},
 		updateData (index, data) {
 			this.nomdata[index] = data;

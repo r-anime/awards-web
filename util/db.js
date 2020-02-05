@@ -18,10 +18,10 @@ const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryT
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
 const getNominationsByCategoryQuery = db.prepare('SELECT * FROM nominations WHERE category_id=? AND active=1');
-const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, theme_id, entry_type, active) VALUES (:category_id, :anilist_id, :theme_id, :entry_type, :active)');
+const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, character_id, theme_id, entry_type, active, writeup, rank, votes) VALUES (:categoryID, :anilistID, :characterID, :themeID, 0, :active, :writeup, :juryRank, :publicVotes)');
 const deactivateNominationsByCategoryQuery = db.prepare('UPDATE nominations SET active=0 WHERE category_id=?');
 const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET active=:active WHERE id=:id');
-const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE rowid=? AND active=1');
+const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE id=? AND active=1');
 
 const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
 

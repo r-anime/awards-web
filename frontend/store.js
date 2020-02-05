@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import Vue from 'vue';
 import Vuex from 'vuex';
 
@@ -150,7 +151,7 @@ const store = new Vuex.Store({
 			commit('CREATE_CATEGORY', category);
 		},
 		async updateCategory ({commit}, {id, data}) {
-			console.log(id, data);
+			//console.log(id, data);
 			// TODO: I don't like that the id and the data are in the same object here
 			const updatedCategoryData = await makeRequest(`/api/category/${id}`, 'PATCH', {id, ...data});
 			commit('UPDATE_CATEGORY', updatedCategoryData);
@@ -288,6 +289,14 @@ const store = new Vuex.Store({
 		async insertNomination ({commit}, {id, nomination}) {
 			const nom = await makeRequest(`/api/category/${id}/nomination`, 'POST', nomination);
 			commit('INSERT_NOMINATION', nom);
+		},
+		async insertNominations ({commit}, {id, data}) {
+			console.log(data);
+			for (const datum in data) {
+				console.log(datum);
+				const nom = await makeRequest(`/api/category/${id}/nomination`, 'POST', datum);
+				commit('INSERT_NOMINATION', nom);
+			}
 		},
 		async deleteNominations ({commit}, categoryId) {
 			await makeRequest(`/api/category/${categoryId}/nominations`, 'DELETE');
