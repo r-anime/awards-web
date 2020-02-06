@@ -19,7 +19,7 @@ const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=
 
 const getNominationsByCategoryQuery = db.prepare('SELECT * FROM nominations WHERE category_id=? AND active=1');
 const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, character_id, theme_id, entry_type, active, writeup, rank, votes) VALUES (:categoryID, :anilistID, :characterID, :themeID, :entryType, :active, :writeup, :juryRank, :publicVotes)');
-const deactivateNominationsByCategoryQuery = db.prepare('UPDATE nominations SET active=0 WHERE category_id=?');
+const deactivateNominationsByCategoryQuery = db.prepare('UPDATE `nominations` SET `active`=0 WHERE `category_id`=?');
 const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET active=:active WHERE id=:id');
 const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE id=? AND active=1');
 
@@ -79,7 +79,7 @@ module.exports = {
 
 	getNominationsByCategory: getNominationsByCategoryQuery.all.bind(getNominationsByCategoryQuery),
 	insertNomination: insertNominationQuery.run.bind(insertNominationQuery),
-	deactivateNominationsByCategory: deactivateNominationsByCategoryQuery.all.bind(deactivateNominationsByCategoryQuery),
+	deactivateNominationsByCategory: deactivateNominationsByCategoryQuery.run.bind(deactivateNominationsByCategoryQuery),
 	toggleActiveNominationsById: toggleActiveNominationsByIdQuery.run.bind(toggleActiveNominationsByIdQuery),
 	getNominationByRowId: getNominationByRowIdQuery.get.bind(getNominationByRowIdQuery),
 };

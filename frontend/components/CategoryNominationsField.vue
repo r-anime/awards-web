@@ -1,7 +1,7 @@
 <template>
     <div class="column is-6-desktop">
         <div class="notification">
-            <button class="delete is-pulled-right" @click="emitDelete"></button>
+            <button class="delete is-pulled-right" @click.prevent="emitDelete"></button>
             <div class="columns is-multiline">
                 <div class="column is-narrow field">
                     <label class="label">Show Anilist ID</label>

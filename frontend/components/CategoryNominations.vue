@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div v-if="nomdata!==null">
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
 				<nominations-field v-for="(nom,index) in nomdata" :key="index"
@@ -14,10 +14,13 @@
 			</div>
 		</form>
 	</div>
+	<div v-else>
+		Loading ...
+	</div>
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import NominationsField from './CategoryNominationsField';
 
 export default {
@@ -29,14 +32,20 @@ export default {
 	},
 	data () {
 		return {
-			nomdata: [],
+			nomdata: null,
 			submitting: false,
 		};
+	},
+	computed: {
+		...mapState([
+			'nominations',
+		]),
 	},
 	methods: {
 		...mapActions([
 			'insertNominations',
 			'deleteNominations',
+			'getNominations',
 		]),
 		insertField () {
 			// fuck lenlo
@@ -51,25 +60,28 @@ export default {
 				writeup: '',
 			});
 		},
-		async saveNoms () {
+		saveNoms () {
 			this.submitting = true;
 			console.log(this.nomdata);
 
-			/* try {
-				await this.deleteNominations({
-					categoryId: this.category.id,
-				});
-			} finally {
-				// do nothing
-			} */
-			try {
-				await this.insertNominations({
-					id: this.category.id,
-					data: this.nomdata,
-				});
-			} finally {
-				this.submitting = false;
-			}
+			const delPromise = new Promise(async (resolve, reject) => {
+				try {
+					await this.deleteNominations(this.category.id);
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			Promise.all([delPromise]).then(async () => {
+				try {
+					await this.insertNominations({
+						id: this.category.id,
+						data: this.nomdata,
+					});
+				} finally {
+					this.submitting = false;
+				}
+			});
 		},
 		updateData (index, data) {
 			this.nomdata[index] = data;
@@ -80,6 +92,29 @@ export default {
 		},
 	},
 	mounted () {
+		const nomPromise = new Promise(async (resolve, reject) => {
+			try {
+				await this.getNominations(this.category.id);
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		Promise.all([nomPromise]).then(() => {
+			this.nomdata = [];
+			for (const nom of this.nominations) {
+				this.nomdata.push({
+					categoryID: this.category.id,
+					entryType: this.category.entryType,
+					anilistID: nom.anilist_id,
+					characterID: nom.character_id,
+					themeID: nom.theme_id,
+					juryRank: nom.rank,
+					publicVotes: nom.votes,
+					writeup: nom.writeup,
+				});
+			}
+		});
 		//console.log(this.category);
 	},
 };
