@@ -8,7 +8,7 @@
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.altName" @input="emitUpdate">
                     </div>
-                    <p class="help">Override any names with this one</p>
+                    <p class="help">Overrides default name</p>
                 </div>
                 <div class="column is-narrow field">
                     <label class="label">Show Anilist ID</label>
@@ -25,7 +25,6 @@
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.characterID" @input="emitUpdate">
                     </div>
-                    <p class="help">Leave alone for non-char cats</p>
                 </div>
                 <div class="column is-narrow field" v-if="category.entryType=='themes'">
                     <label class="label">Theme ID</label>
@@ -35,28 +34,27 @@
                             <option v-for="(entry, index) in alphathemes" :key="index" :value="entry.id">{{entry.title + " " + entry.themeNo}}</option>
                         </select>
                     </div>
-                    <p class="help">Leave alone for non-OP/ED cats</p>
                 </div>
                 <div class="column is-narrow field">
                     <label class="label">Jury Rank</label>
                     <div class="control">
                         <input class="input" type="number" placeholder="" v-model="nom.juryRank" @input="emitUpdate">
                     </div>
-                    <p class="help">Leave alone for singular test cat public noms</p>
+                    <p class="help">Leave alone for unshared test cat public noms</p>
                 </div>
                 <div class="column is-narrow field">
                     <label class="label">Public Vote #</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.publicVotes" @input="emitUpdate">
                     </div>
-                    <p class="help">Leave alone for singular test cat jury noms</p>
+                    <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
                 <div class="column is-narrow field">
                     <label class="label">Public Support #</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.publicSupport" @input="emitUpdate">
                     </div>
-                    <p class="help">Leave alone for singular test cat jury noms</p>
+                    <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
             </div>
             <div class="columns">
@@ -74,7 +72,7 @@
                     <div class="control">
                         <textarea class="textarea" type="text" placeholder="" rows="4" v-model="nom.writeup" @input="emitUpdate"></textarea>
                     </div>
-                    <p class="help">Accepts markup</p>
+                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown</a></p>
                 </div>
             </div>
         </div>
