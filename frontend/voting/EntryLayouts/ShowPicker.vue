@@ -77,7 +77,7 @@
 
 <script>
 import ShowPickerEntry from './ShowPickerEntry';
-const queries = require('../anilistQueries');
+const queries = require('../../anilistQueries');
 import {shuffle} from '../../util';
 
 export default {

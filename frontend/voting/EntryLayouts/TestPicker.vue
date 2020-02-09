@@ -78,7 +78,7 @@
 
 <script>
 import ShowPickerEntry from './ShowPickerEntry';
-const queries = require('../anilistQueries');
+const queries = require('../../anilistQueries');
 
 export default {
 	components: {
