@@ -180,7 +180,7 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 	let nominations;
 	try {
 		nominations = await request.json();
-		log.success(nominations);
+		// log.success(nominations);
 	} catch (error) {
 		response.error(error);
 	}
@@ -188,8 +188,9 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 		const promise = new Promise((resolve, reject) => {
 			try {
 				for (const nom of nominations) {
-					log.success(nom);
+					// log.success(nom);
 					db.insertNomination({
+						altName: nom.altName,
 						categoryID: request.params.id,
 						anilistID: nom.anilistID,
 						themeID: nom.themeID,
@@ -199,6 +200,8 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 						juryRank: nom.juryRank,
 						publicVotes: nom.publicVotes,
 						characterID: nom.characterID,
+						publicSupport: nom.publicSupport,
+						staff: nom.staff,
 					});
 				}
 				resolve();

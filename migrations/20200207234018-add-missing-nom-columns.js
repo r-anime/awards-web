@@ -16,22 +16,23 @@ exports.setup = function(options, seedLink) {
   seed = seedLink;
 };
 
-exports.up = function(db) {
-  return db.addColumn('nominations', 'writeup', {
-    type: 'string',
-    defaultValue: '',
-    length: 10000
-  }).then(function(){
-    db.addColumn('nominations', 'rank', {
+exports.up = function(db, callback) {
+  async.series([
+    db.addColumn.bind(db, 'nominations', 'finished', {
       type: 'int',
-      length: 2
-    });
-  },function(){return ;}).then(function(){
-    db.addColumn('nominations', 'votes', {
-      type: 'int',
-      length: 10
-    });
-  },function(){return ;});
+      defaultValue: 0
+    }),
+    db.addColumn.bind(db, 'nominations', 'alt_name', {
+      type: 'string',
+      defaultValue: '',
+      length: 255
+    }),
+    db.addColumn.bind(db, 'nominations', 'staff', {
+      type: 'string',
+      defaultValue: '',
+      length: 1028
+    })
+  ], callback);
 };
 
 exports.down = function(db, callback) {

@@ -3,7 +3,7 @@
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
 				<nominations-field v-for="(nom,index) in nomdata" :key="index"
-					:nom="nom"
+					:nom="nom" :category="category" :themes="themes"
 					@toggle="updateData(index, $event)" @delete="deleteNom(index)">
 				</nominations-field>
 			</div>
@@ -39,6 +39,7 @@ export default {
 	computed: {
 		...mapState([
 			'nominations',
+			'themes',
 		]),
 	},
 	methods: {
@@ -46,10 +47,12 @@ export default {
 			'insertNominations',
 			'deleteNominations',
 			'getNominations',
+			'getThemes',
 		]),
 		insertField () {
 			// fuck lenlo
 			this.nomdata.push({
+				altName: '',
 				categoryID: this.category.id,
 				entryType: this.category.entryType,
 				anilistID: -1,
@@ -57,6 +60,8 @@ export default {
 				themeID: -1,
 				juryRank: -1,
 				publicVotes: -1,
+				publicSupport: -1,
+				staff: '',
 				writeup: '',
 			});
 		},
@@ -72,7 +77,7 @@ export default {
 					reject(err);
 				}
 			});
-			Promise.all([delPromise]).then(async () => {
+			delPromise.then(async () => {
 				try {
 					await this.insertNominations({
 						id: this.category.id,
@@ -100,10 +105,19 @@ export default {
 				reject(err);
 			}
 		});
-		Promise.all([nomPromise]).then(() => {
+		const themePromise = new Promise(async (resolve, reject) => {
+			try {
+				await this.getThemes(this.category.id);
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		Promise.all([nomPromise, themePromise]).then(() => {
 			this.nomdata = [];
 			for (const nom of this.nominations) {
 				this.nomdata.push({
+					altName: nom.alt_name,
 					categoryID: this.category.id,
 					entryType: this.category.entryType,
 					anilistID: nom.anilist_id,
@@ -111,11 +125,13 @@ export default {
 					themeID: nom.theme_id,
 					juryRank: nom.rank,
 					publicVotes: nom.votes,
+					publicSupport: nom.finished,
+					staff: nom.staff,
 					writeup: nom.writeup,
 				});
 			}
 		});
-		//console.log(this.category);
+		console.log(this.category);
 	},
 };
 </script>
