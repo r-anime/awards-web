@@ -69,7 +69,7 @@
 
 <script>
 import {mapActions, mapState} from 'vuex';
-import * as aq from '../../voting/anilistQueries';
+import * as aq from '../../anilistQueries';
 
 const showQuery = aq.showQuerySimple;
 const charQuery = aq.charQuerySimple;

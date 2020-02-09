@@ -82,7 +82,7 @@
 <script>
 import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
-const queries = require('../anilistQueries');
+const queries = require('../../anilistQueries');
 
 export default {
 	components: {

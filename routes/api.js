@@ -249,6 +249,13 @@ apiApp.patch('/category/:id/nominations', async (request, response) => {
 		response.error(error);
 	}
 });
+apiApp.get('/categories/nominations', (request, response) => {
+	try {
+		response.json(db.getAllNominations());
+	} catch (error) {
+		response.error(error);
+	}
+})
 
 apiApp.post('/themes/create', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
