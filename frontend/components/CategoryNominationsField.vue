@@ -20,7 +20,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="column is-narrow field" v-if="category.entryType=='characters'">
+                <div class="column is-narrow field" v-if="category.entryType=='characters'||category.entryType=='vas'">
                     <label class="label">Character Anilist ID</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.characterID" @input="emitUpdate">
