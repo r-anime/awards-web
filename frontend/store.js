@@ -116,7 +116,7 @@ const store = new Vuex.Store({
 			state.nominations.push(nomination);
 		},
 		DELETE_NOMINATIONS (state) {
-			//state.nominations = [];
+			// state.nominations = [];
 		},
 		UPDATE_NOMINATIONS (state, nominations) {
 			state.nominations = nominations;
@@ -155,7 +155,7 @@ const store = new Vuex.Store({
 			commit('CREATE_CATEGORY', category);
 		},
 		async updateCategory ({commit}, {id, data}) {
-			//console.log(id, data);
+			// console.log(id, data);
 			// TODO: I don't like that the id and the data are in the same object here
 			const updatedCategoryData = await makeRequest(`/api/category/${id}`, 'PATCH', {id, ...data});
 			commit('UPDATE_CATEGORY', updatedCategoryData);

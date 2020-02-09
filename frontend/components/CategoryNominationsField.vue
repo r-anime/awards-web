@@ -13,7 +13,7 @@
                 <div class="column is-narrow field">
                     <label class="label">Show Anilist ID</label>
                     <div class="control">
-                        <input v-if="entries.length<=0" ref="anilistidfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilistID" @input="emitUpdate">
+                        <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilistidfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilistID" @input="emitUpdate">
                         <select class="input" v-else v-model="nom.anilistID" @input="emitUpdate">
                             <option value="-1">Select A Show</option>
                             <option v-for="(entry, index) in entries" :key="index" :value="entry.id">{{entry.title.userPreferred}}</option>
@@ -95,6 +95,7 @@ export default {
 			this.$emit('delete');
 		},
 		setAnilistID () {
+			// eslint-disable-next-line eqeqeq
 			this.nom.anilistID = this.themes.find(el => el.id == event.target.value).anilistID;
 		},
 	},
