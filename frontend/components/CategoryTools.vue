@@ -263,7 +263,7 @@ export default {
 					}
 					for (const theme of themes) {
 						const requiredTheme = this.themes.find(them => them.id === theme);
-						data.themes[`${theme}`] = `${requiredTheme.title} ${requiredTheme.themeNo}`;
+						data.themes[`${theme}`] = `${requiredTheme.anime} ${requiredTheme.themeNo} - ${requiredTheme.title}`;
 					}
 					for (const section of data.sections) {
 						const cats = this.categories.filter(cat => cat.awardsGroup === section.slug);
