@@ -17,6 +17,13 @@ const insertCategoryQuery = db.prepare('INSERT INTO categories (name,entryType,e
 const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryType=:entryType, entries=:entries, awardsGroup=:awardsGroup WHERE id=:id');
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
+const getNominationsByCategoryQuery = db.prepare('SELECT * FROM nominations WHERE category_id=? AND active=1');
+const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, character_id, theme_id, entry_type, active, writeup, rank, votes, finished, alt_name, staff) VALUES (:categoryID, :anilistID, :characterID, :themeID, :entryType, :active, :writeup, :juryRank, :publicVotes, :publicSupport, :altName, :staff)');
+const deactivateNominationsByCategoryQuery = db.prepare('UPDATE `nominations` SET `active`=0 WHERE `category_id`=?');
+const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET active=:active WHERE id=:id');
+const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE id=? AND active=1');
+const getAllNominationsQuery = db.prepare('SELECT * from nominations');
+
 const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
 
 const getAllThemesQuery = db.prepare('SELECT * FROM themes');
@@ -70,4 +77,11 @@ module.exports = {
 
 	getAllVotes: getAllVotesQuery.all.bind(getAllVotesQuery),
 	deleteAllVotes: deleteAllVotesQuery.run.bind(deleteAllVotesQuery),
+
+	getNominationsByCategory: getNominationsByCategoryQuery.all.bind(getNominationsByCategoryQuery),
+	insertNomination: insertNominationQuery.run.bind(insertNominationQuery),
+	deactivateNominationsByCategory: deactivateNominationsByCategoryQuery.run.bind(deactivateNominationsByCategoryQuery),
+	toggleActiveNominationsById: toggleActiveNominationsByIdQuery.run.bind(toggleActiveNominationsByIdQuery),
+	getNominationByRowId: getNominationByRowIdQuery.get.bind(getNominationByRowIdQuery),
+	getAllNominations: getAllNominationsQuery.all.bind(getAllNominationsQuery),
 };

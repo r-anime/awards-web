@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+/*eslint-disable*/
 'use strict';
 
 var dbm;
@@ -17,10 +16,8 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.addColumn('categories', 'awardsGroup', {
-    type: 'string',
-    notNull: true,
-    defaultValue: 'genre',
+  return db.addColumn('nominations', 'character_id', {
+    type: 'int'
   });
 };
 

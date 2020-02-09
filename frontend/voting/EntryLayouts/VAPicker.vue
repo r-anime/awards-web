@@ -78,7 +78,7 @@
 
 <script>
 import VAPickerEntry from './VAPickerEntry';
-const queries = require('../anilistQueries');
+const queries = require('../../anilistQueries');
 
 export default {
 	components: {

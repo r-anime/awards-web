@@ -22,6 +22,14 @@
 					</li>
 					<li>
 						<router-link
+							:to="categoryPageLink('nominations')"
+							active-class="is-active"
+						>
+							Nominations
+						</router-link>
+					</li>
+					<li>
+						<router-link
 							:to="categoryPageLink('tools')"
 							active-class="is-active"
 						>

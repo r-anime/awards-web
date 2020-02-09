@@ -1,10 +1,11 @@
+/* eslint-disable no-await-in-loop */
 import Vue from 'vue';
 import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
 const util = require('./util');
-const queries = require('./voting/anilistQueries');
+const queries = require('./anilistQueries');
 
 const maxAccountDate = 1578009600; // sync with util/helpers.js for backend
 
@@ -41,6 +42,8 @@ const store = new Vuex.Store({
 		voteTotals: null,
 		opedTotals: null,
 		dashTotals: null,
+		nominations: null,
+		allNoms: null,
 	},
 	getters: {
 		isHost (state) {
@@ -106,6 +109,21 @@ const store = new Vuex.Store({
 		GET_OPED_TOTALS (state, opedTotals) {
 			state.opedTotals = opedTotals;
 		},
+		GET_NOMINATIONS (state, nominations) {
+			state.nominations = nominations;
+		},
+		INSERT_NOMINATION (state, nomination) {
+			state.nominations.push(nomination);
+		},
+		DELETE_NOMINATIONS (state) {
+			// state.nominations = [];
+		},
+		UPDATE_NOMINATIONS (state, nominations) {
+			state.nominations = nominations;
+		},
+		GET_ALL_NOMINATIONS (state, allNoms) {
+			state.allNoms = allNoms;
+		},
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -137,7 +155,7 @@ const store = new Vuex.Store({
 			commit('CREATE_CATEGORY', category);
 		},
 		async updateCategory ({commit}, {id, data}) {
-			console.log(id, data);
+			// console.log(id, data);
 			// TODO: I don't like that the id and the data are in the same object here
 			const updatedCategoryData = await makeRequest(`/api/category/${id}`, 'PATCH', {id, ...data});
 			commit('UPDATE_CATEGORY', updatedCategoryData);
@@ -252,7 +270,6 @@ const store = new Vuex.Store({
 			}
 			commit('UPDATE_SELECTIONS', selections);
 		},
-
 		async getVoteSummary ({commit}) {
 			const voteSummary = await makeRequest('/api/voteSummary');
 			commit('GET_VOTE_SUMMARY', voteSummary);
@@ -268,6 +285,26 @@ const store = new Vuex.Store({
 		async getOPEDTotals ({commit}) {
 			const opedTotals = await makeRequest('/api/votes/oped/get');
 			commit('GET_OPED_TOTALS', opedTotals);
+		},
+		async getNominations ({commit}, categoryId) {
+			const noms = await makeRequest(`/api/category/${categoryId}/nominations`);
+			commit('GET_NOMINATIONS', noms);
+		},
+		async insertNominations ({commit}, {id, data}) {
+			const noms = await makeRequest(`/api/category/${id}/nominations`, 'POST', data);
+			commit('UPDATE_NOMINATIONS', noms);
+		},
+		async deleteNominations ({commit}, id) {
+			await makeRequest(`/api/category/${id}/nominations`, 'DELETE');
+			commit('DELETE_NOMINATIONS');
+		},
+		async updateNominations ({commit}, {categoryId, data}) {
+			await makeRequest(`/api/category/${categoryId}`, 'PATCH', {categoryId, ...data});
+			commit('UPDATE_NOMINATIONS');
+		},
+		async getAllNominations ({commit}) {
+			const noms = await makeRequest('/api/categories/nominations');
+			commit('GET_ALL_NOMINATIONS', noms);
 		},
 	},
 });

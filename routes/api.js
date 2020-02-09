@@ -4,6 +4,7 @@ const apiApp = require('polka')();
 const superagent = require('superagent');
 const db = require('../util/db');
 const parse = require('../themes/parser');
+// eslint-disable-next-line no-unused-vars
 const voteHelpers = require('../util/voteHelpers');
 
 apiApp.get('/me', async (request, response) => {
@@ -163,6 +164,99 @@ apiApp.delete('/category/:id', async (request, response) => {
 	}
 });
 
+apiApp.get('/category/:id/nominations', (request, response) => {
+	try {
+		response.json(db.getNominationsByCategory(request.params.id));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/category/:id/nominations', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to add nominations'});
+	}
+
+	let nominations;
+	try {
+		nominations = await request.json();
+		// log.success(nominations);
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		const promise = new Promise((resolve, reject) => {
+			try {
+				for (const nom of nominations) {
+					// log.success(nom);
+					db.insertNomination({
+						altName: nom.altName,
+						categoryID: request.params.id,
+						anilistID: nom.anilistID,
+						themeID: nom.themeID,
+						entryType: nom.entryType,
+						active: 1,
+						writeup: nom.writeup,
+						juryRank: nom.juryRank,
+						publicVotes: nom.publicVotes,
+						characterID: nom.characterID,
+						publicSupport: nom.publicSupport,
+						staff: nom.staff,
+					});
+				}
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		promise.then(() => {
+			response.json(db.getNominationsByCategory(request.params.id));
+		});
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.delete('/category/:id/nominations', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to delete nominations'});
+	}
+	try {
+		await db.deactivateNominationsByCategory(request.params.id);
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.patch('/category/:id/nominations', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to modify nominations'});
+	}
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		await db.toggleActiveNominationsById({
+			id: req.id,
+			active: req.active,
+		});
+		response.json(await db.getNominationsByCategory(req.id));
+	} catch (error) {
+		response.error(error);
+	}
+});
+apiApp.get('/categories/nominations', (request, response) => {
+	try {
+		response.json(db.getAllNominations());
+	} catch (error) {
+		response.error(error);
+	}
+})
+
 apiApp.post('/themes/create', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to modify themes'});
@@ -244,76 +338,6 @@ apiApp.post('/deleteaccount', async (request, response) => {
 	}
 });
 
-// Public voting routes, should branch to separate file t b h
-/*
-apiApp.post('/votes/submit', async (request, response) => {
-	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName, oldEnough: true})) {
-		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
-	}
-	await db.deleteAllVotesFromUser(userName);
-	let req;
-	try {
-		req = Object.entries(await request.json());
-	} catch (error) {
-		return response.json(400, {error: 'Invalid JSON'});
-	}
-	const categories = await db.getAllCategories();
-	// This entire loop needs to be a promise
-	const promise = new Promise((resolve, reject) => {
-		try {
-			for (const [id, entries] of req) {
-				if (entries.length === 0) {
-					continue;
-				}
-				const category = categories.find(cat => cat.id == id); // The eqeq is very important
-				for (const entry of entries) {
-					if (entry == null) continue;
-					if (voteHelpers.isOPED(category)) {
-						db.pushUserThemeVotes({
-							redditUser: userName,
-							categoryId: category.id,
-							entryId: entry.id,
-							themeName: entry.title,
-							anilistId: entry.anilistID,
-						});
-					} else if (voteHelpers.isDashboard(category)) {
-						db.pushUserDashboardVotes({
-							redditUser: userName,
-							categoryId: category.id,
-							entryId: entries.indexOf(entry),
-							anilistId: entry.id,
-						});
-					} else {
-						db.pushUserVotes({
-							redditUser: userName,
-							categoryId: category.id,
-							entryId: entry.id,
-						});
-					}
-				}
-			}
-			resolve();
-		} catch (err) {
-			reject(err);
-		}
-	});
-	promise.then(() => response.empty());
-});
-
-apiApp.get('/votes/get', async (request, response) => {
-	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName, oldEnough: true})) {
-		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
-	}
-	try {
-		response.json(await db.getAllUserVotes(userName));
-	} catch (error) {
-		response.error(error);
-	}
-});
-*/
-
 apiApp.get('/voteSummary', async (request, response) => {
 	if (!await request.authenticate({level: 2})) {
 		return response.json(401, {error: 'You must be a host to view vote summary.'});
@@ -326,7 +350,7 @@ apiApp.get('/voteSummary', async (request, response) => {
 
 		const voteSummary = {
 			votes: allVotes.length,
-			users: allUsers[0]['count'],
+			users: allUsers[0].count,
 			allVotes: [],
 		};
 		// eslint-disable-next-line multiline-comment-style

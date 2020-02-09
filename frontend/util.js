@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-alert */
 async function makeQuery (query, idArr) {
 	const response = await fetch('https://graphql.anilist.co', {
 		method: 'POST',

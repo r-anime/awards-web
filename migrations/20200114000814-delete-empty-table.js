@@ -1,5 +1,4 @@
-/* eslint-disable */
-
+/*eslint-disable*/
 'use strict';
 
 var dbm;
@@ -17,6 +16,10 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
+  return db.dropTable('public-votes');
+};
+
+exports.down = function(db) {
   return db.createTable('public-votes', {
     id: { type: 'int', primaryKey: true, autoIncrement: true},
     reddit_user: { type: 'string', notNull: true},
@@ -25,10 +28,6 @@ exports.up = function(db) {
     entry_id: { type: 'int', notNull: true},
     anilist_id: { type: 'int', notNull: false}, //Extraneous Field If You Need It, Leave Null If Not
   });
-};
-
-exports.down = function(db) {
-  return db.dropTable('public-votes');
 };
 
 exports._meta = {
