@@ -98,6 +98,7 @@ export default {
 	},
 	mounted () {
 		const nomPromise = new Promise(async (resolve, reject) => {
+			this.nominations = [];
 			try {
 				await this.getNominations(this.category.id);
 				resolve();
@@ -106,6 +107,7 @@ export default {
 			}
 		});
 		const themePromise = new Promise(async (resolve, reject) => {
+			this.themes = [];
 			try {
 				await this.getThemes(this.category.id);
 				resolve();
