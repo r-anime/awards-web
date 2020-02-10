@@ -222,6 +222,7 @@ export default {
 			});
 			initialize.then(() => {
 				for (const nom of this.allNoms) {
+					console.log(nom);
 					if (nom.entry_type === 'shows') {
 						anime.push(nom.anilist_id);
 					} else if (nom.entry_type === 'themes') {
@@ -234,7 +235,17 @@ export default {
 				}
 				const showPromise = new Promise(async (resolve, reject) => {
 					try {
-						const showData = anime.length === 0 ? [] : await util.makeQuery(aq.showByIDQuery, anime);
+						let showData = [];
+						if (anime.length !== 0) {
+							let lastPage = false;
+							let page = 1;
+							while (!lastPage) {
+								const returnData = await util.paginatedQuery(aq.showQuerySimple, anime, page);
+								showData = [...showData, ...returnData.data.Page.results];
+								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+								page++;
+							}
+						}
 						resolve(showData);
 					} catch (error) {
 						reject(error);
@@ -242,7 +253,17 @@ export default {
 				});
 				const charPromise = new Promise(async (resolve, reject) => {
 					try {
-						const charData = chars.length === 0 ? [] : await util.makeQuery(aq.vaByIDQuery, chars);
+						let charData = [];
+						if (chars.length !== 0) {
+							let lastPage = false;
+							let page = 1;
+							while (!lastPage) {
+								const returnData = await util.paginatedQuery(aq.charQuerySimple, chars, page);
+								charData = [...charData, ...returnData.data.Page.results];
+								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+								page++;
+							}
+						}
 						resolve(charData);
 					} catch (error) {
 						reject(error);

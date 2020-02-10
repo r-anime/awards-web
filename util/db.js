@@ -22,7 +22,7 @@ const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, 
 const deactivateNominationsByCategoryQuery = db.prepare('UPDATE `nominations` SET `active`=0 WHERE `category_id`=?');
 const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET active=:active WHERE id=:id');
 const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE id=? AND active=1');
-const getAllNominationsQuery = db.prepare('SELECT * from nominations');
+const getAllNominationsQuery = db.prepare('SELECT * from nominations WHERE active=1');
 
 const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
 
