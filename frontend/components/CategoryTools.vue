@@ -301,7 +301,6 @@ export default {
 								} else if (nom.entry_type === 'characters' || nom.entry_type === 'vas') {
 									id = nom.character_id;
 								}
-								console.log(id);
 								nominees.push({
 									id,
 									altname: nom.alt_name,
