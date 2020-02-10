@@ -67,7 +67,6 @@ export default {
 		},
 		saveNoms () {
 			this.submitting = true;
-			console.log(this.nomdata);
 
 			const delPromise = new Promise(async (resolve, reject) => {
 				try {
@@ -92,7 +91,6 @@ export default {
 			this.nomdata[index] = data;
 		},
 		deleteNom (index) {
-			console.log(index);
 			this.nomdata.splice(index, 1);
 		},
 	},
@@ -131,7 +129,6 @@ export default {
 				});
 			}
 		});
-		console.log(this.category);
 	},
 };
 </script>

@@ -251,6 +251,7 @@ export default {
 				Promise.all([showPromise, charPromise]).then(anilistData => {
 					const allAnime = anilistData[0];
 					const allChars = anilistData[1];
+					console.log(allAnime);
 					for (const show of allAnime) {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}

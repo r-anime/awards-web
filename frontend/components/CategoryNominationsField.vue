@@ -114,8 +114,5 @@ export default {
 			return sortedthemes.sort(compare);
 		},
 	},
-	mounted () {
-		console.log(this.themes);
-	},
 };
 </script>
