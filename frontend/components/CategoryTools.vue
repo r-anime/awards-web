@@ -209,9 +209,7 @@ export default {
 			};
 			const initialize = new Promise(async (resolve, reject) => {
 				try {
-					if (!this.allNoms) {
-						await this.getAllNominations();
-					}
+					await this.getAllNominations();
 					if (!this.themes) {
 						await this.getThemes();
 					}
