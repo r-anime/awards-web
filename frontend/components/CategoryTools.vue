@@ -222,7 +222,6 @@ export default {
 			});
 			initialize.then(() => {
 				for (const nom of this.allNoms) {
-					console.log(nom);
 					if (nom.entry_type === 'shows') {
 						anime.push(nom.anilist_id);
 					} else if (nom.entry_type === 'themes') {
@@ -273,6 +272,7 @@ export default {
 					const allAnime = anilistData[0];
 					const allChars = anilistData[1];
 					console.log(allAnime);
+					console.log(allChars);
 					for (const show of allAnime) {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}
