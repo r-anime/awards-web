@@ -24,6 +24,14 @@ const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET acti
 const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE id=? AND active=1');
 const getAllNominationsQuery = db.prepare('SELECT * from nominations WHERE active=1');
 
+const getJurorsByCategoryQuery = db.prepare('SELECT * FROM jurors WHERE category_id=? AND active=1');
+const insertJurorQuery = db.prepare('INSERT INTO jurors (category_id, name, link) VALUES (:categoryId, :name, :link)');
+const deactivateJurorsByCategoryQuery = db.prepare('UPDATE `jurors` SET `active`=0 WHERE `category_id`=?');
+
+const getHMsByCategoryQuery = db.prepare('SELECT * FROM honorable_mentions WHERE category_id=? AND active=1');
+const insertHMQuery = db.prepare('INSERT INTO honorable_mentions (category_id, name, writeup) VALUES (:categoryId, :name, :writeup)');
+const deactivateHMsByCategoryQuery = db.prepare('UPDATE `honorable_mentions` SET `active`=0 WHERE `category_id`=?');
+
 const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
 
 const getAllThemesQuery = db.prepare('SELECT * FROM themes');
@@ -84,4 +92,12 @@ module.exports = {
 	toggleActiveNominationsById: toggleActiveNominationsByIdQuery.run.bind(toggleActiveNominationsByIdQuery),
 	getNominationByRowId: getNominationByRowIdQuery.get.bind(getNominationByRowIdQuery),
 	getAllNominations: getAllNominationsQuery.all.bind(getAllNominationsQuery),
+
+	getJurorsByCategory: getJurorsByCategoryQuery.all.bind(getJurorsByCategoryQuery),
+	insertJuror: insertJurorQuery.run.bind(insertJurorQuery),
+	deactivateJurorsByCategory: deactivateJurorsByCategoryQuery.run.bind(deactivateJurorsByCategoryQuery),
+
+	getHMsByCategory: getHMsByCategoryQuery.all.bind(getHMsByCategoryQuery),
+	insertHM: insertHMQuery.run.bind(insertHMQuery),
+	deactivateHMsByCategory: deactivateHMsByCategoryQuery.run.bind(deactivateHMsByCategoryQuery),
 };
