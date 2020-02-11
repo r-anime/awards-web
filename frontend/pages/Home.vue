@@ -13,7 +13,7 @@
 								<div v-if="me.level >= 2">
 									<router-link to="/host">
 										<button class="button is-primary is-large">Host Dashboard</button>
-									</router-link>.
+									</router-link>
 								</div>
 								<div v-else class="content has-text-centered">
 									<p>Public voting has ended. Stay tuned for the results livestream on February 22, 2020!</p>
