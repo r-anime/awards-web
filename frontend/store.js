@@ -43,6 +43,8 @@ const store = new Vuex.Store({
 		opedTotals: null,
 		dashTotals: null,
 		nominations: null,
+		hms: null,
+		jurors: null,
 		allNoms: null,
 	},
 	getters: {
@@ -123,6 +125,24 @@ const store = new Vuex.Store({
 		},
 		GET_ALL_NOMINATIONS (state, allNoms) {
 			state.allNoms = allNoms;
+		},
+		GET_JURORS (state, jurors) {
+			state.jurors = jurors;
+		},
+		INSERT_JURORS (state, jurors) {
+			state.jurors = jurors;
+		},
+		DELETE_JURORS (state) {
+			// state.nominations = [];
+		},
+		GET_HMS (state, hms) {
+			state.hms = hms;
+		},
+		INSERT_HMS (state, hms) {
+			state.hms = hms;
+		},
+		DELETE_HMS (state) {
+			// state.nominations = [];
 		},
 	},
 	actions: {
@@ -305,6 +325,30 @@ const store = new Vuex.Store({
 		async getAllNominations ({commit}) {
 			const noms = await makeRequest('/api/categories/nominations');
 			commit('GET_ALL_NOMINATIONS', noms);
+		},
+		async getJurors ({commit}, categoryId) {
+			const jurors = await makeRequest(`/api/category/${categoryId}/jurors`);
+			commit('GET_JURORS', jurors);
+		},
+		async insertJurors ({commit}, {id, data}) {
+			const jurors = await makeRequest(`/api/category/${id}/jurors`, 'POST', data);
+			commit('UPDATE_JURORS', jurors);
+		},
+		async deleteJurors ({commit}, id) {
+			await makeRequest(`/api/category/${id}/jurors`, 'DELETE');
+			commit('DELETE_JURORS');
+		},
+		async getHMs ({commit}, categoryId) {
+			const hms = await makeRequest(`/api/category/${categoryId}/hms`);
+			commit('GET_HMS', hms);
+		},
+		async insertHMs ({commit}, {id, data}) {
+			const hms = await makeRequest(`/api/category/${id}/hms`, 'POST', data);
+			commit('UPDATE_HMS', hms);
+		},
+		async deleteHMs ({commit}, id) {
+			await makeRequest(`/api/category/${id}/hms`, 'DELETE');
+			commit('DELETE_HMS');
 		},
 	},
 });

@@ -22,6 +22,8 @@ const AllCategories = () => import(/* webpackChunkName: "host" */ './pages/host/
 const SingleCategory = () => import(/* webpackChunkName: "host" */ './components/SingleCategory');
 const CategoryEntries = () => import(/* webpackChunkName: "host" */ './components/CategoryEntries');
 const CategoryNominations = () => import(/* webpackChunkName: "host" */ './components/CategoryNominations');
+const CategoryJurors = () => import(/* webpackChunkName: "host" */ './components/CategoryJurors');
+const CategoryHMs = () => import(/* webpackChunkName: "host" */ './components/CategoryHMs');
 const CategoryInfo = () => import(/* webpackChunkName: "host" */ './components/CategoryInfo');
 const CategoryTools = () => import(/* webpackChunkName: "host" */ './components/CategoryTools');
 
@@ -107,6 +109,22 @@ export default new VueRouter({
 									component: CategoryNominations,
 									meta: {
 										title: 'Nominations',
+									},
+								},
+								{
+									name: 'categoryJurors',
+									path: 'jurors',
+									component: CategoryJurors,
+									meta: {
+										title: 'Jurors',
+									},
+								},
+								{
+									name: 'categoryHMs',
+									path: 'hms',
+									component: CategoryHMs,
+									meta: {
+										title: 'Honorable Mentions',
 									},
 								},
 								{
