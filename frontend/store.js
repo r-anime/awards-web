@@ -338,6 +338,10 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/category/${id}/jurors`, 'DELETE');
 			commit('DELETE_JURORS');
 		},
+		async getAllJurors ({commit}) {
+			const jurors = await makeRequest('/api/category/jurors');
+			commit('GET_JURORS', jurors);
+		},
 		async getHMs ({commit}, categoryId) {
 			const hms = await makeRequest(`/api/category/${categoryId}/hms`);
 			commit('GET_HMS', hms);
@@ -349,6 +353,10 @@ const store = new Vuex.Store({
 		async deleteHMs ({commit}, id) {
 			await makeRequest(`/api/category/${id}/hms`, 'DELETE');
 			commit('DELETE_HMS');
+		},
+		async getAllHMs ({commit}) {
+			const hms = await makeRequest('/api/category/hms');
+			commit('GET_HMS', hms);
 		},
 	},
 });

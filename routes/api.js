@@ -313,6 +313,14 @@ apiApp.delete('/category/:id/jurors', async (request, response) => {
 	}
 });
 
+apiApp.get('/categories/jurors', (request, response) => {
+	try {
+		response.json(db.getAllJurors());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.get('/category/:id/hms', (request, response) => {
 	try {
 		response.json(db.getHMsByCategory(request.params.id));
@@ -363,6 +371,14 @@ apiApp.delete('/category/:id/hms', async (request, response) => {
 	try {
 		await db.deactivateHMsByCategory(request.params.id);
 		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/categories/hms', (request, response) => {
+	try {
+		response.json(db.getAllHMs());
 	} catch (error) {
 		response.error(error);
 	}
