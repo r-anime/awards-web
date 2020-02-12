@@ -249,13 +249,124 @@ apiApp.patch('/category/:id/nominations', async (request, response) => {
 		response.error(error);
 	}
 });
+
 apiApp.get('/categories/nominations', (request, response) => {
 	try {
 		response.json(db.getAllNominations());
 	} catch (error) {
 		response.error(error);
 	}
-})
+});
+
+apiApp.get('/category/:id/jurors', (request, response) => {
+	try {
+		response.json(db.getJurorsByCategory(request.params.id));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/category/:id/jurors', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to add jurors'});
+	}
+	let jurors;
+	try {
+		jurors = await request.json();
+		log.success(jurors);
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		const promise = new Promise((resolve, reject) => {
+			try {
+				for (const juror of jurors) {
+					// log.success(nom);
+					db.insertJuror({
+						categoryId: request.params.id,
+						name: juror.name,
+						link: juror.link,
+					});
+				}
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		promise.then(() => {
+			response.json(db.getJurorsByCategory(request.params.id));
+		});
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.delete('/category/:id/jurors', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to delete jurors'});
+	}
+	try {
+		await db.deactivateJurorsByCategory(request.params.id);
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/category/:id/hms', (request, response) => {
+	try {
+		response.json(db.getHMsByCategory(request.params.id));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/category/:id/hms', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to add honorable mentions'});
+	}
+	let hms;
+	try {
+		hms = await request.json();
+		// log.success(nominations);
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		const promise = new Promise((resolve, reject) => {
+			try {
+				for (const hm of hms) {
+					// log.success(nom);
+					db.insertHM({
+						categoryId: request.params.id,
+						name: hm.name,
+						writeup: hm.writeup,
+					});
+				}
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		promise.then(() => {
+			response.json(db.getHMsByCategory(request.params.id));
+		});
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.delete('/category/:id/hms', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to delete honorable mentions.'});
+	}
+	try {
+		await db.deactivateHMsByCategory(request.params.id);
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
 
 apiApp.post('/themes/create', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {

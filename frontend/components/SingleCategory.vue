@@ -30,6 +30,22 @@
 					</li>
 					<li>
 						<router-link
+							:to="categoryPageLink('hms')"
+							active-class="is-active"
+						>
+							Honorable Mentions
+						</router-link>
+					</li>
+					<li>
+						<router-link
+							:to="categoryPageLink('jurors')"
+							active-class="is-active"
+						>
+							Jurors
+						</router-link>
+					</li>
+					<li>
+						<router-link
 							:to="categoryPageLink('tools')"
 							active-class="is-active"
 						>
