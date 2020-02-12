@@ -74,6 +74,8 @@ export default {
 			'categories',
 			'allNoms',
 			'themes',
+			'hms',
+			'jurors',
 		]),
 	},
 	watch: {
@@ -92,6 +94,8 @@ export default {
 			'getAllNominations',
 			'getCategories',
 			'getThemes',
+			'getAllJurors',
+			'getAllHMs',
 		]),
 		disableButtons (type, action) {
 			if (action === 'create') {
@@ -209,10 +213,12 @@ export default {
 			};
 			const initialize = new Promise(async (resolve, reject) => {
 				try {
-					await this.getAllNominations();
+					await this.getAllNominations(); // this could really be done better
 					if (!this.themes) {
 						await this.getThemes();
 					}
+					await this.getAllJurors();
+					await this.getAllHMs();
 					resolve();
 				} catch (error) {
 					reject(error);
@@ -269,8 +275,6 @@ export default {
 				Promise.all([showPromise, charPromise]).then(anilistData => {
 					const allAnime = anilistData[0];
 					const allChars = anilistData[1];
-					console.log(allAnime);
-					console.log(allChars);
 					for (const show of allAnime) {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}
@@ -288,9 +292,11 @@ export default {
 					for (const section of data.sections) {
 						const cats = this.categories.filter(cat => cat.awardsGroup === section.slug);
 						for (const cat of cats) {
-							const catNoms = this.allNoms.filter(nom => nom.category_id === cat.id);
+							let catNoms = this.allNoms.filter(nom => nom.category_id === cat.id);
+							const totalVotes = catNoms.reduce((sum, nom) => sum + nom.votes, 0);
+							catNoms = catNoms.sort((a, b) => a.votes - b.votes);
 							const nominees = [];
-							for (const nom of catNoms) {
+							for (const [index, nom] of catNoms.entries()) {
 								let id;
 								if (nom.entry_type === 'shows') {
 									id = nom.anilist_id;
@@ -302,19 +308,23 @@ export default {
 								nominees.push({
 									id,
 									altname: nom.alt_name,
-									public: nom.votes,
+									altimg: '',
+									public: index + 1,
 									jury: nom.rank,
-									percent: '',
+									percent: `${(nom.votes / totalVotes) * 100}%`,
 									writeup: nom.writeup,
 									staff: nom.staff,
 								});
 							}
+							let jurors = this.jurors.filter(juror => juror.category_id === cat.id);
+							jurors = jurors.map(juror => juror.name);
 							section.awards.push({
 								name: cat.name,
-								jurors: [],
+								jurors,
 								blurb: '',
 								table: '',
 								nominees,
+								hms: this.hms.filter(hm => hm.category_id === cat.id),
 							});
 						}
 					}

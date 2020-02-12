@@ -27,7 +27,7 @@ const getAllNominationsQuery = db.prepare('SELECT * from nominations WHERE activ
 const getJurorsByCategoryQuery = db.prepare('SELECT * FROM jurors WHERE category_id=? AND active=1');
 const insertJurorQuery = db.prepare('INSERT INTO jurors (category_id, name, link) VALUES (:categoryId, :name, :link)');
 const deactivateJurorsByCategoryQuery = db.prepare('UPDATE `jurors` SET `active`=0 WHERE `category_id`=?');
-const getAllJurorsQuery = db.prepare('SELECT * from nominations WHERE active=1');
+const getAllJurorsQuery = db.prepare('SELECT * from jurors WHERE active=1');
 
 const getHMsByCategoryQuery = db.prepare('SELECT * FROM honorable_mentions WHERE category_id=? AND active=1');
 const insertHMQuery = db.prepare('INSERT INTO honorable_mentions (category_id, name, writeup) VALUES (:categoryId, :name, :writeup)');
