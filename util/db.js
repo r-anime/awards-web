@@ -32,7 +32,7 @@ const getAllJurorsQuery = db.prepare('SELECT * from jurors WHERE active=1');
 const getHMsByCategoryQuery = db.prepare('SELECT * FROM honorable_mentions WHERE category_id=? AND active=1');
 const insertHMQuery = db.prepare('INSERT INTO honorable_mentions (category_id, name, writeup) VALUES (:categoryId, :name, :writeup)');
 const deactivateHMsByCategoryQuery = db.prepare('UPDATE `honorable_mentions` SET `active`=0 WHERE `category_id`=?');
-const getAllHMsQuery = db.prepare('SELECT * from nominations WHERE active=1');
+const getAllHMsQuery = db.prepare('SELECT * from honorable_mentions WHERE active=1');
 
 const getCategoryByGroupQuery = db.prepare('SELECT * from categories WHERE active=1 and awardsGroup=?');
 
