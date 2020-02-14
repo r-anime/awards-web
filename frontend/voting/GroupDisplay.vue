@@ -40,7 +40,7 @@
 						<div class="loading-text">
 						Please wait while your selections are being initialized. Thank you for your patience.
 						</div>
-						<img :src="snooImage"/>
+						<img loading="lazy" :src="snooImage"/>
 					</div>
 				</div>
 			</div>

@@ -4,7 +4,7 @@
 			<div class="container">
 				<div class="columns is-centered">
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
-						<img :src="snooImage"/>
+						<img loading="lazy" :src="snooImage"/>
 					</div>
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
 						<div class="content has-text-centered" v-if="me">

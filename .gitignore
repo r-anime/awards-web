@@ -4,8 +4,9 @@ node_modules
 # Editor stuff
 .vscode
 
-# Generated bundle
+# Generated bundles
 public/*.js
+public/*[.png, .svg, .jpg, .gif]
 
 # Secrets
 config.js
