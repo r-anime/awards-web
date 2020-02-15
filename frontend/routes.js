@@ -31,6 +31,10 @@ const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
 const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
 const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
 
+const ResultsSection = () => import(/* webpackChunkName: "host" */ './components/results/ResultsSection');
+const ResultsCategory = () => import(/* webpackChunkName: "host" */ './components/results/ResultsCategory');
+const ResultsWinners = () => import(/* webpackChunkName: "host" */ './components/results/ResultsWinners');
+
 export default new VueRouter({
 	mode: 'history',
 	routes: [
@@ -42,6 +46,7 @@ export default new VueRouter({
 				{path: '', component: Home},
 				{path: 'profile', component: Profile},
 				{path: 'about', component: About},
+				{path: ''}
 			],
 		},
 
