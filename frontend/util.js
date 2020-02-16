@@ -59,11 +59,6 @@ function stringMatchesArray (str, arr) {
 }
 
 // https://stackoverflow.com/a/6274381/1070107
-// eslint-disable-next-line valid-jsdoc
-/**
- * Shuffles array in place.
- * @param {Array} a items An array containing the items.
- */
 function shuffle (a) {
 	let j; let x; let i;
 	for (i = a.length - 1; i > 0; i--) {
@@ -111,7 +106,7 @@ function getMarkDown (txt) {
 	return MarkdownIt.render(txt);
 }
 
-module.exports = {
+export default {
 	makeQuery,
 	fuzzyMatch,
 	stringMatchesArray,

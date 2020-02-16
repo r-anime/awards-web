@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import * as util from '../../util';
+const util = require('../util');
 
 export default {
 	props: ['section'],
