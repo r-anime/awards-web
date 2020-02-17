@@ -208,7 +208,7 @@ export default {
 				{
 					name: 'Test',
 					slug: 'test',
-					blurb: 'Insert text for test categories.',
+					blurb: 'These awards are an experimental attempt to better represent the wide tastes of the community. Each category is one that received support to be included, and each set of rankings were determined independently, so that they may be more easily compared to each other. These shows displayed all-around excellence for their respective disciplines.',
 					icon: '',
 					awards: [],
 				}],
