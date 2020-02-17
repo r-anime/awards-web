@@ -3,13 +3,51 @@
 // included with every other sass snippet in the app. Needless to day, that is
 // not how we want that to work.
 
+@import "~bulma/sass/utilities/initial-variables";
+@import "~bulma/sass/utilities/functions";
+
 // Customize Bulma variables
 $family-sans-serif: "Open Sans", "Helvetica", "Arial", sans-serif;
 $family-monospace: "Source Code Pro", "Menlo", "Consolas", monospace;
-$primary: #0094FF;
+
+
+$llperiwinkle: #7EAEFF;
+$llperiwinkle-invert: findColorInvert($llperiwinkle);
+$lperiwinkle: #6B9CE8;
+$lperiwinkle-invert: findColorInvert($lperiwinkle);
+$periwinkle: #5796FF;
+$periwinkle-invert: findColorInvert($periwinkle);
+$dperiwinkle: #2F53A7;
+$dperiwinkle-invert: findColorInvert($dperiwinkle);
+$orangered: #EA6850;
+$orangered-invert: findColorInvert($orangered);
+
+$gold: #E7A924;
+$gold-invert: findColorInvert($gold);
+$silver: #D9E3ED;
+$silver-invert: findColorInvert($silver);
+$platinum: #00D1B2;
+$platinum-invert: findColorInvert($platinum);
+
+$primary: $periwinkle;
+$primary-invert: $periwinkle-invert;
+$danger: $orangered;
 
 // Smaller vertical section padding
 $section-padding: 1.5rem;
 
+@import "~bulma/sass/utilities/derived-variables";
+$addColors: (
+    "llperiwinkle": ($llperiwinkle, $llperiwinkle-invert),
+    "lperiwinkle": ($lperiwinkle, $lperiwinkle-invert),
+    "periwinkle": ($periwinkle, $periwinkle-invert),
+    "dperiwinkle": ($dperiwinkle, $dperiwinkle-invert),
+    "gold": ($gold, $gold-invert),
+    "silver": ($silver, $silver-invert),
+    "platinum": ($platinum, $platinum-invert),
+);
+$colors: map-merge($colors, $addColors);
+
 // Load other Bulma variables
 @import "~bulma/sass/utilities/all";
+@import "awards2019"

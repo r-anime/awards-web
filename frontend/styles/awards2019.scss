@@ -1,0 +1,9 @@
+navbar.is-transparent {
+    a.navbar-item {
+        transition: backgroundColor 0.25s;
+        &:hover{
+            background-color: rgba($color: #000000, $alpha: 0.2) !important;
+        }
+    }
+
+}

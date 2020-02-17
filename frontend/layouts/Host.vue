@@ -6,7 +6,7 @@
 				{name: 'Users', path: '/host/users'},
 				{name: 'Results Summary', path: '/host/results'}
 			]"
-			class="is-dark"
+			class="is-llperiwinkle"
 			fullwidth
 		>
 			<template v-slot:title>

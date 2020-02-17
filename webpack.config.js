@@ -11,6 +11,7 @@ module.exports = {
 		path: config.publicDir,
 		filename: 'bundle.js',
 	},
+	// eslint-disable-next-line multiline-comment-style
 	/* We need to do this at some point too
 	optimization: {
 		splitChunks: {
@@ -23,6 +24,10 @@ module.exports = {
 			'.js',
 			'.vue',
 		],
+		alias: {
+			'vue$': 'vue/dist/vue',
+			'@': path.resolve('src'),
+		},
 	},
 	target: 'web',
 	module: {

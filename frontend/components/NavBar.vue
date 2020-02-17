@@ -1,10 +1,8 @@
 <template>
-	<nav :class="['navbar', {vertical}]">
+	<nav :class="['navbar', 'bg-llperiwinkle', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
 			<div class="navbar-brand">
-				<span class="navbar-item">
-					<slot name="title"/>
-				</span>
+				<img :src="logo" class="image is-64x64"/>
 				<a
 					@click="expanded = !expanded"
 					role="button"
@@ -44,7 +42,7 @@
 						</template>
 					</nav-bar-link>
 					<span v-else class="navbar-item">
-						<a class="button is-primary" href="/auth/reddit">
+						<a class="button is-success" href="/auth/reddit">
 							Log in with Reddit
 						</a>
 					</span>
@@ -57,6 +55,7 @@
 <script>
 import {mapState} from 'vuex';
 import NavBarLink from './NavBarLink';
+import logo from '../../img/snoo.png';
 
 export default {
 	components: {
@@ -70,6 +69,7 @@ export default {
 	data () {
 		return {
 			expanded: false,
+			logo,
 		};
 	},
 	computed: {

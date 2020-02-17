@@ -1,18 +1,18 @@
 <template>
-	<section class="hero is-fullheight-with-navbar">
+	<section class="hero is-fullheight-with-navbar has-background-periwinkle">
 		<div class="hero-body">
-			<div class="container">
+			<div class="container ">
 				<div class="columns is-centered">
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
 						<img loading="lazy" :src="snooImage"/>
 					</div>
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
-						<div class="content has-text-centered" v-if="me">
+						<div class="content has-text-centered has-text-light" v-if="me">
 							<h3>Hello, /u/{{me.reddit.name}}</h3>
 							<div class="buttons is-centered">
 								<div v-if="me.level >= 2">
 									<router-link to="/host">
-										<button class="button is-primary is-large">Host Dashboard</button>
+										<button class="button is-primary is-large is-platinum">Host Dashboard</button>
 									</router-link>
 								</div>
 								<div v-else class="content has-text-centered">
@@ -23,7 +23,7 @@
 						<div class="content has-text-centered" v-else>
 							<h3>Hello, you're not logged in</h3>
 							<p>
-								<a href="/auth/reddit" class="button is-primary is-large">
+								<a href="/auth/reddit" class="button is-success is-large">
 									Log in with Reddit
 								</a>
 							</p>
@@ -32,10 +32,10 @@
 				</div>
 			</div>
 		</div>
-		<footer class="hero-foot footer">
+		<footer class="hero-foot footer has-background-dperiwinkle has-text-light">
 			<div class="content has-text-centered">
 				<router-link to="/about" style="color:inherit">
-					<a>About/Credits</a>
+					<a class="has-text-light">About/Credits</a>
 				</router-link>
 			</div>
 		</footer>
@@ -50,6 +50,7 @@ export default {
 	data () {
 		return {
 			deleting: false,
+			snooImage: snoo,
 		};
 	},
 	computed: {
@@ -61,9 +62,6 @@ export default {
 		]),
 		info () {
 			return `${JSON.stringify(this.me, null, 4)}`;
-		},
-		snooImage () {
-			return snoo;
 		},
 	},
 	methods: {
