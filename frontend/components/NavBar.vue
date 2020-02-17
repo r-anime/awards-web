@@ -2,7 +2,7 @@
 	<nav :class="['navbar', 'bg-llperiwinkle', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
 			<div class="navbar-brand">
-				<img :src="logo" class="image is-64x64"/>
+				<a href="/"><img :src="logo" class="image is-64x64"/></a>
 				<a
 					@click="expanded = !expanded"
 					role="button"
