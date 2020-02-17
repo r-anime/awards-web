@@ -1,6 +1,6 @@
  <template>
     <div :id="slug" class="awardDisplay">
-        <h2 class="categoryHeader">{{award.name}}</h2>
+        <h2 class="categoryHeader">{{category.name}}</h2>
         <award-winners
             :pub="nomPublicOrder[0]"
             :jury="nomJuryOrder[0]"
@@ -36,31 +36,38 @@
                 </div>
             </div>
         </div>
-        <div class="awardHonorableMentions" v-if="award.hms">
+        <div class="awardHonorableMentions" v-if="category.hms">
             <h4>Honorable Mentions</h4>
             <ul>
-                <li v-for="(hm, index) in award.hms" :key="index">{{hm}}</li>
+                <li v-for="(hm, index) in category.hms" :key="index">{{hm}}</li>
             </ul>
         </div>
     </div>
 </template>
 <script>
-const util = require('../util');
+import util from '../util';
+import AwardWinners from './ResultWinners';
 
 export default {
 	props: ['category'],
+	components: {
+		AwardWinners,
+	},
 	computed: {
 		slug () {
-			return `category-${util.slugify(this.award.name)}`;
+			return `category-${util.slugify(this.category.name)}`;
 		},
 		nomPublicOrder () {
-			const noms = this.award.nominees;
+			const noms = this.category.nominees;
 			return noms.sort((a, b) => a.public - b.public);
 		},
 		nomJuryOrder () {
-			const noms = this.award.nominees;
+			const noms = this.category.nominees;
 			return noms.sort((a, b) => a.jury - b.jury);
 		},
+	},
+	mounted () {
+		console.log(this.category);
 	},
 };
 </script>

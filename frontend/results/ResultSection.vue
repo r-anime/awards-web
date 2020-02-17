@@ -6,29 +6,39 @@
             <div
                 v-if="typeof section.blurb === 'string'"
                 class="awardSectionBlurb"
-                v-html="util.getMarkDown(section.blurb)"
+                html="blurb"
             />
-            <div
-                v-else
-                v-for="(blurb, index) in section.blurb"
-                class="awardSectionBlurb"
-                :key="index"
-                v-html="util.getMarkDown(blurb)"
-            />
+            <div v-else>
+                <div
+                    v-for="(blurb, index) in section.blurb"
+                    class="awardSectionBlurb"
+                    :key="index"
+                    v-html="blurb"
+                />
+            </div>
         </div>
         <awards-category
-            v-for="award in section.awards"
-            :key="award.name"
-            :award="award"
+            v-for="(category, index) in section.awards"
+            :key="index"
+            :category="category"
         />
     </div>
 </template>
 
 <script>
-const util = require('../util');
+import util from '../util';
+import AwardsCategory from './ResultCategory';
 
 export default {
 	props: ['section'],
+	components: {
+		AwardsCategory,
+	},
+	data () {
+		return {
+			util,
+		};
+	},
 	computed: {
 		slug () {
 			return `section-${util.slugify(this.section.name)}`;

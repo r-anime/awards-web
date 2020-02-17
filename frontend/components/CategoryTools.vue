@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 <template>
 	<div class="section">
 		<h2 class="title is-3">Category Tools</h2>
@@ -83,6 +84,7 @@ export default {
 		category (newVal, oldVal) {
 			// If the category was already defined, we don't want to update the
 			// other data, because the user may be making changes
+			// eslint-disable-next-line no-useless-return
 			if (oldVal) return;
 			// Update relevant properties here
 		},
@@ -311,7 +313,7 @@ export default {
 									altimg: '',
 									public: index + 1,
 									jury: nom.rank,
-									percent: `${(nom.votes / totalVotes) * 100}%`,
+									percent: `${nom.votes / totalVotes * 100}%`,
 									writeup: nom.writeup,
 									staff: nom.staff,
 								});

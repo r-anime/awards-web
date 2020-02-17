@@ -1,6 +1,5 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-alert */
-import MarkdownIt from 'markdown-it';
 
 function slugify (text) {
 	return text.toLowerCase().replace(/\s+/g, '-');
@@ -102,10 +101,6 @@ function getPrettyRank (rank) {
 	return `${rank + 1}th Place`;
 }
 
-function getMarkDown (txt) {
-	return MarkdownIt.render(txt);
-}
-
 export default {
 	makeQuery,
 	fuzzyMatch,
@@ -116,5 +111,4 @@ export default {
 	paginatedQuery,
 	slugify,
 	getPrettyRank,
-	getMarkDown,
 };

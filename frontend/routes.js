@@ -13,6 +13,7 @@ const HostLayout = () => import(/* webpackChunkName: "core" */ './layouts/Host')
 const Home = () => import(/* webpackChunkName: "core" */ './pages/Home');
 const About = () => import(/* webpackChunkName: "core" */ './pages/About');
 const Profile = () => import(/* webpackChunkName: "core" */ './pages/Profile');
+const ResultsPage = () => import(/* webpackChunkName: "host" */ './pages/Results');
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
 const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
@@ -31,9 +32,7 @@ const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
 const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
 const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
 
-const ResultSection = () => import(/* webpackChunkName: "host" */ './results/ResultSection');
-const ResultCategory = () => import(/* webpackChunkName: "host" */ './results/ResultCategory');
-const ResultWinners = () => import(/* webpackChunkName: "host" */ './results/ResultWinners');
+
 
 export default new VueRouter({
 	mode: 'history',
@@ -46,7 +45,7 @@ export default new VueRouter({
 				{path: '', component: Home},
 				{path: 'profile', component: Profile},
 				{path: 'about', component: About},
-				{path: 'results', component: ResultSection},
+				{path: 'results', component: ResultsPage},
 			],
 		},
 

@@ -78,8 +78,9 @@
 <script>
 /* eslint-disable no-alert */
 import ShowPickerEntry from './ShowPickerEntry';
+import util from '../../util';
 const queries = require('../../anilistQueries');
-const util = require('../../util');
+
 
 export default {
 	components: {
