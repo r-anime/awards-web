@@ -10,7 +10,6 @@ public/*[.png, .svg, .jpg, .gif]
 
 # Secrets
 config.js
-public/data/results2019.json
 
 # SQLite databases
 *.db

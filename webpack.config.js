@@ -24,10 +24,6 @@ module.exports = {
 			'.js',
 			'.vue',
 		],
-		alias: {
-			'vue$': 'vue/dist/vue',
-			'@': path.resolve('src'),
-		},
 	},
 	target: 'web',
 	module: {
