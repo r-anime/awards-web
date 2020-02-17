@@ -14,3 +14,6 @@ public/data/results2019.json
 
 # SQLite databases
 *.db
+
+# Prevent results json from being committed, remove this when merged to master
+public/data/results2019.json
