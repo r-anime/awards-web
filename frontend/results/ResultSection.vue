@@ -1,8 +1,8 @@
 <template>
-    <div :id="slug" class="awardSectionContainer">
-        <div class="awardSectionHeader">
+    <div :id="slug" class="awardSectionContainer container">
+        <div class="awardSectionHeader has-text-centered has-text-light">
             <div class="sectionIconContainer"><img class="sectionIcon" :alt="section.name" :src="icon" /></div>
-            <h1 class="sectionHeader">{{section.name}} Awards</h1>
+            <h1 class="sectionHeader title is-2 has-text-light">{{section.name}} Awards</h1>
             <div
                 v-if="typeof section.blurb === 'string'"
                 class="awardSectionBlurb"

@@ -1,7 +1,7 @@
  <template>
-    <div :id="slug" class="awardDisplay">
+    <div :id="slug" class="awardDisplay notification is-lperiwinkle">
         <h2 class="categoryHeader">{{category.name}}</h2>
-        <award-winners
+        <award-winners v-if="nomPublicOrder[0] && nomJuryOrder[0]"
             :pub="nomPublicOrder[0]"
             :jury="nomJuryOrder[0]"
         />
@@ -10,23 +10,9 @@
                 <h3 class="categoryNominationTitle">
                     Nominees
                 </h3>
-                <div class="categorySwitchContainer">
-                    <span class="categorySwitchLabel">
-                        <span class="modalRankingJuryIcon"></span>
-                    </span>
-                    <label class="categorySwitch">
-                        <input type="checkbox" checked="checked">
-                        <span class="categorySwitchSlider"></span>
-                    </label>
-                    <span class="categorySwitchLabel">
-                        <span class="modalRankingPublicIcon"></span>
-                    </span>
-                </div>
             </div>
             <div class="categoryNominationCards">
                 <div class="categoryNominationItem"
-                    :data-public="nom.public"
-                    :data-jury="nom.jury"
                     v-for="(nom, index) in nomPublicOrder"
                     :key = "index"
                 >
@@ -47,11 +33,13 @@
 <script>
 import util from '../util';
 import AwardWinners from './ResultWinners';
+import CategoryItemImage from './ItemImage';
 
 export default {
 	props: ['category'],
 	components: {
 		AwardWinners,
+		CategoryItemImage,
 	},
 	computed: {
 		slug () {
@@ -67,7 +55,7 @@ export default {
 		},
 	},
 	mounted () {
-		console.log(this.category);
+		// console.log(this.category);
 	},
 };
 </script>

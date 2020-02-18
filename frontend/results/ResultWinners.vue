@@ -71,8 +71,17 @@
     </div>
 </template>
 <script>
+import CategoryItemImage from './ItemImage';
+import NomineeName from './NomineeName';
 
 export default {
 	props: ['pub', 'jury'],
+	components: {
+		CategoryItemImage,
+		NomineeName,
+	},
+	mounted () {
+		console.log(this.jury, this.pub);
+	},
 };
 </script>
