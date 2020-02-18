@@ -80,8 +80,5 @@ export default {
 		CategoryItemImage,
 		NomineeName,
 	},
-	mounted () {
-		console.log(this.jury, this.pub);
-	},
 };
 </script>

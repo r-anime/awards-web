@@ -13,7 +13,7 @@ const HostLayout = () => import(/* webpackChunkName: "core" */ './layouts/Host')
 const Home = () => import(/* webpackChunkName: "core" */ './pages/Home');
 const About = () => import(/* webpackChunkName: "core" */ './pages/About');
 const Profile = () => import(/* webpackChunkName: "core" */ './pages/Profile');
-const ResultsPage = () => import(/* webpackChunkName: "host" */ './pages/Results');
+const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
 const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
