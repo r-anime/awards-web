@@ -22,7 +22,7 @@
         <div class="categorySubHeadContainer" v-if="pub.jury !== pub.public">
             <div class="categorySubHeadItem categorySubHeadJury">
                 <div class="categorySubHeadItemIcon">
-                    <img alt="laurels" src="img/assets/jury.png" />
+                    <img alt="laurels" :src="juryIcon" />
                 </div>
                 <div class="categorySubHeadItemText">
                     <div class="categorySubHeadItemTextTitle">
@@ -37,7 +37,7 @@
             </div>
             <div class="categorySubHeadItem categorySubHeadPublic">
                 <div class="categorySubHeadItemIcon">
-                    <img alt="laurels" src="img/assets/public.png" />
+                    <img alt="laurels" :src="publicIcon" />
                 </div>
                 <div class="categorySubHeadItemText">
                     <div class="categorySubHeadItemTextTitle">
@@ -54,7 +54,7 @@
         <div class="categorySubHeadContainer" v-else>
             <div class="categorySubHeadItem categorySubHeadPublic categorySubHeadJury">
                 <div class="categorySubHeadItemIcon">
-                    <img alt="laurels" src="img/assets/pubjury.png" />
+                    <img alt="laurels" :src="consensusIcon" />
                 </div>
                 <div class="categorySubHeadItemText">
                     <div class="categorySubHeadItemTextTitle">
@@ -74,11 +74,24 @@
 import CategoryItemImage from './ItemImage';
 import NomineeName from './NomineeName';
 
+import laurels from '../../img/laurels.png';
+import juryIcon from '../../img/jury.png';
+import publicIcon from '../../img/public.png';
+import consensusIcon from '../../img/pubjury.png';
+
 export default {
 	props: ['pub', 'jury'],
 	components: {
 		CategoryItemImage,
 		NomineeName,
+	},
+	data () {
+		return {
+			laurels,
+			juryIcon,
+			publicIcon,
+			consensusIcon,
+		};
 	},
 };
 </script>
