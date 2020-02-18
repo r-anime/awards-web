@@ -47,7 +47,7 @@ export default {
 			return `section-${util.slugify(this.section.name)}`;
 		},
 		icon () {
-			switch (this.slug) {
+			switch (this.section.slug) {
 				case 'genre':
 					return GenreIcon;
 				case 'production':
@@ -58,6 +58,9 @@ export default {
 					return '';
 			}
 		},
+	},
+	mounted () {
+		console.log(this.icon);
 	},
 };
 </script>
