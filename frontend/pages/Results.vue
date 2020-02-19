@@ -5,7 +5,7 @@
             v-for="(section, index) in results.sections"
             :key="index"
             :section="section"
-			:data="data2019"
+			:data="results"
 			:showData="showData"
 			:charData="charData"
             >

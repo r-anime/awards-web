@@ -22,7 +22,7 @@
             :key="index"
             :category="category"
 			:data="data"
-			:anilistData="computedData(category)"
+			:anilistData="(category.entryType === 'shows' || category.entryType === 'themes') ? showData : charData"
         />
     </div>
 </template>
@@ -64,10 +64,6 @@ export default {
 				default:
 					return '';
 			}
-		},
-		computedData (category) {
-			if (category.entryType === 'shows') return this.showData;
-			return this.charData;
 		},
 	},
 };

@@ -16,7 +16,7 @@
                     v-for="(nom, index) in nomPublicOrder"
                     :key = "index"
                 >
-                    {{nom.id}}
+                    {{nom.id}} {{data.anime[nom.id]}} {{data.characters[nom.id]}}
                     <category-item-image
                         :nominee="nom"
                     />
@@ -48,7 +48,12 @@ import AwardWinners from './ResultWinners';
 import CategoryItemImage from './ItemImage';
 
 export default {
-	props: ['category'],
+	props: [
+		'category',
+		'data',
+		'showData',
+		'charData',
+	],
 	components: {
 		AwardWinners,
 		CategoryItemImage,
