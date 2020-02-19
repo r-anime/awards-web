@@ -320,6 +320,7 @@ export default {
 							jurors = jurors.map(juror => juror.name);
 							section.awards.push({
 								name: cat.name,
+								entryType: cat.entryType,
 								jurors,
 								blurb: '',
 								table: '',
