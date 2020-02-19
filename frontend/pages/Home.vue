@@ -9,7 +9,6 @@
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
 						<div class="content has-text-centered has-text-light" v-if="me">
 							<h3>Hello, /u/{{me.reddit.name}}</h3>
-							<font-awesome-icon icon="pencil-ruler" />
 							<div class="buttons is-centered">
 								<div v-if="me.level >= 2">
 									<router-link to="/host">
@@ -23,6 +22,7 @@
 						</div>
 						<div class="content has-text-centered" v-else>
 							<h3>Hello, you're not logged in</h3>
+							<fa-icon icon="pencil-ruler" />
 							<p>
 								<div class="buttons is-centered">
 									<a href="/login" class="button is-platinum is-large">

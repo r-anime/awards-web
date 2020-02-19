@@ -44,7 +44,6 @@ export default new VueRouter({
 			component: PublicLayout, // when the home component is redesigned, this component will be changed to home
 			children: [
 				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
-				{path: 'profile', component: Profile},
 				{path: 'about', component: About},
 				{path: 'results', component: ResultsPage},
 			],
@@ -55,8 +54,8 @@ export default new VueRouter({
 			component: PublicLayout,
 			children: [
 				{path: '', component: Login},
-				{path: 'profile', component: Profile},
-				{path: 'about', component: About},
+				{path: '/profile', component: Profile},
+				{path: '/about', component: About},
 			],
 		},
 
