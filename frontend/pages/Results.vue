@@ -1,5 +1,6 @@
+
 <template>
-	<section class="section has-background-dperiwinkle">
+	<section class="section has-background-dark">
 		<awards-section
             v-for="(section, index) in results.sections"
             :key="index"
@@ -11,6 +12,9 @@
 
 <script>
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-alert */
+
+
 import data2018 from '../../data/results2018.json';
 import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';

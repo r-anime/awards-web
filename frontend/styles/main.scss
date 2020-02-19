@@ -3,13 +3,13 @@
 // included with every other sass snippet in the app. Needless to day, that is
 // not how we want that to work.
 
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 @import "~bulma/sass/utilities/initial-variables";
 @import "~bulma/sass/utilities/functions";
 
 // Customize Bulma variables
 $family-sans-serif: "Open Sans", "Helvetica", "Arial", sans-serif;
 $family-monospace: "Source Code Pro", "Menlo", "Consolas", monospace;
-
 
 $llperiwinkle: #7EAEFF;
 $llperiwinkle-invert: findColorInvert($llperiwinkle);
@@ -29,6 +29,8 @@ $silver-invert: findColorInvert($silver);
 $platinum: #00D1B2;
 $platinum-invert: findColorInvert($platinum);
 
+$dark: #1B1E25;
+
 $primary: $periwinkle;
 $primary-invert: $periwinkle-invert;
 $danger: $orangered;
@@ -42,6 +44,7 @@ $addColors: (
     "lperiwinkle": ($lperiwinkle, $lperiwinkle-invert),
     "periwinkle": ($periwinkle, $periwinkle-invert),
     "dperiwinkle": ($dperiwinkle, $dperiwinkle-invert),
+    "orangered": ($orangered, $orangered-invert),
     "gold": ($gold, $gold-invert),
     "silver": ($silver, $silver-invert),
     "platinum": ($platinum, $platinum-invert),

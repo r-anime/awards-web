@@ -1,5 +1,5 @@
 <template>
-	<nav :class="['navbar', 'bg-llperiwinkle', {vertical}]">
+	<nav :class="['navbar', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
 			<div class="navbar-brand">
 				<a href="/"><img :src="logo" class="image is-64x64"/></a>
@@ -42,7 +42,7 @@
 						</template>
 					</nav-bar-link>
 					<span v-else class="navbar-item">
-						<a class="button is-success" href="/auth/reddit">
+						<a class="button is-orangered" href="/auth/reddit">
 							Log in with Reddit
 						</a>
 					</span>

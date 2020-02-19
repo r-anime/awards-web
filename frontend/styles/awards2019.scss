@@ -1,9 +1,72 @@
-navbar.is-transparent {
-    a.navbar-item {
-        transition: backgroundColor 0.25s;
-        &:hover{
-            background-color: rgba($color: #000000, $alpha: 0.2) !important;
-        }
-    }
+html, body{
+    font-family: 'Open Sans';
+}
 
+.sectionIcon, .categorySubHeadItemIcon{
+    width: 6rem;
+}
+
+.sectionHeader{
+    padding-bottom: 1.5rem;
+}
+
+.categoryWinnerContainer {
+    position: relative;
+    width: 100%;
+
+    &:after{
+        content: '';
+
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+
+        pointer-events: none;
+        outline: 0.5rem solid $llperiwinkle;
+        outline-offset: -1.5rem;
+        z-index: 883;
+    }
+}
+
+.categoryWinnerItem{
+    height: 35rem;
+}
+
+.categoryItemImage {
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.categorySubHeadItemTextTitle {
+    margin-bottom: 0;
+}
+
+.categorySubHeadContainer {
+    padding: 2rem;
+}
+
+.has-flaired-underline{
+    border-width: 0 0 2px;
+    border-style: solid;
+    border-image:
+        radial-gradient(
+            circle at center,
+            $gold 0,
+            $gold 50%,
+            rgba(255,255,255, 0) 100%
+        ) 100% 1 1 1;
+}
+
+.has-flaired-underline-thin{
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-image:
+        radial-gradient(
+            circle at center,
+            $white 0,
+            $white 50%,
+            rgba(255,255,255, 0) 100%
+        ) 100% 1 1 1;
 }

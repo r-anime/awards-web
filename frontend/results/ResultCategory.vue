@@ -1,6 +1,6 @@
  <template>
-    <div :id="slug" class="awardDisplay notification is-lperiwinkle">
-        <h2 class="categoryHeader">{{category.name}}</h2>
+    <div :id="slug" class="awardDisplay">
+        <h2 class="categoryHeader title is-3 has-text-light">{{category.name}}</h2>
         <award-winners v-if="nomPublicOrder[0] && nomJuryOrder[0]"
             :pub="nomPublicOrder[0]"
             :jury="nomJuryOrder[0]"
@@ -16,13 +16,25 @@
                     v-for="(nom, index) in nomPublicOrder"
                     :key = "index"
                 >
+                    {{nom.id}}
+                    <category-item-image
+                        :nominee="nom"
+                    />
+                </div>
+            </div>
+            <div class="categoryNominationCards">
+                <div class="categoryNominationItem"
+                    v-for="(nom, index) in nomJuryOrder"
+                    :key = "index"
+                >
+                    {{nom.id}}
                     <category-item-image
                         :nominee="nom"
                     />
                 </div>
             </div>
         </div>
-        <div class="awardHonorableMentions" v-if="category.hms">
+        <div class="awardHonorableMentions" v-if="category.hms && category.hms.length > 0">
             <h4>Honorable Mentions</h4>
             <ul>
                 <li v-for="(hm, index) in category.hms" :key="index">{{hm}}</li>

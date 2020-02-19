@@ -1,69 +1,85 @@
 <template>
     <div>
         <div v-if="pub.jury === pub.public" class="categoryWinnerContainer" >
-            <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury">
-                <category-item-image
-                    :nominee="pub"
-                />
+            <div class="columns is-gapless">
+                <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column">
+                    <category-item-image
+                        :nominee="pub"
+                    />
+                </div>
             </div>
         </div>
         <div v-else class="categoryWinnerContainer" >
-            <div class="categoryWinnerItem categoryWinnerJury">
-                <category-item-image
-                    :nominee="jury"
-                />
-            </div>
-            <div class="categoryWinnerItem categoryWinnerPublic">
-                <category-item-image
-                    :nominee="pub"
-                />
+            <div class="columns is-gapless">
+                <div class="categoryWinnerItem categoryWinnerJury column">
+                    <category-item-image
+                        :nominee="jury"
+                    />
+                </div>
+                <div class="categoryWinnerItem categoryWinnerPublic column">
+                    <category-item-image
+                        :nominee="pub"
+                    />
+                </div>
             </div>
         </div>
-        <div class="categorySubHeadContainer" v-if="pub.jury !== pub.public">
-            <div class="categorySubHeadItem categorySubHeadJury">
-                <div class="categorySubHeadItemIcon">
-                    <img alt="laurels" :src="juryIcon" />
-                </div>
-                <div class="categorySubHeadItemText">
-                    <div class="categorySubHeadItemTextTitle">
-                        <nominee-name
-                        :nominee="jury"
-                        ></nominee-name>
+        <div class="categorySubHeadContainer columns is-gapless" v-if="pub.jury !== pub.public">
+            <div class="categorySubHeadItem categorySubHeadJury column">
+                <div class="columns is-vcentered">
+                    <div class="column is-narrow">
+                        <div class="categorySubHeadItemIcon">
+                            <img alt="laurels" :src="juryIcon" />
+                        </div>
                     </div>
-                    <div class="categorySubHeadItemTextSubTitle">
-                        Jury Winner
+                    <div class="categorySubHeadItemText column is-narrow">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
+                            <nominee-name
+                            :nominee="jury"
+                            ></nominee-name>
+                        </h3>
+                        <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                            Jury Winner
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="categorySubHeadItem categorySubHeadPublic">
-                <div class="categorySubHeadItemIcon">
-                    <img alt="laurels" :src="publicIcon" />
-                </div>
-                <div class="categorySubHeadItemText">
-                    <div class="categorySubHeadItemTextTitle">
-                        <nominee-name
-                        :nominee="pub"
-                        ></nominee-name>
+            <div class="categorySubHeadItem categorySubHeadPublic column">
+                <div class="columns is-vcentered">
+                    <div class="column is-narrow">
+                        <div class="categorySubHeadItemIcon">
+                            <img alt="snoo" :src="publicIcon" />
+                        </div>
                     </div>
-                    <div class="categorySubHeadItemTextSubTitle">
-                        Public Winner
+                    <div class="categorySubHeadItemText column is-narrow">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
+                            <nominee-name
+                            :nominee="pub"
+                            ></nominee-name>
+                        </h3>
+                        <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                            Public Winner
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="categorySubHeadContainer" v-else>
             <div class="categorySubHeadItem categorySubHeadPublic categorySubHeadJury">
-                <div class="categorySubHeadItemIcon">
-                    <img alt="laurels" :src="consensusIcon" />
-                </div>
-                <div class="categorySubHeadItemText">
-                    <div class="categorySubHeadItemTextTitle">
-                        <nominee-name
-                        :nominee="pub"
-                        ></nominee-name>
+                <div class="columns is-centered is-vcentered">
+                    <div class="column is-narrow">
+                        <div class="categorySubHeadItemIcon">
+                            <img alt="snoo with laurels" :src="consensusIcon" />
+                        </div>
                     </div>
-                    <div class="categorySubHeadItemTextSubTitle">
-                        Consensus Winner
+                    <div class="categorySubHeadItemText column is-narrow">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
+                            <nominee-name
+                            :nominee="pub"
+                            ></nominee-name>
+                        </h3>
+                        <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                            Concensus Winner
+                        </div>
                     </div>
                 </div>
             </div>
