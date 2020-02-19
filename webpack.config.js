@@ -1,6 +1,8 @@
 const {VueLoaderPlugin} = require('vue-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const config = require('./config');
-const path = require('path');
 
 module.exports = {
 	mode: 'development', // prod mode when deploying apparently does good things
@@ -11,14 +13,21 @@ module.exports = {
 		path: config.publicDir,
 		filename: 'bundle.js',
 	},
-	// eslint-disable-next-line multiline-comment-style
-	/* We need to do this at some point too
 	optimization: {
+		minimizer: [new UglifyJsPlugin()],
 		splitChunks: {
-			chunks: 'all',
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all',
+				},
+			},
+		},
+		runtimeChunk: {
+			name: 'manifest',
 		},
 	},
-	*/
 	resolve: {
 		extensions: [
 			'.js',
@@ -71,6 +80,7 @@ module.exports = {
 						], // Need presets for safari, edge and IE but that's insanely hard for some reason
 					},
 				},
+				exclude: /node_modules/,
 			},
 			{
 				test: /\.(png|svg|jpg|gif)$/,
@@ -88,5 +98,16 @@ module.exports = {
 	},
 	plugins: [
 		new VueLoaderPlugin(),
+		new HtmlWebpackPlugin({
+			template: './public/template.html',
+			title: '/r/anime Awards 2019',
+		}),
+		new CompressionPlugin({
+			filename: '[path].gz[query]',
+			algorithm: 'gzip',
+			test: /\.js$|\.css$|\.html$/,
+			threshold: 10240,
+			minRatio: 0.8,
+		}),
 	],
 };

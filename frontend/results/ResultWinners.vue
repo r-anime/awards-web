@@ -78,7 +78,7 @@
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
-                            Concensus Winner
+                            Consensus Winner
                         </div>
                     </div>
                 </div>

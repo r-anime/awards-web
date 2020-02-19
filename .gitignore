@@ -7,6 +7,7 @@ node_modules
 # Generated bundles
 public/*.js
 public/*[.png, .svg, .jpg, .gif]
+public/*.gz
 
 # Secrets
 config.js
