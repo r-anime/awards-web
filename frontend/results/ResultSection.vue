@@ -21,6 +21,8 @@
             v-for="(category, index) in section.awards"
             :key="index"
             :category="category"
+			:data="data"
+			:anilistData="computedData(category)"
         />
     </div>
 </template>
@@ -33,7 +35,12 @@ import CharIcon from '../../img/characterawards.png';
 import ProdIcon from '../../img/productionawards.png';
 
 export default {
-	props: ['section'],
+	props: [
+		'section',
+		'data',
+		'showData',
+		'charData',
+	],
 	components: {
 		AwardsCategory,
 	},
@@ -57,6 +64,10 @@ export default {
 				default:
 					return '';
 			}
+		},
+		computedData (category) {
+			if (category.entryType === 'shows') return this.showData;
+			return this.charData;
 		},
 	},
 };

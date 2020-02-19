@@ -5,6 +5,9 @@
             v-for="(section, index) in results.sections"
             :key="index"
             :section="section"
+			:data="data2019"
+			:showData="showData"
+			:charData="charData"
             >
         </awards-section>
 	</section>

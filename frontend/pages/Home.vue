@@ -10,6 +10,11 @@
 						<div class="content has-text-centered has-text-light" v-if="me">
 							<h3>Hello, /u/{{me.reddit.name}}</h3>
 							<div class="buttons is-centered">
+								<div>
+									<router-link to="/results">
+										<button class="button is-primary is-large is-platinum">Results</button>
+									</router-link>
+								</div>
 								<div v-if="me.level >= 2">
 									<router-link to="/host">
 										<button class="button is-primary is-large is-platinum">Host Dashboard</button>
