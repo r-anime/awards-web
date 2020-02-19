@@ -13,28 +13,27 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 
 library.add(faBook, faUsers, faUserFriends, faPalette, faPaintBrush, faPencilRuler, faCog, faCrown, faInfoCircle, faFileInvoice, faComment);
 
-// Fetch core user data and store it on the Vue instance when we get it
-// NOTE: This is done as its own thing rather than in the Vue instance's
-//       `created` hook because having the promise lets us use `await` to ensure
-//       we have user data before navigating (which is important for when the
-//       page is initially loading)
-const loadPromise = store.dispatch('getMe');
-
 // Handle authentication on page navigation
 router.beforeEach(async (to, from, next) => {
 	// We must have the user info loaded before we can route
-	await loadPromise;
-	if (to.path.startsWith('/host')) {
+	if (to.path.startsWith('/host') || to.path.startsWith('/login')) {
+		// Fetch core user data and store it on the Vue instance when we get it
+		// NOTE: This is done as its own thing rather than in the Vue instance's
+		//       `created` hook because having the promise lets us use `await` to ensure
+		//       we have user data before navigating (which is important for when the
+		//       page is initially loading)
+		const loadPromise = store.dispatch('getMe');
+		await loadPromise;
 		if (!store.state.me) {
 			// The user is not logged in, so have them log in
-			return next('/');
+			return next('/login');
 		}
 		if (store.state.me.level >= 2) {
 			// The user is a host, so send them to the page
 			return next();
 		}
 		// The user is not a host, so send them home
-		return next('/');
+		return next('/login');
 	}
 	next();
 });

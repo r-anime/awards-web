@@ -16,6 +16,7 @@ const Profile = () => import(/* webpackChunkName: "core" */ './pages/Profile');
 const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
+const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
 const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
 const Users = () => import(/* webpackChunkName: "host" */ './pages/host/Users');
 const Results = () => import(/* webpackChunkName: "host" */ './pages/host/Results');
@@ -40,12 +41,22 @@ export default new VueRouter({
 		// Default layout
 		{
 			path: '/',
-			component: PublicLayout,
+			component: PublicLayout, // when the home component is redesigned, this component will be changed to home
 			children: [
-				{path: '', component: Home},
+				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
 				{path: 'profile', component: Profile},
 				{path: 'about', component: About},
 				{path: 'results', component: ResultsPage},
+			],
+		},
+		// login for hosts
+		{
+			path: '/login',
+			component: PublicLayout,
+			children: [
+				{path: '', component: Login},
+				{path: 'profile', component: Profile},
+				{path: 'about', component: About},
 			],
 		},
 

@@ -9,7 +9,6 @@
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
 						<div class="content has-text-centered has-text-light" v-if="me">
 							<h3>Hello, /u/{{me.reddit.name}}</h3>
-							<font-awesome-icon icon="pencil-ruler" />
 							<div class="buttons is-centered">
 								<div v-if="me.level >= 2">
 									<router-link to="/host">
@@ -17,23 +16,16 @@
 									</router-link>
 								</div>
 								<div v-else class="content has-text-centered">
-									<p>Public voting has ended. Stay tuned for the results livestream on February 22, 2020!</p>
+									<p>You don't seem to be a host. There's nothing here for you yet.</p>
 								</div>
 							</div>
 						</div>
 						<div class="content has-text-centered" v-else>
 							<h3>Hello, you're not logged in</h3>
 							<p>
-								<div class="buttons is-centered">
-									<a href="/login" class="button is-platinum is-large">
+								<a href="/auth/reddit" class="button is-platinum is-large">
 									Log in with Reddit
-									</a>
-									<div>
-									<router-link to="/results">
-										<button class="button is-primary is-large is-platinum">Results</button>
-									</router-link>
-								</div>
-								</div>
+								</a>
 							</p>
 						</div>
 					</div>
