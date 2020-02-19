@@ -58,17 +58,15 @@ export default {
 		AwardWinners,
 		CategoryItemImage,
 	},
+	data () {
+		return {
+			nomPublicOrder: [].concat(this.category.nominees).sort((a, b) => a.public - b.public),
+			nomJuryOrder: [].concat(this.category.nominees).sort((a, b) => a.jury - b.jury),
+		};
+	},
 	computed: {
 		slug () {
 			return `category-${util.slugify(this.category.name)}`;
-		},
-		nomPublicOrder () {
-			const noms = this.category.nominees;
-			return noms.sort((a, b) => a.public - b.public);
-		},
-		nomJuryOrder () {
-			const noms = this.category.nominees;
-			return noms.sort((a, b) => a.jury - b.jury);
 		},
 	},
 	mounted () {
