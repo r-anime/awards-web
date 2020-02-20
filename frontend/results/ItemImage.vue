@@ -5,13 +5,19 @@
 <script>
 
 export default {
-	props: ['nominee'],
+	props: ['nominee', 'anilistData'],
 	computed: {
 		backgroundStyle () {
+			// console.log(this.anilistData);
 			if (this.nominee.altimg !== '') {
 				return `background-image: url(img/${this.nominee.altimg})`;
 			}
-			return `background-image: url(img/${this.nominee.id}.jpg)`;
+			const found = this.anilistData.find(el => el.id === this.nominee.id);
+
+			if (found.coverImage) {
+				return `background-image: url(${found.coverImage.large})`;
+			}
+			return `background-image: url(${found.image.large})`;
 		},
 	},
 };

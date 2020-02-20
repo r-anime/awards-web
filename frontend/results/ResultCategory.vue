@@ -1,9 +1,10 @@
  <template>
     <div :id="slug" class="awardDisplay">
-        <h2 class="categoryHeader title is-3 has-text-light">{{category.name}}</h2>
+        <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-100 pb-10 mb-20">{{category.name}}</h2>
         <award-winners v-if="nomPublicOrder[0] && nomJuryOrder[0]"
             :pub="nomPublicOrder[0]"
             :jury="nomJuryOrder[0]"
+            :anilistData="anilistData"
         />
         <div class="categoryNominationContainer">
             <div class="categoryNominationHeader">
@@ -19,6 +20,7 @@
                     {{nom.id}} {{data.anime[nom.id]}} {{data.characters[nom.id]}}
                     <category-item-image
                         :nominee="nom"
+                        :anilistData="anilistData"
                     />
                 </div>
             </div>
@@ -30,6 +32,7 @@
                     {{nom.id}}
                     <category-item-image
                         :nominee="nom"
+                        :anilistData="data"
                     />
                 </div>
             </div>
@@ -53,6 +56,7 @@ export default {
 		'data',
 		'showData',
 		'charData',
+		'anilistData',
 	],
 	components: {
 		AwardWinners,
@@ -70,7 +74,7 @@ export default {
 		},
 	},
 	mounted () {
-		// console.log(this.category);
+		// console.log(this.anilistData);
 	},
 };
 </script>

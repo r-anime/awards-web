@@ -1,6 +1,6 @@
 
 <template>
-	<section class="section has-background-dark">
+	<section class="section has-background-dark" v-if="loaded">
 		<awards-section
             v-for="(section, index) in results.sections"
             :key="index"
@@ -131,6 +131,7 @@ export default {
 		});
 		Promise.all([showPromise, charPromise]).then(() => {
 			this.loaded = true;
+			console.log(this.showData, this.charData);
 		});
 	},
 };

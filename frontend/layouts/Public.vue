@@ -1,6 +1,6 @@
 <template>
 	<body>
-		<nav-bar class="is-llperiwinkle" :routes="routes">
+		<nav-bar class="is-dark has-periwinkle-underline" :routes="routes">
 			<template v-slot:title>
 				<router-link to="/" style="color:inherit">
 					<h1 class="is-size-4">/r/anime Awards</h1>

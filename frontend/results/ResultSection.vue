@@ -1,8 +1,10 @@
 <template>
     <div :id="slug" class="awardSectionContainer container">
         <div class="awardSectionHeader has-text-centered has-text-light">
-            <div class="sectionIconContainer"><img class="sectionIcon" :alt="section.name" :src="icon" /></div>
-            <h1 class="sectionHeader title is-2 has-text-light has-flaired-underline">{{section.name}} Awards</h1>
+            <div class="sectionIconContainer">
+				<fa-icon :icon="icon" size="6x" class="has-text-gold mb-20 mt-20" />
+			</div>
+            <h2 class="sectionHeader title is-2 has-text-light pb-20 has-flaired-underline">{{section.name}} Awards</h2>
             <div
                 v-if="typeof section.blurb === 'string'"
                 class="awardSectionBlurb"
@@ -30,9 +32,9 @@
 <script>
 import util from '../util';
 import AwardsCategory from './ResultCategory';
-import GenreIcon from '../../img/genreawards.png';
-import CharIcon from '../../img/characterawards.png';
-import ProdIcon from '../../img/productionawards.png';
+// import GenreIcon from '../../img/genreawards.png';
+// import CharIcon from '../../img/characterawards.png';
+// import ProdIcon from '../../img/productionawards.png';
 
 export default {
 	props: [
@@ -56,15 +58,18 @@ export default {
 		icon () {
 			switch (this.section.slug) {
 				case 'genre':
-					return GenreIcon;
+					return 'book';
 				case 'production':
-					return ProdIcon;
+					return 'pencil-ruler';
 				case 'character':
-					return CharIcon;
+					return 'user-friends';
 				default:
-					return '';
+					return 'crown';
 			}
 		},
+	},
+	mounted () {
+		console.log(this.showData, this.charData);
 	},
 };
 </script>

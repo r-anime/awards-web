@@ -6,8 +6,8 @@ html, body{
     width: 6rem;
 }
 
-.sectionHeader{
-    padding-bottom: 1.5rem;
+.awardSectionHeader, .categoryHeader{
+    text-shadow: 0 4px 6px #000000;
 }
 
 .categoryWinnerContainer {
@@ -31,12 +31,15 @@ html, body{
 }
 
 .categoryWinnerItem{
-    height: 35rem;
+    height: 45rem;
 }
 
 .categoryItemImage {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
+    background-position: center center;
+    background-repeat:  no-repeat;
+    background-size:  cover;
 }
 
 .categorySubHeadItemTextTitle {
@@ -45,6 +48,10 @@ html, body{
 
 .categorySubHeadContainer {
     padding: 2rem;
+}
+
+.has-periwinkle-underline{
+    border-bottom: 1px solid $llperiwinkle;
 }
 
 .has-flaired-underline{
@@ -69,4 +76,19 @@ html, body{
             $white 50%,
             rgba(255,255,255, 0) 100%
         ) 100% 1 1 1;
+}
+
+$spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100); // Adjust this to include the pixel amounts you need.
+$sides: (top, bottom, left, right); // Leave this variable alone
+
+@each $space in $spaceamounts {
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
+    }
+  
+    .p#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
+    }
+  }
 }

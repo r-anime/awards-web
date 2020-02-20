@@ -22,7 +22,6 @@
 						</div>
 						<div class="content has-text-centered" v-else>
 							<h3>Hello, you're not logged in</h3>
-							<fa-icon icon="pencil-ruler" />
 							<p>
 								<div class="buttons is-centered">
 									<a href="/login" class="button is-platinum is-large">

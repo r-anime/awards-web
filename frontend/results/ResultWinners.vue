@@ -1,10 +1,11 @@
 <template>
     <div>
-        <div v-if="pub.jury === pub.public" class="categoryWinnerContainer" >
+        <div v-if="pub.id === jury.id" class="categoryWinnerContainer" >
             <div class="columns is-gapless">
                 <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column">
                     <category-item-image
                         :nominee="pub"
+                        :anilistData="anilistData"
                     />
                 </div>
             </div>
@@ -14,11 +15,13 @@
                 <div class="categoryWinnerItem categoryWinnerJury column">
                     <category-item-image
                         :nominee="jury"
+                        :anilistData="anilistData"
                     />
                 </div>
                 <div class="categoryWinnerItem categoryWinnerPublic column">
                     <category-item-image
                         :nominee="pub"
+                        :anilistData="anilistData"
                     />
                 </div>
             </div>
@@ -35,6 +38,7 @@
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
                             <nominee-name
                             :nominee="jury"
+                            :anilistData="anilistData"
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
@@ -54,6 +58,7 @@
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
                             <nominee-name
                             :nominee="pub"
+                            :anilistData="anilistData"
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
@@ -75,6 +80,7 @@
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
                             <nominee-name
                             :nominee="pub"
+                            :anilistData="anilistData"
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
@@ -96,7 +102,7 @@ import publicIcon from '../../img/public.png';
 import consensusIcon from '../../img/pubjury.png';
 
 export default {
-	props: ['pub', 'jury'],
+	props: ['pub', 'jury', 'anilistData'],
 	components: {
 		CategoryItemImage,
 		NomineeName,
