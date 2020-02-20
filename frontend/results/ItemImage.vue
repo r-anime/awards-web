@@ -15,9 +15,9 @@ export default {
 			const found = this.anilistData.find(el => el.id === this.nominee.id);
 
 			if (found.coverImage) {
-				return `background-image: url(${found.coverImage.large})`;
+				return `background-image: url(${found.coverImage.extraLarge})`;
 			}
-			return `background-image: url(${found.image.large})`;
+			return `background-image: url(${found.image.extraLarge})`;
 		},
 	},
 };

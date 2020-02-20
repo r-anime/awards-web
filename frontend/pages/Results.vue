@@ -57,7 +57,7 @@ export default {
 							},
 						}),
 					});
-					if (!showResponse.ok) return alert('no bueno');
+					if (!showResponse.ok) return alert(showResponse.statusText);
 					const returnData = await showResponse.json();
 					this.showData = [...this.showData, ...returnData.data.Page.results];
 					resolve(returnData);

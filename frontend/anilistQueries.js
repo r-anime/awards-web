@@ -471,6 +471,7 @@ const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 		}
 		coverImage {
 		  large
+		  extraLarge
 		}
 		siteUrl
 	  }
