@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "db-migrate up && webpack && node index.js",
+    "start": "db-migrate up && webpack -p && node index.js",
     "deploy": "webpack && node index.js",
-    "build": "webpack",
+    "build": "webpack -p",
     "serve": "node index.js",
     "migrate": "db-migrate up"
   },
@@ -29,7 +29,6 @@
     "node-sass": "^4.13.1",
     "sass-loader": "^7.1.0",
     "sirv": "1.0.0-next.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^3.0.0",
     "vue": "^2.6.5",
     "vue-loader": "^15.6.2",

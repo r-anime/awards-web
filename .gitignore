@@ -5,9 +5,8 @@ node_modules
 .vscode
 
 # Generated bundles
-public/*.js
-public/*[.png, .svg, .jpg, .gif]
-public/*.gz
+public/*[.png, .svg, .jpg, .gif, .js, .gz]
+public/index.html
 
 # Secrets
 config.js

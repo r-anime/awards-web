@@ -1,6 +1,5 @@
 const {VueLoaderPlugin} = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const config = require('./config');
 
@@ -14,7 +13,6 @@ module.exports = {
 		filename: 'bundle.js',
 	},
 	optimization: {
-		minimizer: [new UglifyJsPlugin()],
 		splitChunks: {
 			cacheGroups: {
 				commons: {
