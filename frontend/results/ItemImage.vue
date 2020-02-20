@@ -17,7 +17,7 @@ export default {
 			if (found.coverImage) {
 				return `background-image: url(${found.coverImage.extraLarge})`;
 			}
-			return `background-image: url(${found.image.extraLarge})`;
+			return `background-image: url(${found.image.large})`;
 		},
 	},
 };

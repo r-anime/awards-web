@@ -11,6 +11,9 @@
             >
         </awards-section>
 	</section>
+	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
+		Loading
+	</section>
 </template>
 
 <script>
