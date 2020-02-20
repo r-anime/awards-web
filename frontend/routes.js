@@ -6,9 +6,10 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 // Layouts, pages, and routing
-const PublicLayout = () => import(/* webpackChunkName: "core" */ './layouts/Public');
+const PublicLayout = () => import(/* webpackChunkName: "host" */ './layouts/Public');
 // import JurorLayout from './layout/Juror';
-const HostLayout = () => import(/* webpackChunkName: "core" */ './layouts/Host');
+const HostLayout = () => import(/* webpackChunkName: "host" */ './layouts/Host');
+const ResultLayout = () => import(/* webpackChunkName: "core" */ './layouts/Result');
 
 const Home = () => import(/* webpackChunkName: "core" */ './pages/Home');
 const About = () => import(/* webpackChunkName: "core" */ './pages/About');
@@ -41,7 +42,7 @@ export default new VueRouter({
 		// Default layout
 		{
 			path: '/',
-			component: PublicLayout, // when the home component is redesigned, this component will be changed to home
+			component: ResultLayout, // when the home component is redesigned, this component will be changed to home
 			children: [
 				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
 				{path: 'about', component: About},
