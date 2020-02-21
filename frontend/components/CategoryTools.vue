@@ -310,7 +310,7 @@ export default {
 									altname: nom.alt_name,
 									altimg: '',
 									public: nom.votes,
-									finished: nom.finished / totalVotes,
+									finished: nom.finished,
 									support: nom.votes / nom.finished,
 									jury: nom.rank,
 									percent: nom.votes / totalVotes,
