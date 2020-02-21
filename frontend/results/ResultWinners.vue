@@ -28,7 +28,7 @@
         </div>
         <div class="categorySubHeadContainer columns is-gapless" v-if="pub.id !== jury.id">
             <div class="categorySubHeadItem categorySubHeadJury column">
-                <div class="columns is-vcentered">
+                <div class="columns is-vcentered is-mobile is-multiline">
                     <div class="column is-narrow">
                         <div class="categorySubHeadItemIcon">
                             <img alt="laurels" :src="juryIcon" />
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="categorySubHeadItem categorySubHeadPublic column">
-                <div class="columns is-vcentered">
+                <div class="columns is-vcentered is-mobile is-multiline">
                     <div class="column is-narrow">
                         <div class="categorySubHeadItemIcon">
                             <img alt="snoo" :src="publicIcon" />

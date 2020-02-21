@@ -13,11 +13,12 @@
                 </h3>
             </div>
             <div class="categoryNominationCards">
+                Public
                 <div class="categoryNominationItem"
                     v-for="(nom, index) in nomPublicOrder"
                     :key = "index"
                 >
-                    {{nom.id}} {{data.anime[nom.id]}} {{data.characters[nom.id]}}
+                    {{nom.id}} {{data.anime[nom.id]}} {{data.characters[nom.id]}} {{data.themes[nom.id]}}
                     <category-item-image
                         :nominee="nom"
                         :anilistData="anilistData"
@@ -25,11 +26,12 @@
                 </div>
             </div>
             <div class="categoryNominationCards">
+                Jury
                 <div class="categoryNominationItem"
                     v-for="(nom, index) in nomJuryOrder"
                     :key = "index"
                 >
-                    {{nom.id}}
+                    {{nom.id}} {{data.anime[nom.id]}} {{data.characters[nom.id]}} {{data.themes[nom.id]}}
                     <category-item-image
                         :nominee="nom"
                         :anilistData="data"
