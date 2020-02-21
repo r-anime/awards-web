@@ -14,13 +14,16 @@
                         </div>
                     </div>
                     <div class="categoryNominationCards">
-                        <div class="categoryNominationItem" v-for="(nom, index) in nomPublicOrder" :key="index">
+                        <div class="categoryNominationItem" v-for="(nom, index) in nomPublicOrder"
+						:key="index">
                             <category-item-image :nominee="nom" :anilistData="anilistData" />
                         </div>
                     </div>
                     <div class="categoryNominationCards">
-                        <div class="categoryNominationItem" v-for="(nom, index) in nomJuryOrder" :key="index">
+                        <div class="categoryNominationItem" v-for="(nom, index) in nomJuryOrder"
+						:key="index">
                             <category-item-image :nominee="nom" :anilistData="data" />
+							<span class="has-text-light">{{index + 1}}</span>
                         </div>
                     </div>
                 </div>
