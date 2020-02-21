@@ -309,9 +309,11 @@ export default {
 									id,
 									altname: nom.alt_name,
 									altimg: '',
-									public: index + 1,
+									public: nom.votes,
+									finished: nom.finished / totalVotes,
+									support: nom.votes / nom.finished,
 									jury: nom.rank,
-									percent: `${(nom.votes / totalVotes) * 100}%`,
+									percent: nom.votes / totalVotes,
 									writeup: nom.writeup,
 									staff: nom.staff,
 								});
