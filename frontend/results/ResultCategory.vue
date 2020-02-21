@@ -64,7 +64,7 @@ export default {
 	},
 	data () {
 		return {
-			nomPublicOrder: [].concat(this.category.nominees).sort((a, b) => a.public - b.public),
+			nomPublicOrder: [].concat(this.category.nominees).sort((a, b) => b.public - a.public),
 			nomJuryOrder: [].concat(this.category.nominees).sort((a, b) => a.jury - b.jury),
 		};
 	},

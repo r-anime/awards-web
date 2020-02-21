@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="categorySubHeadContainer columns is-gapless" v-if="pub.jury !== pub.public">
+        <div class="categorySubHeadContainer columns is-gapless" v-if="pub.id !== jury.id">
             <div class="categorySubHeadItem categorySubHeadJury column">
                 <div class="columns is-vcentered">
                     <div class="column is-narrow">
