@@ -1,56 +1,37 @@
 <template>
-	<section class="hero is-fullheight-with-navbar has-background-periwinkle">
+	<section class="hero has-background-dark">
 		<div class="hero-body">
-			<div class="container ">
-				<div class="columns is-centered">
-					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
+			<div class="container">
+				<div class="columns is-centered mt-10 is-hidden-touch">
+					<div class="column is-narrow">
+						<img class="BFimage" :src="logo" />
+					</div>
+				</div>
+				<div class="columns is-centered is-vcentered mt-10">
+					<div class="column is-centered is-narrow">
+						<router-link to="/results" >
+							<a class="button is-large is-silver">Results ></a>
+						</router-link>
+					</div>
+				</div>
+				<div class="columns is-centered is-vcentered ">
+					<div class="column is-5-tablet is-4-desktop is-3-widescreen is-narrow">
 						<img loading="lazy" :src="snooImage"/>
 					</div>
-					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
-						<div class="content has-text-centered has-text-light" v-if="me">
-							<h3>Hello, /u/{{me.reddit.name}}</h3>
-							<div class="buttons is-centered">
-								<div v-if="me.level >= 2">
-									<router-link to="/host">
-										<button class="button is-primary is-large is-platinum">Host Dashboard</button>
-									</router-link>
-								</div>
-								<div v-else class="content has-text-centered">
-									<p>Public voting has ended. Stay tuned for the results livestream on February 22, 2020!</p>
-								</div>
-							</div>
-						</div>
-						<div class="content has-text-centered" v-else>
-							<h3>Hello, you're not logged in</h3>
-							<p>
-								<div class="buttons is-centered">
-									<a href="/login" class="button is-platinum is-large">
-									Log in with Reddit
-									</a>
-									<div>
-										<router-link to="/results">
-											<button class="button is-primary is-large is-platinum">Results</button>
-										</router-link>
-									</div>
-								</div>
-							</p>
+					<div class="column is-5-desktop is-5-widescreen is-centered" >
+						<div class="video-container">
+							<iframe width="560px" height="315px" src="https://www.youtube.com/embed/CQ56-VwhP8E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<footer class="hero-foot footer has-background-dperiwinkle has-text-light">
-			<div class="content has-text-centered">
-				<router-link to="/about" style="color:inherit">
-					<a class="has-text-light">About/Credits</a>
-				</router-link>
-			</div>
-		</footer>
 	</section>
 </template>
 
 <script>
 import {mapState, mapGetters} from 'vuex';
+import logo from '../../img/awards2019.png';
 import snoo from '../../img/bannerSnooJump.png';
 
 export default {
@@ -58,6 +39,7 @@ export default {
 		return {
 			deleting: false,
 			snooImage: snoo,
+			logo,
 		};
 	},
 	computed: {

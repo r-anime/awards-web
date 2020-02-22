@@ -1,12 +1,11 @@
 <template>
 	<body>
-		<nav-bar
-			:routes="[
-				{name: 'About/Credits', path: '/about'},
-			]"
-			class="is-llperiwinkle"
-			fullwidth
-		>
+			<nav-bar
+				:routes="[
+					{name: 'About/Credits', path: '/about'},
+				]"
+				class="is-dperiwinkle has-periwinkle-underline"
+			>
 			<template v-slot:title>
 				<router-link to="/" style="color: inherit;">
 					<h1 class="is-size-4">/r/anime Awards</h1>
@@ -15,6 +14,21 @@
 			</template>
 		</nav-bar>
 		<router-view/>
+		<footer class="hero-foot footer has-background-dperiwinkle has-text-light">
+			<div class="container has-text-centered">
+				<small class="has-text-light">
+					The r/anime Awards are a rag tag group of volunteers passionate about showcasing the shows we love. As such, we do not own or claim ownership of
+					any of the shows, characters, or images showcased on this site.
+					All copyrights and/or trademarks of any character and/or image used belong to their respective owner(s). Please don't sue us.
+				</small>
+				<br>
+				<br>
+				<br>
+				<router-link to="/about" style="color:inherit">
+					<a class="has-text-light">About/Credits</a>
+				</router-link>
+			</div>
+		</footer>
 	</body>
 </template>
 

@@ -7,7 +7,6 @@
 				{name: 'Results Summary', path: '/host/results'}
 			]"
 			class="is-llperiwinkle"
-			fullwidth
 		>
 			<template v-slot:title>
 				<router-link to="/" style="color: inherit;">

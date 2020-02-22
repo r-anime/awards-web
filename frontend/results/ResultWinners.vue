@@ -26,16 +26,13 @@
                 </div>
             </div>
         </div>
-        <div class="categorySubHeadContainer columns is-gapless" v-if="pub.id !== jury.id">
-            <div class="categorySubHeadItem categorySubHeadJury column">
-                <div class="columns is-vcentered is-mobile is-multiline">
-                    <div class="column is-narrow">
-                        <div class="categorySubHeadItemIcon">
-                            <img alt="laurels" :src="juryIcon" />
-                        </div>
+        <div class="categorySubHeadContainer level" v-if="pub.id !== jury.id">
+            <div class="categorySubHeadItem categorySubHeadJury level-item is-centered has-text-centered-touch">
+                    <div class="categorySubHeadItemIcon">
+                        <img alt="laurels" :src="juryIcon" />
                     </div>
-                    <div class="categorySubHeadItemText column is-narrow">
-                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
+                    <div class="categorySubHeadItemText">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle">
                             <nominee-name
                             :nominee="jury"
                             :anilistData="anilistData"
@@ -47,17 +44,13 @@
                             Jury Winner
                         </div>
                     </div>
-                </div>
             </div>
-            <div class="categorySubHeadItem categorySubHeadPublic column">
-                <div class="columns is-vcentered is-mobile is-multiline">
-                    <div class="column is-narrow">
-                        <div class="categorySubHeadItemIcon">
-                            <img alt="snoo" :src="publicIcon" />
-                        </div>
+             <div class="categorySubHeadItem categorySubHeadJury level-item is-centered has-text-centered-touch">
+                    <div class="categorySubHeadItemIcon">
+                        <img alt="laurels" :src="publicIcon" />
                     </div>
-                    <div class="categorySubHeadItemText column is-narrow">
-                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
+                    <div class="categorySubHeadItemText">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle">
                             <nominee-name
                             :nominee="pub"
                             :anilistData="anilistData"
@@ -69,29 +62,24 @@
                             Public Winner
                         </div>
                     </div>
-                </div>
             </div>
         </div>
         <div class="categorySubHeadContainer" v-else>
-            <div class="categorySubHeadItem categorySubHeadPublic categorySubHeadJury">
-                <div class="columns is-centered is-vcentered">
-                    <div class="column is-narrow">
-                        <div class="categorySubHeadItemIcon">
-                            <img alt="snoo with laurels" :src="consensusIcon" />
-                        </div>
-                    </div>
-                    <div class="categorySubHeadItemText column is-narrow">
-                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle is-marginless">
-                            <nominee-name
-                            :nominee="pub"
-                            :anilistData="anilistData"
-                            :data="data"
-                            :category="category"
-                            ></nominee-name>
-                        </h3>
-                        <div class="categorySubHeadItemTextSubTitle has-text-gold">
-                            Consensus Winner
-                        </div>
+            <div class="categorySubHeadItem categorySubHeadJury level-item is-centered has-text-centered-touch">
+                <div class="categorySubHeadItemIcon">
+                    <img alt="laurels" :src="consensusIcon" />
+                </div>
+                <div class="categorySubHeadItemText">
+                    <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle">
+                        <nominee-name
+                        :nominee="pub"
+                        :anilistData="anilistData"
+                        :data="data"
+                        :category="category"
+                        ></nominee-name>
+                    </h3>
+                    <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                        Consensus Winner
                     </div>
                 </div>
             </div>

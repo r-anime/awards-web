@@ -1,6 +1,6 @@
 <template>
-    <div :id="slug" class="awardDisplay">
-        <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-100 pb-10 mb-20" @click="emitCatModal">
+    <div :id="slug" class="awardDisplay mb-100">
+        <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-50 pb-10 mb-20" @click="emitCatModal">
             {{category.name}}
             <fa-icon icon="info-circle" class="has-text-gold mb-20 mt-20" />
         </h2>
@@ -30,21 +30,21 @@
                         <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
                             <div class="column" v-for="(nom, index) in nomPublicOrder"
                             :key="index" @click="emitNomModal(nom)">
-                                <span class="has-text-light">{{nomPublicRankings[index]}}</span>
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
-                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-llperiwinkle has-text-left"></p>
+								<span class="has-text-platinum">{{nomPublicRankings[index]}}</span>
+                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
                             </div>
                         </div>
                         <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
                             <div class="column" v-for="(nom, index) in nomJuryOrder"
                             :key="index" @click="emitNomModal(nom)">
-                                <span class="has-text-light">{{index + 1}}</span>
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
-                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-llperiwinkle has-text-left"></p>
+								<span class="has-text-platinum">{{index + 1}}</span>
+                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
                             </div>
                         </div>
                     </div>

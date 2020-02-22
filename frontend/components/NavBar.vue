@@ -1,8 +1,8 @@
 <template>
 	<nav :class="['navbar', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
-			<div class="navbar-brand">
-				<a href="/"><img :src="logo" class="image is-64x64"/></a>
+			<div class="navbar-brand mr-20">
+				<a href="/"><img :src="logo" class="image pt-10 pb-10" style="height: 64px;"/></a>
 				<a
 					@click="expanded = !expanded"
 					role="button"
@@ -41,11 +41,6 @@
 							</a>
 						</template>
 					</nav-bar-link>
-					<span v-else class="navbar-item">
-						<a class="button is-orangered" href="/login">
-							Log in with Reddit
-						</a>
-					</span>
 				</div>
 			</div>
 		</div>
@@ -55,7 +50,7 @@
 <script>
 import {mapState} from 'vuex';
 import NavBarLink from './NavBarLink';
-import logo from '../../img/snoo.png';
+import logo from '../../img/awards2019.png';
 
 export default {
 	components: {

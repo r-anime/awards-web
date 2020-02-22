@@ -5,6 +5,11 @@
 		<div class="container" >
 			<div class="columns is-centered" >
 				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile" >
+					<div class="columns is-centered mt-75 pl-30 pr-30">
+						<div class="column is-narrow">
+							<img class="BFimage" :src="logo" />
+						</div>
+					</div>
 					<section class="section has-background-dark" v-if="loaded">
 						<awards-section
 							v-for="(section, index) in results.sections"
@@ -148,6 +153,7 @@ import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
 import juryIcon from '../../img/jury.png';
 import publicIcon from '../../img/public.png';
+import logo from '../../img/awards2019.png';
 import marked from 'marked';
 
 
@@ -174,6 +180,7 @@ export default {
 			chartData: null,
 			juryIcon,
 			publicIcon,
+			logo,
 		};
 	},
 	computed: {
