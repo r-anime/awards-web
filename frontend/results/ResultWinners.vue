@@ -12,13 +12,13 @@
         </div>
         <div v-else class="categoryWinnerContainer" >
             <div class="columns is-gapless">
-                <div class="categoryWinnerItem categoryWinnerJury column is-paddingless">
+                <div class="categoryWinnerItem categoryWinnerJury column">
                     <category-item-image
                         :nominee="jury"
                         :anilistData="anilistData"
                     />
                 </div>
-                <div class="categoryWinnerItem categoryWinnerPublic column is-paddingless">
+                <div class="categoryWinnerItem categoryWinnerPublic column">
                     <category-item-image
                         :nominee="pub"
                         :anilistData="anilistData"

@@ -1,7 +1,7 @@
 <template>
 	<section class="hero is-fullheight-with-navbar">
 		<div class="columns is-centered">
-			<div class="column is-half-desktop is-full-tablet is-full-mobile is-paddingless">
+			<div class="column is-half-desktop is-full-tablet is-full-mobile">
 				<div :id="slug" class="awardSectionContainer container">
 					<div class="awardSectionHeader has-text-centered has-text-light">
 						<div class="sectionIconContainer">
