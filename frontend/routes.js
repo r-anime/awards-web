@@ -60,7 +60,8 @@ export default new VueRouter({
 						},
 					],
 				},
-				{path: 'acknowledgements', component: Acknowledgements},
+				{path: '/acknowledgements', component: Acknowledgements},
+				{path: '/about', component: About},
 			],
 		},
 		// login for hosts
@@ -70,7 +71,6 @@ export default new VueRouter({
 			children: [
 				{path: '', component: Login},
 				{path: '/profile', component: Profile},
-				{path: '/about', component: About},
 			],
 		},
 

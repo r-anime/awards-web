@@ -7,6 +7,8 @@
 					{name: 'Production', path: '/results/production'},
 					{name: 'Main', path: '/results/main'},
 					{name: 'Test', path: '/results/test'},
+					{name: 'View All', path: '/results/all'},
+					{name: 'Acknowledgements', path: '/acknowledgements'},
 					{name: 'About/Credits', path: '/about'},
 				]"
 				class="is-dperiwinkle has-periwinkle-underline"
