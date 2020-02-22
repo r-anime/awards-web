@@ -311,9 +311,11 @@ export default {
 									id,
 									altname: nom.alt_name,
 									altimg: '',
-									public: index + 1,
+									public: nom.votes,
+									finished: nom.finished,
+									support: nom.votes / nom.finished,
 									jury: nom.rank,
-									percent: `${nom.votes / totalVotes * 100}%`,
+									percent: nom.votes / totalVotes,
 									writeup: nom.writeup,
 									staff: nom.staff,
 								});
@@ -322,6 +324,7 @@ export default {
 							jurors = jurors.map(juror => juror.name);
 							section.awards.push({
 								name: cat.name,
+								entryType: cat.entryType,
 								jurors,
 								blurb: '',
 								table: '',
