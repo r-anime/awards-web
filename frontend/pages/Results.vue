@@ -111,7 +111,7 @@
 								<th> Show </th>
 								<th> Votes </th>
 								<th> Watched </th>
-								<th> % Supporting </th>
+								<th> Support % </th>
 							</tr>
 						</thead>
 						<tbody>
