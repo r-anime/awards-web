@@ -1,5 +1,3 @@
-/* eslint-disable vue/valid-template-root */
-
 <template>
 	<div class="has-background-dark">
 		<div class="container" >
@@ -12,7 +10,7 @@
 					</div>
 					<section class="section has-background-dark" v-if="loaded">
 						<awards-section
-							v-for="(section, index) in results.sections"
+							v-for="(section, index) in resultSections"
 							:key="index"
 							:section="section"
 							:data="results"
@@ -160,6 +158,7 @@ import marked from 'marked';
 const aq = require('../anilistQueries');
 
 export default {
+	props: ['slug'],
 	components: {
 		AwardsSection,
 		ItemImage,
@@ -189,6 +188,13 @@ export default {
 				return this.charData;
 			}
 			return this.showData;
+		},
+		resultSections () {
+			console.log(this.slug);
+			if (this.slug && this.slug !== '') {
+				return this.results.sections.filter(section => section.slug === this.slug);
+			}
+			return this.results.sections;
 		},
 	},
 	methods: {
