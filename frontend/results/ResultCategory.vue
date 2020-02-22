@@ -31,9 +31,7 @@
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
-                                <p class="categoryNominationPreview has-text-llperiwinkle has-text-left">
-                                    {{nom.writeup.substring(0, 69)}}
-                                </p>
+                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-llperiwinkle has-text-left"></p>
                             </div>
                         </div>
                         <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
@@ -43,9 +41,7 @@
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
-                                <p class="categoryNominationPreview has-text-llperiwinkle has-text-left">
-                                    {{nom.writeup.substring(0, 69)}}
-                                </p>
+                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-llperiwinkle has-text-left"></p>
                             </div>
                         </div>
                     </div>
@@ -65,6 +61,7 @@
 import util from '../util';
 import AwardWinners from './ResultWinners';
 import CategoryItemImage from './ItemImage';
+import marked from 'marked';
 
 export default {
 	props: [
@@ -106,6 +103,9 @@ export default {
 		},
 		emitHMModal (hm) {
 			this.$emit('hmModal', hm, this.category);
+		},
+		markdownit (writeup) {
+			return marked(writeup, {sanitize: true});
 		},
 	},
 	mounted () {
