@@ -16,7 +16,15 @@
 						</awards-section>
 					</section>
 					<section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
-						Loading
+						<div class="container">
+							<div class="columns is-desktop is-vcentered">
+								<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
+									<div class="section">
+										<div class="loader is-loading"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</section>
 				</div>
 			</div>
@@ -163,3 +171,22 @@ export default {
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.loader {
+    &.is-loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.5;
+        &:after {
+            @include loader;
+            position: absolute;
+            top: calc(50% - 2.5em);
+            left: calc(50% - 2.5em);
+            width: 5em;
+            height: 5em;
+            border-width: 0.25em;
+        }
+    }
+}
+</style>
