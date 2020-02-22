@@ -52,14 +52,15 @@
 								:category="modalCat"
 								></nominee-name>
 							</h3>
-							<h4 class="is-6 has-text-silver is-marginless">
-								Public Rank: {{modalRank}}({{(modalNom.percent*100).toFixed(2)}}%)
-							</h4>
-							<h4 class="is-6 has-text-silver">
-								Jury Rank: {{modalNom.jury}}
-							</h4>
-							<p class="has-text-llperiwinkle is-size-6">
-								{{modalNom.staff}}
+							<p class="is-marginless">
+								<div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
+									<div class="column is-narrow"> <img class="image" :src="publicIcon" /> </div>
+									<div class="column "> Public {{prettifyRank(modalRank)}} ({{(modalNom.percent*100).toFixed(2)}}%) </div>
+									<div class="column is-narrow"> <img class="image" :src="juryIcon" /> </div>
+									<div class="column"> Jury {{prettifyRank(modalNom.jury)}} </div>
+								</div>
+							</p>
+							<p class="awardsStaffCredit has-text-llperiwinkle is-size-6" v-html="markdownit(modalNom.staff)">
 							</p>
 							<div class="awardsModalBody" v-html="markdownit(modalNom.writeup)">
 							</div>
@@ -145,6 +146,8 @@ import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';
 import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
+import juryIcon from '../../img/jury.png';
+import publicIcon from '../../img/public.png';
 import marked from 'marked';
 
 
@@ -169,6 +172,8 @@ export default {
 			modalRank: 883,
 			modalCat: null,
 			chartData: null,
+			juryIcon,
+			publicIcon,
 		};
 	},
 	computed: {
@@ -183,6 +188,13 @@ export default {
 		markdownit (it) {
 			console.log(it);
 			return marked(it);
+		},
+		prettifyRank (n) {
+			const rank = ['Winner', '2nd Place', '3rd Place'];
+			if (n - 1 < 3) {
+				return rank[n - 1];
+			}
+			return `${n}th Place`;
 		},
 		nomModal (nom, ranking, category) {
 			document.documentElement.classList.add('is-clipped');
