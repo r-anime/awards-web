@@ -6,6 +6,8 @@
                     <category-item-image
                         :nominee="pub"
                         :anilistData="anilistData"
+                        :data="data"
+                        :category="category"
                     />
                 </div>
             </div>
@@ -16,12 +18,15 @@
                     <category-item-image
                         :nominee="jury"
                         :anilistData="anilistData"
+                        :data="data"
                     />
                 </div>
                 <div class="categoryWinnerItem categoryWinnerPublic column">
                     <category-item-image
                         :nominee="pub"
                         :anilistData="anilistData"
+                        :data="data"
+                        :category="category"
                     />
                 </div>
             </div>
@@ -39,6 +44,8 @@
                             <nominee-name
                             :nominee="jury"
                             :anilistData="anilistData"
+                            :data="data"
+                            :category="category"
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
@@ -59,6 +66,8 @@
                             <nominee-name
                             :nominee="pub"
                             :anilistData="anilistData"
+                            :data="data"
+                            :category="category"
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
@@ -81,6 +90,8 @@
                             <nominee-name
                             :nominee="pub"
                             :anilistData="anilistData"
+                            :data="data"
+                            :category="category"
                             ></nominee-name>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-gold">
@@ -102,7 +113,7 @@ import publicIcon from '../../img/public.png';
 import consensusIcon from '../../img/pubjury.png';
 
 export default {
-	props: ['pub', 'jury', 'anilistData'],
+	props: ['pub', 'jury', 'anilistData', 'data', 'category'],
 	components: {
 		CategoryItemImage,
 		NomineeName,

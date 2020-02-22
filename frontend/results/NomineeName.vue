@@ -5,10 +5,12 @@
 </template>
 <script>
 export default {
-	props: ['nominee', 'anilistData'],
+	props: ['nominee', 'anilistData', 'data', 'category'],
 	computed: {
 		name () {
-			// console.log(this.anilistData);
+			if (this.category.entryType === 'themes') {
+				return this.data.themes[this.nominee.id].split(/ - /gm)[1];
+			}
 			if (this.nominee.altname !== '') {
 				return this.nominee.altname;
 			}
