@@ -1,0 +1,22 @@
+<template>
+<div class="has-background-dark">
+    <section class="hero is-fullheight-with-navbar">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-two-thirds-desktop is-three-quarters-tablet is-four-fifths-mobile has-background-black-bis">
+                        <section class="section">
+                            <div class="container">
+                                <h1 class="title is-3 has-text-gold has-text-left">Acknowledgements</h1>
+                                <div class="has-text-justified has-text-periwinkle">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur lectus leo, elementum et odio ut, pretium sodales lorem. Aliquam condimentum nisl id ullamcorper porttitor. Sed et augue et urna sodales euismod id eu lorem. Duis varius diam a nunc hendrerit ullamcorper. Maecenas sodales libero ac quam dignissim, in pellentesque felis mollis. Praesent et congue ex. Nunc lacinia ipsum ex, sit amet hendrerit neque tincidunt porta. Duis viverra erat id purus posuere, quis dignissim elit posuere. Aenean auctor tellus nisl, nec volutpat urna ultricies sed. Vestibulum imperdiet laoreet tincidunt. Phasellus malesuada nunc auctor, porta nibh non, dictum purus. Maecenas hendrerit nisi in enim viverra, eget dignissim diam egestas. Proin bibendum sodales sapien. Vivamus augue tellus, molestie vitae dui ornare, finibus euismod magna. Aenean imperdiet sed massa ut sodales. Sed semper magna nunc, vitae volutpat nibh blandit id. Morbi auctor malesuada lorem non lacinia. Fusce in libero at enim imperdiet posuere id ac tortor. Fusce consectetur viverra turpis vitae dignissim. Curabitur ornare, enim sed ultricies cursus, nisl dui tempus purus, sit amet porttitor ligula justo quis ante. Morbi blandit mauris sed ex vestibulum ultrices. Vestibulum varius non lectus et mattis. Donec quis sagittis tellus. Curabitur pretium eget sem non ullamcorper. Aenean feugiat hendrerit urna, eu bibendum elit tincidunt at. In vestibulum gravida massa in accumsan. Proin ac sagittis nisl. Morbi viverra laoreet fermentum. Nulla et quam vel velit malesuada eleifend eget non neque. Donec posuere faucibus urna, at iaculis mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec vehicula enim. Suspendisse a justo gravida, auctor enim a, volutpat dolor. Vivamus consectetur ipsum nec condimentum scelerisque. Aliquam tincidunt in ex at porttitor. Nam sem dolor, imperdiet et sem at, semper auctor ante. Vestibulum a tincidunt libero, in imperdiet dui. Nullam quam orci, sollicitudin a luctus et, placerat eget ante. Curabitur efficitur, turpis eget luctus euismod, quam nulla dapibus odio, vitae tincidunt nisi est non mi. Vestibulum et sem a massa cursus vehicula ut sit amet sem. Integer at cursus orci. Etiam et massa condimentum, pretium enim sit amet, porttitor augue. Maecenas quis ex vehicula, tristique nisl quis, elementum tellus. Praesent ultricies diam lacus, consectetur imperdiet dui facilisis a. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam consequat nunc urna, a tempor risus ultrices nec. Aenean vitae arcu et ligula sollicitudin eleifend. Integer consequat dignissim tempus. Praesent feugiat erat dolor, a mattis augue porta eu. Mauris molestie id tortor congue cursus. Nullam libero nisl, commodo iaculis lacus vel, feugiat congue purus. Donec ut diam vitae quam luctus congue placerat vel quam. Donec vestibulum vestibulum nisl, ac molestie ante egestas id. Cras sit amet urna justo. Nam at ligula eget tellus consequat bibendum ut non libero. Morbi hendrerit faucibus lacus et venenatis. Proin elit leo, tristique ac fermentum in, pharetra id risus. Aenean tempor in massa sed dignissim. In suscipit consectetur sem, aliquam imperdiet arcu posuere vitae. Etiam eget sem ut ex tempor finibus ut ac nisl. Etiam mollis id sem non laoreet. Vivamus a vulputate leo, non dictum purus. Nulla pharetra augue id nunc fermentum, sit amet tempor ex dignissim. Donec elementum posuere dictum. Praesent vestibulum efficitur erat sit amet convallis. Donec placerat urna sed mi tristique semper.
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</template>
