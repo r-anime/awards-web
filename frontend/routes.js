@@ -16,6 +16,7 @@ const About = () => import(/* webpackChunkName: "core" */ './pages/About');
 const Acknowledgements = () => import(/* webpackChunkName: "core" */ './pages/Acknowledgements');
 const Profile = () => import(/* webpackChunkName: "host" */ './pages/Profile');
 const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
+const ResultsContainer = () => import(/* webpackChunkName: "core" */ './pages/ResultsContainer');
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
 const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
@@ -48,9 +49,9 @@ export default new VueRouter({
 				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
 				{path: 'thanks', component: About},
 				{
-					path: '/results',
-					redirect: '/results/all',
-					component: ResultsPage,
+					path: 'results',
+					redirect: 'results/all',
+					component: ResultsContainer,
 					children: [
 						{
 							path: ':slug',
