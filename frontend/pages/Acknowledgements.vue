@@ -7,9 +7,9 @@
                     <div class="column is-two-thirds-desktop is-three-quarters-tablet is-four-fifths-mobile has-background-black-bis">
                         <section class="section">
                             <div class="container">
-                                <h1 class="title is-3 has-text-gold has-text-left has-flaired-underline pb-20">Acknowledgements</h1>
+                                <h1 class="title is-2 has-text-gold has-text-left has-flaired-underline pb-20">Acknowledgements</h1>
 								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">Tetsuo Hirakawa</h1>
-                                <div class="has-text-justified has-text-periwinkle">
+                                <div class="has-text-centered has-text-periwinkle">
                                     コメント：
 									<br/>
                                     みなさん、はじめまして。
@@ -25,7 +25,7 @@
                                     ありがとうございました！
                                 </div>
 								<br/>
-								<div class="has-text-justified has-text-periwinkle">
+								<div class="has-text-centered has-text-periwinkle">
 									Hello everyone. I'm Tetsuo Hirakawa, director of the anime Kedama no Gonjiro.
 									<br/>
 									I am incredibly happy to have received the ED award for Wasa Wasa Wasa! at these Reddit 2019 Anime Awards.
@@ -33,8 +33,8 @@
 									I believe that the beautiful thing about animation is that it can transcend language to convey emotions. My belief has been proven true by winning this award. Thank you very much!
                                 </div>
 								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pb-20">Kenichiro Suehiro</h1>
-								<div class="has-text-justified has-text-periwinkle">
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Kenichiro Suehiro</h1>
+								<div class="has-text-centered has-text-periwinkle">
 									みなさん、『とつくにの少女』をご覧いただき、本当にありがとうございます。
 									<br/>
 									できる限り、原作の雰囲気を大切に作った一本です。10分という短い作品ですが、
@@ -46,12 +46,12 @@
 									久保、米谷
                                 </div>
 								<br/>
-								<div class="has-text-justified has-text-periwinkle">
+								<div class="has-text-centered has-text-periwinkle">
 									Thank you all of the fans who love Golden Kamuy and its original soundtrack. And thank you all of the organizers and the staff of Reddit 2019 Anime Awards, who always stimulate the Anime industry. By receiving the news which Golden Kamuy’s soundtrack, which includes the elements of traditional instruments, orchestra and Rock music, had been nominated, I feel excited for producing music of next season more and more. This nomination is very encouraging for me, and I would like to produce music which can make the fans of Golden Kamuy happy. Hinna Hinna!!
                                 </div>
 								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pb-20">Maiya Kubo</h1>
-								<div class="has-text-justified has-text-periwinkle">
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Maiya Kubo</h1>
+								<div class="has-text-centered has-text-periwinkle">
 									ご連絡ありがとうございます。
 									<br/>
 									「星合の空」はまだ未完ですが、ノミネートしていただき大変光栄に思います。
@@ -67,12 +67,12 @@
 									赤根和樹
                                 </div>
 								<br/>
-								<div class="has-text-justified has-text-periwinkle">
+								<div class="has-text-centered has-text-periwinkle">
 									Everyone, thank you for watching Totsukuni no Shoujo. We made it while staying as faithful to the atmosphere of the original work as we could. It may be a short, 10-minute long work, but we're happy if it's something that you enjoyed and that stayed with you all after you watched it. Also, we consider it a great honour to be nominated alongside other such fantastic anime.
                                 </div>
 								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pb-20">Kazuki Akane</h1>
-								<div class="has-text-justified has-text-periwinkle">
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Kazuki Akane</h1>
+								<div class="has-text-centered has-text-periwinkle">
 									ご連絡ありがとうございます。
 									<br/>
 									「星合の空」はまだ未完ですが、ノミネートしていただき大変光栄に思います。
@@ -88,7 +88,7 @@
 									赤根和樹
                                 </div>
 								<br/>
-								<div class="has-text-justified has-text-periwinkle">
+								<div class="has-text-centered has-text-periwinkle">
 									Thank you for your correspondence.
 									<br/>
 									Although Hoshiai no Sora is still unfinished, it is a great honour to be nominated.
@@ -104,12 +104,12 @@
 									Akane Kazuki
                                 </div>
 								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pb-20">Jun'ichi Sato</h1>
-								<div class="has-text-justified has-text-periwinkle">
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Jun'ichi Sato</h1>
+								<div class="has-text-centered has-text-periwinkle">
 									『HUGっと！プリキュア』は、子供たちに向けて、誠意を持って創作しました。子供達以外の人もまた感動してくれて、この作品を好きになってくれた事が、私たちはとてもうれしいです。ありがとうございます。佐藤順一より。
                                 </div>
 								<br/>
-								<div class="has-text-justified has-text-periwinkle">
+								<div class="has-text-centered has-text-periwinkle">
 									HUGtto! Precure" is aimed at children, but made with sincerity. That people other than children might be moved by it, and come to like this anime, makes us very happy. Thank you very much. From Jun'ichi Sato
                                 </div>
                             </div>
