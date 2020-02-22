@@ -224,6 +224,12 @@ html, body{
     height: 100%;
 }
 
+footer {
+    a {
+        text-decoration: underline;
+    }
+}
+
 // bulma override
 .tabs {
     ul {

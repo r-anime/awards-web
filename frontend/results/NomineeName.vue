@@ -14,7 +14,9 @@ export default {
 			if (this.category.entryType === 'themes') {
 				return this.data.themes[this.nominee.id].split(/ - /gm)[1];
 			} else if (this.category.entryType === 'vas') {
-				return this.data.characters[this.nominee.id].va;
+				return `${this.data.characters[this.nominee.id].va}`;
+			} else if (this.category.entryType === 'characters') {
+				return `${this.data.characters[this.nominee.id].name}`;
 			}
 
 			const found = this.anilistData.find(el => el.id === this.nominee.id);

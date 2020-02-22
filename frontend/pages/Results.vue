@@ -54,6 +54,15 @@
 								:data="results"
 								:category="modalCat"
 								></nominee-name>
+								<span v-if="modalCat.entryType==='characters'">
+									({{results.characters[modalNom.id].anime}})
+								</span>
+								<span v-if="modalCat.entryType==='vas'">
+									({{results.characters[modalNom.id].name}})
+								</span>
+								<span v-if="modalCat.entryType==='themes'">
+									({{results.themes[modalNom.id].split(/ - /gm)[0]}})
+								</span>
 							</h3>
 							<p class="is-marginless">
 								<div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
@@ -191,7 +200,7 @@ export default {
 		},
 		resultSections () {
 			console.log(this.slug);
-			if (this.slug && this.slug !== '') {
+			if (this.slug && this.slug !== '' && this.slug !== 'all') {
 				return this.results.sections.filter(section => section.slug === this.slug);
 			}
 			return this.results.sections;

@@ -2,6 +2,11 @@
 	<body>
 			<nav-bar
 				:routes="[
+					{name: 'Genre', path: '/results/genre'},
+					{name: 'Character', path: '/results/character'},
+					{name: 'Production', path: '/results/production'},
+					{name: 'Main', path: '/results/main'},
+					{name: 'Test', path: '/results/test'},
 					{name: 'About/Credits', path: '/about'},
 				]"
 				class="is-dperiwinkle has-periwinkle-underline"
@@ -25,7 +30,7 @@
 				<br>
 				<br>
 				<router-link to="/about" style="color:inherit">
-					<a class="has-text-light">About/Credits</a>
+					<a class="footerLink has-text-light">About/Credits</a>
 				</router-link>
 			</div>
 		</footer>

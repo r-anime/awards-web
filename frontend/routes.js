@@ -47,8 +47,18 @@ export default new VueRouter({
 			children: [
 				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
 				{path: 'thanks', component: About},
-				{path: 'results', component: ResultsPage},
-				{path: 'results/:slug', component: ResultsPage},
+				{
+					path: '/results',
+					redirect: '/results/all',
+					component: ResultsPage,
+					children: [
+						{
+							path: ':slug',
+							component: ResultsPage,
+							props: true,
+						},
+					],
+				},
 				{path: 'acknowledgements', component: Acknowledgements},
 			],
 		},
