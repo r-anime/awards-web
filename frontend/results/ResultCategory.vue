@@ -74,14 +74,18 @@ export default {
 	},
 	data () {
 		return {
-			nomPublicOrder: [].concat(this.category.nominees).sort((a, b) => b.public - a.public),
-			nomJuryOrder: [].concat(this.category.nominees).sort((a, b) => a.jury - b.jury),
 			focus: 'public',
 		};
 	},
 	computed: {
 		slug () {
 			return `category-${util.slugify(this.category.name)}`;
+		},
+		nomPublicOrder () {
+			return [].concat(this.category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
+		},
+		nomJuryOrder () {
+			return [].concat(this.category.nominees).filter(nom => nom.jury !== -1).sort((a, b) => a.jury - b.jury);
 		},
 	},
 	methods: {
