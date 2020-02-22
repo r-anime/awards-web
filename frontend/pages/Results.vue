@@ -35,7 +35,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal" :class="{'is-active': modalNom}" v-if="modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom}" v-if="modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="columns is-gapless">
@@ -82,7 +82,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal" :class="{'is-active': modalHM}" v-if="modalHM">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM}" v-if="modalHM">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -95,7 +95,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal" :class="{'is-active': modalCat && !modalHM && !modalNom}" v-if="modalCat && !modalHM && !modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && !modalHM && !modalNom}" v-if="modalCat && !modalHM && !modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">

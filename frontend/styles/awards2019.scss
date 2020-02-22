@@ -57,31 +57,36 @@ html, body{
 .categoryRank {
     position: relative;
 
+    
     &:before {
         content: '';
         position: absolute;
-        left: 1.25rem;
+        right: 1.5rem;
         top: 0.8rem;
         height: 1px;
         width: 1rem;
         background-image: linear-gradient(to left, transparent, $platinum);
     }
+    @include until($tablet){
+        &:before{
+            right: 5.5rem;
+            width: 3rem;
+        }
+    }
     &:after {
         content: '';
         position: absolute;
-        right: 1.25rem;
+        left: 1.5rem;
         top: 0.8rem;
         height: 1px;
         width: 1rem;
         background-image: linear-gradient(to right, transparent, $platinum);
     }
-}
-
-.categoryRankCard{
-    margin-bottom: 1rem !important;
-
     @include until($tablet){
-        margin-bottom: 0;
+        &:after{
+            left: 5.5rem;
+            width: 3rem;
+        }
     }
 }
 

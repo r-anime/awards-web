@@ -38,7 +38,11 @@
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
-								<span class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</span>
+								<div class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</div>
+								<button class="button is-small is-platinum is-outlined is-hidden-desktop mb-10">
+									<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
+									Read Nominee Writeup
+								</button>
                                 <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
                             </div>
                         </div>
@@ -48,7 +52,11 @@
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
-								<span class="categoryRank has-text-platinum">{{index + 1}}</span>
+								<div class="categoryRank has-text-platinum">{{index + 1}}</div>
+								<button class="button is-small is-platinum is-outlined is-hidden-desktop mb-10">
+									<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
+									Read Nominee Writeup
+								</button>
                                 <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
                             </div>
                         </div>
