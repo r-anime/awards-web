@@ -1,5 +1,5 @@
 <template>
-	<section class="hero is-fullheight-with-navbar">
+	<section class="hero is-fullheight-with-navbar mt-100">
 		<div class="columns is-centered">
 			<div class="column is-half-desktop is-full-tablet is-full-mobile is-paddingless">
 				<div :id="slug" class="awardSectionContainer container">

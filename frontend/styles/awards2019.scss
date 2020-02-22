@@ -44,17 +44,14 @@ html, body{
 }
 
 .categoryNominationCards {
-    display: flex;
-    height: 132px;
     margin: 10px 10px;
     padding: 2px;
     text-align: center;
 }
 
 .categoryNominationItem {
-    flex-grow: 1;
     margin: 2px;
-    height: inherit;
+    height: 132px;
     overflow: hidden;
 }
 
@@ -122,6 +119,28 @@ html, body{
             $white 50%,
             rgba(255,255,255, 0) 100%
         ) 100% 1 1 1;
+}
+
+// bulma override
+.tabs {
+    ul {
+        li {
+            padding-bottom: 1rem;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s, border 0.15s;
+
+            &.is-active{
+                color: $light;
+
+                &.is-gold{
+                    border-bottom: 2px solid $gold;
+                }
+                &.is-periwinkle{
+                    border-bottom: 2px solid $periwinkle;
+                }
+            }
+        }
+    }
 }
 
 $spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100); // Adjust this to include the pixel amounts you need.

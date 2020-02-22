@@ -14,10 +14,13 @@ export default {
 			}
 			const found = this.anilistData.find(el => el.id === this.nominee.id);
 
-			if (found.title) {
+			if (found && found.title) {
 				return found.title.userPreferred;
 			}
-			return found.name.full;
+			if (found && found.name) {
+				return found.name.full;
+			}
+			return 'ERROR';
 		},
 	},
 };
