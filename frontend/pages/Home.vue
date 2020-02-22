@@ -28,10 +28,10 @@
 									Log in with Reddit
 									</a>
 									<div>
-									<router-link to="/results">
-										<button class="button is-primary is-large is-platinum">Results</button>
-									</router-link>
-								</div>
+										<router-link to="/results">
+											<button class="button is-primary is-large is-platinum">Results</button>
+										</router-link>
+									</div>
 								</div>
 							</p>
 						</div>

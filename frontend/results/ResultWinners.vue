@@ -2,31 +2,26 @@
     <div>
         <div v-if="pub.id === jury.id" class="categoryWinnerContainer" >
             <div class="columns is-gapless">
-                <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column is-paddingless">
+                <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column is-paddingless" @click="emitNomModal(pub)">
                     <category-item-image
                         :nominee="pub"
                         :anilistData="anilistData"
-                        :data="data"
-                        :category="category"
                     />
                 </div>
             </div>
         </div>
         <div v-else class="categoryWinnerContainer" >
             <div class="columns is-gapless">
-                <div class="categoryWinnerItem categoryWinnerJury column is-paddingless">
+                <div class="categoryWinnerItem categoryWinnerJury column is-paddingless" @click="emitNomModal(jury)">
                     <category-item-image
                         :nominee="jury"
                         :anilistData="anilistData"
-                        :data="data"
                     />
                 </div>
-                <div class="categoryWinnerItem categoryWinnerPublic column is-paddingless">
+                <div class="categoryWinnerItem categoryWinnerPublic column is-paddingless" @click="emitNomModal(pub)">
                     <category-item-image
                         :nominee="pub"
                         :anilistData="anilistData"
-                        :data="data"
-                        :category="category"
                     />
                 </div>
             </div>
@@ -117,6 +112,11 @@ export default {
 	components: {
 		CategoryItemImage,
 		NomineeName,
+	},
+	methods: {
+		emitNomModal (nom) {
+			this.$emit('nomModal', nom);
+		},
 	},
 	data () {
 		return {

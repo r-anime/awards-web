@@ -2,12 +2,14 @@
     <div :id="slug" class="awardDisplay">
         <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-100 pb-10 mb-20">{{category.name}}</h2>
         <award-winners v-if="nomPublicOrder[0] &&
-		nomJuryOrder[0]"
-		:pub="nomPublicOrder[0]"
-		:jury="nomJuryOrder[0]"
-		:anilistData="anilistData"
-		:data="data"
-		:category="category"/>
+            nomJuryOrder[0]"
+            :pub="nomPublicOrder[0]"
+            :jury="nomJuryOrder[0]"
+            :anilistData="anilistData"
+            :data="data"
+            :category="category"
+            @nomModal="emitNomModal"
+        />
         <section class="hero has-background-black-bis">
             <div class="hero-body">
                 <div class="container">

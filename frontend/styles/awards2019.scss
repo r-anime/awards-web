@@ -10,6 +10,19 @@ html, body{
     text-shadow: 0 4px 6px #000000;
 }
 
+.awardsModal{
+    height: 35rem;
+    overflow-y: auto;
+}
+
+.awardsImage{
+    height: 35rem;
+
+    @include until($tablet){
+        height: 10rem;
+    }
+}
+
 .categoryWinnerContainer {
     position: relative;
     width: 100%;
@@ -26,7 +39,7 @@ html, body{
         pointer-events: none;
         outline: 0.5rem solid $llperiwinkle;
         outline-offset: -1.5rem;
-        z-index: 883;
+        z-index: 1;
     }
 }
 

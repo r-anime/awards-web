@@ -5,11 +5,11 @@
 				<fa-icon :icon="icon" size="6x" class="has-text-gold mb-20 mt-20" />
 			</div>
 			<h2 class="sectionHeader title is-2 has-text-light pb-20 has-flaired-underline">{{section.name}} Awards</h2>
-			<div
-			v-if="typeof section.blurb === 'string'"
-			class="awardSectionBlurb"
-			html="blurb"
-			/>
+				<div
+				v-if="typeof section.blurb === 'string'"
+				class="awardSectionBlurb"
+				html="blurb"
+				/>
 			<div v-else>
 				<div
 				v-for="(blurb, index) in section.blurb"
@@ -25,8 +25,8 @@
 		:category="category"
 		:data="data"
 		:anilistData="(category.entryType === 'shows' || category.entryType === 'themes') ? showData : charData"
-		:nomModal="emitNomModal"
-		:hmModal="emitHMModal"
+		@nomModal="emitNomModal"
+		@hmModal="emitHMModal"
 		/>
 	</div>
 </template>
@@ -79,7 +79,7 @@ export default {
 		},
 	},
 	mounted () {
-		console.log(this.showData, this.charData);
+		// console.log(this.showData, this.charData);
 	},
 };
 </script>

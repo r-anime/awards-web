@@ -1,9 +1,9 @@
 
 <template>
 	<div class="has-background-dark">
-		<div class="container">
-			<div class="columns is-centered">
-				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
+		<div class="container" >
+			<div class="columns is-centered" >
+				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile" >
 					<section class="section has-background-dark" v-if="loaded">
 						<awards-section
 							v-for="(section, index) in results.sections"
@@ -12,6 +12,8 @@
 							:data="results"
 							:showData="showData"
 							:charData="charData"
+							@nomModal="nomModal"
+							@hmModal="hmModal"
 							>
 						</awards-section>
 					</section>
@@ -29,21 +31,24 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal">
-			<div class="modal-background"></div>
-				<div class="modal-card">
-					<header class="modal-card-head">
-					<p class="modal-card-title">Modal title</p>
-					<button class="delete" aria-label="close"></button>
-					</header>
-					<section class="modal-card-body">
-					<!-- Content ... -->
-					</section>
-					<footer class="modal-card-foot">
-					<button class="button is-success">Save changes</button>
-					<button class="button">Cancel</button>
-					</footer>
+		<div class="modal is-dark" :class="{'is-active': modalNom}" v-if="modalNom">
+			<div class="modal-background" @click="closeModal"></div>
+				<div class="modal-content">
+					<div class="columns is-gapless">
+						<div class="awardsImage column is-5">
+							<item-image
+								:nominee="modalNom"
+								:anilistData="showData"
+							/>
+						</div>
+						<div class="awardsModal column is-7 has-background-dark">
+							<p class="content has-text-light">
+								{{modalNom.writeup}}
+							</p>
+						</div>
+					</div>
 				</div>
+				<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 			</div>
 		</div>
 </template>
@@ -56,12 +61,14 @@
 import data2018 from '../../data/results2018.json';
 import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';
+import ItemImage from '../results/ItemImage';
 
 const aq = require('../anilistQueries');
 
 export default {
 	components: {
 		AwardsSection,
+		ItemImage,
 	},
 	data () {
 		return {
@@ -71,9 +78,25 @@ export default {
 			charData: [],
 			showIDs: [],
 			charIDs: [],
+			modalNom: null,
+			modalHM: null,
 		};
 	},
 	methods: {
+		nomModal (nom) {
+			document.documentElement.classList.add('is-clipped');
+			this.modalNom = nom;
+			console.log(nom);
+		},
+		hmModal (hm) {
+			document.documentElement.classList.add('is-clipped');
+			this.modalHM = hm;
+		},
+		closeModal () {
+			this.modalNom = null;
+			this.modalHM = null;
+			document.documentElement.classList.remove('is-clipped');
+		},
 		fetchShows (page, showIDs) {
 			return new Promise(async (resolve, reject) => {
 				try {
