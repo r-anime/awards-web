@@ -10,7 +10,7 @@ export default {
 		backgroundStyle () {
 			if (this.anilistData) {
 				if (this.nominee.altimg !== '') {
-					return `background-image: url(img/${this.nominee.altimg})`;
+					return `background-image: url(${this.nominee.altimg})`;
 				}
 				const found = this.anilistData.find(el => el.id === this.nominee.id);
 
