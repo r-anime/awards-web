@@ -11,25 +11,34 @@
         <section class="hero has-background-black-bis">
             <div class="hero-body">
                 <div class="container">
-                    <div class="columns is-centered is-gapless is-marginless">
-                        <div class="column">
-                            <button @click="juryOrder" class="button has-text-weight-bold is-medium is-fullwidth" :class="{'has-text-black-bis has-background-gold': focus === 'jury', 'has-background-black-bis has-text-gold' : focus !== 'jury'}">Jury Rankings</button>
-                        </div>
-                        <div class="column">
-                            <button @click="publicOrder" class="button has-text-weight-bold is-medium is-fullwidth" :class="{'has-background-periwinkle has-text-light': focus === 'public', 'has-background-black-bis has-text-periwinkle': focus !== 'public'}">Public Rankings</button>
-                        </div>
+                    <div class="tabs is-fullwidth has-text-centered">
+                        <ul >
+                            <li @click="juryOrder" class="is-gold" :class="{'is-active': focus === 'jury'}">
+                                Jury Rankings
+                            </li>
+                            <li @click="publicOrder" class="is-periwinkle" :class="{'is-active': focus === 'public'}">
+                                Public Rankings
+                            </li>
+                        </ul>
                     </div>
-                    <div class="categoryNominationCards">
-                        <div class="categoryNominationItem" v-for="(nom, index) in nomPublicOrder"
-						:key="index">
-                            <category-item-image :nominee="nom" :anilistData="anilistData" />
+                    <div>
+                        <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
+                            <div class="column" v-for="(nom, index) in nomPublicOrder"
+                            :key="index">
+                                <div class="categoryNominationItem" >
+                                    <category-item-image :nominee="nom" :anilistData="anilistData" />
+                                </div>
+                                <span class="has-text-light">{{index + 1}}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="categoryNominationCards">
-                        <div class="categoryNominationItem" v-for="(nom, index) in nomJuryOrder"
-						:key="index">
-                            <category-item-image :nominee="nom" :anilistData="data" />
-							<span class="has-text-light">{{index + 1}}</span>
+                        <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
+                            <div class="column" v-for="(nom, index) in nomJuryOrder"
+                            :key="index">
+                                <div class="categoryNominationItem" >
+                                    <category-item-image :nominee="nom" :anilistData="anilistData" />
+                                </div>
+                                <span class="has-text-light">{{index + 1}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,13 +91,7 @@ export default {
 		},
 	},
 	mounted () {
-		// console.log(this.anilistData);
+		// console.log(this.nomPublicOrder, this.nomJuryOrder);
 	},
 };
 </script>
-
-<style lang="scss" scoped>
-.button {
-	border-radius: 0px;
-}
-</style>

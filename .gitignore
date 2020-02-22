@@ -16,3 +16,7 @@ config.js
 
 # Prevent results json from being committed, remove this when merged to master
 data/results2019.json
+
+package-lock.json
+
+yarn-error.log
