@@ -37,7 +37,10 @@ $danger: $orangered;
 
 // Smaller vertical section padding
 $section-padding: 1.5rem;
-$modal-content-width: 800px;
+$modal-content-width: 960px;
+$table-color: $silver;
+$text-strong: $silver;
+$table-background-color: $dark;
 
 @import "~bulma/sass/utilities/derived-variables";
 $addColors: (

@@ -32,7 +32,7 @@
                             :key="index" @click="emitNomModal(nom)">
                                 <span class="has-text-light">{{nomPublicRankings[index]}}</span>
                                 <div class="categoryNominationItem" >
-                                    <category-item-image :nominee="nom" :anilistData="anilistData" />
+                                    <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
                                 <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-llperiwinkle has-text-left"></p>
                             </div>
@@ -42,7 +42,7 @@
                             :key="index" @click="emitNomModal(nom)">
                                 <span class="has-text-light">{{index + 1}}</span>
                                 <div class="categoryNominationItem" >
-                                    <category-item-image :nominee="nom" :anilistData="anilistData" />
+                                    <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
                                 <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-llperiwinkle has-text-left"></p>
                             </div>
@@ -95,7 +95,7 @@ export default {
 		},
 		nomPublicRankings () {
 			const po = [].concat(this.category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
-			console.log(po);
+			// console.log(po);
 			const ranking = [];
 			for (let i = 0; i < po.length; i++) {
 				ranking.push(i + 1);
@@ -133,7 +133,7 @@ export default {
 		},
 	},
 	mounted () {
-		console.log(this.category);
+		// console.log(this.category);
 	},
 };
 </script>

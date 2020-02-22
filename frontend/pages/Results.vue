@@ -89,7 +89,44 @@
 					<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
 						{{modalCat.name}}
 					</h3>
-					<div class="awardsModalBody" v-html="markdownit(modalCat.blurb)">
+					<div class="awardsModalBody">
+						{{markdownit(modalCat.blurb)}}
+					</div>
+					<h5 class="title is-5 mt-30"> Vote Data </h5>
+					<table class="table is-black-bis " v-if="chartData">
+						<thead>
+							<tr>
+								<th> Show </th>
+								<th> Votes </th>
+								<th> Finished </th>
+								<th> % Supporting </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="(label, index) in chartData.labels"
+							:key="index">
+								<th>
+									{{label}}
+								</th>
+								<th>
+									{{chartData.pubnoms[index].public}} ({{(chartData.pubnoms[index].percent*100).toFixed(2)}}%)
+								</th>
+								<th>
+									{{chartData.pubnoms[index].finished}}
+								</th>
+								<th>
+									{{(chartData.pubnoms[index].support*100).toFixed(2)}}
+								</th>
+							</tr>
+						</tbody>
+					</table>
+					<div class="categoryJurors mt-30">
+						<h5 class="title is-5"> Jurors </h5>
+						<div class="tags">
+							<a class="tag has-text-black is-platinum" v-for="(juror, index) in modalCat.jurors" :key="index" :href="'https://reddit.com' + juror">
+								{{juror}}
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -111,6 +148,7 @@ import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
 import marked from 'marked';
 
+
 const aq = require('../anilistQueries');
 
 export default {
@@ -131,6 +169,7 @@ export default {
 			modalHM: null,
 			modalRank: 883,
 			modalCat: null,
+			chartData: null,
 		};
 	},
 	computed: {
@@ -155,12 +194,40 @@ export default {
 			document.documentElement.classList.add('is-clipped');
 			this.modalHM = hm;
 			this.modalCat = category;
+
+			if (!hm) {
+				const labels = [];
+				const dataset = [];
+				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
+				for (const nom of pubnoms) {
+					console.log(nom);
+					if (nom.altname) {
+						labels.push(nom.altname);
+					} else if (category.entryType === 'shows') {
+						labels.push(this.results.anime[nom.id]);
+					} else if (category.entryType === 'characters') {
+						labels.push(this.results.characters[nom.id].name);
+					} else if (category.entryType === 'vas') {
+						labels.push(this.results.characters[nom.id].va);
+					} else if (category.entryType === 'themes') {
+						labels.push(this.results.themes[nom.id].split(/ - /gm)[1]);
+					}
+				}
+
+				console.log(labels, pubnoms);
+
+				this.chartData = {
+					pubnoms,
+					labels,
+				};
+			}
 		},
 		closeModal () {
 			this.modalNom = null;
 			this.modalHM = null;
 			this.modalRank = 883;
 			this.modalCat = null;
+			this.modal.chartData = null;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {
