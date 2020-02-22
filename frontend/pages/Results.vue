@@ -1,19 +1,43 @@
 
 <template>
-	<section class="section has-background-dark" v-if="loaded">
-		<awards-section
-            v-for="(section, index) in results.sections"
-            :key="index"
-            :section="section"
-			:data="results"
-			:showData="showData"
-			:charData="charData"
-            >
-        </awards-section>
-	</section>
-	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
-		Loading
-	</section>
+	<div class="has-background-dark">
+		<div class="container">
+			<div class="columns is-centered">
+				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
+					<section class="section has-background-dark" v-if="loaded">
+						<awards-section
+							v-for="(section, index) in results.sections"
+							:key="index"
+							:section="section"
+							:data="results"
+							:showData="showData"
+							:charData="charData"
+							>
+						</awards-section>
+					</section>
+					<section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
+						Loading
+					</section>
+				</div>
+			</div>
+		</div>
+		<div class="modal">
+			<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+					<p class="modal-card-title">Modal title</p>
+					<button class="delete" aria-label="close"></button>
+					</header>
+					<section class="modal-card-body">
+					<!-- Content ... -->
+					</section>
+					<footer class="modal-card-foot">
+					<button class="button is-success">Save changes</button>
+					<button class="button">Cancel</button>
+					</footer>
+				</div>
+			</div>
+		</div>
 </template>
 
 <script>

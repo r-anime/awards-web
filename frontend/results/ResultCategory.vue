@@ -25,7 +25,7 @@
                         <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
                             <div class="column" v-for="(nom, index) in nomPublicOrder"
                             :key="index">
-                                <div class="categoryNominationItem" >
+                                <div @click="emitNomModal(nom)" class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
                                 <span class="has-text-light">{{index + 1}}</span>
@@ -34,7 +34,7 @@
                         <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
                             <div class="column" v-for="(nom, index) in nomJuryOrder"
                             :key="index">
-                                <div class="categoryNominationItem" >
+                                <div @click="emitNomModal(nom)" class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
                                 <span class="has-text-light">{{index + 1}}</span>
@@ -44,10 +44,10 @@
                 </div>
             </div>
         </section>
-        <div class="awardHonorableMentions" v-if="category.hms && category.hms.length > 0">
-            <h4>Honorable Mentions</h4>
+        <div class="awardHonorableMentions has-text-light has-text-centered mt-50" v-if="category.hms && category.hms.length > 0">
+            <h4 class="categoryHeader title has-text-light has-flaired-underline-thin pb-20">Honorable Mentions</h4>
             <ul>
-                <li v-for="(hm, index) in category.hms" :key="index">{{hm}}</li>
+                <li v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">{{hm.name}}</li>
             </ul>
         </div>
     </div>
@@ -88,6 +88,12 @@ export default {
 		},
 		juryOrder () {
 			this.focus = 'jury';
+		},
+		emitNomModal (nom) {
+			this.$emit('nomModal', nom);
+		},
+		emitHMModal (hm) {
+			this.$emit('hmModal', hm);
 		},
 	},
 	mounted () {
