@@ -97,7 +97,7 @@
 							<tr>
 								<th> Show </th>
 								<th> Votes </th>
-								<th> Finished </th>
+								<th> Watched </th>
 								<th> % Supporting </th>
 							</tr>
 						</thead>
