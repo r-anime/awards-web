@@ -13,7 +13,7 @@
 					</div>
 				</div>
 				<div class="columns is-centered is-vcentered ">
-					<div class="column is-6-tablet is-5-desktop is-4-widescreen">
+					<div class="column is-4-tablet is-4-desktop is-3-widescreen">
 						<img loading="lazy" :src="snooImage"/>
 					</div>
 					<div class="column is-centered has-text-white box has-background-dperiwinkle is-size-5 pl-40 pr-40 pt-40 pb-100">

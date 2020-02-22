@@ -54,6 +54,37 @@ html, body{
     }
 }
 
+.categoryRank {
+    position: relative;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 1.25rem;
+        top: 0.8rem;
+        height: 1px;
+        width: 1rem;
+        background-image: linear-gradient(to left, transparent, $platinum);
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        right: 1.25rem;
+        top: 0.8rem;
+        height: 1px;
+        width: 1rem;
+        background-image: linear-gradient(to right, transparent, $platinum);
+    }
+}
+
+.categoryRankCard{
+    margin-bottom: 1rem !important;
+
+    @include until($tablet){
+        margin-bottom: 0;
+    }
+}
+
 .categoryWinnerContainer {
     position: relative;
     width: 100%;
@@ -256,6 +287,10 @@ footer {
             }
         }
     }
+}
+
+.button {
+    transition: background 0.15s;
 }
 
 $spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100); // Adjust this to include the pixel amounts you need.

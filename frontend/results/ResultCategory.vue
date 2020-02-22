@@ -1,9 +1,14 @@
 <template>
     <div :id="slug" class="awardDisplay mb-100">
-        <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-50 pb-10 mb-20" @click="emitCatModal">
-            {{category.name}}
-            <fa-icon icon="info-circle" class="has-text-gold mb-20 mt-20" />
-        </h2>
+		<div class="has-text-centered mb-30" @click="emitCatModal">
+			<h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-50 mb-10" >
+				{{category.name}}
+            </h2>
+			<button class="button is-small is-platinum is-outlined">
+				<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
+				Category Overview
+			</button>
+		</div>
         <award-winners v-if="nomPublicOrder[0] &&
             nomJuryOrder[0]"
             :pub="nomPublicOrder[0]"
@@ -28,22 +33,22 @@
                     </div>
                     <div>
                         <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
-                            <div class="column" v-for="(nom, index) in nomPublicOrder"
+                            <div class="categoryRankCard column" v-for="(nom, index) in nomPublicOrder"
                             :key="index" @click="emitNomModal(nom)">
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
-								<span class="has-text-platinum">{{nomPublicRankings[index]}}</span>
+								<span class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</span>
                                 <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
                             </div>
                         </div>
                         <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
-                            <div class="column" v-for="(nom, index) in nomJuryOrder"
+                            <div class="categoryRankCard column" v-for="(nom, index) in nomJuryOrder"
                             :key="index" @click="emitNomModal(nom)">
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
-								<span class="has-text-platinum">{{index + 1}}</span>
+								<span class="categoryRank has-text-platinum">{{index + 1}}</span>
                                 <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
                             </div>
                         </div>
@@ -51,10 +56,18 @@
                 </div>
             </div>
         </section>
-        <div class="awardHonorableMentions has-text-light has-text-centered mt-50" v-if="category.hms && category.hms.length > 0">
+        <div class="awardHonorableMentions has-text-light has-text-centered mt-20" v-if="category.hms && category.hms.length > 0">
             <h4 class="categoryHeader title has-text-light has-flaired-underline-thin pb-20">Honorable Mentions</h4>
             <ul>
-                <li v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">{{hm.name}}</li>
+				<li v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">
+					<div class="has-text-centered mb-30" @click="emitCatModal">
+						<div>{{hm.name}}</div>
+						<button class="button is-small is-llperiwinkle is-outlined mt-10">
+							<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
+							More Information
+						</button>
+					</div>
+                </li>
             </ul>
         </div>
     </div>

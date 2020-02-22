@@ -2,7 +2,7 @@
 	<nav :class="['navbar', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
 			<div class="navbar-brand mr-20">
-				<a href="/"><img :src="logo" class="image pt-10 pb-10" style="height: 64px;"/></a>
+				<a href="/"><img :src="logo" class="image pt-10 pb-10 pl-10 pr-10" style="height: 64px;"/></a>
 				<a
 					@click="expanded = !expanded"
 					role="button"
