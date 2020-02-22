@@ -20,6 +20,20 @@ html, body{
     }
 }
 
+.awardsModal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.awardsModal::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+}
+
+.awardsModal::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+}
+
 .awardsImage{
     height: 35rem;
 

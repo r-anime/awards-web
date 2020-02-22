@@ -1,3 +1,4 @@
+/* eslint-disable vue/valid-template-root */
 
 <template>
 	<div class="has-background-dark">
@@ -31,47 +32,74 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal is-dark" :class="{'is-active': modalNom}" v-if="modalNom">
+		<div class="modal" :class="{'is-active': modalNom}" v-if="modalNom">
 			<div class="modal-background" @click="closeModal"></div>
-				<div class="modal-content">
-					<div class="columns is-gapless">
-						<div class="awardsImage column is-5">
-							<item-image
+			<div class="modal-content">
+				<div class="columns is-gapless">
+					<div class="awardsImage column is-5">
+						<item-image
+							:nominee="modalNom"
+							:anilistData="anilistData"
+						/>
+					</div>
+					<div class="column is-7">
+						<div class="awardsModal has-text-light has-background-dark content">
+							<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
+								<nominee-name
 								:nominee="modalNom"
 								:anilistData="anilistData"
-							/>
-						</div>
-						<div class="column is-7">
-							<div class="awardsModal has-text-light has-background-dark content">
-								<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
-									<nominee-name
-									:nominee="modalNom"
-									:anilistData="anilistData"
-									:data="results"
-									:category="modalCat"
-									></nominee-name>
-								</h3>
-								<h4 class="is-6 has-text-silver is-marginless">
-									Public Rank: {{modalRank}}({{(modalNom.percent*100).toFixed(2)}}%)
-								</h4>
-								<h4 class="is-6 has-text-silver">
-									Jury Rank: {{modalNom.jury}}
-								</h4>
-								<p class="has-text-llperiwinkle is-size-6">
-									{{modalNom.staff}}
-								</p>
-								<div class="awardsModalBody" v-html="nomMarkdown">
-								</div>
+								:data="results"
+								:category="modalCat"
+								></nominee-name>
+							</h3>
+							<h4 class="is-6 has-text-silver is-marginless">
+								Public Rank: {{modalRank}}({{(modalNom.percent*100).toFixed(2)}}%)
+							</h4>
+							<h4 class="is-6 has-text-silver">
+								Jury Rank: {{modalNom.jury}}
+							</h4>
+							<p class="has-text-llperiwinkle is-size-6">
+								{{modalNom.staff}}
+							</p>
+							<div class="awardsModalBody" v-html="markdownit(modalNom.writeup)">
 							</div>
 						</div>
 					</div>
 				</div>
-				<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 			</div>
+			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
+		<div class="modal" :class="{'is-active': modalHM}" v-if="modalHM">
+			<div class="modal-background" @click="closeModal"></div>
+			<div class="modal-content">
+				<div class="awardsModal has-text-light has-background-dark content">
+					<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
+						{{modalHM.name}}
+					</h3>
+					<div class="awardsModalBody" v-html="markdownit(modalHM.writeup)">
+					</div>
+				</div>
+			</div>
+			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+		</div>
+		<div class="modal" :class="{'is-active': modalCat && !modalHM && !modalNom}" v-if="modalCat && !modalHM && !modalNom">
+			<div class="modal-background" @click="closeModal"></div>
+			<div class="modal-content">
+				<div class="awardsModal has-text-light has-background-dark content">
+					<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
+						{{modalCat.name}}
+					</h3>
+					<div class="awardsModalBody" v-html="markdownit(modalCat.blurb)">
+					</div>
+				</div>
+			</div>
+			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+		</div>
+	</div>
 </template>
 
 <script>
+// eslint-disable vue/no-parsing-error*/
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 
@@ -106,12 +134,6 @@ export default {
 		};
 	},
 	computed: {
-		nomMarkdown () {
-			if (this.modalNom) {
-				return marked(this.modalNom.writeup);
-			}
-			return '';
-		},
 		anilistData () {
 			if (this.modalCat.entryType !== 'shows' && this.modalCat.entryType !== 'themes') {
 				return this.charData;
@@ -120,6 +142,9 @@ export default {
 		},
 	},
 	methods: {
+		markdownit (it) {
+			return marked(it);
+		},
 		nomModal (nom, ranking, category) {
 			document.documentElement.classList.add('is-clipped');
 			this.modalNom = nom;
@@ -135,6 +160,7 @@ export default {
 			this.modalNom = null;
 			this.modalHM = null;
 			this.modalRank = 883;
+			this.modalCat = null;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {

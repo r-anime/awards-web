@@ -1,6 +1,9 @@
 <template>
     <div :id="slug" class="awardDisplay">
-        <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-100 pb-10 mb-20">{{category.name}}</h2>
+        <h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-100 pb-10 mb-20" @click="emitCatModal">
+            {{category.name}}
+            <fa-icon icon="info-circle" class="has-text-gold mb-20 mt-20" />
+        </h2>
         <award-winners v-if="nomPublicOrder[0] &&
             nomJuryOrder[0]"
             :pub="nomPublicOrder[0]"
@@ -117,6 +120,9 @@ export default {
 		},
 		emitHMModal (hm) {
 			this.$emit('hmModal', hm, this.category);
+		},
+		emitCatModal () {
+			this.$emit('catModal', this.category);
 		},
 		markdownit (writeup) {
 			return marked(writeup);

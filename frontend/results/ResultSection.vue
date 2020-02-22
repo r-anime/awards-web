@@ -27,6 +27,7 @@
 		:anilistData="(category.entryType === 'shows' || category.entryType === 'themes') ? showData : charData"
 		@nomModal="emitNomModal"
 		@hmModal="emitHMModal"
+		@catModal="emitCatModal"
 		/>
 	</div>
 </template>
@@ -76,6 +77,9 @@ export default {
 		},
 		emitHMModal (hm, category) {
 			this.$emit('hmModal', hm, category);
+		},
+		emitCatModal (category) {
+			this.$emit('hmModal', null, category);
 		},
 	},
 	mounted () {
