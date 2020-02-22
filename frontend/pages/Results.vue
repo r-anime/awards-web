@@ -220,7 +220,7 @@ export default {
 		});
 		Promise.all([showPromise, charPromise]).then(() => {
 			this.loaded = true;
-			console.log(this.showData, this.charData);
+			//console.log(this.showData, this.charData);
 		});
 	},
 };

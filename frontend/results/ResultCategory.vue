@@ -109,7 +109,7 @@ export default {
 		},
 	},
 	mounted () {
-		// console.log(this.nomPublicOrder, this.nomJuryOrder);
+		console.log(this.category);
 	},
 };
 </script>

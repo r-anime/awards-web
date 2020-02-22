@@ -18,5 +18,5 @@ config.js
 data/results2019.json
 
 package-lock.json
-yarn.lock
+
 yarn-error.log
