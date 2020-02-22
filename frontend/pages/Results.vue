@@ -89,8 +89,7 @@
 					<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
 						{{modalCat.name}}
 					</h3>
-					<div class="awardsModalBody">
-						{{markdownit(modalCat.blurb)}}
+					<div class="awardsModalBody mt-30" v-html="markdownit(modalCat.blurb)">
 					</div>
 					<h5 class="title is-5 mt-30"> Vote Data </h5>
 					<table class="table is-black-bis " v-if="chartData">
@@ -182,6 +181,7 @@ export default {
 	},
 	methods: {
 		markdownit (it) {
+			console.log(it);
 			return marked(it);
 		},
 		nomModal (nom, ranking, category) {
@@ -227,7 +227,7 @@ export default {
 			this.modalHM = null;
 			this.modalRank = 883;
 			this.modalCat = null;
-			this.modal.chartData = null;
+			this.chartData = null;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {
