@@ -71,8 +71,8 @@ export default {
 		},
 	},
 	methods: {
-		emitNomModal (nom, category) {
-			this.$emit('nomModal', nom, category);
+		emitNomModal (nom, ranking, category) {
+			this.$emit('nomModal', nom, ranking, category);
 		},
 		emitHMModal (hm, category) {
 			this.$emit('hmModal', hm, category);

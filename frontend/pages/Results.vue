@@ -43,7 +43,7 @@
 						</div>
 						<div class="column is-7">
 							<div class="awardsModal has-text-light has-background-dark content">
-								<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold is-marginless">
+								<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
 									<nominee-name
 									:nominee="modalNom"
 									:anilistData="anilistData"
@@ -51,6 +51,12 @@
 									:category="modalCat"
 									></nominee-name>
 								</h3>
+								<h4 class="is-6 has-text-silver is-marginless">
+									Public Rank: {{modalRank}}({{(modalNom.percent*100).toFixed(2)}}%)
+								</h4>
+								<h4 class="is-6 has-text-silver">
+									Jury Rank: {{modalNom.jury}}
+								</h4>
 								<p class="has-text-llperiwinkle is-size-6">
 									{{modalNom.staff}}
 								</p>
@@ -95,13 +101,14 @@ export default {
 			charIDs: [],
 			modalNom: null,
 			modalHM: null,
+			modalRank: 883,
 			modalCat: null,
 		};
 	},
 	computed: {
 		nomMarkdown () {
 			if (this.modalNom) {
-				return marked(this.modalNom.writeup, {sanitize: true});
+				return marked(this.modalNom.writeup);
 			}
 			return '';
 		},
@@ -113,9 +120,10 @@ export default {
 		},
 	},
 	methods: {
-		nomModal (nom, category) {
+		nomModal (nom, ranking, category) {
 			document.documentElement.classList.add('is-clipped');
 			this.modalNom = nom;
+			this.modalRank = ranking;
 			this.modalCat = category;
 		},
 		hmModal (hm, category) {
@@ -126,6 +134,7 @@ export default {
 		closeModal () {
 			this.modalNom = null;
 			this.modalHM = null;
+			this.modalRank = 883;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {
@@ -220,7 +229,7 @@ export default {
 		});
 		Promise.all([showPromise, charPromise]).then(() => {
 			this.loaded = true;
-			//console.log(this.showData, this.charData);
+			// console.log(this.showData, this.charData);
 		});
 	},
 };

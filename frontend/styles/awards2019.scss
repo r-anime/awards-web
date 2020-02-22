@@ -82,6 +82,10 @@ html, body{
     padding: 0.5rem;
     cursor: pointer;
 
+    strong {
+        color: $llperiwinkle;
+    }
+
     @include until($tablet){
         display: none;
         height: 0;

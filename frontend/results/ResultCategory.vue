@@ -27,7 +27,7 @@
                         <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
                             <div class="column" v-for="(nom, index) in nomPublicOrder"
                             :key="index" @click="emitNomModal(nom)">
-                                <span class="has-text-light">{{index + 1}}</span>
+                                <span class="has-text-light">{{nomPublicRankings[index]}}</span>
                                 <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
@@ -90,6 +90,19 @@ export default {
 		nomJuryOrder () {
 			return [].concat(this.category.nominees).filter(nom => nom.jury !== -1).sort((a, b) => a.jury - b.jury);
 		},
+		nomPublicRankings () {
+			const po = [].concat(this.category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
+			console.log(po);
+			const ranking = [];
+			for (let i = 0; i < po.length; i++) {
+				ranking.push(i + 1);
+				if (i < po.length - 1 && typeof po[i].public !== 'undefined' && po[i + 1].public && po[i].public === po[i + 1].public) {
+					ranking.push(i + 1);
+					i++;
+				}
+			}
+			return ranking;
+		},
 	},
 	methods: {
 		publicOrder () {
@@ -99,13 +112,18 @@ export default {
 			this.focus = 'jury';
 		},
 		emitNomModal (nom) {
-			this.$emit('nomModal', nom, this.category);
+			const ranking = this.getPRgivenShow(nom);
+			this.$emit('nomModal', nom, ranking, this.category);
 		},
 		emitHMModal (hm) {
 			this.$emit('hmModal', hm, this.category);
 		},
 		markdownit (writeup) {
-			return marked(writeup, {sanitize: true});
+			return marked(writeup);
+		},
+		getPRgivenShow (nominee) {
+			const index = this.nomPublicOrder.findIndex(nom => nom.id === nominee.id);
+			return this.nomPublicRankings[index];
 		},
 	},
 	mounted () {
