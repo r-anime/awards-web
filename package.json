@@ -45,6 +45,7 @@
     "another-logger": "^2.0.0",
     "better-sqlite3": "^5.4.0",
     "bulma": "^0.7.5",
+    "chart.js": "^2.9.3",
     "connect-sqlite3": "^0.9.11",
     "csv-parse": "^4.6.5",
     "db-migrate": "^0.11.6",
@@ -55,6 +56,7 @@
     "polka": "^0.5.2",
     "rethinkdbdash": "^2.3.31",
     "superagent": "^5.0.2",
+    "vue-chartjs": "^3.5.0",
     "vuex": "^3.1.1"
   }
 }
