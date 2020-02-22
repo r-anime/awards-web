@@ -26,20 +26,26 @@
                     <div>
                         <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
                             <div class="column" v-for="(nom, index) in nomPublicOrder"
-                            :key="index">
-                                <div @click="emitNomModal(nom)" class="categoryNominationItem" >
+                            :key="index" @click="emitNomModal(nom)">
+                                <span class="has-text-light">{{index + 1}}</span>
+                                <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
-                                <span class="has-text-light">{{index + 1}}</span>
+                                <p class="categoryNominationPreview has-text-llperiwinkle has-text-left">
+                                    {{nom.writeup.substring(0, 69)}}
+                                </p>
                             </div>
                         </div>
                         <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
                             <div class="column" v-for="(nom, index) in nomJuryOrder"
-                            :key="index">
-                                <div @click="emitNomModal(nom)" class="categoryNominationItem" >
+                            :key="index" @click="emitNomModal(nom)">
+                                <span class="has-text-light">{{index + 1}}</span>
+                                <div class="categoryNominationItem" >
                                     <category-item-image :nominee="nom" :anilistData="anilistData" />
                                 </div>
-                                <span class="has-text-light">{{index + 1}}</span>
+                                <p class="categoryNominationPreview has-text-llperiwinkle has-text-left">
+                                    {{nom.writeup.substring(0, 69)}}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -96,10 +102,10 @@ export default {
 			this.focus = 'jury';
 		},
 		emitNomModal (nom) {
-			this.$emit('nomModal', nom);
+			this.$emit('nomModal', nom, this.category);
 		},
 		emitHMModal (hm) {
-			this.$emit('hmModal', hm);
+			this.$emit('hmModal', hm, this.category);
 		},
 	},
 	mounted () {

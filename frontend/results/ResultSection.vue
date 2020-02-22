@@ -71,11 +71,11 @@ export default {
 		},
 	},
 	methods: {
-		emitNomModal (nom) {
-			this.$emit('nomModal', nom);
+		emitNomModal (nom, category) {
+			this.$emit('nomModal', nom, category);
 		},
-		emitHMModal (hm) {
-			this.$emit('hmModal', hm);
+		emitHMModal (hm, category) {
+			this.$emit('hmModal', hm, category);
 		},
 	},
 	mounted () {

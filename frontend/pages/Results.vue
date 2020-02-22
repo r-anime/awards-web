@@ -38,13 +38,25 @@
 						<div class="awardsImage column is-5">
 							<item-image
 								:nominee="modalNom"
-								:anilistData="showData"
+								:anilistData="anilistData"
 							/>
 						</div>
-						<div class="awardsModal column is-7 has-background-dark">
-							<p class="content has-text-light">
-								{{modalNom.writeup}}
-							</p>
+						<div class="column is-7">
+							<div class="awardsModal has-text-light has-background-dark content">
+								<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold is-marginless">
+									<nominee-name
+									:nominee="modalNom"
+									:anilistData="anilistData"
+									:data="results"
+									:category="modalCat"
+									></nominee-name>
+								</h3>
+								<p class="has-text-llperiwinkle is-size-6">
+									{{modalNom.staff}}
+								</p>
+								<div class="awardsModalBody" v-html="nomMarkdown">
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -61,7 +73,9 @@
 import data2018 from '../../data/results2018.json';
 import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';
+import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
+import marked from 'marked';
 
 const aq = require('../anilistQueries');
 
@@ -69,6 +83,7 @@ export default {
 	components: {
 		AwardsSection,
 		ItemImage,
+		NomineeName,
 	},
 	data () {
 		return {
@@ -80,17 +95,33 @@ export default {
 			charIDs: [],
 			modalNom: null,
 			modalHM: null,
+			modalCat: null,
 		};
 	},
+	computed: {
+		nomMarkdown () {
+			if (this.modalNom) {
+				return marked(this.modalNom.writeup, {sanitize: true});
+			}
+			return '';
+		},
+		anilistData () {
+			if (this.modalCat.entryType !== 'shows' && this.modalCat.entryType !== 'themes') {
+				return this.charData;
+			}
+			return this.showData;
+		},
+	},
 	methods: {
-		nomModal (nom) {
+		nomModal (nom, category) {
 			document.documentElement.classList.add('is-clipped');
 			this.modalNom = nom;
-			console.log(nom);
+			this.modalCat = category;
 		},
-		hmModal (hm) {
+		hmModal (hm, category) {
 			document.documentElement.classList.add('is-clipped');
 			this.modalHM = hm;
+			this.modalCat = category;
 		},
 		closeModal () {
 			this.modalNom = null;
