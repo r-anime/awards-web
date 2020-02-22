@@ -34,7 +34,7 @@
 						<p>
 							To get started, click a link below, or click one of the links in the nav bar.
 						</p>
-						<nav class="level mt-40">
+						<nav class="homeIntroThingy level mt-40">
 							<div class="level-item has-text-centered">
 								<router-link to="/results/genre" >
 								<div>

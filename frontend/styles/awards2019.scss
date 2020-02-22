@@ -90,6 +90,17 @@ html, body{
     }
 }
 
+.homeIntroThingy {
+    .level-item {
+        transition: opacity 150ms;
+        opacity: 0.6;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
 .categoryWinnerContainer {
     position: relative;
     width: 100%;
