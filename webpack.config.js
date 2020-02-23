@@ -11,6 +11,7 @@ module.exports = {
 	output: {
 		path: config.publicDir,
 		filename: 'bundle.js',
+		publicPath: '/',
 	},
 	optimization: {
 		splitChunks: {
@@ -87,7 +88,6 @@ module.exports = {
 						loader: 'file-loader',
 						options: {
 							name: '[name][hash].[ext]',
-							publicPath: '/',
 						},
 					},
 				],
