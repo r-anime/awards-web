@@ -99,6 +99,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './public/template.html',
 			title: '/r/anime Awards 2019',
+			base: config.host,
 		}),
 		new CompressionPlugin({
 			filename: '[path].gz[query]',
