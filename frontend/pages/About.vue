@@ -21,7 +21,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank all of the people who put work into the production of the livestream, especially /u/commandersevan - without them, this would not have been worth putting on. Our editors were: /u/clerikal, /u/EpicTroll27, /u/Irvom, /u/jonlxh, /u/Theleux, and /u/unprecedentedwolf . And a special thanks to /u/steamytomato for making the cute artwork of the anime awards snoo.
+                                    We’d like to thank all of the people who put work into the production of the livestream, especially /u/commandersevan - without them, this would not have been worth putting on. Our editors were: /u/clerikal, /u/EpicTroll27, /u/Irvom, /u/jonlxh, /u/Theleux, and /u/unprecedentedwolf. And a special thanks to /u/steamytomato for making the cute artwork of the anime awards snoo.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
