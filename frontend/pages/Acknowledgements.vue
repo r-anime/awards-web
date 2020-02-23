@@ -50,7 +50,7 @@
 									Thank you all of the fans who love Golden Kamuy and its original soundtrack. And thank you all of the organizers and the staff of Reddit 2019 Anime Awards, who always stimulate the Anime industry. By receiving the news which Golden Kamuy’s soundtrack, which includes the elements of traditional instruments, orchestra and Rock music, had been nominated, I feel excited for producing music of next season more and more. This nomination is very encouraging for me, and I would like to produce music which can make the fans of Golden Kamuy happy. Hinna Hinna!!
                                 </div>
 								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Maiya Kubo</h1>
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Maiya, Kubo</h1>
 								<div class="has-text-centered has-text-periwinkle">
 									ご連絡ありがとうございます。
 									<br/>
