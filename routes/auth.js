@@ -55,7 +55,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 			flags: 0,
 		});
 	}
-	response.redirect('/');
+	response.redirect('/login');
 });
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
@@ -66,7 +66,7 @@ authApp.get('/reddit/debug', (request, response) => {
 // Deletes session
 authApp.get('/logout', (request, response) => {
 	request.session.destroy(() => {
-		response.redirect('/');
+		response.redirect('/login');
 	});
 });
 

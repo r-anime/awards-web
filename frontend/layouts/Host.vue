@@ -6,8 +6,7 @@
 				{name: 'Users', path: '/host/users'},
 				{name: 'Results Summary', path: '/host/results'}
 			]"
-			class="is-dark"
-			fullwidth
+			class="is-llperiwinkle"
 		>
 			<template v-slot:title>
 				<router-link to="/" style="color: inherit;">
@@ -34,7 +33,7 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue';
+import NavBar from '../components/NavBarSimple.vue';
 import HostBreadcrumbLink from '../components/HostBreadcrumbLink';
 
 export default {

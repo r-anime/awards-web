@@ -1,6 +1,6 @@
 <template>
 	<body>
-		<nav-bar class="is-light" :routes="routes">
+		<nav-bar class="is-llperiwinkle" :routes="routes">
 			<template v-slot:title>
 				<router-link to="/" style="color:inherit">
 					<h1 class="is-size-4">/r/anime Awards</h1>
@@ -13,7 +13,7 @@
 
 <script>
 import {mapState} from 'vuex';
-import NavBar from '../components/NavBar.vue';
+import NavBar from '../components/NavBarSimple.vue';
 export default {
 	components: {
 		NavBar,

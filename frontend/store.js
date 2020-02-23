@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-await-in-loop */
 import Vue from 'vue';
 import Vuex from 'vuex';

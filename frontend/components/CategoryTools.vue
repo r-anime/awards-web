@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 <template>
 	<div class="section">
 		<h2 class="title is-3">Category Tools</h2>
@@ -83,6 +84,7 @@ export default {
 		category (newVal, oldVal) {
 			// If the category was already defined, we don't want to update the
 			// other data, because the user may be making changes
+			// eslint-disable-next-line no-useless-return
 			if (oldVal) return;
 			// Update relevant properties here
 		},
@@ -178,35 +180,35 @@ export default {
 				sections: [{
 					name: 'Genre',
 					slug: 'genre',
-					blurb: 'These awards are given to the anime from each genre that displayed all-around excellence compared to the competition. Each show was assigned to one of seven genre categories, and a winner was chosen among each category.',
+					blurb: 'These awards are given to the anime from each genre that displayed all-around excellence compared to the competition. Each show is assigned to one of seven genre categories, and a winner is chosen within each category.',
 					icon: '',
 					awards: [],
 				},
 				{
 					name: 'Character',
 					slug: 'character',
-					blurb: 'These awards are given to the characters the characters with exceptional writing amongst both dramatic roles and comedic roles, as well as memorable antagonists and casts.',
+					blurb: 'These awards are given to the characters with exceptional writing among both dramatic and comedic roles, as well as memorable antagonists and casts.',
 					icon: '',
 					awards: [],
 				},
 				{
 					name: 'Production',
 					slug: 'production',
-					blurb: 'These awards given to the shows that have displayed exceptional performance in technical areas. From visuals, to sound, to OP and ED, every award in this section showcases a different aspect of the process of anime production.',
+					blurb: 'These awards are given to the shows that have displayed exceptional performance in technical areas. From visuals to sound to OP and ED, every award in this section showcases a different aspect of the process of anime production.',
 					icon: '',
 					awards: [],
 				},
 				{
 					name: 'Main',
 					slug: 'main',
-					blurb: 'The anime of the year. The greatest of them all. These awards divided each anime from 2018 by format, and the very best among each one was awarded the title of best short, best movie, best original and the coveted best anime of the year.',
+					blurb: 'The anime of the year. The greatest of them all. These awards divide each anime from 2018 by format, and the very best among each one was awarded the title of best short, best movie, best original and the coveted best anime of the year.',
 					icon: '',
 					awards: [],
 				},
 				{
 					name: 'Test',
 					slug: 'test',
-					blurb: 'Insert text for test categories.',
+					blurb: 'These awards are an experimental attempt to better represent the wide tastes of the community. Each category is one that received support to be included, and each set of rankings were determined independently, so that they may be more easily compared to each other. These shows displayed all-around excellence for their respective disciplines.',
 					icon: '',
 					awards: [],
 				}],

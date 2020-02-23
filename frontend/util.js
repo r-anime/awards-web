@@ -1,5 +1,10 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-alert */
+
+function slugify (text) {
+	return text.toLowerCase().replace(/\s+/g, '-');
+}
+
 async function makeQuery (query, idArr) {
 	const response = await fetch('https://graphql.anilist.co', {
 		method: 'POST',
@@ -53,10 +58,6 @@ function stringMatchesArray (str, arr) {
 }
 
 // https://stackoverflow.com/a/6274381/1070107
-/**
- * Shuffles array in place.
- * @param {Array} a items An array containing the items.
- */
 function shuffle (a) {
 	let j; let x; let i;
 	for (i = a.length - 1; i > 0; i--) {
@@ -91,7 +92,16 @@ function isShowCat (category) {
 	return false;
 }
 
-module.exports = {
+function getPrettyRank (rank) {
+	rank--;
+	const ranks = ['Winner', '2nd Place', '3rd Place'];
+	if (rank < 3) {
+		return ranks[rank];
+	}
+	return `${rank + 1}th Place`;
+}
+
+export default {
 	makeQuery,
 	fuzzyMatch,
 	stringMatchesArray,
@@ -99,4 +109,6 @@ module.exports = {
 	submit,
 	isShowCat,
 	paginatedQuery,
+	slugify,
+	getPrettyRank,
 };

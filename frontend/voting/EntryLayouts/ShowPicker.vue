@@ -76,9 +76,11 @@
 </template>
 
 <script>
+/* eslint-disable no-alert */
 import ShowPickerEntry from './ShowPickerEntry';
+import util from '../../util';
 const queries = require('../../anilistQueries');
-import {shuffle} from '../../util';
+
 
 export default {
 	components: {
@@ -202,7 +204,7 @@ export default {
 		});
 		if (!nextResponse.ok) return alert('no bueno');
 		const data = await nextResponse.json();
-		this.defaultShows = shuffle(data.data.anime.results);
+		this.defaultShows = util.shuffle(data.data.anime.results);
 		this.loaded = true;
 	},
 };

@@ -6,15 +6,20 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 // Layouts, pages, and routing
-const PublicLayout = () => import(/* webpackChunkName: "core" */ './layouts/Public');
+const PublicLayout = () => import(/* webpackChunkName: "host" */ './layouts/Public');
 // import JurorLayout from './layout/Juror';
-const HostLayout = () => import(/* webpackChunkName: "core" */ './layouts/Host');
+const HostLayout = () => import(/* webpackChunkName: "host" */ './layouts/Host');
+const ResultLayout = () => import(/* webpackChunkName: "core" */ './layouts/Result');
 
 const Home = () => import(/* webpackChunkName: "core" */ './pages/Home');
 const About = () => import(/* webpackChunkName: "core" */ './pages/About');
-const Profile = () => import(/* webpackChunkName: "core" */ './pages/Profile');
+const Acknowledgements = () => import(/* webpackChunkName: "core" */ './pages/Acknowledgements');
+const Profile = () => import(/* webpackChunkName: "host" */ './pages/Profile');
+const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
+const ResultsContainer = () => import(/* webpackChunkName: "core" */ './pages/ResultsContainer');
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
+const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
 const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
 const Users = () => import(/* webpackChunkName: "host" */ './pages/host/Users');
 const Results = () => import(/* webpackChunkName: "host" */ './pages/host/Results');
@@ -31,17 +36,41 @@ const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
 const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
 const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
 
+
+
 export default new VueRouter({
 	mode: 'history',
 	routes: [
 		// Default layout
 		{
 			path: '/',
+			component: ResultLayout, // when the home component is redesigned, this component will be changed to home
+			children: [
+				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
+				{path: 'thanks', component: About},
+				{
+					path: 'results',
+					redirect: 'results/all',
+					component: ResultsContainer,
+					children: [
+						{
+							path: ':slug',
+							component: ResultsPage,
+							props: true,
+						},
+					],
+				},
+				{path: '/acknowledgements', component: Acknowledgements},
+				{path: '/about', component: About},
+			],
+		},
+		// login for hosts
+		{
+			path: '/login',
 			component: PublicLayout,
 			children: [
-				{path: '', component: Home},
-				{path: 'profile', component: Profile},
-				{path: 'about', component: About},
+				{path: '', component: Login},
+				{path: '/profile', component: Profile},
 			],
 		},
 
