@@ -320,6 +320,7 @@ export default {
 		},
 	},
 	mounted () {
+		window.scroll(0, 0);
 		for (const show in this.results.anime) {
 			this.showIDs.push(show);
 		}

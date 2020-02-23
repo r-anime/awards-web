@@ -121,3 +121,11 @@
     </section>
 </div>
 </template>
+
+<script>
+export default {
+	mounted () {
+		window.scroll(0, 0);
+	},
+};
+</script>
