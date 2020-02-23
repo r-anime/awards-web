@@ -25,7 +25,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank all the people who volunteered to edit jury write-ups. Without them, they would be a much less pleasant read. Our write-up editors were:  /u/Cacophon, /u/darcyfied, /u/EpicTroll27, /u/FrenziedHero, /u/jonlxh, /u/Master_of_Ares, /u/NimitzH, /u/Ralon17, /u/reyae, /u/RX-Nota-II, /u/sfafreak, /u/SuperStarfox64, /u/Totalenlo, /u/Tratini, /u/RandomRedditorWithNo.
+                                    We’d like to thank all the people who volunteered to edit jury write-ups. Without them, they would be a much less pleasant read. Our write-up editors were:  /u/Cacophon, /u/darcyfied, /u/EpicTroll27, /u/FrenziedHero, /u/jonlxh, /u/Master_of_Ares, /u/NimitzH, /u/Ralon17, /u/reyae, /u/RX-Nota-II, /u/sfafreak, /u/SuperStarfox64, /u/Totalenlo, Acasualviewer, /u/RandomRedditorWithNo.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
