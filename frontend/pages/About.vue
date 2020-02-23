@@ -60,6 +60,8 @@
                                         <li>FateSteelTaylor (The /r/anime Podcast)</li>
                                         <li>The Pedantic Romantic</li>
                                         <li>Shabu, That Music Nerd</li>
+                                        <li>Kor</li>
+                                        <li>Phenom Sage</li>
                                         <li>Lilypichu</li>
                                    </ul>
                                 </div>
