@@ -82,8 +82,5 @@ export default {
 			this.$emit('hmModal', null, category);
 		},
 	},
-	mounted () {
-		// console.log(this.showData, this.charData);
-	},
 };
 </script>

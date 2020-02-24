@@ -116,7 +116,6 @@ export default {
 		},
 		nomPublicRankings () {
 			const po = [].concat(this.category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
-			// console.log(po);
 			const ranking = [];
 			for (let i = 0; i < po.length; i++) {
 				ranking.push(i + 1);
@@ -152,9 +151,6 @@ export default {
 			const index = this.nomPublicOrder.findIndex(nom => nom.id === nominee.id);
 			return this.nomPublicRankings[index];
 		},
-	},
-	mounted () {
-		// console.log(this.category);
 	},
 };
 </script>

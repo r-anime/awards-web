@@ -66,10 +66,10 @@
 							</h3>
 							<p class="is-marginless">
 								<div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
-									<div class="column is-narrow"> <img class="image" :src="publicIcon" /> </div>
-									<div class="column "> Public {{prettifyRank(modalRank)}} ({{(modalNom.percent*100).toFixed(2)}}%) </div>
-									<div class="column is-narrow"> <img class="image" :src="juryIcon" /> </div>
-									<div class="column"> Jury {{prettifyRank(modalNom.jury)}} </div>
+									<div v-if="modalNom.percent > 0" class="column is-narrow"> <img class="image" :src="publicIcon" /> </div>
+									<div v-if="modalNom.percent > 0" class="column "> Public {{prettifyRank(modalRank)}} ({{(modalNom.percent*100).toFixed(2)}}%) </div>
+									<div v-if="modalNom.jury > 0" class="column is-narrow"> <img class="image" :src="juryIcon" /> </div>
+									<div v-if="modalNom.jury > 0" class="column"> Jury {{prettifyRank(modalNom.jury)}} </div>
 								</div>
 							</p>
 							<p class="awardsStaffCredit has-text-llperiwinkle is-size-6" v-html="markdownit(modalNom.staff)">
@@ -199,7 +199,6 @@ export default {
 			return this.showData;
 		},
 		resultSections () {
-			console.log(this.slug);
 			if (this.slug && this.slug !== '' && this.slug !== 'all') {
 				return this.results.sections.filter(section => section.slug === this.slug);
 			}
@@ -208,7 +207,6 @@ export default {
 	},
 	methods: {
 		markdownit (it) {
-			console.log(it);
 			return marked(it);
 		},
 		prettifyRank (n) {
@@ -234,7 +232,6 @@ export default {
 				const dataset = [];
 				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
 				for (const nom of pubnoms) {
-					console.log(nom);
 					if (nom.altname) {
 						labels.push(nom.altname);
 					} else if (category.entryType === 'shows') {
@@ -247,8 +244,6 @@ export default {
 						labels.push(this.results.themes[nom.id].split(/ - /gm)[1]);
 					}
 				}
-
-				console.log(labels, pubnoms);
 
 				this.chartData = {
 					pubnoms,
@@ -357,7 +352,6 @@ export default {
 		});
 		Promise.all([showPromise, charPromise]).then(() => {
 			this.loaded = true;
-			// console.log(this.showData, this.charData);
 		});
 	},
 };
