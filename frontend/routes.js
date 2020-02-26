@@ -36,10 +36,12 @@ const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
 const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
 const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
 
-
-
 export default new VueRouter({
 	mode: 'history',
+	scrollBehavior(to, from, savedPosition) {
+		document.body.scrollTop = 0; // For Safari
+    	document.documentElement.scrollTop = 0;
+	},
 	routes: [
 		// Default layout
 		{
