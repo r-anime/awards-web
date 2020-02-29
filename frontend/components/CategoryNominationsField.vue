@@ -79,7 +79,7 @@
                     <div class="control">
                         <textarea class="textarea" type="text" placeholder="" rows="4" v-model="nom.writeup" @input="emitUpdate"></textarea>
                     </div>
-                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown. Please sanitize tabs and convert Unicode to ASCII.</a></p>
+                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown.</a> Please sanitize tabs and convert Unicode to ASCII.</p>
                 </div>
             </div>
         </div>
