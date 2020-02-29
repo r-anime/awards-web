@@ -35,7 +35,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom}" v-if="modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom && showNom}" v-if="modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="columns is-gapless">
@@ -82,7 +82,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM}" v-if="modalHM">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM && showHM}" v-if="modalHM">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -95,7 +95,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && !modalHM && !modalNom}" v-if="modalCat && !modalHM && !modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && showCat}" v-if="modalCat && !modalHM && !modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -105,13 +105,13 @@
 					<div class="awardsModalBody mt-30" v-html="markdownit(modalCat.blurb)">
 					</div>
 					<h5 class="title is-5 mt-30"> Vote Data </h5>
-					<table class="table is-black-bis " v-if="chartData">
+					<table width="100%" class="table is-black-bis " v-if="chartData">
 						<thead>
 							<tr>
 								<th> Show </th>
 								<th> Votes </th>
 								<th> Watched </th>
-								<th> Support % </th>
+								<th class="is-hidden-mobile"> Support % </th>
 							</tr>
 						</thead>
 						<tbody>
@@ -126,7 +126,7 @@
 								<th>
 									{{chartData.pubnoms[index].finished}}
 								</th>
-								<th>
+								<th class="is-hidden-mobile">
 									{{(chartData.pubnoms[index].support*100).toFixed(2)}}
 								</th>
 							</tr>
@@ -135,9 +135,14 @@
 					<div class="categoryJurors mt-30">
 						<h5 class="title is-5"> Jurors </h5>
 						<div class="tags">
-							<a class="tag has-text-black is-platinum" v-for="(juror, index) in modalCat.jurors" :key="index" :href="'https://reddit.com' + juror">
-								{{juror}}
-							</a>
+							<span class="mr-10" v-for="(juror, index) in modalCat.jurors" :key="index" >
+								<a class="tag has-text-black is-platinum" v-if="typeof juror === 'string'" :href="'https://reddit.com' + juror">
+									{{juror}}
+								</a>
+								<a class="tag has-text-black is-platinum" v-else :href="juror.link">
+									{{juror.name}}
+								</a>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -182,9 +187,12 @@ export default {
 			showIDs: [],
 			charIDs: [],
 			modalNom: null,
+			showNom: false,
 			modalHM: null,
+			showHM: false,
 			modalRank: 883,
 			modalCat: null,
+			showCat: false,
 			chartData: null,
 			juryIcon,
 			publicIcon,
@@ -221,13 +229,17 @@ export default {
 			this.modalNom = nom;
 			this.modalRank = ranking;
 			this.modalCat = category;
+			this.showNom = true;
 		},
 		hmModal (hm, category) {
 			document.documentElement.classList.add('is-clipped');
 			this.modalHM = hm;
 			this.modalCat = category;
 
-			if (!hm) {
+			if (hm) {
+				
+				this.showHM = true;
+			} else {
 				const labels = [];
 				const dataset = [];
 				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
@@ -249,14 +261,18 @@ export default {
 					pubnoms,
 					labels,
 				};
+				this.showCat = true;
 			}
 		},
 		closeModal () {
-			this.modalNom = null;
-			this.modalHM = null;
+			// this.modalNom = null;
+			// this.modalHM = null;
 			this.modalRank = 883;
-			this.modalCat = null;
-			this.chartData = null;
+			// this.modalCat = null;
+			// this.chartData = null;
+			this.showNom = false;
+			this.showCat = false;
+			this.showHM = false;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {

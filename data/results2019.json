@@ -1261,7 +1261,10 @@
         "jurors": [
          "/u/BAmario",
          "/u/rudygnuj",
-         "Acasualviewer",
+         {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+         },
          "/u/ATargetFinderScrub",
          "/u/rusticks",
          "/u/Vektor_",
@@ -1504,7 +1507,10 @@
          "/u/Win32error",
          "/u/sasalx",
          "/u/Scarlett_Horror",
-         "/u/Acasualviewer"
+         {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+         }
         ],
         "blurb": "The Supporting Comedic Characters' Category had a crazy amount of variety this year, ranging from goofy all-stars like *Dumbbells* ' Machio to the more understated and lowkey Ai Hayasaka from *Kaguya-sama*. Thus, one can't deny the sheer scope of the final eight contenders, even more so in their varied roles in their shows and/or support for the MC-kun/MC-chan. As one might expect from such a list, the debate and discussion process of this year's category was quite extensive and intense; indeed, there was even a four way juror tie for our final spot going into the final round. But in the end, after all was said and done, it turned out that the hammy edutainment charm of Machio and his muscles just couldn't land a knockout blow against dry stoicism, as (surprise surprise) *Kaguya-sama* 's Ai Hayasaka managed to barely clean house and claim the top spot for the category. Machio did not go down without a fight however, finishing with a strong second, with Dimple from *Mob Psycho 100 II* at III. In a hilariously fitting result given that she's the ancestor of Shamiko, Lilith managed to demonstrate exactly why Four is Death with her final rank, followed closely afterwards by Yamai from *Joshikousei no Mudazukai* demonstrating that angels DO in fact fall to demons, or at least Doom Blade. It wasn't quite a Hollywood ending for *Non Non Biyori Vacation* 's Aoi Nizato, who finished sixth, with Hanako from *Kemono Michi* 's getting her just deserts at seventh. Finally, last on the list was *Joshikousei no Mudazukai* 's Loli, who got the short end of the stick from the condorcet poll. That said, this year still had some interesting character picks and unique discussion topics, even more so given the focus on the unsung side characters from the many great comedic anime of this year.",
         "table": "",
@@ -1733,7 +1739,10 @@
          "/u/Theleux",
          "/u/awspear",
          "/u/__Mekakucity",
-         "ACasualViewer",
+         {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+         },
          "/u/TheInCredibleLink",
          "/u/krasnovian",
          "/u/Totalenlo",
@@ -3259,7 +3268,7 @@
           "support": 0.1076923076923077,
           "jury": 1,
           "percent": 0.012974976830398516,
-          "writeup": "*Hugtto! Precure* goes about modernizing the standard approach to mahou shoujo themes through the work of visionary director, Junichi Satou, arguably the godfather of modern mahou shoujo. Despite having a rather large main cast of 5, all characters were able to receive valuable development backed by powerful dramatic moments that were able to elevate them to being great characters, most notably Emiru and Ruru. Further, the pertinent social commentary present in this iteration of precure lends itself well to the overall changing landscape of magical girls shows and to society itself with us finally seeing the first male cure (even if only briefly). \n\n\n*Hugtto* takes the time to explore each of its different characters and allows them to be fleshed out via more slice of life episodes. Despite this, *Hugtto* never feels as though it lacks focus, jumping from one fantastic episode to the next, such as the titular mermaid princess episode or the climax of Ruru’s arc, all tied together by the overarching theme of the future.\n\n\nAll of this backed by one of the most stellar productions the Precure franchise has ever seen along with the likes of *Go! Princess Precure* and *Heartcatch Precure*. Featuring prolific veteran animators such as **Masami Mori** and **Kazuhiro Ota**, along with up and coming names like **Koudai Watanabe** and **Itsuki Tsuchigami**.\n\nSimply put, *Hugtto! Precure* excels at everything it sets out to be. It finds itself atop the rankings and is the jury’s Anime of the Year for 2019.",
+          "writeup": "*Hugtto! Precure* goes about modernizing the standard approach to mahou shoujo themes through the work of visionary director, Junichi Satou, arguably the godfather of modern mahou shoujo. Despite having a rather large main cast of 5, all characters were able to receive valuable development backed by powerful dramatic moments that were able to elevate them to being great characters, most notably Emiru and Ruru. Further, the pertinent social commentary present in this iteration of precure lends itself well to the overall changing landscape of magical girls shows and to society itself with us finally seeing the first male cure (even if only briefly). \n\n\n*Hugtto* takes the time to explore each of its different characters and allows them to be fleshed out via more slice of life episodes. Despite this, *Hugtto* never feels as though it lacks focus, jumping from one fantastic episode to the next, such as the titular mermaid princess episode or the climax of Ruru’s arc, all tied together by the overarching theme of the future.\n\n\nAll of this backed by one of the most stellar productions the Precure franchise has ever seen along with the likes of *Go! Princess Precure* and *Heartcatch Precure*. Featuring veteran PreCure animators such as  **Nishiki Itaoka** and **Yuichi Hamano**, along with up-and-coming names like **Kōdai Watanabe** and **Masami Mori**. \n\nSimply put, *Hugtto! Precure* excels at everything it sets out to be. It finds itself atop the rankings and is the jury’s Anime of the Year for 2019.",
           "staff": "Toei Animation\n\nDirected by Junichi Satou"
          },
          {
