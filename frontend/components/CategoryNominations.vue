@@ -54,6 +54,7 @@ export default {
 			// fuck lenlo
 			this.nomdata.push({
 				altName: '',
+				alt_img: '',
 				categoryID: this.category.id,
 				entryType: this.category.entryType,
 				anilistID: -1,
@@ -118,6 +119,7 @@ export default {
 			for (const nom of this.nominations) {
 				this.nomdata.push({
 					altName: nom.alt_name,
+					alt_img: nom.alt_img,
 					categoryID: this.category.id,
 					entryType: this.category.entryType,
 					anilistID: nom.anilist_id,

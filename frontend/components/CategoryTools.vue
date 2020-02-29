@@ -204,13 +204,6 @@ export default {
 					blurb: 'The anime of the year. The greatest of them all. These awards divide each anime from 2018 by format, and the very best among each one was awarded the title of best short, best movie, best original and the coveted best anime of the year.',
 					icon: '',
 					awards: [],
-				},
-				{
-					name: 'Test',
-					slug: 'test',
-					blurb: 'These awards are an experimental attempt to better represent the wide tastes of the community. Each category is one that received support to be included, and each set of rankings were determined independently, so that they may be more easily compared to each other. These shows displayed all-around excellence for their respective disciplines.',
-					icon: '',
-					awards: [],
 				}],
 			};
 			const initialize = new Promise(async (resolve, reject) => {

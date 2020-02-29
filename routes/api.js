@@ -191,6 +191,7 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 					// log.success(nom);
 					db.insertNomination({
 						altName: nom.altName,
+						alt_img: nom.alt_img,
 						categoryID: request.params.id,
 						anilistID: nom.anilistID,
 						themeID: nom.themeID,

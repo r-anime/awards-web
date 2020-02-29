@@ -11,6 +11,13 @@
                     <p class="help">Overrides default name</p>
                 </div>
                 <div class="column is-narrow field">
+                    <label class="label">Alternate Image</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="" v-model="nom.alt_img" @input="emitUpdate">
+                    </div>
+                    <p class="help">Overrides default image/Specify image for OP/ED</p>
+                </div>
+                <div class="column is-narrow field">
                     <label class="label">Show Anilist ID</label>
                     <div class="control">
                         <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilistidfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilistID" @input="emitUpdate">
@@ -43,14 +50,14 @@
                     <p class="help">Leave alone for unshared test cat public noms</p>
                 </div>
                 <div class="column is-narrow field">
-                    <label class="label">Public Vote #</label>
+                    <label class="label">Vote Count</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.publicVotes" @input="emitUpdate">
                     </div>
                     <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
                 <div class="column is-narrow field">
-                    <label class="label">Public Support #</label>
+                    <label class="label">Support Count</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.publicSupport" @input="emitUpdate">
                     </div>
@@ -59,7 +66,7 @@
             </div>
             <div class="columns">
                 <div class="column field">
-                    <label class="label">Staff Credit</label>
+                    <label class="label">Staff Credit (Leave empty for archives)</label>
                     <div class="control">
                         <textarea class="textarea" type="text" placeholder="" rows="1" v-model="nom.staff" @input="emitUpdate"></textarea>
                     </div>
@@ -72,7 +79,7 @@
                     <div class="control">
                         <textarea class="textarea" type="text" placeholder="" rows="4" v-model="nom.writeup" @input="emitUpdate"></textarea>
                     </div>
-                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown</a></p>
+                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown. Please sanitize tabs and convert Unicode to ASCII.</a></p>
                 </div>
             </div>
         </div>
