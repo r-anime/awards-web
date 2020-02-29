@@ -104,14 +104,13 @@ export default {
 			return this.category.entries ? JSON.parse(this.category.entries) : [];
 		},
 		alphathemes () {
-			const sortedthemes = this.themes;
 			function compare (a, b) {
 				const textA = a.title.toUpperCase();
 				const textB = b.title.toUpperCase();
 				// eslint-disable-next-line no-nested-ternary
 				return textA < textB ? -1 : textA > textB ? 1 : 0;
 			}
-			return sortedthemes.sort(compare);
+			return [].concat(this.themes).sort(compare);
 		},
 	},
 };

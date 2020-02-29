@@ -1,5 +1,5 @@
 <template>
-	<div v-if="data!==null">
+	<div v-if="loaded">
 		<form @submit.prevent="saveJurors">
 			<div class="section columns is-multiline">
 				<jurors-field v-for="(juror,index) in items" :key="index"
@@ -32,8 +32,9 @@ export default {
 	},
 	data () {
 		return {
-			items: null,
+			items: [],
 			submitting: false,
+			loaded: false,
 		};
 	},
 	computed: {
@@ -92,7 +93,6 @@ export default {
 			}
 		});
 		getPromise.then(() => {
-			this.items = [];
 			for (const juror of this.jurors) {
 				this.items.push({
 					categoryId: this.category.id,
@@ -101,6 +101,7 @@ export default {
 				});
 			}
 		});
+		this.loaded = true;
 	},
 };
 </script>

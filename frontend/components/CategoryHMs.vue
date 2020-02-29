@@ -1,5 +1,5 @@
 <template>
-	<div v-if="data!==null">
+	<div v-if="loaded">
 		<form @submit.prevent="saveHMs">
 			<div class="section columns is-multiline">
 				<hms-field v-for="(hm,index) in items" :key="index"
@@ -32,8 +32,9 @@ export default {
 	},
 	data () {
 		return {
-			items: null,
+			items: [],
 			submitting: false,
+			loaded: false,
 		};
 	},
 	computed: {
@@ -92,7 +93,6 @@ export default {
 			}
 		});
 		getPromise.then(() => {
-			this.items = [];
 			for (const hm of this.hms) {
 				this.items.push({
 					categoryId: this.category.id,
@@ -101,6 +101,7 @@ export default {
 				});
 			}
 		});
+		this.loaded = true;
 	},
 };
 </script>
