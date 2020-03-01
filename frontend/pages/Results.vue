@@ -35,7 +35,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom && showNom}" v-if="modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom}" v-if="modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="columns is-gapless">
@@ -82,7 +82,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM && showHM}" v-if="modalHM">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM}" v-if="modalHM">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -95,7 +95,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && showCat}" v-if="modalCat && !modalHM && !modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && !modalHM && !modalNom}" v-if="modalCat && !modalHM && !modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -105,13 +105,13 @@
 					<div class="awardsModalBody mt-30" v-html="markdownit(modalCat.blurb)">
 					</div>
 					<h5 class="title is-5 mt-30"> Vote Data </h5>
-					<table width="100%" class="table is-black-bis " v-if="chartData">
+					<table class="table is-black-bis " v-if="chartData">
 						<thead>
 							<tr>
 								<th> Show </th>
 								<th> Votes </th>
 								<th> Watched </th>
-								<th class="is-hidden-mobile"> Support % </th>
+								<th> Support % </th>
 							</tr>
 						</thead>
 						<tbody>
@@ -126,7 +126,7 @@
 								<th>
 									{{chartData.pubnoms[index].finished}}
 								</th>
-								<th class="is-hidden-mobile">
+								<th>
 									{{(chartData.pubnoms[index].support*100).toFixed(2)}}
 								</th>
 							</tr>
@@ -135,14 +135,9 @@
 					<div class="categoryJurors mt-30">
 						<h5 class="title is-5"> Jurors </h5>
 						<div class="tags">
-							<span class="mr-10" v-for="(juror, index) in modalCat.jurors" :key="index" >
-								<a class="tag has-text-black is-platinum" v-if="typeof juror === 'string'" :href="'https://reddit.com' + juror">
-									{{juror}}
-								</a>
-								<a class="tag has-text-black is-platinum" v-else :href="juror.link">
-									{{juror.name}}
-								</a>
-							</span>
+							<a class="tag has-text-black is-platinum" v-for="(juror, index) in modalCat.jurors" :key="index" :href="'https://reddit.com' + juror">
+								{{juror}}
+							</a>
 						</div>
 					</div>
 				</div>
@@ -156,8 +151,6 @@
 // eslint-disable vue/no-parsing-error*/
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
-
-
 import data2018 from '../../data/results2018.json';
 import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';
@@ -167,10 +160,7 @@ import juryIcon from '../../img/jury.png';
 import publicIcon from '../../img/public.png';
 import logo from '../../img/awards2019.png';
 import marked from 'marked';
-
-
 const aq = require('../anilistQueries');
-
 export default {
 	props: ['slug'],
 	components: {
@@ -187,12 +177,9 @@ export default {
 			showIDs: [],
 			charIDs: [],
 			modalNom: null,
-			showNom: false,
 			modalHM: null,
-			showHM: false,
 			modalRank: 883,
 			modalCat: null,
-			showCat: false,
 			chartData: null,
 			juryIcon,
 			publicIcon,
@@ -229,17 +216,12 @@ export default {
 			this.modalNom = nom;
 			this.modalRank = ranking;
 			this.modalCat = category;
-			this.showNom = true;
 		},
 		hmModal (hm, category) {
 			document.documentElement.classList.add('is-clipped');
 			this.modalHM = hm;
 			this.modalCat = category;
-
-			if (hm) {
-				
-				this.showHM = true;
-			} else {
+			if (!hm) {
 				const labels = [];
 				const dataset = [];
 				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
@@ -256,23 +238,18 @@ export default {
 						labels.push(this.results.themes[nom.id].split(/ - /gm)[1]);
 					}
 				}
-
 				this.chartData = {
 					pubnoms,
 					labels,
 				};
-				this.showCat = true;
 			}
 		},
 		closeModal () {
-			// this.modalNom = null;
-			// this.modalHM = null;
+			this.modalNom = null;
+			this.modalHM = null;
 			this.modalRank = 883;
-			// this.modalCat = null;
-			// this.chartData = null;
-			this.showNom = false;
-			this.showCat = false;
-			this.showHM = false;
+			this.modalCat = null;
+			this.chartData = null;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {

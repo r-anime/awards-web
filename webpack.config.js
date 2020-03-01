@@ -37,13 +37,6 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.bundle\.js$/,
-				loader: 'bundle-loader',
-				options: {
-					lazy: true,
-				},
-			},
-			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
 			},
@@ -73,10 +66,12 @@ module.exports = {
 				test: /\.js$/,
 				use: {
 					loader: 'babel-loader',
+					// Need presets for safari, edge and IE but that's insanely hard for some reason
 					options: {
 						plugins: [
 							'@babel/plugin-syntax-dynamic-import',
-						], // Need presets for safari, edge and IE but that's insanely hard for some reason
+						],
+						cacheDirectory: true,
 					},
 				},
 				exclude: /node_modules/,
@@ -89,6 +84,9 @@ module.exports = {
 						options: {
 							name: '[name][hash].[ext]',
 						},
+					},
+					{
+						loader: 'cache-loader',
 					},
 				],
 			},
