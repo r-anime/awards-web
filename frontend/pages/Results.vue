@@ -95,7 +95,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && showCat}" v-if="modalCat && !modalHM && !modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && showCat}" v-if="modalCat">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -237,7 +237,6 @@ export default {
 			this.modalCat = category;
 
 			if (hm) {
-				
 				this.showHM = true;
 			} else {
 				const labels = [];
