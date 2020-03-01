@@ -264,6 +264,11 @@ export default {
 			}
 		},
 		closeModal () {
+			const modalels = document.getElementsByClassName('awardsModal');
+			[].forEach.call(modalels, el => {
+				// console.log(el);
+				el.scrollTop = 0;
+			});
 			// this.modalNom = null;
 			// this.modalHM = null;
 			this.modalRank = 883;
