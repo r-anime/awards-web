@@ -15,9 +15,6 @@
 			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'ed'}"
 			:disabled="submitting && submitType != 'ed'" @click="submitCreateThemes('ed')">Import EDs</button>
 
-			<button class="button is-primary" :class="{'is-loading' : submitting && submitType == 'ost'}"
-			:disabled="submitting && submitType != 'ost'" @click="submitCreateThemes('ost')">Import OSTs</button>
-
 			<!--This too tbh-->
 
 			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'op'}"
@@ -25,9 +22,7 @@
 
 			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'ed'}"
 			:disabled="deleting && deleteType != 'ed'" @click="submitDeleteThemes('ed')">Delete EDs</button>
-			<button class="button is-danger" :class="{'is-loading' : deleting && deleteType == 'ost'}"
-			:disabled="deleting && deleteType != 'ost'" @click="submitDeleteThemes('ost')">Delete OSTs</button>
-			<h2 class="title is-6">Themes are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs/OSTs before re-importing to avoid duplicates.</h2>
+			<h2 class="title is-6">Themes are only meant to be imported once. After importing, they will become available across all categories. Delete all OP/EDs before re-importing to avoid duplicates.</h2>
 		</div>
 		<div class="buttons">
 			<button class="button is-success" :class="{'is-loading' : generating}" @click="generateJSON">Generate JSON</button>
@@ -108,9 +103,6 @@ export default {
 					case 'ed':
 						this.submitType = 'ed';
 						break;
-					case 'ost':
-						this.submitType = 'ost';
-						break;
 					default:
 						this.submitType = '';
 				}
@@ -121,9 +113,6 @@ export default {
 						break;
 					case 'ed':
 						this.deleteType = 'ed';
-						break;
-					case 'ost':
-						this.deleteType = 'ost';
 						break;
 					default:
 						this.deleteType = '';

@@ -31,6 +31,7 @@ const CategoryJurors = () => import(/* webpackChunkName: "host" */ './components
 const CategoryHMs = () => import(/* webpackChunkName: "host" */ './components/CategoryHMs');
 const CategoryInfo = () => import(/* webpackChunkName: "host" */ './components/CategoryInfo');
 const CategoryTools = () => import(/* webpackChunkName: "host" */ './components/CategoryTools');
+const AdminPanel = () => import(/* webpackChunkName: "host" */ './pages/host/AdminPanel');
 
 const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
 const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
@@ -175,6 +176,13 @@ export default new VueRouter({
 					component: Users,
 					meta: {
 						title: 'Users',
+					},
+				},
+				{
+					path: 'admin',
+					component: AdminPanel,
+					meta: {
+						title: 'Admin Panel',
 					},
 				},
 				{
