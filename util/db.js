@@ -52,6 +52,10 @@ const getOPEDTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `votes`.
 const getVoteUserCountQuery = db.prepare('SELECT COUNT(DISTINCT `reddit_user`) as `count` FROM `votes`');
 const getAllVotesQuery = db.prepare('SELECT * FROM votes');
 
+const wipeNominationsQuery = db.prepare('DELETE from nominations');
+const wipeHMsQuery = db.prepare('DELETE from honorable_mentions');
+const wipeJurorsQuery = db.prepare('DELETE from jurors');
+
 // Purely for debugging and data purging reasons
 const deleteAllVotesQuery = db.prepare('DELETE FROM votes');
 
@@ -104,4 +108,8 @@ module.exports = {
 	insertHM: insertHMQuery.run.bind(insertHMQuery),
 	deactivateHMsByCategory: deactivateHMsByCategoryQuery.run.bind(deactivateHMsByCategoryQuery),
 	getAllHMs: getAllHMsQuery.all.bind(getAllHMsQuery),
+
+	wipeNominations: wipeNominationsQuery.run.bind(wipeNominationsQuery),
+	wipeHMs: wipeHMsQuery.run.bind(wipeHMsQuery),
+	wipeJurors: wipeJurorsQuery.run.bind(wipeJurorsQuery),
 };

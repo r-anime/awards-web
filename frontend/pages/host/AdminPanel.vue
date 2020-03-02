@@ -86,7 +86,13 @@ export default {
 			'getThemes',
 			'getAllJurors',
 			'getAllHMs',
+			'wipeNoms',
 		]),
+		async wipeTables () {
+			this.wiping = true;
+			await this.wipeNoms();
+			this.wiping = false;
+		},
 		disableButtons (type, action) {
 			if (action === 'create') {
 				switch (type) {

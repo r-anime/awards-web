@@ -385,6 +385,13 @@ apiApp.get('/categories/hms', (request, response) => {
 	}
 });
 
+apiApp.delete('/categories/wipeNominations', async (request, response) => {
+	if (!await request.authenticate({level: 4})) {
+		return response.json(401, {error: 'You must be an admin to delete nominations data.'});
+	}
+	Promise.all([db.wipeNominations(), db.wipeJurors(), db.wipeHMs()]).then(() => response.empty(), error => response.error(error));
+});
+
 apiApp.post('/themes/create', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to modify themes'});
