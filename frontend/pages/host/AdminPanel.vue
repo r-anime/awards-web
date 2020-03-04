@@ -200,6 +200,9 @@ export default {
 					if (!this.themes) {
 						await this.getThemes();
 					}
+					if (!this.categories) {
+						await this.getCategories();
+					}
 					await this.getAllJurors();
 					await this.getAllHMs();
 					resolve();
