@@ -265,6 +265,7 @@ export default {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}
 					for (const char of allChars) {
+						console.log(data.characters[`${char.id}`]);
 						data.characters[`${char.id}`] = {
 							name: char.name.full,
 							anime: char.media.nodes[0].title.romaji,
