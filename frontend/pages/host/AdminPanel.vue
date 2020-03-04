@@ -222,6 +222,7 @@ export default {
 						anime.push(nom.anilist_id);
 					}
 				}
+				console.log(chars);
 				const showPromise = new Promise(async (resolve, reject) => {
 					try {
 						let showData = [];
@@ -261,11 +262,11 @@ export default {
 				Promise.all([showPromise, charPromise]).then(anilistData => {
 					const allAnime = anilistData[0];
 					const allChars = anilistData[1];
+					console.log(allChars);
 					for (const show of allAnime) {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}
 					for (const char of allChars) {
-						console.log(data.characters[`${char.id}`]);
 						data.characters[`${char.id}`] = {
 							name: char.name.full,
 							anime: char.media.nodes[0].title.romaji,
