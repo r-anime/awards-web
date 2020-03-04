@@ -68,7 +68,7 @@
             <h4 class="categoryHeader title has-text-light has-flaired-underline-thin pb-20">Honorable Mentions</h4>
             <ul>
 				<li v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">
-					<div class="has-text-centered mb-30" @click="emitCatModal">
+					<div class="has-text-centered mb-30">
 						<div>{{hm.name}}</div>
 						<button class="button is-small is-llperiwinkle is-outlined mt-10">
 							<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
@@ -142,7 +142,7 @@ export default {
 			this.$emit('hmModal', hm, this.category);
 		},
 		emitCatModal () {
-			this.$emit('catModal', this.category);
+			this.$emit('hmModal', null, this.category);
 		},
 		markdownit (writeup) {
 			return marked(writeup);

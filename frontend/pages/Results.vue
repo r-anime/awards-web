@@ -232,13 +232,11 @@ export default {
 			this.showNom = true;
 		},
 		hmModal (hm, category) {
+			console.log(hm, category);
 			document.documentElement.classList.add('is-clipped');
-			this.modalHM = hm;
 			this.modalCat = category;
 
-			if (hm) {
-				this.showHM = true;
-			} else {
+			if (hm === null) {
 				const labels = [];
 				const dataset = [];
 				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
@@ -261,6 +259,9 @@ export default {
 					labels,
 				};
 				this.showCat = true;
+			} else {
+				this.modalHM = hm;
+				this.showHM = true;
 			}
 		},
 		closeModal () {
