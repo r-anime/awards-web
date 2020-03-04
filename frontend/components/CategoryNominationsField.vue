@@ -66,7 +66,7 @@
             </div>
             <div class="columns">
                 <div class="column field">
-                    <label class="label">Staff Credit (Leave empty for archives)</label>
+                    <label class="label">Staff Credit</label>
                     <div class="control">
                         <textarea class="textarea" type="text" placeholder="" rows="1" v-model="nom.staff" @input="emitUpdate"></textarea>
                     </div>
