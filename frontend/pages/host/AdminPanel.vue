@@ -213,16 +213,15 @@ export default {
 			initialize.then(() => {
 				for (const nom of this.allNoms) {
 					if (nom.entry_type === 'shows') {
-						anime.push(nom.anilist_id);
+						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
 					} else if (nom.entry_type === 'themes') {
-						themes.push(nom.theme_id);
-						anime.push(nom.anilist_id);
+						if (nom.theme_id !== '') themes.push(nom.theme_id);
+						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
 					} else {
-						chars.push(nom.character_id);
-						anime.push(nom.anilist_id);
+						if (nom.character_id !== '') chars.push(nom.character_id);
+						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
 					}
 				}
-				console.log(chars);
 				const showPromise = new Promise(async (resolve, reject) => {
 					try {
 						let showData = [];
@@ -262,16 +261,16 @@ export default {
 				Promise.all([showPromise, charPromise]).then(anilistData => {
 					const allAnime = anilistData[0];
 					const allChars = anilistData[1];
-					console.log(allChars);
 					for (const show of allAnime) {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}
 					for (const char of allChars) {
-						console.log(char);
+						let va = '';
+						if (char.media.edges[0].voiceActors[0]) va = char.media.edges[0].voiceActors[0];
 						data.characters[`${char.id}`] = {
 							name: char.name.full,
 							anime: char.media.nodes[0].title.romaji,
-							va: char.media.edges[0].voiceActors[0].name.full,
+							va,
 						};
 					}
 					for (const theme of themes) {
