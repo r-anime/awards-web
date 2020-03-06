@@ -70,7 +70,7 @@
 				<li v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">
 					<div class="has-text-centered mb-30">
 						<div>{{hm.name}}</div>
-						<button class="button is-small is-llperiwinkle is-outlined mt-10">
+						<button v-if="hm.writeup !== ''" class="button is-small is-llperiwinkle is-outlined mt-10">
 							<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
 							More Information
 						</button>

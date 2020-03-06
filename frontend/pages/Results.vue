@@ -260,6 +260,7 @@ export default {
 				};
 				this.showCat = true;
 			} else {
+				if (hm.writeup === '') return;
 				this.modalHM = hm;
 				this.showHM = true;
 			}
