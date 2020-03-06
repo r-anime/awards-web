@@ -296,7 +296,7 @@ export default {
 								nominees.push({
 									id,
 									altname: nom.alt_name,
-									altimg: '',
+									altimg: nom.alt_img,
 									public: nom.votes,
 									finished: nom.finished,
 									support: nom.votes / nom.finished,
