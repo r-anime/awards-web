@@ -313,7 +313,6 @@ export default {
 								entryType: cat.entryType,
 								jurors,
 								blurb: '',
-								table: '',
 								nominees,
 								hms: this.hms.filter(hm => hm.category_id === cat.id),
 							});
