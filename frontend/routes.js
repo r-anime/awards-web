@@ -18,6 +18,8 @@ const Profile = () => import(/* webpackChunkName: "host" */ './pages/Profile');
 const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
 const ResultsContainer = () => import(/* webpackChunkName: "core" */ './pages/ResultsContainer');
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
+const Archive = () => import(/* webpackChunkName: "core" */ './pages/Archive');
+const ArchiveLanding = () => import(/* webpackChunkName: "core" */ './pages/ArchiveLanding');
 
 const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
 const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
@@ -47,9 +49,9 @@ export default new VueRouter({
 		// Default layout
 		{
 			path: '/',
-			component: ResultLayout, // when the home component is redesigned, this component will be changed to home
+			component: ResultLayout,
 			children: [
-				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
+				{path: '', component: Home},
 				{path: 'thanks', component: About},
 				{
 					path: 'results',
@@ -65,6 +67,21 @@ export default new VueRouter({
 				},
 				{path: '/acknowledgements', component: Acknowledgements},
 				{path: '/about', component: About},
+				{
+					path: '/archive',
+					component: Archive,
+					children: [
+						{
+							path: '',
+							component: ArchiveLanding,
+						},
+						{
+							path: ':year',
+							component: ResultsPage,
+							props: true,
+						},
+					]
+				},
 			],
 		},
 		// login for hosts
