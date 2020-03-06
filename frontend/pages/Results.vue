@@ -153,13 +153,7 @@
 </template>
 
 <script>
-// eslint-disable vue/no-parsing-error*/
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
-
-
-import data2018 from '../../data/results2018.json';
-import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';
 import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
@@ -172,7 +166,7 @@ import marked from 'marked';
 const aq = require('../anilistQueries');
 
 export default {
-	props: ['slug'],
+	props: ['slug', 'year'],
 	components: {
 		AwardsSection,
 		ItemImage,
@@ -180,7 +174,7 @@ export default {
 	},
 	data () {
 		return {
-			results: data2019,
+			results: null,
 			loaded: false,
 			showData: [],
 			charData: [],
@@ -238,7 +232,6 @@ export default {
 
 			if (hm === null) {
 				const labels = [];
-				const dataset = [];
 				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
 				for (const nom of pubnoms) {
 					if (nom.altname) {
@@ -337,42 +330,46 @@ export default {
 		},
 	},
 	mounted () {
-		for (const show in this.results.anime) {
-			this.showIDs.push(show);
-		}
-		for (const char in this.results.characters) {
-			this.charIDs.push(char);
-		}
-		const showPromise = new Promise(async (resolve, reject) => {
-			try {
-				let lastPage = false;
-				let page = 1;
-				while (!lastPage) {
-					const returnData = await this.fetchShows(page, this.showIDs);
-					lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-					page++;
-				}
-				resolve();
-			} catch (err) {
-				reject(err);
+		console.log(this.year);
+		import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+			this.results = Object.assign({}, data);
+			for (const show in this.results.anime) {
+				this.showIDs.push(show);
 			}
-		});
-		const charPromise = new Promise(async (resolve, reject) => {
-			try {
-				let lastPage = false;
-				let page = 1;
-				while (!lastPage) {
-					const returnData = await this.fetchChars(page, this.charIDs);
-					lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-					page++;
-				}
-				resolve();
-			} catch (err) {
-				reject(err);
+			for (const char in this.results.characters) {
+				this.charIDs.push(char);
 			}
-		});
-		Promise.all([showPromise, charPromise]).then(() => {
-			this.loaded = true;
+			const showPromise = new Promise(async (resolve, reject) => {
+				try {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						const returnData = await this.fetchShows(page, this.showIDs);
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			const charPromise = new Promise(async (resolve, reject) => {
+				try {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						const returnData = await this.fetchChars(page, this.charIDs);
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			Promise.all([showPromise, charPromise]).then(() => {
+				this.loaded = true;
+			});
 		});
 	},
 };
