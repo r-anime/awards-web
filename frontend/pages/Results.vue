@@ -159,7 +159,10 @@ import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
 import juryIcon from '../../img/jury.png';
 import publicIcon from '../../img/public.png';
-import logo from '../../img/awards2019.png';
+import logo19 from '../../img/awards2019.png';
+import logo18 from '../../img/awards2018.png';
+import logo17 from '../../img/awards2017.png';
+import logo16 from '../../img/awards2016.png';
 import marked from 'marked';
 
 
@@ -190,7 +193,6 @@ export default {
 			chartData: null,
 			juryIcon,
 			publicIcon,
-			logo,
 		};
 	},
 	computed: {
@@ -205,6 +207,20 @@ export default {
 				return this.results.sections.filter(section => section.slug === this.slug);
 			}
 			return this.results.sections;
+		},
+		logo () {
+			switch (this.year) {
+				case undefined:
+					return logo19;
+				case '2018':
+					return logo18;
+				case '2017':
+					return logo17;
+				case '2016':
+					return logo16;
+				default:
+					return '';
+			}
 		},
 	},
 	methods: {
