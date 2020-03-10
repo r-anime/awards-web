@@ -30,7 +30,7 @@
    "99366": "Chio-chan no Tsuugakuro",
    "99423": "Darling in the Franxx",
    "99424": "SSSS.GRIDMAN",
-   "99426": "Sora yori mo Tooi Basho",
+   "99426": "A Place Further than the Universe",
    "99457": "Sayonara no Asa ni Yakusoku no Hana wo Kazarou",
    "99468": "Karakai Jouzu no Takagi-san",
    "99578": "Wotaku ni Koi wa Muzukashii",
@@ -44,7 +44,7 @@
    "100077": "Hinamatsuri",
    "100093": "Gaikotsu Shotenin Honda-san",
    "100166": "Boku no Hero Academia 3",
-   "100178": "Liz to Aoi Tori",
+   "100178": "Liz and the Blue Bird",
    "100183": "Sword Art Online Alternative: Gun Gale Online",
    "100298": "Megalo Box",
    "100332": "Kokkoku",
@@ -58,7 +58,7 @@
    "101045": "Hanebado!",
    "101117": "Free!: Dive to the Future",
    "101165": "Goblin Slayer",
-   "101291": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+   "101291": "Bunny Girl Senpai",
    "101316": "Irozuku Sekai no Ashita kara",
    "101351": "Happy Sugar Life",
    "101360": "Akanesasu Shoujo",
@@ -118,7 +118,7 @@
    },
    "120724": {
     "name": "Nozomi Kasaki",
-    "anime": "Liz to Aoi Tori",
+    "anime": "Liz and the Blue Bird",
     "va": "Nao Touyama"
    },
    "122190": {
@@ -198,7 +198,7 @@
    },
    "125960": {
     "name": "Mizore Yoroizuka",
-    "anime": "Liz to Aoi Tori",
+    "anime": "Liz and the Blue Bird",
     "va": "Atsumi Tanezaki"
    },
    "126303": {
@@ -223,12 +223,12 @@
    },
    "127221": {
     "name": "Sakuta Azusagawa",
-    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+    "anime": "Bunny Girl Senpai",
     "va": "Kaito Ishikawa"
    },
    "127222": {
     "name": "Mai Sakurajima",
-    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+    "anime": "Bunny Girl Senpai",
     "va": "Asami Seto"
    },
    "127443": {
@@ -253,12 +253,12 @@
    },
    "127613": {
     "name": "Kaede Azusagawa",
-    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+    "anime": "Bunny Girl Senpai",
     "va": "Yurika Kubo"
    },
    "127633": {
     "name": "Rio Futaba",
-    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
+    "anime": "Bunny Girl Senpai",
     "va": "Atsumi Tanezaki"
    },
    "127650": {
@@ -278,7 +278,7 @@
    },
    "129090": {
     "name": "Ririka Kenzaki",
-    "anime": "Liz to Aoi Tori",
+    "anime": "Liz and the Blue Bird",
     "va": "Shiori Sugiura"
    },
    "132707": {
@@ -310,7 +310,7 @@
    "2519": "HisoMaso ED1 - Le temps de la rentree",
    "2520": "Steins;Gate 0 ED2 - Last Game",
    "2521": "Yuru Camp△ ED1 - Fuyu Biyori",
-   "2522": "Attack on Titan S3 ED1 - Akatsuki no Chinkonka",
+   "2522": "Shingeki no Kyojin S3 ED1 - Akatsuki no Chinkonka",
    "2523": "Cardcaptor Sakura: Clear Card ED1 - Jewelry",
    "2524": "FLCL Alternative ED1 - Star Overhead"
   },
@@ -400,7 +400,7 @@
        },
        {
         "id": 99147,
-        "altname": "Attack on Titan 3",
+        "altname": "Shingeki no Kyojin 3",
         "altimg": "",
         "public": 639,
         "finished": 1703,
@@ -620,7 +620,7 @@
        },
        {
         "id": 98034,
-        "altname": " The Disastrous Life of Saiki K. 2",
+        "altname": "",
         "altimg": "",
         "public": 320,
         "finished": 1216,
@@ -1679,7 +1679,7 @@
       "nominees": [
        {
         "id": 98034,
-        "altname": "The Disastrous Life of Saiki K. 2",
+        "altname": "",
         "altimg": "",
         "public": 73,
         "finished": 493,
@@ -1863,7 +1863,7 @@
        },
        {
         "id": 99147,
-        "altname": "Attack on Titan 3",
+        "altname": "Shingeki no Kyojin 3",
         "altimg": "https://i.imgur.com/nTw5DKe.jpg",
         "public": 171,
         "finished": 971,
@@ -2166,7 +2166,7 @@
        {
         "id": 97,
         "category_id": 26,
-        "name": "Attack on Titan 3 - Levi's Alley Chase (Ep. 2)",
+        "name": "Shingeki no Kyojin 3 - Levi's Alley Chase (Ep. 2)",
         "writeup": "",
         "active": 1
        },
@@ -2988,7 +2988,7 @@
        {
         "id": 103,
         "category_id": 33,
-        "name": "Shiori Mikami as Krista Lenz (Attack on Titan S3 Ep. 7)",
+        "name": "Shiori Mikami as Krista Lenz (Shingeki no Kyojin S3 Ep. 7)",
         "writeup": "",
         "active": 1
        },
