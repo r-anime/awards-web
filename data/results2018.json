@@ -10,9 +10,9 @@
    "21833": "Haikara-san ga Tooru Movie: Benio, Hana no 17-sai",
    "21875": "No Game No Life -Zero-",
    "97768": "Grancrest Senki",
-   "97881": "Cardcaptor Sakura: Clear Card-hen",
+   "97881": "CCS: Clear Card-hen",
    "98034": "Saiki Kusuo no Ψ Nan 2",
-   "98385": "Koi wa Ameagari no You ni",
+   "98385": "After the Rain",
    "98389": "Killing Bites",
    "98436": "Mahoutsukai no Yome",
    "98437": "Overlord II",
@@ -128,7 +128,7 @@
    },
    "122213": {
     "name": "Masami Kondou",
-    "anime": "Koi wa Ameagari no You ni",
+    "anime": "After the Rain",
     "va": "Hiroaki Hirata"
    },
    "123182": {
@@ -138,17 +138,17 @@
    },
    "124546": {
     "name": "Shirase Kobuchizawa",
-    "anime": "Sora yori mo Tooi Basho",
+    "anime": "A Place Further than the Universe",
     "va": "Kana Hanazawa"
    },
    "124547": {
     "name": "Hinata Miyake",
-    "anime": "Sora yori mo Tooi Basho",
+    "anime": "A Place Further than the Universe",
     "va": "Yuka Iguchi"
    },
    "124554": {
     "name": "Gin Toudou",
-    "anime": "Sora yori mo Tooi Basho",
+    "anime": "A Place Further than the Universe",
     "va": "Mamiko Noto"
    },
    "124586": {
@@ -178,7 +178,7 @@
    },
    "125638": {
     "name": "Retsuko",
-    "anime": "Aggressive Retsuko (ONA)",
+    "anime": "Aggressive Retsuko",
     "va": "Rarecho"
    },
    "125858": {
@@ -298,14 +298,14 @@
    "2487": "Darling in the Franxx OP2 - Kiss of Death",
    "2488": "AoButa OP1 - Kimi no Sei",
    "2489": "Yuru Camp△ OP1 - Shiny Days",
-   "2490": "Sora Yori OP1 - The Girls Are Alright",
+   "2490": "A Place Further than the Universe OP1 - The Girls Are Alright",
    "2491": "Pop Team Epic OP2 - Pop Team Epic",
    "2492": "Hanebado OP1 - Futari no Hane",
    "2493": "KoiAme OP1 - Nostalgic Rainfall",
    "2494": "Happy Sugar Life OP1 - One Room Sugar Life",
    "2515": "Asobi Asobase ED1 - Inkya Impulse",
    "2516": "AoButa ED1 - Fukashigi no Karte",
-   "2517": "Sora Yori ED1 - Koko kara, Koko kara",
+   "2517": "A Place Further than the Universe ED1 - Koko kara, Koko kara",
    "2518": "3-gatsu no Lion 2 ED2 - I Am Standing",
    "2519": "HisoMaso ED1 - Le temps de la rentree",
    "2520": "Steins;Gate 0 ED2 - Last Game",
@@ -3126,7 +3126,7 @@
        {
         "id": 84,
         "category_id": 37,
-        "name": "Koi wa Ameagari no You ni - Ref:rain (Instrumental) (Ep. 7)",
+        "name": "After the Rain - Ref:rain (Instrumental) (Ep. 7)",
         "writeup": "",
         "active": 1
        },
@@ -3207,7 +3207,7 @@
        },
        {
         "id": 101571,
-        "altname": "Aggressive Retsuko (Netflix)",
+        "altname": "",
         "altimg": "",
         "public": 41,
         "finished": 199,
@@ -3219,7 +3219,7 @@
        },
        {
         "id": 21726,
-        "altname": "Aggressive Retsuko (Original)",
+        "altname": "",
         "altimg": "",
         "public": 54,
         "finished": 181,

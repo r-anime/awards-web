@@ -58,7 +58,7 @@
 									({{results.characters[modalNom.id].anime}})
 								</span>
 								<span v-if="modalCat.entryType==='vas'">
-									({{results.characters[modalNom.id].name}})
+									({{results.characters[modalNom.id].va}})
 								</span>
 								<span v-if="modalCat.entryType==='themes'">
 									({{results.themes[modalNom.id].split(/ - /gm)[0]}})
