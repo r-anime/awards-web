@@ -78,17 +78,17 @@
    },
    "24312": {
     "name": "Hinata Kawamoto",
-    "anime": "3-gatsu no Lion 2",
+    "anime": "3-gatsu no Lion",
     "va": "Kana Hanazawa"
    },
    "88892": {
     "name": "Katsuki Bakugou",
-    "anime": "Boku no Hero Academia the Movie: Heroes Rising",
+    "anime": "Boku no Hero Academia 3",
     "va": "Nobuhiko Okamoto"
    },
    "89224": {
     "name": "Toshinori Yagi",
-    "anime": "Boku no Hero Academia the Movie: Heroes Rising",
+    "anime": "Boku no Hero Academia 3",
     "va": "Kenta Miyake"
    },
    "89228": {
@@ -103,17 +103,17 @@
    },
    "90107": {
     "name": "Kusuo Saiki",
-    "anime": "Saiki Kusuo no Ψ-nan: Shidou-hen",
+    "anime": "Saiki Kusuo no Ψ-nan 2",
     "va": "Hiroshi Kamiya"
    },
    "90109": {
     "name": "Kokomi Teruhashi",
-    "anime": "Saiki Kusuo no Ψ-nan: Shidou-hen",
+    "anime": "Saiki Kusuo no Ψ-nan 2",
     "va": "Ai Kayano"
    },
    "90169": {
     "name": "Violet Evergarden",
-    "anime": "Violet Evergarden Movie",
+    "anime": "Violet Evergarden",
     "va": "Yui Ishikawa"
    },
    "120724": {
@@ -123,7 +123,7 @@
    },
    "122190": {
     "name": "Narumi Momose",
-    "anime": "Wotaku ni Koi wa Muzukashii OVA",
+    "anime": "Wotaku ni Koi wa Muzukashii",
     "va": "Arisa Date"
    },
    "122213": {
@@ -153,7 +153,7 @@
    },
    "124586": {
     "name": "Rin Shima",
-    "anime": "Heya Camp△: Sauna to Gohan to Miwa Baiku",
+    "anime": "Yuru Camp△",
     "va": "Nao Touyama"
    },
    "125014": {
@@ -173,12 +173,12 @@
    },
    "125442": {
     "name": "Tokushirou Tsurumi",
-    "anime": "Golden Kamuy 2",
+    "anime": "Golden Kamuy",
     "va": "Houchuu Ootsuka"
    },
    "125638": {
     "name": "Retsuko",
-    "anime": "Aggressive Retsuko (ONA) Season 2",
+    "anime": "Aggressive Retsuko (ONA)",
     "va": "Rarecho"
    },
    "125858": {
@@ -193,7 +193,7 @@
    },
    "125956": {
     "name": "All For One",
-    "anime": "Boku no Hero Academia the Movie: Futari no Hero Specials",
+    "anime": "Boku no Hero Academia 3",
     "va": "Akio Ootsuka"
    },
    "125960": {
@@ -208,12 +208,12 @@
    },
    "126452": {
     "name": "Hanako Honda",
-    "anime": "Asobi Asobase OVA",
+    "anime": "Asobi Asobase",
     "va": "Hina Kino"
    },
    "126507": {
     "name": "Mikoto Aiura",
-    "anime": "Saiki Kusuo no Ψ-nan: Kanketsu-hen",
+    "anime": "Saiki Kusuo no Ψ-nan 2",
     "va": "Eri Kitamura"
    },
    "126953": {
@@ -223,17 +223,17 @@
    },
    "127221": {
     "name": "Sakuta Azusagawa",
-    "anime": "Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai Movie",
+    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
     "va": "Kaito Ishikawa"
    },
    "127222": {
     "name": "Mai Sakurajima",
-    "anime": "Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai Movie",
+    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
     "va": "Asami Seto"
    },
    "127443": {
     "name": "Kenny Ackerman",
-    "anime": "Shingeki no Kyojin 3 Part 2",
+    "anime": "Shingeki no Kyojin 3",
     "va": "Kazuhiro Yamaji"
    },
    "127543": {
@@ -253,12 +253,12 @@
    },
    "127613": {
     "name": "Kaede Azusagawa",
-    "anime": "Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai Movie",
+    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
     "va": "Yurika Kubo"
    },
    "127633": {
     "name": "Rio Futaba",
-    "anime": "Seishun Buta Yarou wa Yumemiru Shoujo no Yume wo Minai Movie",
+    "anime": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
     "va": "Atsumi Tanezaki"
    },
    "127650": {
@@ -268,22 +268,22 @@
    },
    "127808": {
     "name": "Koharu Hidaka",
-    "anime": "High Score Girl II",
+    "anime": "High Score Girl",
     "va": "Yuuki Hirose"
    },
    "128020": {
     "name": "Honda",
-    "anime": "Gaikotsu Shotenin Honda-san OVA",
+    "anime": "Gaikotsu Shotenin Honda-san",
     "va": "Souma Saitou"
    },
    "129090": {
     "name": "Ririka Kenzaki",
-    "anime": "Hibike! Euphonium Movie: Chikai no Finale",
+    "anime": "Liz to Aoi Tori",
     "va": "Shiori Sugiura"
    },
    "132707": {
     "name": "Sakutarou Yanagihara",
-    "anime": "3-gatsu no Lion 2",
+    "anime": "3-gatsu no Lion",
     "va": "Houchuu Ootsuka"
    },
    "132720": {
@@ -1160,7 +1160,7 @@
        },
        {
         "id": 127222,
-        "altname": "Sakuta Azusagawa",
+        "altname": "",
         "altimg": "https://s4.anilist.co/file/anilistcdn/character/large/b127222-IY5iDRuXLY8i.png",
         "public": 138,
         "finished": 1121,
@@ -1172,7 +1172,7 @@
        },
        {
         "id": 127221,
-        "altname": "Mai Sakurajima",
+        "altname": "",
         "altimg": "https://s4.anilist.co/file/anilistcdn/character/large/n127221-Wxg4xFtW4kaJ.png",
         "public": 242,
         "finished": 1121,
