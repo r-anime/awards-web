@@ -10,7 +10,7 @@
    "21833": "Haikara-san ga Tooru Movie: Benio, Hana no 17-sai",
    "21875": "No Game No Life -Zero-",
    "97768": "Grancrest Senki",
-   "97881": "CCS: Clear Card-hen",
+   "97881": "Cardcaptor Sakura: Clear Card-hen",
    "98034": "Saiki Kusuo no Ψ Nan 2",
    "98385": "After the Rain",
    "98389": "Killing Bites",
@@ -896,7 +896,7 @@
        },
        {
         "id": 97881,
-        "altname": "CCS: Clear Card",
+        "altname": "",
         "altimg": "",
         "public": 28,
         "finished": 342,
@@ -3517,7 +3517,7 @@
       "nominees": [
        {
         "id": 97881,
-        "altname": "CCS: Clear Card",
+        "altname": "",
         "altimg": "",
         "public": 11,
         "finished": 348,
