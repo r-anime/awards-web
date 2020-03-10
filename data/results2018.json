@@ -78,7 +78,7 @@
    },
    "24312": {
     "name": "Hinata Kawamoto",
-    "anime": "3-gatsu no Lion",
+    "anime": "3-gatsu no Lion 2",
     "va": "Kana Hanazawa"
    },
    "88892": {
@@ -283,7 +283,7 @@
    },
    "132707": {
     "name": "Sakutarou Yanagihara",
-    "anime": "3-gatsu no Lion",
+    "anime": "3-gatsu no Lion 2",
     "va": "Houchuu Ootsuka"
    },
    "132720": {
@@ -2850,7 +2850,7 @@
        {
         "id": 100,
         "category_id": 32,
-        "name": "Houchuu Ootsuka as Sakutarou Yanagihara (3-Gatsu no Lion S2 Ep. 17)",
+        "name": "Houchuu Ootsuka as Sakutarou Yanagihara (3-Gatsu no Lion 2 Ep. 17)",
         "writeup": "",
         "active": 1
        },
