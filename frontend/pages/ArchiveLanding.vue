@@ -12,6 +12,7 @@
                                         <router-link to="/archive/2018" style="color:inherit">
                                             <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
                                         </router-link>
+                                        <a target="_blank" href="https://www.youtube.com/watch?v=xcMl8y6qqv8" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
                                     </div>
                                     <br/>
                                     <div class="has-text-centered has-text-light">
@@ -36,7 +37,7 @@
                                     </div>
                                     <br/>
                                     <div class="has-text-justified has-text-periwinkle">
-                                        The /r/anime Awards have been an ongoing volunteer efforts for 4 years in a row now. The strong foundation that we've built over these years wouldn't be possible without the invaluable help of the /r/anime mod-team and the indispensable feedback of the users of /r/anime. The /r/anime Awards would like to thank every member of /r/anime who voted and participated in these Awards throughout the year, whether as jurors or members of the public. We hope to see you again in the future!
+                                        The /r/anime Awards have been an ongoing volunteer efforts for 4 years in a row now. The strong foundation that we've built over these years wouldn't be possible without the invaluable help of the /r/anime mod-team and the indispensable feedback of the users of /r/anime. We'd would like to thank every member of /r/anime who voted and participated in these Awards throughout the year, whether as jurors or members of the public. We hope to see you again in the future!
                                     </div>
                                 </div>
                             </section>
