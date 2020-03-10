@@ -159,7 +159,10 @@ import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
 import juryIcon from '../../img/jury.png';
 import publicIcon from '../../img/public.png';
-import logo from '../../img/awards2019.png';
+import logo19 from '../../img/awards2019.png';
+import logo18 from '../../img/awards2018.png';
+import logo17 from '../../img/awards2017.png';
+import logo16 from '../../img/awards2016.png';
 import marked from 'marked';
 
 
@@ -190,7 +193,6 @@ export default {
 			chartData: null,
 			juryIcon,
 			publicIcon,
-			logo,
 		};
 	},
 	computed: {
@@ -201,10 +203,24 @@ export default {
 			return this.showData;
 		},
 		resultSections () {
-			if (this.slug && this.slug !== '' && this.slug !== 'all') {
+			if (this.slug !== '' && this.slug !== 'all' && this.slug) {
 				return this.results.sections.filter(section => section.slug === this.slug);
 			}
 			return this.results.sections;
+		},
+		logo () {
+			switch (this.year) {
+				case undefined:
+					return logo19;
+				case '2018':
+					return logo18;
+				case '2017':
+					return logo17;
+				case '2016':
+					return logo16;
+				default:
+					return '';
+			}
 		},
 	},
 	methods: {
@@ -328,11 +344,7 @@ export default {
 				}
 			});
 		},
-	},
-	mounted () {
-		console.log(this.year);
-		import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
-			this.results = Object.assign({}, data);
+		fetchAnilist () {
 			for (const show in this.results.anime) {
 				this.showIDs.push(show);
 			}
@@ -370,7 +382,25 @@ export default {
 			Promise.all([showPromise, charPromise]).then(() => {
 				this.loaded = true;
 			});
-		});
+		},
+	},
+	mounted () {
+		switch (this.year) {
+			case undefined:
+				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
+			case '2018':
+				import(/* webpackChunkName: "results18" */ '../../data/results2018.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
+			default:
+				break;
+		}
 	},
 };
 </script>
