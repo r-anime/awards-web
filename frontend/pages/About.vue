@@ -8,7 +8,7 @@
                         <section class="section">
                             <div class="container">
                                 <h1 class="title is-3 has-text-llperiwinkle has-text-left">Credits</h1>
-                                <div class="has-text-justified has-text-light">
+                                <div class="has-text-left has-text-light">
                                     We’d like to start by thanking /u/commandersevan, /u/EpicTroll27, /u/geo1088 and /u/pandavengerX for their work in creating this website and for putting up with unending changes, edits, and last-minute requests. We would also like to thank them for their work on the website used for the nomination process as well as the internal site for the awards used by hosts and /r/anime moderators.
                                 </div>
                                 <br/>
