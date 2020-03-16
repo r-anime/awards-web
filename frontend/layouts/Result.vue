@@ -8,6 +8,7 @@
 					{name: 'Main', path: '/results/main'},
 					{name: 'Test', path: '/results/test'},
 					{name: 'View All', path: '/results/all'},
+					{name: 'Extra', path: '/extra'},
 					{name: 'Acknowledgements', path: '/acknowledgements'},
 					{name: 'About/Credits', path: '/about'},
 				]"

@@ -17,6 +17,7 @@ const Acknowledgements = () => import(/* webpackChunkName: "core" */ './pages/Ac
 const Profile = () => import(/* webpackChunkName: "host" */ './pages/Profile');
 const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
 const ResultsContainer = () => import(/* webpackChunkName: "core" */ './pages/ResultsContainer');
+const ExtraAwardsPage = () => import(/*webpackChunkName: "core" */ './pages/ExtraAwards')
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
 
 const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
@@ -62,6 +63,7 @@ export default new VueRouter({
 				},
 				{path: '/acknowledgements', component: Acknowledgements},
 				{path: '/about', component: About},
+				{path: '/extra', component: ExtraAwardsPage},
 			],
 		},
 		// login for hosts
