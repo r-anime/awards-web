@@ -1,11 +1,7 @@
 <template>
 	<body>
 		<nav-bar
-			:routes="[
-				{name: 'Categories', path: '/host/categories'},
-				{name: 'Users', path: '/host/users'},
-				{name: 'Results Summary', path: '/host/results'}
-			]"
+			:routes="routes"
 			class="is-llperiwinkle"
 		>
 			<template v-slot:title>
@@ -33,6 +29,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 import NavBar from '../components/NavBarSimple.vue';
 import HostBreadcrumbLink from '../components/HostBreadcrumbLink';
 
@@ -42,8 +39,19 @@ export default {
 		HostBreadcrumbLink,
 	},
 	computed: {
+		...mapState([
+			'me',
+		]),
 		matchedRoutes () {
 			return this.$route.matched.filter(route => route.meta && route.meta.title);
+		},
+		routes () {
+			return [
+				{name: 'Categories', path: '/host/categories'},
+				this.me && this.me.level >= 4 && {name: 'Admin Panel', path: '/host/admin'},
+				{name: 'Users', path: '/host/users'},
+				{name: 'Results Summary', path: '/host/results'},
+			].filter(s => s);
 		},
 	},
 };

@@ -19,6 +19,8 @@ const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results
 const ResultsContainer = () => import(/* webpackChunkName: "core" */ './pages/ResultsContainer');
 const ExtraAwardsPage = () => import(/*webpackChunkName: "core" */ './pages/ExtraAwards')
 const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
+const Archive = () => import(/* webpackChunkName: "core" */ './pages/Archive');
+const ArchiveLanding = () => import(/* webpackChunkName: "core" */ './pages/ArchiveLanding');
 
 const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
 const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
@@ -32,22 +34,25 @@ const CategoryJurors = () => import(/* webpackChunkName: "host" */ './components
 const CategoryHMs = () => import(/* webpackChunkName: "host" */ './components/CategoryHMs');
 const CategoryInfo = () => import(/* webpackChunkName: "host" */ './components/CategoryInfo');
 const CategoryTools = () => import(/* webpackChunkName: "host" */ './components/CategoryTools');
+const AdminPanel = () => import(/* webpackChunkName: "host" */ './pages/host/AdminPanel');
 
 const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
 const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
 const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
 
-
-
 export default new VueRouter({
 	mode: 'history',
+	scrollBehavior(to, from, savedPosition) {
+		document.body.scrollTop = 0; // For Safari
+    	document.documentElement.scrollTop = 0;
+	},
 	routes: [
 		// Default layout
 		{
 			path: '/',
-			component: ResultLayout, // when the home component is redesigned, this component will be changed to home
+			component: ResultLayout,
 			children: [
-				{path: '', component: Home}, // these won't be children of the new Home component, only results/genre etc. would be
+				{path: '', component: Home},
 				{path: 'thanks', component: About},
 				{
 					path: 'results',
@@ -64,6 +69,21 @@ export default new VueRouter({
 				{path: '/acknowledgements', component: Acknowledgements},
 				{path: '/about', component: About},
 				{path: '/extra', component: ExtraAwardsPage},
+				{
+					path: '/archive',
+					component: Archive,
+					children: [
+						{
+							path: '',
+							component: ArchiveLanding,
+						},
+						{
+							path: ':year',
+							component: ResultsPage,
+							props: true,
+						},
+					]
+				},
 			],
 		},
 		// login for hosts
@@ -175,6 +195,13 @@ export default new VueRouter({
 					component: Users,
 					meta: {
 						title: 'Users',
+					},
+				},
+				{
+					path: 'admin',
+					component: AdminPanel,
+					meta: {
+						title: 'Admin Panel',
 					},
 				},
 				{

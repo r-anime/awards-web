@@ -18,7 +18,7 @@ const updateCategoryQuery = db.prepare('UPDATE categories SET name=:name, entryT
 const deleteCategoryQuery = db.prepare('UPDATE categories SET active=0 WHERE id=?');
 
 const getNominationsByCategoryQuery = db.prepare('SELECT * FROM nominations WHERE category_id=? AND active=1');
-const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, character_id, theme_id, entry_type, active, writeup, rank, votes, finished, alt_name, staff) VALUES (:categoryID, :anilistID, :characterID, :themeID, :entryType, :active, :writeup, :juryRank, :publicVotes, :publicSupport, :altName, :staff)');
+const insertNominationQuery = db.prepare('INSERT INTO nominations (category_id, anilist_id, character_id, theme_id, entry_type, active, writeup, rank, votes, finished, alt_name, staff, alt_img) VALUES (:categoryID, :anilistID, :characterID, :themeID, :entryType, :active, :writeup, :juryRank, :publicVotes, :publicSupport, :altName, :staff, :alt_img)');
 const deactivateNominationsByCategoryQuery = db.prepare('UPDATE `nominations` SET `active`=0 WHERE `category_id`=?');
 const toggleActiveNominationsByIdQuery = db.prepare('UPDATE nominations SET active=:active WHERE id=:id');
 const getNominationByRowIdQuery = db.prepare('SELECT * from nominations WHERE id=? AND active=1');
@@ -51,6 +51,10 @@ const getDashboardTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `vo
 const getOPEDTotalsQuery = db.prepare('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` WHERE `votes`.`theme_name` IS NOT NULL GROUP BY `votes`.`category_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
 const getVoteUserCountQuery = db.prepare('SELECT COUNT(DISTINCT `reddit_user`) as `count` FROM `votes`');
 const getAllVotesQuery = db.prepare('SELECT * FROM votes');
+
+const wipeNominationsQuery = db.prepare('DELETE from nominations');
+const wipeHMsQuery = db.prepare('DELETE from honorable_mentions');
+const wipeJurorsQuery = db.prepare('DELETE from jurors');
 
 // Purely for debugging and data purging reasons
 const deleteAllVotesQuery = db.prepare('DELETE FROM votes');
@@ -104,4 +108,8 @@ module.exports = {
 	insertHM: insertHMQuery.run.bind(insertHMQuery),
 	deactivateHMsByCategory: deactivateHMsByCategoryQuery.run.bind(deactivateHMsByCategoryQuery),
 	getAllHMs: getAllHMsQuery.all.bind(getAllHMsQuery),
+
+	wipeNominations: wipeNominationsQuery.run.bind(wipeNominationsQuery),
+	wipeHMs: wipeHMsQuery.run.bind(wipeHMsQuery),
+	wipeJurors: wipeJurorsQuery.run.bind(wipeJurorsQuery),
 };

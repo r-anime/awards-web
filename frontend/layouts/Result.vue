@@ -9,6 +9,7 @@
 					{name: 'Test', path: '/results/test'},
 					{name: 'View All', path: '/results/all'},
 					{name: 'Extra', path: '/extra'},
+					{name: 'Archive', path: '/archive'},
 					{name: 'Acknowledgements', path: '/acknowledgements'},
 					{name: 'About/Credits', path: '/about'},
 				]"

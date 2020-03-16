@@ -9,6 +9,10 @@
                             <div class="container">
                                 <h1 class="title is-3 has-text-llperiwinkle has-text-left">Credits</h1>
                                 <div class="has-text-justified has-text-light">
+                                    The /r/anime Awards, this website and the <a class="has-text-periwinkle is-link" href="https://youtu.be/VYZ2fezPKUA" target="_blank">Awards Livestream</a> are a labor of love made possible through the many volunteers involved in the entire process.
+                                </div>
+                                <br/>
+                                <div class="has-text-justified has-text-light">
                                     We’d like to start by thanking /u/commandersevan, /u/EpicTroll27, /u/geo1088 and /u/pandavengerX for their work in creating this website and for putting up with unending changes, edits, and last-minute requests. We would also like to thank them for their work on the website used for the nomination process as well as the internal site for the awards used by hosts and /r/anime moderators.
                                 </div>
                                 <br/>
@@ -91,11 +95,3 @@
     </section>
 </section>
 </template>
-
-<script>
-export default {
-	mounted () {
-		window.scroll(0, 0);
-	},
-};
-</script>

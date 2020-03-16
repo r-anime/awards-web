@@ -1261,7 +1261,10 @@
         "jurors": [
          "/u/BAmario",
          "/u/rudygnuj",
-         "Acasualviewer",
+         {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+         },
          "/u/ATargetFinderScrub",
          "/u/rusticks",
          "/u/Vektor_",
@@ -1504,7 +1507,10 @@
          "/u/Win32error",
          "/u/sasalx",
          "/u/Scarlett_Horror",
-         "/u/Acasualviewer"
+         {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+         }
         ],
         "blurb": "The Supporting Comedic Characters' Category had a crazy amount of variety this year, ranging from goofy all-stars like *Dumbbells* ' Machio to the more understated and lowkey Ai Hayasaka from *Kaguya-sama*. Thus, one can't deny the sheer scope of the final eight contenders, even more so in their varied roles in their shows and/or support for the MC-kun/MC-chan. As one might expect from such a list, the debate and discussion process of this year's category was quite extensive and intense; indeed, there was even a four way juror tie for our final spot going into the final round. But in the end, after all was said and done, it turned out that the hammy edutainment charm of Machio and his muscles just couldn't land a knockout blow against dry stoicism, as (surprise surprise) *Kaguya-sama* 's Ai Hayasaka managed to barely clean house and claim the top spot for the category. Machio did not go down without a fight however, finishing with a strong second, with Dimple from *Mob Psycho 100 II* at III. In a hilariously fitting result given that she's the ancestor of Shamiko, Lilith managed to demonstrate exactly why Four is Death with her final rank, followed closely afterwards by Yamai from *Joshikousei no Mudazukai* demonstrating that angels DO in fact fall to demons, or at least Doom Blade. It wasn't quite a Hollywood ending for *Non Non Biyori Vacation* 's Aoi Nizato, who finished sixth, with Hanako from *Kemono Michi* 's getting her just deserts at seventh. Finally, last on the list was *Joshikousei no Mudazukai* 's Loli, who got the short end of the stick from the condorcet poll. That said, this year still had some interesting character picks and unique discussion topics, even more so given the focus on the unsung side characters from the many great comedic anime of this year.",
         "table": "",
@@ -1733,7 +1739,10 @@
          "/u/Theleux",
          "/u/awspear",
          "/u/__Mekakucity",
-         "ACasualViewer",
+         {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+         },
          "/u/TheInCredibleLink",
          "/u/krasnovian",
          "/u/Totalenlo",
@@ -1923,7 +1932,7 @@
           "jury": 2,
           "percent": 0.07197696737044146,
           "writeup": "Despite its growth, 3DCG has become a symbol of lazy, unappealing animation that many would prefer be relegated to the background of a production, if anywhere. In spite of that, Studio Orange has taken it upon themselves to not only justify 3D animation's place in anime, but to prove that it can take center stage as well. *Beastars* is their latest effort towards this goal and it truly represents the pinnacle of what the studio can produce.\n\nBy using motion capture and recordings of voice talent as they act out their parts as reference, Studio Orange appropriately imparts the same natural motion expected of something like a stage play. Movements do not simply transition a model from point A to B; there's a distinct sense of weight and follow-through. Secondary movements in fur or clothing or tails add life and expressiveness to actions as basic as just standing and talking. This is all possible thanks to the intricately crafted character models that allow for degrees of freedom and expression not common in 3D TV anime.\n\nIn contrast, the occasional 2D side characters feel bland and lifeless, a mostly acceptable trade off to enable the quality 3D. That said, there are still fantastic scenes whose 2D animation compliments the CG, such as the brilliant colored pencil dream sequence from episode 7. Bringing these seemingly disparate elements together, *Beastars* is able to surpass 3DCG's reputation of being stiff and awkward, and stand proud as another stellar example from Studio Orange of the possibilities this style can provide.",
-          "staff": "Orange\n\nCG Chief Director: Eiji Inomoto\n\nLead Modeller: Jun Nagakawa\n\nCG Animator: Yoko Kuno on Haru's Nightmare and Rina Mitsuzumi on Louis’s Reminisce"
+          "staff": "Orange\n\nCG Chief Director: Eiji Inomoto\n\nLead Modeller: Jun Nagakawa\n\nKey Animators: Yoko Kuno on Haru’s Dream and Rina Mitsuzumi on Louis’ Memory\n\nProminent CG Animators: Chikayo Takeda, Haruyuki Takubo, Hiroyuki Hashimoto, Hiroyuki Kuribara, Kenji Nishimichi, Kohei Nishimura, Koji Yasuda, Maiko Iketani, Mitsuki Ōta, Naruho Kojima, Shunsuke Aoki, Takahiro Tanaka, Takayo Takeda, Takayuki Miyakoda, Yuki Sakai, Yuuji Koshida"
          },
          {
           "id": 104578,
@@ -2691,7 +2700,7 @@
          {
           "id": 2230,
           "altname": "",
-          "altimg": "https://i.imgur.com/FH3tQQM.jpg",
+          "altimg": "https://i.imgur.com/9APEaLr.png",
           "public": 5,
           "finished": 101,
           "support": 0.04950495049504951,
@@ -3232,148 +3241,6 @@
       "icon": "",
       "awards": [
        {
-        "name": "Anime of the Year",
-        "entryType": "shows",
-        "jurors": [
-         "/u/Master_of_Ares",
-         "/u/Totalenlo",
-         "/u/biochemrs",
-         "/u/Combo33",
-         "/u/bconeill",
-         "/u/_TigerK3",
-         "/u/mcadylons",
-         "/u/Ralon17",
-         "/u/Schinco",
-         "/u/Deafnesss",
-         "/u/Fircoal"
-        ],
-        "blurb": "The jury consensus is that 2019 was a very solid year for anime in general. Here in AotY, we’ve spent months deliberating and coming up with a list of the most impressive shows of the year, and it wasn’t easy for us to leave out some shows we liked. It was an even more difficult task to actually rank what we selected, but this was the conclusion we reached after months of work.\n\nWe first generated a shortlist and the idea behind it was that every juror was encouraged to check out every single show nominated, especially if they were brought up early on. We collected response metrics as soon as enough people checked out the shows that were on the chopping block, and used that to narrow the field.\n\nBy the time we knew our public noms, we had already talked about the jury noms to death. All of us felt strongly about them to some degree or another. Dialogue had only increased once the public nominations came in. However AotY was always at its most active when *Hugtto* or *Symphogear* were the topics discussed. Juror’s opinions were divided and vocal about it, with *Hugtto* specifically in 8 of the jurors top 3 with a few notable dissenters.\n\nOverall, everyone managed to find something from the nominations to get attached to in some way, whether we got it from the public or nominated it ourselves. The fact that each of us felt strongly about a show one way or another is an indication of how seriously we took this. More importantly though, we felt that each of these 10 shows were more than worth talking about, and that’s the mark of a pretty solid AotY list.",
-        "table": "",
-        "nominees": [
-         {
-          "id": 100661,
-          "altname": "",
-          "altimg": "",
-          "public": 14,
-          "finished": 130,
-          "support": 0.1076923076923077,
-          "jury": 1,
-          "percent": 0.012974976830398516,
-          "writeup": "*Hugtto! Precure* goes about modernizing the standard approach to mahou shoujo themes through the work of visionary director, Junichi Satou, arguably the godfather of modern mahou shoujo. Despite having a rather large main cast of 5, all characters were able to receive valuable development backed by powerful dramatic moments that were able to elevate them to being great characters, most notably Emiru and Ruru. Further, the pertinent social commentary present in this iteration of precure lends itself well to the overall changing landscape of magical girls shows and to society itself with us finally seeing the first male cure (even if only briefly). \n\n\n*Hugtto* takes the time to explore each of its different characters and allows them to be fleshed out via more slice of life episodes. Despite this, *Hugtto* never feels as though it lacks focus, jumping from one fantastic episode to the next, such as the titular mermaid princess episode or the climax of Ruru’s arc, all tied together by the overarching theme of the future.\n\n\nAll of this backed by one of the most stellar productions the Precure franchise has ever seen along with the likes of *Go! Princess Precure* and *Heartcatch Precure*. Featuring prolific veteran animators such as **Masami Mori** and **Kazuhiro Ota**, along with up and coming names like **Koudai Watanabe** and **Itsuki Tsuchigami**.\n\nSimply put, *Hugtto! Precure* excels at everything it sets out to be. It finds itself atop the rankings and is the jury’s Anime of the Year for 2019.",
-          "staff": "Toei Animation\n\nDirected by Junichi Satou"
-         },
-         {
-          "id": 21673,
-          "altname": "",
-          "altimg": "",
-          "public": 32,
-          "finished": 202,
-          "support": 0.15841584158415842,
-          "jury": 3,
-          "percent": 0.029657089898053754,
-          "writeup": "*Symphogear XV*, while placing third in the category overall, was undoubtedly the most divisive nominee amongst AotY jurors. It’s very much a “love it or hate it” kind of show, and that was very apparent during discussion and voting.\n\nThe one thing everyone was able to agree on is the show’s stellar production. Between its at times stunning animation and a fantastic soundtrack, XV stands out for the amount of talent and passion that went into sending off the last season of Symphogear with a bang.\n\nOn most other points though, it received mixed reception. Many praised it’s over-the-top high energy formula for its bombasticity and the sheer amount of dumb fun it creates. Detractors meanwhile found it to be more dumb than it is fun. The show suffers with plot coherence issues, and the villains in *XV* are nothing particularly special outside of boasting boob rockets (the jury was quite split on whether boob rockets qualify as a positive).\n\nUltimately, *XV* lives up to everything Symphogear wants to be. It looks and sounds better than Symphogear ever has before without losing sight of the ridiculous action the series is known for. If anything, it amps that aspect up a few notches, as *XV* has more combination attacks and more excessive transformation sequences than any season prior. *Symphogear XV* is a definitive entry in the series that the jury believes stands toe to toe with some of the best shows of 2019.",
-          "staff": "Satelight\n\nDirected by Katsumi Ono"
-         },
-         {
-          "id": 100815,
-          "altname": "",
-          "altimg": "",
-          "public": 42,
-          "finished": 388,
-          "support": 0.10824742268041238,
-          "jury": 6,
-          "percent": 0.03892493049119555,
-          "writeup": "*Zoku Owarimonogatari* served as a strong epilogue to the *Monogatari* series thus far, despite a handful of faults. The varied cast delivers on the good, varied character interactions which are supported by one of the stronger, more interesting visual presentations of the year. Even among these noms, *Zoku* was a standout entry in terms of it's interesting and engaging visuals, even during long stretches of dialogue. Speaking of, *Zoku’s* whole cast of characters return to unravel the mirror mystery, discuss regrets, and engage in the enjoyable banter. Even after the pretty conclusive ending of Owari 2, *Zoku* still managed to find room to look back on and celebrate the series as a whole.\n\n\nThat said, most agreed that the actual narrative of this entry was fairly weak. The mirror conceit was interesting, but in practicality was just an excuse to deliver on what-if fan service. The fan service can be fun in its own right, but it made for a less meaningful show, especially given the shorter runtime. The final conclusion of the arc also wasn’t as impactful, and was notably more convoluted than necessary. Ultimately, it felt like it left a lot of untapped potential on the table compared to higher placing noms. \n\nThese few fundamental missteps kept it from competing with the higher tier nominations, but overall *Zoku Owarimonogatari* gave a strong showing that definitely earned its 6th place placement.",
-          "staff": "SHAFT\n\nDirected by Akiyuki Shimbo"
-         },
-         {
-          "id": 107660,
-          "altname": "",
-          "altimg": "https://i.imgur.com/9415JkT.png",
-          "public": 65,
-          "finished": 586,
-          "support": 0.11092150170648464,
-          "jury": 4,
-          "percent": 0.060240963855421686,
-          "writeup": "*Beastars* is quite an ambitious show and for the most part it succeeds in its ambitions. Filled with a wide cast of characters each with their own motivations, personalities, and takes on this twisted world between carnivores and herbivores. The show treats us to the different mindsets between predator and prey and how their status in this world affects their mindset despite the relative peace that they are experiencing. The character’s experiences are explored more with the strong usage of different art styles to showcase their inner thoughts and turmoil, strong cinematography, and impressive body language that expresses their thoughts and feelings well. \n\nThe characters are both deep enough to be able to explore the themes of *Beastars* while also being relatable and showcasing the struggles having that sort of mindset can bring. There was a lot of power in bringing these experiences to the front and center and illustrating the pain that goes with them in innovative and meaningful ways.\n\nDespite all of these boons the show’s biggest critique was in the amount of things that it tried to do at once. Several of the jurors felt like the narrative was jumbled and didn’t do enough to make it’s themes and message clear. Other aspects like the cinematography that worked well for some, didn’t work well for others due to how on the nose it was. All said though *Beastars* was able to do a lot with the different elements it introduced and managed to win over many of the jurors giving it a great 4th place for Anime of the Year.\n",
-          "staff": "Orange\n\nDirected by Shinichi Matsumi"
-         },
-         {
-          "id": 101903,
-          "altname": "",
-          "altimg": "https://i.imgur.com/N4OrCRw.png",
-          "public": 69,
-          "finished": 442,
-          "support": 0.15610859728506787,
-          "jury": 5,
-          "percent": 0.0639481000926784,
-          "writeup": "*Run With the Wind*, adapted from a novel of the same name by Shion Miura, was one of the least divisive entries of this category. Almost across the board it was praised for its well crafted OST, satisfying finale and large cast. Even when the cast didn't land in its totality, almost every juror managed to find at least one member they connected with. Whether that be Nico's journey of weight-loss, Kurahara overcoming his past or Prince's journey of self-improvement, there existed a story for everyone.\n\n\nHowever that lack division also meant that few felt particularly strongly about the series, with only 2 placing it in their top 3. While the finale was well-regarded, many felt the journey to get there was laced with issues. Pointing out the sluggish pacing through the middle, the questionable realism of the sport’s portrayal in an otherwise grounded character drama. Or how the production itself rarely earned praise, often landing at simply \"acceptable\". Meanwhile, the cast as a whole was found to be hit or miss, some characters such as those above landing strongly, while others such as the Twins or King were felt to be lacking comparatively.\n\n\nWhen all was said and done though, no member of the jury left *Run With the Wind* with a negative experience. Everyone found something to like, even if it wasn't their favorite of the year. And it was that consistency, that wide appeal to such a diverse jury, that earned it this 5th place spot.",
-          "staff": "Production I.G\n\nDirected by Kazuya Nomura"
-         },
-         {
-          "id": 101921,
-          "altname": "",
-          "altimg": "https://i.imgur.com/vxLdxWs.png",
-          "public": 99,
-          "finished": 970,
-          "support": 0.10206185567010309,
-          "jury": 9,
-          "percent": 0.0917516218721038,
-          "writeup": "This year featured a lot of highly acclaimed manga getting their long-awaited adaptation, and perhaps no adaptation had as much hype going into it as *Kaguya-sama*.  Being the only comedy in the category is a testament to its ability to translate its appeal to the screen. The central premise is one of the strongest a comedy has had in recent memory. Chika was an absolute delight, and the jury appreciated the show for its visual production as well as an OST that did a great job of highlighting the emotional tone of each scene.\n\nIts 9th place ranking is certainly not an indictment of its success as an adaptation, but rather a reflection of some flaws that, while minor, added up. The main couple were charming for some, and fell flat for others due to the show’s unfortunate tendency to press the reset button on character development at the worst times. Some expressed concern that the show leaned too much on a set formula. Meanwhile the side characters were great at breaking up the repetition for some, and too one-note for others.  These concerns, in some combination or another, resulted in a number of jurors finding that, at best, the show didn’t reach its full potential, and, at worst, it was monotonous.\n\nUltimately, no one disagrees that the show belongs on a list of the best anime of the year, but the mixed reception of various elements of the show, in a strong year for anime, resulted in its relatively low placement on the list\n",
-          "staff": "A-1 Pictures\n\nDirected by Mamoru Hatakeyama"
-         },
-         {
-          "id": 101922,
-          "altname": "",
-          "altimg": "",
-          "public": 106,
-          "finished": 965,
-          "support": 0.10984455958549223,
-          "jury": 10,
-          "percent": 0.09823911028730306,
-          "writeup": "*Kimetsu no Yaiba* was one of the most highly anticipated shows coming into 2019 with its manga being praised amongst many as one of the strongest shonen series in a while. Adapted by the highly esteemed Ufotable, the series quickly rose to popularity with a production most of the jury felt was impressive: particularly its sound design, dynamic fight choreography and incredibly fluid animation. Tanjiro was also a surprisingly refreshing protagonist who showed an impressive amount of empathy whilst also having the willpower to do what needed to be done to save his sister.\n\nUnfortunately the jury felt as though *Yaiba* had enough problems that just couldn’t be ignored and took them out of the experience. Zenitsu in particular was almost universally criticised across the jury due to his unhealthy mindset and treatment of women. Inosuke also received complaints amongst the jury, however some appreciated him more towards the end of the show as he received more development. In combination these two were extremely frustrating to watch, which resulted in grating comedy that was reliant on constant screaming. Another major complaint was the pacing of the narrative, with some feeling as though certain arcs dragged on for way too long.\n\nOverall, the jury felt that *Kimetsu no Yaiba* was a fairly competent battle shonen that accomplished what it set out to do to a strong degree. It did have its problems that held it back from placing higher, however it was definitely deserving of a nomination for one of the greatest shows of 2019.",
-          "staff": "ufotable\n\nDirected by Haruo Sotozaki"
-         },
-         {
-          "id": 101348,
-          "altname": "",
-          "altimg": "https://i.imgur.com/nWJahjN.png",
-          "public": 160,
-          "finished": 837,
-          "support": 0.1911589008363202,
-          "jury": 8,
-          "percent": 0.14828544949026876,
-          "writeup": "*Vinland Saga* was an incredibly popular show based on an incredibly well-acclaimed manga, and the jury agreed that this was largely justified due to the  characters and themes of the show. Askeladd in particular received near unanimous praise for his uniquely calculating personality and morally gray means of achieving his goals. While Thorfinn's arc was static and grating to some and Canute's abrupt character development in episode 18 hampered his many positive qualities, Askeladd seems to almost take a lead role throughout the season. Still, there was no shortage of fun, complex characters that received less of the spotlight.\n\nThe other great strength of *Vinland Saga* was the incorporation of interesting themes that were integral to the characters and story. The hunger for revenge and the question of whether it can ever be truly satisfied, commentary on the perpetuating nature of violence, and the almost intangible spectre of Thors' ideals make for compelling ideological forces that drive the plot. They are well-suited to the world of the vikings and are complemented by explorations of religious belief. There was some discussion about whether the enthusiastic focus on battle scenes was in line with these themes, but the jury also acknowledged that many of them have yet to be fully realized and will likely be developed further in future seasons.\n\nFrom a production standpoint, the jury was impressed by the excellent background art, as well as the consistent quality of the early and final episodes. However there was a consensus that the show lagged during its middle portions, both in terms of plot and production. People also disliked the use of CG for the boats and large-scale fights. That said, obvious skill and research went into accurately depicting the source material and real world setting. In the end, what placed *Vinland Saga* lower in our ranking was a greater positive consensus on the shows above it.",
-          "staff": "Wit Studio\n\nDirected by Shuuhei Yabuta"
-         },
-         {
-          "id": 101338,
-          "altname": "",
-          "altimg": "https://i.imgur.com/T6C6k3g.jpg",
-          "public": 196,
-          "finished": 806,
-          "support": 0.24317617866004962,
-          "jury": 2,
-          "percent": 0.18164967562557924,
-          "writeup": "*Mob Psycho 100 II* is a story of the good, the bad, and the not-so-ugly. The good – the first half – received considerable praise from the jury. Nearly every episode was praised at one point or another for its plot or how it tied into the larger narrative of Mob’s coming of age. Particularly poignant was the so-called Reigen arc in episodes six and seven that simultaneously developed Reigan as a character and progressed his relationship with Mob, with many citing it as the crown jewel of an already strong show. \n\n\nThe bad – the second half – was decried almost as much as the first half. While it kept up the signature level of production, the narrative was significantly less compelling for many. Outside of the small bit with Serizawa, jurors cited issues – the villains being uninteresting, the plot unfairly using bait-and-switches to create artificial drama, the fact that Shigeo didn’t so much grow as crystallize his existing ideals – that really undermined the whole package. Some jurors also felt that it was a victim of comparison to the first season, particularly the diminished role of Ritsu.\n\n\nAnd the not-so-ugly - the stellar production throughout, which received universal acclaim from the jury. You name it – animation, choreography, art style, cinematography – the visuals knocked it out of the park and really stepped up to bat when the narrative was lacking, while working in concert with the stronger portions of the narrative to more effectively tell its story. All in all, consistently a show that made the jurors say “Holy shit that mob episode!”\n",
-          "staff": "BONES\n\nDirected by Yuzuru Tachikawa"
-         },
-         {
-          "id": 104578,
-          "altname": "",
-          "altimg": "https://i.imgur.com/p1kbHYg.png",
-          "public": 296,
-          "finished": 841,
-          "support": 0.351961950059453,
-          "jury": 7,
-          "percent": 0.2743280815569972,
-          "writeup": "The second part of *Attack on Titan’s* long-awaited third season finally gave fans of the series answers to long-standing questions about the nature of the world, the origins of titans, and most importantly, what the hell was in Eren’s basement. The first half of part two focused heavily on the conflict between the Scouts and the Beast, Colossal, and Armored Titans, whose epic battle greatly impressed the jury in its sheer scale. Studio Wit’s animation work stood out spectacularly during these fight sequences, although most jurors were disappointed by the lackluster CGI work on the Colossal Titan. These battles were also accompanied by a sweeping and bombastic soundtrack that perfectly matched the emotional heights of the show.\n\nErwin Smith’s tenacious pursuit of knowledge at the expense of his fellow soldiers made for a fascinating character arc to behold. The emotional conflict that Erwin felt over figuratively standing on “a mountain of corpses” to reach his goals, added a great deal of nuance to Levi’s judgment on whether to pin humanity’s future hopes on either Erwin or the younger, more unproven, Armin.\n\nAfter unlocking the basement, the narrative focused on the various revelations of the history of titans, the origins of the Eldian people, and the racial and political divide which led the people within the walls to their current fate. While several jurors found the newly uncovered backstory to be immensely satisfying, others found the over-reliance on exposition and explanation to be distasteful. The dull color palette and relatively drab animation outside of fight scenes made for a less engaging presentation during the final part of the season, as well. \n",
-          "staff": "Wit Studio\n\nDirected by Masashi Koizuka and Tetsuro Araki"
-         }
-        ],
-        "hms": []
-       },
-       {
         "name": "Short of the Year",
         "entryType": "shows",
         "jurors": [
@@ -3566,7 +3433,7 @@
           "support": 0.35658914728682173,
           "jury": 1,
           "percent": 0.08614232209737828,
-          "writeup": "*Non Non Biyori: Vacation* skillfully draws on your nostalgia and exhibits it with a sense of earnestness. We were impressed with the movie’s pacing and focus on realistically depicting what it’s like being on a vacation, and found that there was never really a dull moment. \n\nThe more lighthearted moments of the movie, including when the group splits and goes snorkeling and kayaking, were just a blast to watch. *Non Non*’s situational comedy has always been a positive and it was especially strong here. The characters from the series are charming and it carries over tremendously in the movie, with a good chunk of *Vacation* spreading out the screen time among them. However, the emotional crux of the movie was Natsumi’s arc, and her newfound friendship with Aoi was notably well executed.\n\nOn the production side, the immersion in the movie is second to none; the inviting atmosphere coupled with a relatable scenario meant that it was very easy for most of us to get invested. The ambience in *Vacation* is inviting particularly thanks to the stunning background art and mellow OST. All in all, this was a strong year for movies, but because of its charm and poignant storytelling we found 'Non Non Biyori: Vacation* to be a cut above the rest, earning it first place overall.",
+          "writeup": "*Non Non Biyori: Vacation* skillfully draws on your nostalgia and exhibits it with a sense of earnestness. We were impressed with the movie’s pacing and focus on realistically depicting what it’s like being on a vacation, and found that there was never really a dull moment. \n\nThe more lighthearted moments of the movie, including when the group splits and goes snorkeling and kayaking, were just a blast to watch. *Non Non*'s situational comedy has always been a positive and it was especially strong here. The characters from the series are charming and it carries over tremendously in the movie, with a good chunk of *Vacation* spreading out the screen time among them. However, the emotional crux of the movie was Natsumi’s arc, and her newfound friendship with Aoi was notably well executed.\n\nOn the production side, the immersion in the movie is second to none; the inviting atmosphere coupled with a relatable scenario meant that it was very easy for most of us to get invested. The ambience in *Vacation* is inviting particularly thanks to the stunning background art and mellow OST. All in all, this was a strong year for movies, but because of its charm and poignant storytelling we found 'Non Non Biyori: Vacation* to be a cut above the rest, earning it first place overall.",
           "staff": "Silver Link\n\nDirected by Shinya Kawatsura"
          },
          {
@@ -3724,7 +3591,149 @@
          }
         ],
         "hms": []
-       }
+       },
+       {
+         "name": "Anime of the Year",
+         "entryType": "shows",
+         "jurors": [
+          "/u/Master_of_Ares",
+          "/u/Totalenlo",
+          "/u/biochemrs",
+          "/u/Combo33",
+          "/u/bconeill",
+          "/u/_TigerK3",
+          "/u/mcadylons",
+          "/u/Ralon17",
+          "/u/Schinco",
+          "/u/Deafnesss",
+          "/u/Fircoal"
+         ],
+         "blurb": "The jury consensus is that 2019 was a very solid year for anime in general. Here in AotY, we’ve spent months deliberating and coming up with a list of the most impressive shows of the year, and it wasn’t easy for us to leave out some shows we liked. It was an even more difficult task to actually rank what we selected, but this was the conclusion we reached after months of work.\n\nWe first generated a shortlist and the idea behind it was that every juror was encouraged to check out every single show nominated, especially if they were brought up early on. We collected response metrics as soon as enough people checked out the shows that were on the chopping block, and used that to narrow the field.\n\nBy the time we knew our public noms, we had already talked about the jury noms to death. All of us felt strongly about them to some degree or another. Dialogue had only increased once the public nominations came in. However AotY was always at its most active when *Hugtto* or *Symphogear* were the topics discussed. Juror’s opinions were divided and vocal about it, with *Hugtto* specifically in 8 of the jurors top 3 with a few notable dissenters.\n\nOverall, everyone managed to find something from the nominations to get attached to in some way, whether we got it from the public or nominated it ourselves. The fact that each of us felt strongly about a show one way or another is an indication of how seriously we took this. More importantly though, we felt that each of these 10 shows were more than worth talking about, and that’s the mark of a pretty solid AotY list.",
+         "table": "",
+         "nominees": [
+          {
+           "id": 100661,
+           "altname": "",
+           "altimg": "",
+           "public": 14,
+           "finished": 130,
+           "support": 0.1076923076923077,
+           "jury": 1,
+           "percent": 0.012974976830398516,
+           "writeup": "*Hugtto! Precure* goes about modernizing the standard approach to mahou shoujo themes through the work of visionary director, Junichi Satou, arguably the godfather of modern mahou shoujo. Despite having a rather large main cast of 5, all characters were able to receive valuable development backed by powerful dramatic moments that were able to elevate them to being great characters, most notably Emiru and Ruru. Further, the pertinent social commentary present in this iteration of precure lends itself well to the overall changing landscape of magical girls shows and to society itself with us finally seeing the first male cure (even if only briefly). \n\n\n*Hugtto* takes the time to explore each of its different characters and allows them to be fleshed out via more slice of life episodes. Despite this, *Hugtto* never feels as though it lacks focus, jumping from one fantastic episode to the next, such as the titular mermaid princess episode or the climax of Ruru’s arc, all tied together by the overarching theme of the future.\n\n\nAll of this backed by one of the most stellar productions the Precure franchise has ever seen along with the likes of *Go! Princess Precure* and *Heartcatch Precure*. Featuring veteran PreCure animators such as  **Nishiki Itaoka** and **Yuichi Hamano**, along with up-and-coming names like **Kōdai Watanabe** and **Masami Mori**. \n\nSimply put, *Hugtto! Precure* excels at everything it sets out to be. It finds itself atop the rankings and is the jury’s Anime of the Year for 2019.",
+           "staff": "Toei Animation\n\nDirected by Junichi Satou"
+          },
+          {
+           "id": 21673,
+           "altname": "",
+           "altimg": "",
+           "public": 32,
+           "finished": 202,
+           "support": 0.15841584158415842,
+           "jury": 3,
+           "percent": 0.029657089898053754,
+           "writeup": "*Symphogear XV*, while placing third in the category overall, was undoubtedly the most divisive nominee amongst AotY jurors. It’s very much a “love it or hate it” kind of show, and that was very apparent during discussion and voting.\n\nThe one thing everyone was able to agree on is the show’s stellar production. Between its at times stunning animation and a fantastic soundtrack, XV stands out for the amount of talent and passion that went into sending off the last season of Symphogear with a bang.\n\nOn most other points though, it received mixed reception. Many praised it’s over-the-top high energy formula for its bombasticity and the sheer amount of dumb fun it creates. Detractors meanwhile found it to be more dumb than it is fun. The show suffers with plot coherence issues, and the villains in *XV* are nothing particularly special outside of boasting boob rockets (the jury was quite split on whether boob rockets qualify as a positive).\n\nUltimately, *XV* lives up to everything Symphogear wants to be. It looks and sounds better than Symphogear ever has before without losing sight of the ridiculous action the series is known for. If anything, it amps that aspect up a few notches, as *XV* has more combination attacks and more excessive transformation sequences than any season prior. *Symphogear XV* is a definitive entry in the series that the jury believes stands toe to toe with some of the best shows of 2019.",
+           "staff": "Satelight\n\nDirected by Katsumi Ono"
+          },
+          {
+           "id": 100815,
+           "altname": "",
+           "altimg": "",
+           "public": 42,
+           "finished": 388,
+           "support": 0.10824742268041238,
+           "jury": 6,
+           "percent": 0.03892493049119555,
+           "writeup": "*Zoku Owarimonogatari* served as a strong epilogue to the *Monogatari* series thus far, despite a handful of faults. The varied cast delivers on the good, varied character interactions which are supported by one of the stronger, more interesting visual presentations of the year. Even among these noms, *Zoku* was a standout entry in terms of it's interesting and engaging visuals, even during long stretches of dialogue. Speaking of, *Zoku’s* whole cast of characters return to unravel the mirror mystery, discuss regrets, and engage in the enjoyable banter. Even after the pretty conclusive ending of Owari 2, *Zoku* still managed to find room to look back on and celebrate the series as a whole.\n\n\nThat said, most agreed that the actual narrative of this entry was fairly weak. The mirror conceit was interesting, but in practicality was just an excuse to deliver on what-if fan service. The fan service can be fun in its own right, but it made for a less meaningful show, especially given the shorter runtime. The final conclusion of the arc also wasn’t as impactful, and was notably more convoluted than necessary. Ultimately, it felt like it left a lot of untapped potential on the table compared to higher placing noms. \n\nThese few fundamental missteps kept it from competing with the higher tier nominations, but overall *Zoku Owarimonogatari* gave a strong showing that definitely earned its 6th place placement.",
+           "staff": "SHAFT\n\nDirected by Akiyuki Shimbo"
+          },
+          {
+           "id": 107660,
+           "altname": "",
+           "altimg": "https://i.imgur.com/9415JkT.png",
+           "public": 65,
+           "finished": 586,
+           "support": 0.11092150170648464,
+           "jury": 4,
+           "percent": 0.060240963855421686,
+           "writeup": "*Beastars* is quite an ambitious show and for the most part it succeeds in its ambitions. Filled with a wide cast of characters each with their own motivations, personalities, and takes on this twisted world between carnivores and herbivores. The show treats us to the different mindsets between predator and prey and how their status in this world affects their mindset despite the relative peace that they are experiencing. The character’s experiences are explored more with the strong usage of different art styles to showcase their inner thoughts and turmoil, strong cinematography, and impressive body language that expresses their thoughts and feelings well. \n\nThe characters are both deep enough to be able to explore the themes of *Beastars* while also being relatable and showcasing the struggles having that sort of mindset can bring. There was a lot of power in bringing these experiences to the front and center and illustrating the pain that goes with them in innovative and meaningful ways.\n\nDespite all of these boons the show’s biggest critique was in the amount of things that it tried to do at once. Several of the jurors felt like the narrative was jumbled and didn’t do enough to make it’s themes and message clear. Other aspects like the cinematography that worked well for some, didn’t work well for others due to how on the nose it was. All said though *Beastars* was able to do a lot with the different elements it introduced and managed to win over many of the jurors giving it a great 4th place for Anime of the Year.\n",
+           "staff": "Orange\n\nDirected by Shinichi Matsumi"
+          },
+          {
+           "id": 101903,
+           "altname": "",
+           "altimg": "https://i.imgur.com/N4OrCRw.png",
+           "public": 69,
+           "finished": 442,
+           "support": 0.15610859728506787,
+           "jury": 5,
+           "percent": 0.0639481000926784,
+           "writeup": "*Run With the Wind*, adapted from a novel of the same name by Shion Miura, was one of the least divisive entries of this category. Almost across the board it was praised for its well crafted OST, satisfying finale and large cast. Even when the cast didn't land in its totality, almost every juror managed to find at least one member they connected with. Whether that be Nico's journey of weight-loss, Kurahara overcoming his past or Prince's journey of self-improvement, there existed a story for everyone.\n\n\nHowever that lack division also meant that few felt particularly strongly about the series, with only 2 placing it in their top 3. While the finale was well-regarded, many felt the journey to get there was laced with issues. Pointing out the sluggish pacing through the middle, the questionable realism of the sport’s portrayal in an otherwise grounded character drama. Or how the production itself rarely earned praise, often landing at simply \"acceptable\". Meanwhile, the cast as a whole was found to be hit or miss, some characters such as those above landing strongly, while others such as the Twins or King were felt to be lacking comparatively.\n\n\nWhen all was said and done though, no member of the jury left *Run With the Wind* with a negative experience. Everyone found something to like, even if it wasn't their favorite of the year. And it was that consistency, that wide appeal to such a diverse jury, that earned it this 5th place spot.",
+           "staff": "Production I.G\n\nDirected by Kazuya Nomura"
+          },
+          {
+           "id": 101921,
+           "altname": "",
+           "altimg": "https://i.imgur.com/vxLdxWs.png",
+           "public": 99,
+           "finished": 970,
+           "support": 0.10206185567010309,
+           "jury": 9,
+           "percent": 0.0917516218721038,
+           "writeup": "This year featured a lot of highly acclaimed manga getting their long-awaited adaptation, and perhaps no adaptation had as much hype going into it as *Kaguya-sama*.  Being the only comedy in the category is a testament to its ability to translate its appeal to the screen. The central premise is one of the strongest a comedy has had in recent memory. Chika was an absolute delight, and the jury appreciated the show for its visual production as well as an OST that did a great job of highlighting the emotional tone of each scene.\n\nIts 9th place ranking is certainly not an indictment of its success as an adaptation, but rather a reflection of some flaws that, while minor, added up. The main couple were charming for some, and fell flat for others due to the show’s unfortunate tendency to press the reset button on character development at the worst times. Some expressed concern that the show leaned too much on a set formula. Meanwhile the side characters were great at breaking up the repetition for some, and too one-note for others.  These concerns, in some combination or another, resulted in a number of jurors finding that, at best, the show didn’t reach its full potential, and, at worst, it was monotonous.\n\nUltimately, no one disagrees that the show belongs on a list of the best anime of the year, but the mixed reception of various elements of the show, in a strong year for anime, resulted in its relatively low placement on the list\n",
+           "staff": "A-1 Pictures\n\nDirected by Mamoru Hatakeyama"
+          },
+          {
+           "id": 101922,
+           "altname": "",
+           "altimg": "",
+           "public": 106,
+           "finished": 965,
+           "support": 0.10984455958549223,
+           "jury": 10,
+           "percent": 0.09823911028730306,
+           "writeup": "*Kimetsu no Yaiba* was one of the most highly anticipated shows coming into 2019 with its manga being praised amongst many as one of the strongest shonen series in a while. Adapted by the highly esteemed Ufotable, the series quickly rose to popularity with a production most of the jury felt was impressive: particularly its sound design, dynamic fight choreography and incredibly fluid animation. Tanjiro was also a surprisingly refreshing protagonist who showed an impressive amount of empathy whilst also having the willpower to do what needed to be done to save his sister.\n\nUnfortunately the jury felt as though *Yaiba* had enough problems that just couldn’t be ignored and took them out of the experience. Zenitsu in particular was almost universally criticised across the jury due to his unhealthy mindset and treatment of women. Inosuke also received complaints amongst the jury, however some appreciated him more towards the end of the show as he received more development. In combination these two were extremely frustrating to watch, which resulted in grating comedy that was reliant on constant screaming. Another major complaint was the pacing of the narrative, with some feeling as though certain arcs dragged on for way too long.\n\nOverall, the jury felt that *Kimetsu no Yaiba* was a fairly competent battle shonen that accomplished what it set out to do to a strong degree. It did have its problems that held it back from placing higher, however it was definitely deserving of a nomination for one of the greatest shows of 2019.",
+           "staff": "ufotable\n\nDirected by Haruo Sotozaki"
+          },
+          {
+           "id": 101348,
+           "altname": "",
+           "altimg": "https://i.imgur.com/nWJahjN.png",
+           "public": 160,
+           "finished": 837,
+           "support": 0.1911589008363202,
+           "jury": 8,
+           "percent": 0.14828544949026876,
+           "writeup": "*Vinland Saga* was an incredibly popular show based on an incredibly well-acclaimed manga, and the jury agreed that this was largely justified due to the  characters and themes of the show. Askeladd in particular received near unanimous praise for his uniquely calculating personality and morally gray means of achieving his goals. While Thorfinn's arc was static and grating to some and Canute's abrupt character development in episode 18 hampered his many positive qualities, Askeladd seems to almost take a lead role throughout the season. Still, there was no shortage of fun, complex characters that received less of the spotlight.\n\nThe other great strength of *Vinland Saga* was the incorporation of interesting themes that were integral to the characters and story. The hunger for revenge and the question of whether it can ever be truly satisfied, commentary on the perpetuating nature of violence, and the almost intangible spectre of Thors' ideals make for compelling ideological forces that drive the plot. They are well-suited to the world of the vikings and are complemented by explorations of religious belief. There was some discussion about whether the enthusiastic focus on battle scenes was in line with these themes, but the jury also acknowledged that many of them have yet to be fully realized and will likely be developed further in future seasons.\n\nFrom a production standpoint, the jury was impressed by the excellent background art, as well as the consistent quality of the early and final episodes. However there was a consensus that the show lagged during its middle portions, both in terms of plot and production. People also disliked the use of CG for the boats and large-scale fights. That said, obvious skill and research went into accurately depicting the source material and real world setting. In the end, what placed *Vinland Saga* lower in our ranking was a greater positive consensus on the shows above it.",
+           "staff": "Wit Studio\n\nDirected by Shuuhei Yabuta"
+          },
+          {
+           "id": 101338,
+           "altname": "",
+           "altimg": "https://i.imgur.com/T6C6k3g.jpg",
+           "public": 196,
+           "finished": 806,
+           "support": 0.24317617866004962,
+           "jury": 2,
+           "percent": 0.18164967562557924,
+           "writeup": "*Mob Psycho 100 II* is a story of the good, the bad, and the not-so-ugly. The good – the first half – received considerable praise from the jury. Nearly every episode was praised at one point or another for its plot or how it tied into the larger narrative of Mob’s coming of age. Particularly poignant was the so-called Reigen arc in episodes six and seven that simultaneously developed Reigan as a character and progressed his relationship with Mob, with many citing it as the crown jewel of an already strong show. \n\n\nThe bad – the second half – was decried almost as much as the first half. While it kept up the signature level of production, the narrative was significantly less compelling for many. Outside of the small bit with Serizawa, jurors cited issues – the villains being uninteresting, the plot unfairly using bait-and-switches to create artificial drama, the fact that Shigeo didn’t so much grow as crystallize his existing ideals – that really undermined the whole package. Some jurors also felt that it was a victim of comparison to the first season, particularly the diminished role of Ritsu.\n\n\nAnd the not-so-ugly - the stellar production throughout, which received universal acclaim from the jury. You name it – animation, choreography, art style, cinematography – the visuals knocked it out of the park and really stepped up to bat when the narrative was lacking, while working in concert with the stronger portions of the narrative to more effectively tell its story. All in all, consistently a show that made the jurors say “Holy shit that mob episode!”\n",
+           "staff": "BONES\n\nDirected by Yuzuru Tachikawa"
+          },
+          {
+           "id": 104578,
+           "altname": "",
+           "altimg": "https://i.imgur.com/p1kbHYg.png",
+           "public": 296,
+           "finished": 841,
+           "support": 0.351961950059453,
+           "jury": 7,
+           "percent": 0.2743280815569972,
+           "writeup": "The second part of *Attack on Titan’s* long-awaited third season finally gave fans of the series answers to long-standing questions about the nature of the world, the origins of titans, and most importantly, what the hell was in Eren’s basement. The first half of part two focused heavily on the conflict between the Scouts and the Beast, Colossal, and Armored Titans, whose epic battle greatly impressed the jury in its sheer scale. Studio Wit’s animation work stood out spectacularly during these fight sequences, although most jurors were disappointed by the lackluster CGI work on the Colossal Titan. These battles were also accompanied by a sweeping and bombastic soundtrack that perfectly matched the emotional heights of the show.\n\nErwin Smith’s tenacious pursuit of knowledge at the expense of his fellow soldiers made for a fascinating character arc to behold. The emotional conflict that Erwin felt over figuratively standing on “a mountain of corpses” to reach his goals, added a great deal of nuance to Levi’s judgment on whether to pin humanity’s future hopes on either Erwin or the younger, more unproven, Armin.\n\nAfter unlocking the basement, the narrative focused on the various revelations of the history of titans, the origins of the Eldian people, and the racial and political divide which led the people within the walls to their current fate. While several jurors found the newly uncovered backstory to be immensely satisfying, others found the over-reliance on exposition and explanation to be distasteful. The dull color palette and relatively drab animation outside of fight scenes made for a less engaging presentation during the final part of the season, as well. \n",
+           "staff": "Wit Studio\n\nDirected by Masashi Koizuka and Tetsuro Araki"
+          }
+         ],
+         "hms": []
+        }
       ]
      },
      {

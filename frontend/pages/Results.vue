@@ -35,7 +35,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom}" v-if="modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalNom && showNom}" v-if="modalNom">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="columns is-gapless">
@@ -58,7 +58,7 @@
 									({{results.characters[modalNom.id].anime}})
 								</span>
 								<span v-if="modalCat.entryType==='vas'">
-									({{results.characters[modalNom.id].name}})
+									({{results.characters[modalNom.id].va}})
 								</span>
 								<span v-if="modalCat.entryType==='themes'">
 									({{results.themes[modalNom.id].split(/ - /gm)[0]}})
@@ -82,7 +82,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM}" v-if="modalHM">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalHM && showHM}" v-if="modalHM">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -95,7 +95,7 @@
 			</div>
 			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && !modalHM && !modalNom}" v-if="modalCat && !modalHM && !modalNom">
+		<div class="modal animated fast fadeIn" :class="{'is-active': modalCat && showCat}" v-if="modalCat">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-content">
 				<div class="awardsModal has-text-light has-background-dark content">
@@ -105,13 +105,13 @@
 					<div class="awardsModalBody mt-30" v-html="markdownit(modalCat.blurb)">
 					</div>
 					<h5 class="title is-5 mt-30"> Vote Data </h5>
-					<table class="table is-black-bis " v-if="chartData">
+					<table width="100%" class="table is-black-bis " v-if="chartData">
 						<thead>
 							<tr>
 								<th> Show </th>
 								<th> Votes </th>
 								<th> Watched </th>
-								<th> Support % </th>
+								<th class="is-hidden-mobile"> Support % </th>
 							</tr>
 						</thead>
 						<tbody>
@@ -126,7 +126,7 @@
 								<th>
 									{{chartData.pubnoms[index].finished}}
 								</th>
-								<th>
+								<th class="is-hidden-mobile">
 									{{(chartData.pubnoms[index].support*100).toFixed(2)}}
 								</th>
 							</tr>
@@ -135,9 +135,14 @@
 					<div class="categoryJurors mt-30">
 						<h5 class="title is-5"> Jurors </h5>
 						<div class="tags">
-							<a class="tag has-text-black is-platinum" v-for="(juror, index) in modalCat.jurors" :key="index" :href="'https://reddit.com' + juror">
-								{{juror}}
-							</a>
+							<span class="mr-10" v-for="(juror, index) in modalCat.jurors" :key="index" >
+								<a class="tag has-text-black is-platinum" v-if="typeof juror === 'string'" :href="'https://reddit.com' + juror">
+									{{juror}}
+								</a>
+								<a class="tag has-text-black is-platinum" v-else :href="juror.link">
+									{{juror.name}}
+								</a>
+							</span>
 						</div>
 					</div>
 				</div>
@@ -148,26 +153,23 @@
 </template>
 
 <script>
-// eslint-disable vue/no-parsing-error*/
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
-
-
-import data2018 from '../../data/results2018.json';
-import data2019 from '../../data/results2019.json';
 import AwardsSection from '../results/ResultSection';
 import NomineeName from '../results/NomineeName';
 import ItemImage from '../results/ItemImage';
 import juryIcon from '../../img/jury.png';
 import publicIcon from '../../img/public.png';
-import logo from '../../img/awards2019.png';
+import logo19 from '../../img/awards2019.png';
+import logo18 from '../../img/awards2018.png';
+import logo17 from '../../img/awards2017.png';
+import logo16 from '../../img/awards2016.png';
 import marked from 'marked';
 
 
 const aq = require('../anilistQueries');
 
 export default {
-	props: ['slug'],
+	props: ['slug', 'year'],
 	components: {
 		AwardsSection,
 		ItemImage,
@@ -175,20 +177,22 @@ export default {
 	},
 	data () {
 		return {
-			results: data2019,
+			results: null,
 			loaded: false,
 			showData: [],
 			charData: [],
 			showIDs: [],
 			charIDs: [],
 			modalNom: null,
+			showNom: false,
 			modalHM: null,
+			showHM: false,
 			modalRank: 883,
 			modalCat: null,
+			showCat: false,
 			chartData: null,
 			juryIcon,
 			publicIcon,
-			logo,
 		};
 	},
 	computed: {
@@ -199,10 +203,24 @@ export default {
 			return this.showData;
 		},
 		resultSections () {
-			if (this.slug && this.slug !== '' && this.slug !== 'all') {
+			if (this.slug !== '' && this.slug !== 'all' && this.slug) {
 				return this.results.sections.filter(section => section.slug === this.slug);
 			}
 			return this.results.sections;
+		},
+		logo () {
+			switch (this.year) {
+				case undefined:
+					return logo19;
+				case '2018':
+					return logo18;
+				case '2017':
+					return logo17;
+				case '2016':
+					return logo16;
+				default:
+					return '';
+			}
 		},
 	},
 	methods: {
@@ -221,15 +239,15 @@ export default {
 			this.modalNom = nom;
 			this.modalRank = ranking;
 			this.modalCat = category;
+			this.showNom = true;
 		},
 		hmModal (hm, category) {
+			console.log(hm, category);
 			document.documentElement.classList.add('is-clipped');
-			this.modalHM = hm;
 			this.modalCat = category;
 
-			if (!hm) {
+			if (hm === null) {
 				const labels = [];
-				const dataset = [];
 				const pubnoms = [].concat(category.nominees).filter(nom => nom.public !== -1).sort((a, b) => b.public - a.public);
 				for (const nom of pubnoms) {
 					if (nom.altname) {
@@ -249,14 +267,27 @@ export default {
 					pubnoms,
 					labels,
 				};
+				this.showCat = true;
+			} else {
+				if (hm.writeup === '') return;
+				this.modalHM = hm;
+				this.showHM = true;
 			}
 		},
 		closeModal () {
-			this.modalNom = null;
-			this.modalHM = null;
+			const modalels = document.getElementsByClassName('awardsModal');
+			[].forEach.call(modalels, el => {
+				// console.log(el);
+				el.scrollTop = 0;
+			});
+			// this.modalNom = null;
+			// this.modalHM = null;
 			this.modalRank = 883;
-			this.modalCat = null;
-			this.chartData = null;
+			// this.modalCat = null;
+			// this.chartData = null;
+			this.showNom = false;
+			this.showCat = false;
+			this.showHM = false;
 			document.documentElement.classList.remove('is-clipped');
 		},
 		fetchShows (page, showIDs) {
@@ -313,46 +344,63 @@ export default {
 				}
 			});
 		},
+		fetchAnilist () {
+			for (const show in this.results.anime) {
+				this.showIDs.push(show);
+			}
+			for (const char in this.results.characters) {
+				this.charIDs.push(char);
+			}
+			const showPromise = new Promise(async (resolve, reject) => {
+				try {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						const returnData = await this.fetchShows(page, this.showIDs);
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			const charPromise = new Promise(async (resolve, reject) => {
+				try {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						const returnData = await this.fetchChars(page, this.charIDs);
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			});
+			Promise.all([showPromise, charPromise]).then(() => {
+				this.loaded = true;
+			});
+		},
 	},
 	mounted () {
-		window.scroll(0, 0);
-		for (const show in this.results.anime) {
-			this.showIDs.push(show);
+		switch (this.year) {
+			case undefined:
+				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
+			case '2018':
+				import(/* webpackChunkName: "results18" */ '../../data/results2018.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
+			default:
+				break;
 		}
-		for (const char in this.results.characters) {
-			this.charIDs.push(char);
-		}
-		const showPromise = new Promise(async (resolve, reject) => {
-			try {
-				let lastPage = false;
-				let page = 1;
-				while (!lastPage) {
-					const returnData = await this.fetchShows(page, this.showIDs);
-					lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-					page++;
-				}
-				resolve();
-			} catch (err) {
-				reject(err);
-			}
-		});
-		const charPromise = new Promise(async (resolve, reject) => {
-			try {
-				let lastPage = false;
-				let page = 1;
-				while (!lastPage) {
-					const returnData = await this.fetchChars(page, this.charIDs);
-					lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-					page++;
-				}
-				resolve();
-			} catch (err) {
-				reject(err);
-			}
-		});
-		Promise.all([showPromise, charPromise]).then(() => {
-			this.loaded = true;
-		});
 	},
 };
 </script>

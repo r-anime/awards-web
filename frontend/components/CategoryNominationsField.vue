@@ -11,6 +11,13 @@
                     <p class="help">Overrides default name</p>
                 </div>
                 <div class="column is-narrow field">
+                    <label class="label">Alternate Image</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="" v-model="nom.alt_img" @input="emitUpdate">
+                    </div>
+                    <p class="help">Overrides default image/Specify image for OP/ED</p>
+                </div>
+                <div class="column is-narrow field">
                     <label class="label">Show Anilist ID</label>
                     <div class="control">
                         <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilistidfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilistID" @input="emitUpdate">
@@ -43,14 +50,14 @@
                     <p class="help">Leave alone for unshared test cat public noms</p>
                 </div>
                 <div class="column is-narrow field">
-                    <label class="label">Public Vote #</label>
+                    <label class="label">Vote Count</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.publicVotes" @input="emitUpdate">
                     </div>
                     <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
                 <div class="column is-narrow field">
-                    <label class="label">Public Support #</label>
+                    <label class="label">Support Count</label>
                     <div class="control">
                         <input class="input" type="text" placeholder="" v-model="nom.publicSupport" @input="emitUpdate">
                     </div>
@@ -72,7 +79,7 @@
                     <div class="control">
                         <textarea class="textarea" type="text" placeholder="" rows="4" v-model="nom.writeup" @input="emitUpdate"></textarea>
                     </div>
-                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown</a></p>
+                    <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown.</a> Please sanitize tabs and convert Unicode to ASCII.</p>
                 </div>
             </div>
         </div>
@@ -104,14 +111,13 @@ export default {
 			return this.category.entries ? JSON.parse(this.category.entries) : [];
 		},
 		alphathemes () {
-			const sortedthemes = this.themes;
 			function compare (a, b) {
 				const textA = a.title.toUpperCase();
 				const textB = b.title.toUpperCase();
 				// eslint-disable-next-line no-nested-ternary
 				return textA < textB ? -1 : textA > textB ? 1 : 0;
 			}
-			return sortedthemes.sort(compare);
+			return [].concat(this.themes).sort(compare);
 		},
 	},
 };

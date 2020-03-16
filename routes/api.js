@@ -191,6 +191,7 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 					// log.success(nom);
 					db.insertNomination({
 						altName: nom.altName,
+						alt_img: nom.alt_img,
 						categoryID: request.params.id,
 						anilistID: nom.anilistID,
 						themeID: nom.themeID,
@@ -382,6 +383,13 @@ apiApp.get('/categories/hms', (request, response) => {
 	} catch (error) {
 		response.error(error);
 	}
+});
+
+apiApp.delete('/categories/wipeNominations', async (request, response) => {
+	if (!await request.authenticate({level: 4})) {
+		return response.json(401, {error: 'You must be an admin to delete nominations data.'});
+	}
+	Promise.all([db.wipeNominations(), db.wipeJurors(), db.wipeHMs()]).then(() => response.empty(), error => response.error(error));
 });
 
 apiApp.post('/themes/create', async (request, response) => {

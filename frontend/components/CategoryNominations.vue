@@ -1,5 +1,5 @@
 <template>
-	<div v-if="nomdata!==null">
+	<div v-if="loaded">
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
 				<nominations-field v-for="(nom,index) in nomdata" :key="index"
@@ -32,8 +32,9 @@ export default {
 	},
 	data () {
 		return {
-			nomdata: null,
+			nomdata: [],
 			submitting: false,
+			loaded: false,
 		};
 	},
 	computed: {
@@ -53,6 +54,7 @@ export default {
 			// fuck lenlo
 			this.nomdata.push({
 				altName: '',
+				alt_img: '',
 				categoryID: this.category.id,
 				entryType: this.category.entryType,
 				anilistID: -1,
@@ -105,17 +107,19 @@ export default {
 		});
 		const themePromise = new Promise(async (resolve, reject) => {
 			try {
-				await this.getThemes();
+				if (this.category.entryType === 'themes') {
+					await this.getThemes();
+				}
 				resolve();
 			} catch (err) {
 				reject(err);
 			}
 		});
 		Promise.all([nomPromise, themePromise]).then(() => {
-			this.nomdata = [];
 			for (const nom of this.nominations) {
 				this.nomdata.push({
 					altName: nom.alt_name,
+					alt_img: nom.alt_img,
 					categoryID: this.category.id,
 					entryType: this.category.entryType,
 					anilistID: nom.anilist_id,
@@ -128,6 +132,7 @@ export default {
 					writeup: nom.writeup,
 				});
 			}
+			this.loaded = true;
 		});
 	},
 };

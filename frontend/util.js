@@ -101,7 +101,7 @@ function getPrettyRank (rank) {
 	return `${rank + 1}th Place`;
 }
 
-export default {
+module.exports = {
 	makeQuery,
 	fuzzyMatch,
 	stringMatchesArray,
