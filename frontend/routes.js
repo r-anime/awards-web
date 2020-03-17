@@ -6,39 +6,39 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 // Layouts, pages, and routing
-const PublicLayout = () => import(/* webpackChunkName: "host" */ './layouts/Public');
+import PublicLayout from './layouts/Public';
 // import JurorLayout from './layout/Juror';
-const HostLayout = () => import(/* webpackChunkName: "host" */ './layouts/Host');
-const ResultLayout = () => import(/* webpackChunkName: "core" */ './layouts/Result');
+import HostLayout from './layouts/Host';
+import ResultLayout from './layouts/Result';
 
-const Home = () => import(/* webpackChunkName: "core" */ './pages/Home');
-const About = () => import(/* webpackChunkName: "core" */ './pages/About');
-const Acknowledgements = () => import(/* webpackChunkName: "core" */ './pages/Acknowledgements');
-const Profile = () => import(/* webpackChunkName: "host" */ './pages/Profile');
-const ResultsPage = () => import(/* webpackChunkName: "core" */ './pages/Results');
-const ResultsContainer = () => import(/* webpackChunkName: "core" */ './pages/ResultsContainer');
-const ExtraAwardsPage = () => import(/*webpackChunkName: "core" */ './pages/ExtraAwards')
-const NotFound = () => import(/* webpackChunkName: "core" */ './pages/NotFound');
-const Archive = () => import(/* webpackChunkName: "core" */ './pages/Archive');
-const ArchiveLanding = () => import(/* webpackChunkName: "core" */ './pages/ArchiveLanding');
+import Home from './pages/Home';
+import About from './pages/About';
+import Acknowledgements from './pages/Acknowledgements';
+import Profile from './pages/Profile';
+import ResultsPage from './pages/Results';
+import ResultsContainer from './pages/ResultsContainer';
+import ExtraAwardsPage from './pages/ExtraAwards';
+import NotFound from './pages/NotFound';
+import Archive from './pages/Archive';
+import ArchiveLanding from './pages/ArchiveLanding';
 
-const Login = () => import(/* webpackChunkName: "host" */ './pages/HostLogin');
-const Categories = () => import(/* webpackChunkName: "host" */ './pages/host/Categories');
-const Users = () => import(/* webpackChunkName: "host" */ './pages/host/Users');
-const Results = () => import(/* webpackChunkName: "host" */ './pages/host/Results');
-const AllCategories = () => import(/* webpackChunkName: "host" */ './pages/host/AllCategories');
-const SingleCategory = () => import(/* webpackChunkName: "host" */ './components/SingleCategory');
-const CategoryEntries = () => import(/* webpackChunkName: "host" */ './components/CategoryEntries');
-const CategoryNominations = () => import(/* webpackChunkName: "host" */ './components/CategoryNominations');
-const CategoryJurors = () => import(/* webpackChunkName: "host" */ './components/CategoryJurors');
-const CategoryHMs = () => import(/* webpackChunkName: "host" */ './components/CategoryHMs');
-const CategoryInfo = () => import(/* webpackChunkName: "host" */ './components/CategoryInfo');
-const CategoryTools = () => import(/* webpackChunkName: "host" */ './components/CategoryTools');
-const AdminPanel = () => import(/* webpackChunkName: "host" */ './pages/host/AdminPanel');
+import Login from './pages/HostLogin';
+import Categories from './pages/host/Categories';
+import Users from './pages/host/Users';
+import Results from './pages/host/Results';
+import AllCategories from './pages/host/AllCategories';
+import SingleCategory from './components/SingleCategory';
+import CategoryEntries from './components/CategoryEntries';
+import CategoryNominations from './components/CategoryNominations';
+import CategoryJurors from './components/CategoryJurors';
+import CategoryHMs from './components/CategoryHMs';
+import CategoryInfo from './components/CategoryInfo';
+import CategoryTools from './components/CategoryTools';
+import AdminPanel from './pages/host/AdminPanel';
 
-const Voting = () => import(/* webpackChunkName: "vote" */ './pages/Voting');
-const GroupDisplay = () => import(/* webpackChunkName: "vote" */ './voting/GroupDisplay');
-const Instructions = () => import(/* webpackChunkName: "vote" */ './voting/Instructions');
+import Voting from './pages/Voting';
+import GroupDisplay from './voting/GroupDisplay';
+import Instructions from './voting/Instructions';
 
 export default new VueRouter({
 	mode: 'history',
