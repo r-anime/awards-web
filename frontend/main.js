@@ -1,5 +1,7 @@
 // Import style stuff
 import './styles/main.scss';
+import './styles/awards2019.scss';
+import './styles/animate.scss';
 
 // Import libraries
 import Vue from 'vue';
