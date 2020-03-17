@@ -132,10 +132,7 @@ html, body{
 
 .categoryItemImage {
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    background-position: center center;
-    background-repeat:  no-repeat;
-    background-size:  cover;
+    
 }
 
 .categoryNominationCards {
@@ -194,7 +191,7 @@ html, body{
 
     transform-origin: center;
     transition: all 150ms;
-
+    
     /* z-index: -3000;*/
 }
 
@@ -308,6 +305,32 @@ footer {
 
 .button {
     transition: background 0.15s;
+}
+
+//responsive tables
+@include until($tablet) {
+    .table-responsive {
+        thead{
+            display: none;
+        }
+        
+        tr {
+            display:flex;
+            flex-wrap: wrap;
+
+            
+
+            td {
+                flex: 100% 0 0;
+                border-width: 0 !important;
+
+                &:first-child{
+                    font-size: 1.5rem;
+                    padding-top: 1rem;
+                }
+            }
+        }
+    }
 }
 
 $spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100); // Adjust this to include the pixel amounts you need.

@@ -39,7 +39,7 @@
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
 								<div class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</div>
-								<button class="button is-small is-platinum is-outlined is-hidden-desktop mb-10">
+								<button class="button is-small is-platinum is-outlined is-hidden-tablet mb-10">
 									<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
 									Read Nominee Writeup
 								</button>
@@ -53,7 +53,7 @@
                                     <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
                                 </div>
 								<div class="categoryRank has-text-platinum">{{index + 1}}</div>
-								<button class="button is-small is-platinum is-outlined is-hidden-desktop mb-10">
+								<button class="button is-small is-platinum is-outlined is-hidden-tablet mb-10">
 									<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
 									Read Nominee Writeup
 								</button>

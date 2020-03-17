@@ -5,14 +5,14 @@
         <div class="hero-body">
           <div class="container">
             <div class="columns is-centered">
-              <div class="column is-two-thirds-desktop is-three-quarters-tablet is-four-fifths-mobile has-background-black-bis">
+              <div class="column is-two-thirds-desktop is-three-quarters-tablet has-background-black-bis">
                 <section class="section">
                   <div class="container">
                     <h1 class="title is-3 has-text-llperiwinkle has-text-left">Extra Awards</h1>
                     <div class="has-text-left has-text-light">
                       Extra Awards are a chance to be looser and have fun with categories that may be less prestigious, but are nonetheless an important celebration of what anime fans love.
                     </div>
-                    <table class="table has-background-black-bis">
+                    <table class="table table-responsive has-background-black-bis">
                       <thead class="has-text-weight-bold">
                         <tr>
                           <td>Award</td>
