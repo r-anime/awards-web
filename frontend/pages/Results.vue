@@ -2,7 +2,7 @@
 	<div class="has-background-dark">
 		<div class="container" >
 			<div class="columns is-centered" >
-				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile" >
+				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-tablet" >
 					<div class="columns is-centered mt-75 pl-30 pr-30">
 						<div class="column is-narrow">
 							<img class="BFimage" :src="logo" />
