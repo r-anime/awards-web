@@ -45,7 +45,7 @@
                         </div>
                     </div>
             </div>
-             <div class="categorySubHeadItem categorySubHeadJury level-item is-centered has-text-centered-touch">
+            <div class="categorySubHeadItem categorySubHeadJury level-item is-centered has-text-centered-touch">
                     <div class="categorySubHeadItemIcon">
                         <img alt="laurels" :src="publicIcon" />
                     </div>
