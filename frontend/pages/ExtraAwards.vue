@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <section class="section has-background-dark">
+    <section v-if="loaded" class="section has-background-dark">
       <section class="hero is-fullheight-with-navbar">
         <div class="hero-body">
           <div class="container">
@@ -10,7 +9,7 @@
                   <div class="container">
                     <h1 class="title is-3 has-text-llperiwinkle has-text-left">Extra Awards</h1>
                     <div class="has-text-left has-text-light">
-                      Extra Awards are a chance to be looser and have fun with categories that may be less prestigious, but are nonetheless an important celebration of what anime fans love.
+                      Extra Awards are a chance to have fun with categories that may be less prestigious, but are nonetheless an important celebration of what anime fans love.
                     </div>
                     <table class="table table-responsive has-background-black-bis">
                       <thead class="has-text-weight-bold">
@@ -43,20 +42,21 @@
         </div>
       </section>
     </section>
-  </div>
 </template>
 
 <script>
-import data2019 from '../../data/results2019.json';
-
 export default {
 	data () {
 		return {
-			awards: data2019.extras,
+			awards: null,
+			loaded: false,
 		};
 	},
 	mounted () {
-		window.scroll(0, 0);
+		import(/* webpackChunkName: "extra" */ '../../data/extra.json').then(data => {
+			this.awards = data.extras;
+			this.loaded = true;
+		});
 	},
 };
 </script>

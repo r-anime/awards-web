@@ -57,6 +57,3 @@ $colors: map-merge($colors, $addColors);
 
 // Load other Bulma variables
 @import "~bulma/sass/utilities/all";
-@import "animate";
-@import "awards2019";
-
