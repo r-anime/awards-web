@@ -55,9 +55,9 @@ app.use('/api', api);
 app.use('/auth', auth);
 
 // Register API routes for webpack entrypoints
-app.get('/host', (request, response) => response.end(hostPage));
+app.use('/host', (request, response) => response.end(hostPage));
 // Login is a stupid route that needs to be handled better and hosted at /host instead of /login
-app.get('/login', (request, response) => response.end(hostPage));
+app.use('/login', (request, response) => response.end(hostPage));
 
 // Start the server
 if (config.https) {
