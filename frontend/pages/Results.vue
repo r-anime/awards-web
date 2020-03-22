@@ -407,7 +407,6 @@ export default {
 
 <style lang="scss" scoped>
 @use "../styles/utilities" as *;
-@use "../styles/results-customizations";
 
 .loader {
     &.is-loading {

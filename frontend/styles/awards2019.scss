@@ -1,5 +1,22 @@
 @use "utilities" as *;
-// @use "bulma/sass/utilities/_all" as *;
+
+// Bulma customizations
+
+// Smaller vertical section padding
+$section-padding: 1.5rem;
+$modal-content-width: 800px;
+
+// Customize global theme colors
+$primary: $periwinkle;
+$primary-invert: $periwinkle-invert;
+$danger: $orangered;
+
+// Customize individual component colors
+$table-color: $silver;
+$text-strong: $silver;
+$table-background-color: $dark;
+
+// Actual element definitions
 
 html, body{
     font-family: 'Open Sans';
