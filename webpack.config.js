@@ -12,7 +12,7 @@ module.exports = {
 	},
 	output: {
 		path: config.publicDir,
-		filename: 'bundle.js',
+		filename: '[name].bundle.js',
 		publicPath: '/',
 	},
 	optimization: {
@@ -25,9 +25,7 @@ module.exports = {
 				},
 			},
 		},
-		runtimeChunk: {
-			name: 'manifest',
-		},
+		runtimeChunk: 'single',
 	},
 	resolve: {
 		extensions: [
@@ -89,7 +87,7 @@ module.exports = {
 					{
 						loader: 'file-loader',
 						options: {
-							name: '[name][hash].[ext]',
+							name: '[name].[hash].[ext]',
 						},
 					},
 				],
