@@ -4,13 +4,13 @@
 // not how we want that to work.
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
-@import "~bulma/sass/utilities/initial-variables";
-@import "~bulma/sass/utilities/functions";
+@import "~bulma/sass/utilities/all";
 
-// Customize Bulma variables
+// Customize fonts
 $family-sans-serif: "Open Sans", "Helvetica", "Arial", sans-serif;
 $family-monospace: "Source Code Pro", "Menlo", "Consolas", monospace;
 
+// Add more colors
 $llperiwinkle: #7EAEFF;
 $llperiwinkle-invert: findColorInvert($llperiwinkle);
 $lperiwinkle: #6B9CE8;
@@ -31,18 +31,6 @@ $platinum-invert: findColorInvert($platinum);
 
 $dark: #1B1E25;
 
-$primary: $periwinkle;
-$primary-invert: $periwinkle-invert;
-$danger: $orangered;
-
-// Smaller vertical section padding
-$section-padding: 1.5rem;
-$modal-content-width: 800px;
-$table-color: $silver;
-$text-strong: $silver;
-$table-background-color: $dark;
-
-@import "~bulma/sass/utilities/derived-variables";
 $addColors: (
     "llperiwinkle": ($llperiwinkle, $llperiwinkle-invert),
     "lperiwinkle": ($lperiwinkle, $lperiwinkle-invert),
@@ -54,6 +42,3 @@ $addColors: (
     "platinum": ($platinum, $platinum-invert),
 );
 $colors: map-merge($colors, $addColors);
-
-// Load other Bulma variables
-@import "~bulma/sass/utilities/all";

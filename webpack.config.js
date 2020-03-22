@@ -1,6 +1,11 @@
 const {VueLoaderPlugin} = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+
+// npm package wrapper around the canonical dart implementation of Sass
+// (required for newly implemented @use stuff)
+const dartSass = require('sass');
+
 const config = require('./config');
 
 module.exports = {
@@ -62,9 +67,7 @@ module.exports = {
 					{
 						loader: 'sass-loader',
 						options: {
-							data: `
-								@import "frontend/styles/main";
-							`,
+							implementation: dartSass,
 						},
 					},
 				],

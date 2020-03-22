@@ -97,6 +97,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "../styles/main.scss" as *;
+
 .full-height {
 	height: 100%;
 	@include mobile {

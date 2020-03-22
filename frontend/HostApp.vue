@@ -3,6 +3,7 @@
 </template>
 
 <style lang="scss">
+@use "styles/main" as *;
 // Variables and customization are set in frontend/styles/main.scss, but we still
 // need to import the actual styles once the variables are set.
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:400");

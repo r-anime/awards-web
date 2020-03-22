@@ -52,6 +52,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "../styles/main.scss" as *;
+
 body {
 	height: 100vh;
 	display: flex;

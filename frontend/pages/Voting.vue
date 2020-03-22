@@ -40,6 +40,8 @@ export default {
 </script>
 
 <style lang="scss">
+@use "../styles/main" as *;
+
 .voting-page-css-class-hack {
 .navbar .avatar {
 	border-radius: 5px;

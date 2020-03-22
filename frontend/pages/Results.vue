@@ -406,13 +406,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use "../styles/main" as *;
+@use "../styles/results-customizations";
+
 .loader {
     &.is-loading {
         position: relative;
         pointer-events: none;
         opacity: 0.5;
         &:after {
-            @include loader;
+            // @include loader;
             position: absolute;
             top: calc(50% - 2.5em);
             left: calc(50% - 2.5em);
