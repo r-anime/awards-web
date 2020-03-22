@@ -1,5 +1,5 @@
 // Import style stuff
-import './styles/main.scss';
+import './styles/utilities.scss';
 import './styles/awards2019.scss';
 import './styles/animate.scss';
 

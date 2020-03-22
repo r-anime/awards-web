@@ -1,5 +1,5 @@
 // Import style stuff
-import './styles/main.scss';
+import './styles/utilities.scss';
 
 // Import libraries
 import Vue from 'vue';

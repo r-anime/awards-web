@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss">
-@use "../styles/main" as *;
+@use "../styles/utilities" as *;
 
 .voting-page-css-class-hack {
 .navbar .avatar {
