@@ -3,10 +3,27 @@
 </template>
 
 <style lang="scss">
+// Loads utilities, variables, and basic bulma customizations with all our new
+// colors
 @use "styles/utilities" as *;
-// Variables and customization are set in frontend/styles/main.scss, but we still
-// need to import the actual styles once the variables are set.
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:400");
+
+// Further customization before we import elements
+
+// Smaller vertical section padding
+$section-padding: 1.5rem;
+$modal-content-width: 800px;
+
+// Customize global theme colors
+$primary: $periwinkle;
+$primary-invert: $periwinkle-invert;
+$danger: $orangered;
+
+// Customize individual component colors
+$table-color: $silver;
+$text-strong: $silver;
+$table-background-color: $dark;
+
+// Finally, import the elements themselves
 // TODO: only import bulma components we actually use
 @import "~bulma/sass/base/all";
 @import "~bulma/sass/elements/all";
@@ -14,6 +31,14 @@
 @import "~bulma/sass/components/all";
 @import "~bulma/sass/grid/all";
 @import "~bulma/sass/layout/all";
+
+// More customization below
+
+body {
+    --sfourthTest:"";
+    font-family: $family-sans-serif;
+		color: $dark;
+}
 
 // Navbar menus on mobile shouldn't interfere with page content
 @include touch {

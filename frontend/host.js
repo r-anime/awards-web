@@ -36,7 +36,7 @@ router.beforeEach(async (to, from, next) => {
 //       authentication before mounting the element. If we don't wait to mount,
 //       the initial page load won't have the navigation guard registered in
 //       time.
-import App from './HostApp';
+import App from './HostVoteApp';
 
 const vm = new Vue({
 	store,

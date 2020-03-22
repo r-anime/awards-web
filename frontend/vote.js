@@ -6,7 +6,7 @@ import Vue from 'vue';
 import store from './store';
 import router from './voteRoutes';
 
-import App from './VoteApp';
+import App from './HostVoteApp';
 
 const vm = new Vue({
 	store,

@@ -1,16 +1,17 @@
-// This file is loaded by webpack as a prelude to all other sass snippets. It
-// should not contain any actual styles, because any styles here will be
-// included with every other sass snippet in the app. Needless to day, that is
-// not how we want that to work.
+// Import Bulma's functions so we can use findColorInvert. We CANNOT load
+// `utilities/all` at this stage because that includes variables, and we have to
+// set our custom variables BEFORE importing Bulma's. I love this language.
+@use "~bulma/sass/utilities/functions" as *;
 
+// Override fonts
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
-@import "~bulma/sass/utilities/all";
-
-// Customize fonts
 $family-sans-serif: "Open Sans", "Helvetica", "Arial", sans-serif;
 $family-monospace: "Source Code Pro", "Menlo", "Consolas", monospace;
 
-// Add more colors
+// Override default colors
+$dark: #1B1E25;
+
+// Define more colors
 $llperiwinkle: #7EAEFF;
 $llperiwinkle-invert: findColorInvert($llperiwinkle);
 $lperiwinkle: #6B9CE8;
@@ -21,7 +22,6 @@ $dperiwinkle: rgb(45, 56, 83);
 $dperiwinkle-invert: findColorInvert($dperiwinkle);
 $orangered: #EA6850;
 $orangered-invert: findColorInvert($orangered);
-
 $gold: #E7A924;
 $gold-invert: findColorInvert($gold);
 $silver: #D9E3ED;
@@ -29,9 +29,10 @@ $silver-invert: findColorInvert($silver);
 $platinum: #00D1B2;
 $platinum-invert: findColorInvert($platinum);
 
-$dark: #1B1E25;
-
-$addColors: (
+// Bulma allows you to define a `$custom-colors` and will automatically merge
+// from it into its own color map. This means that helpers for text and
+// background can be used with these colors.
+$custom-colors: (
     "llperiwinkle": ($llperiwinkle, $llperiwinkle-invert),
     "lperiwinkle": ($lperiwinkle, $lperiwinkle-invert),
     "periwinkle": ($periwinkle, $periwinkle-invert),
@@ -41,4 +42,8 @@ $addColors: (
     "silver": ($silver, $silver-invert),
     "platinum": ($platinum, $platinum-invert),
 );
-$colors: map-merge($colors, $addColors);
+
+// Now that we have all our customizations defined, we can import the rest of
+// the utilities including Bulma's variables. (This technically re-imports the
+// functions but they get compiled away and I'm lazy.)
+@import "~bulma/sass/utilities/all";

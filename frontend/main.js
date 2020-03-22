@@ -1,8 +1,3 @@
-// Import style stuff
-import './styles/utilities.scss';
-import './styles/awards2019.scss';
-import './styles/animate.scss';
-
 // Import libraries
 import Vue from 'vue';
 import store from './store';

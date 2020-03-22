@@ -3,10 +3,11 @@
 </template>
 
 <style lang="scss">
+// Loads utilities, variables, and basic bulma customizations with all our new
+// colors
 @use "styles/utilities" as *;
-// Variables and customization are set in frontend/styles/utilities.scss, but we still
-// need to import the actual styles once the variables are set.
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:400");
+
+// Import the Bulma styles themselves
 // TODO: only import bulma components we actually use
 @import "~bulma/sass/base/all";
 @import "~bulma/sass/elements/all";
@@ -36,4 +37,5 @@ html {
 .title-margin {
 	margin-bottom: 1.5rem;
 }
+
 </style>
