@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "db-migrate up && webpack -p && node index.js",
+    "start": "db-migrate up && webpack && node index.js",
     "deploy": "webpack && node index.js",
-    "build": "webpack -p",
+    "build": "webpack",
+    "build-prod": "webpack -p",
     "serve": "node index.js",
     "migrate": "db-migrate up"
   },
