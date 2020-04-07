@@ -21,7 +21,7 @@
         <section class="hero has-background-black-bis">
             <div class="hero-body">
                 <div class="container">
-                    <div class="tabs is-fullwidth has-text-centered">
+                    <div class="tabs is-fullwidth has-text-centered has-text-grey">
                         <ul >
                             <li @click="juryOrder" class="is-gold" :class="{'is-active': focus === 'jury'}">
                                 Jury Rankings
