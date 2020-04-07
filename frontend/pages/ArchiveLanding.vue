@@ -16,7 +16,7 @@
                                     </div>
                                     <br/>
                                     <div class="has-text-centered has-text-light">
-                                        <b>Hosts:</b> /u/codelelouche, /u/drjwilson, /u/malacostracaflame, /u/metasoshi9, /u/mpp00, /u/pandavengerx, /u/patureau, /u/ralon17, /u/reyae, /u/__u_wot_m8__, /u/vaxivop
+                                        <b>Hosts:</b> /u/codelelouche, /u/drjwilson, /u/malacostracaflame, /u/metasoshi9, /u/mpp00, /u/pandavengerx, /u/patureau, /u/ralon17, /u/reyae, /u/__u_wot_m8__, /u/Vaxivop
                                     </div>
 									<br/>
                                     <div class="has-text-centered has-text-light">
@@ -25,6 +25,22 @@
 									<br/>
                                     <div class="has-text-centered has-text-light">
                                         <b>Livestream Editors:</b> /u/clerikal, /u/commandersevan, /u/jonlxh, /u/nickknight8, /u/irvom, /u/zhongzhen93
+                                    </div>
+                                    <br/>
+                                    <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">2017</h2>
+                                    <div class="control has-text-centered">
+                                        <router-link to="/archive/2017" style="color:inherit">
+                                            <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
+                                        </router-link>
+                                        <a target="_blank" href="https://redd.it/7vvper" class="button is-large is-platinum is-outlined mb-10">Special Awards</a>
+                                    </div>
+                                    <br/>
+                                    <div class="has-text-centered has-text-light">
+                                        <b>Board Members:</b> /u/AdiMG, /u/chrispy294, /u/DoctorWhoops, /u/fordanguyen, /u/__U_WOT_M8__
+                                    </div>
+                                    <br/>
+                                    <div class="has-text-centered has-text-light">
+                                        <b>Hosts:</b> /u/CadisRai, /u/hamptonwooster, /u/MalacostracaFlame, /u/PandavengerX, /u/Patureau, /u/UnseelieSeraph, /u/Vaxivop
                                     </div>
                                     <br/>
                                     <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">Other Credits</h2>

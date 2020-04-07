@@ -398,6 +398,12 @@ export default {
 					this.fetchAnilist();
 				});
 				break;
+			case '2017':
+				import(/* webpackChunkName: "results17" */ '../../data/results2017.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
 			default:
 				break;
 		}
