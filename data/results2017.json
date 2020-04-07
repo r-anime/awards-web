@@ -65,7 +65,7 @@
   },
   "14278": {
    "name": "Kukuri",
-   "anime": "Mahoujin Guru Guru (2017)",
+   "anime": "Mahoujin Guru Guru",
    "va": "Konomi Kohara"
   },
   "21044": {
@@ -80,7 +80,7 @@
   },
   "23510": {
    "name": "Juju",
-   "anime": "Mahoujin Guru Guru (2017)",
+   "anime": "Mahoujin Guru Guru",
    "va": "You Taichi"
   },
   "70293": {
@@ -95,7 +95,7 @@
   },
   "74601": {
    "name": "Suzu Urano",
-   "anime": "Kono Sekai no Katasumi ni",
+   "anime": "In This Corner of the World",
    "va": "Rena Nōnen"
   },
   "80243": {
@@ -125,12 +125,12 @@
   },
   "89343": {
    "name": "Yotaro",
-   "anime": "Shouwa Genroku Rakugo Shinjuu: Sukeroku Futatabi-hen",
+   "anime": "Rakugo Shinjuu S2",
    "va": "Tomokazu Seki"
   },
   "89345": {
    "name": "Yakumo Yuurakutei",
-   "anime": "Shouwa Genroku Rakugo Shinjuu: Sukeroku Futatabi-hen",
+   "anime": "Rakugo Shinjuu S2",
    "va": "Akira Ishida"
   },
   "89361": {
@@ -155,7 +155,7 @@
   },
   "89707": {
    "name": "Konatsu",
-   "anime": "Shouwa Genroku Rakugo Shinjuu: Sukeroku Futatabi-hen",
+   "anime": "Rakugo Shinjuu S2",
    "va": "Yuu Kobayashi"
   },
   "120652": {
@@ -165,12 +165,12 @@
   },
   "120890": {
    "name": "Yuuri",
-   "anime": "Shoujo Shuumatsu Ryokou",
+   "anime": "Girls' Last Tour",
    "va": "Yurika Kubo"
   },
   "120971": {
    "name": "Fafnir",
-   "anime": "Kobayashi-san Chi no Maidragon",
+   "anime": "Miss Kobayashi's Dragon Maid",
    "va": "Daisuke Ono"
   },
   "120989": {
@@ -210,7 +210,7 @@
   },
   "123385": {
    "name": "Phosphophyllite",
-   "anime": "Houseki no Kuni",
+   "anime": "Land of the Lustrous",
    "va": "Tomoyo Kurosawa"
   },
   "124204": {
@@ -220,7 +220,7 @@
   },
   "124307": {
    "name": "Antarcticite",
-   "anime": "Houseki no Kuni",
+   "anime": "Land of the Lustrous",
    "va": "Mariya Ise"
   },
   "124740": {
@@ -230,7 +230,7 @@
   },
   "126067": {
    "name": "Chizome Akaguro",
-   "anime": "Boku no Hero Academia 2",
+   "anime": "My Hero Academia S2",
    "va": ""
   }
  },
@@ -412,7 +412,7 @@
       },
       {
        "id": 21858,
-       "altname": "Little Witch Academia",
+       "altname": "",
        "altimg": "",
        "public": 181,
        "finished": 683,
@@ -1618,7 +1618,7 @@
       },
       {
        "id": 21858,
-       "altname": "Little Witch Academia",
+       "altname": "",
        "altimg": "https://i.imgur.com/uaSUgAf.png",
        "public": 212,
        "finished": 1057,
@@ -1776,7 +1776,7 @@
       },
       {
        "id": 98707,
-       "altname": "",
+       "altname": "Land of the Lustrous",
        "altimg": "",
        "public": 235,
        "finished": 858,
@@ -1988,7 +1988,7 @@
       },
       {
        "id": 21858,
-       "altname": "Little Witch Academia",
+       "altname": "",
        "altimg": "",
        "public": 141,
        "finished": 789,
@@ -2767,7 +2767,7 @@
       },
       {
        "id": 21858,
-       "altname": "Little Witch Academia",
+       "altname": "",
        "altimg": "",
        "public": 52,
        "finished": 757,
