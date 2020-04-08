@@ -11,9 +11,9 @@ const config = require('./config');
 module.exports = {
 	mode: 'development', // prod mode when deploying apparently does good things
 	entry: {
-		main: './frontend/main.js',
-		host: './frontend/host.js',
-		vote: './frontend/vote.js',
+		main: './frontend/results/main.js',
+		host: './frontend/host/main.js',
+		vote: './frontend/voting/main.js',
 	},
 	output: {
 		path: config.publicDir,
