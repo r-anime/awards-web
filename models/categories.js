@@ -18,4 +18,9 @@ module.exports = (sequelize, DataTypes) => sequelize.define('categories', {
 		allowNull: false,
 		defaultValue: 1,
 	},
+	entries: {
+		type: DataTypes.STRING,
+		allowNull: false,
+		defaultValue: '',
+	},
 });

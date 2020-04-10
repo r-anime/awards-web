@@ -5,7 +5,7 @@ module.exports = (sequelize, types) => sequelize.define('nominations', {
 		defaultValue: '',
 	},
 	title: {
-		type: types.INTEGER,
+		type: types.STRING,
 	},
 	themeType: {
 		type: types.STRING,
