@@ -6,7 +6,7 @@ const path = require('path');
 const polka = require('polka'); // Web server
 const sirv = require('sirv'); // Static file middleware
 const session = require('express-session'); // Session storage middleware
-const SQLiteStore = require('connect-sqlite3')(session);
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const log = require('another-logger'); // Logging utility
 const logging = require('./util/logging'); // Request logging middleware
 const helpers = require('./util/helpers'); // Generic request/response helpers
@@ -40,9 +40,8 @@ app.use(
 		secret: config.session.secret,
 		resave: false,
 		saveUninitialized: false,
-		store: new SQLiteStore({
-			db: config.db.filename,
-			table: config.session.table,
+		store: new SequelizeStore({
+			db: models.sequelize,
 		}),
 	}),
 	// Static assets
