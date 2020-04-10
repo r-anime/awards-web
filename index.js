@@ -12,6 +12,8 @@ const logging = require('./util/logging'); // Request logging middleware
 const helpers = require('./util/helpers'); // Generic request/response helpers
 const config = require('./config'); // Generic configuration
 
+const models = require('./models');
+
 // Routes for non-frontend things
 const api = require('./routes/api');
 const auth = require('./routes/auth');
@@ -59,26 +61,29 @@ app.use('/host', (request, response) => response.end(hostPage));
 // Login is a stupid route that needs to be handled better and hosted at /host instead of /login
 app.use('/login', (request, response) => response.end(hostPage));
 
-// Start the server
-if (config.https) {
-	// If we're using HTTPS, create an HTTPS server
-	const httpsOptions = {
-		key: config.https.key,
-		cert: config.https.cert,
-	};
-	const httpsApp = https.createServer(httpsOptions, app.handler);
-	httpsApp.listen(config.https.port, () => {
-		log.success(`HTTPS listening on port ${config.https.port}`);
-	});
-	// The HTTP server will just redirect to the HTTPS server
-	http.createServer((req, res) => {
-		res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`});
-		res.end();
-	}).listen(config.port, () => {
-		log.success(`HTTP redirect listening on port ${config.port}`);
-	});
-} else {
-	app.listen(config.port, () => {
-		log.success(`Listening on port ${config.port}~!`);
-	});
-}
+// Synchronize sequelize models
+// and then start the server
+models.sequelize.sync().then(() => {
+	if (config.https) {
+		// If we're using HTTPS, create an HTTPS server
+		const httpsOptions = {
+			key: config.https.key,
+			cert: config.https.cert,
+		};
+		const httpsApp = https.createServer(httpsOptions, app.handler);
+		httpsApp.listen(config.https.port, () => {
+			log.success(`HTTPS listening on port ${config.https.port}`);
+		});
+		// The HTTP server will just redirect to the HTTPS server
+		http.createServer((req, res) => {
+			res.writeHead(301, {Location: `https://${req.headers.host}${req.url}`});
+			res.end();
+		}).listen(config.port, () => {
+			log.success(`HTTP redirect listening on port ${config.port}`);
+		});
+	} else {
+		app.listen(config.port, () => {
+			log.success(`Listening on port ${config.port}~!`);
+		});
+	}
+});
