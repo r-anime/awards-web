@@ -10,6 +10,9 @@ const sequelize = new Sequelize({
 	dialect: 'sqlite',
 	storage: path.join(config.db.path, config.db.filename),
 	logging: false,
+	queries: {
+		raw: true,
+	},
 });
 
 

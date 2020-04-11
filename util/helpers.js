@@ -1,8 +1,7 @@
 const {STATUS_CODES} = require('http');
 const superagent = require('superagent');
-const log = require('another-logger');
 const config = require('../config');
-const db = require('./db');
+const sequelize = require('../models').sequelize;
 
 const maxAccountDate = 1578009600; // sync with frontend/store.js
 
@@ -82,7 +81,7 @@ const requestHelpers = {
 	},
 	async authenticate ({level, name, oldEnough}) {
 		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
-		const userInfo = db.getUser(redditInfo.name);
+		const userInfo = sequelize.model('users').findOne({where: {reddit: redditInfo.name}});
 		if (level && (!userInfo || userInfo.level < level)) return false;
 		if (name && redditInfo.name !== name) return false;
 		if (oldEnough && redditInfo.created_utc >= maxAccountDate) return false;

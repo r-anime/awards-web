@@ -7,6 +7,11 @@ const parse = require('../themes/parser');
 // eslint-disable-next-line no-unused-vars
 const voteHelpers = require('../util/voteHelpers');
 
+
+// Sequelize models to avoid redundancy
+const Users = sequelize.model('users');
+const Categories = sequelize.model('categories');
+
 apiApp.get('/me', async (request, response) => {
 	if (!request.session.redditAccessToken) {
 		return response.json(401);
@@ -18,8 +23,7 @@ apiApp.get('/me', async (request, response) => {
 		return response.error(error);
 	}
 	try {
-		sequelize.model('users').findOne({
-			raw: true,
+		Users.findOne({
 			where: {
 				reddit: redditorInfo.name,
 			},
@@ -43,7 +47,9 @@ apiApp.get('/me', async (request, response) => {
 });
 
 apiApp.get('/users', (request, response) => {
-	response.json(db.getAllUsers());
+	Users.findAll().then(users => {
+		response.json(users);
+	});
 });
 
 apiApp.post('/user', async (request, response) => {
@@ -57,7 +63,12 @@ apiApp.post('/user', async (request, response) => {
 		return response.json(401, {error: 'You can only set users to levels below your own'});
 	}
 	log.info(user);
-	if (db.getUser(user.reddit)) {
+	const userInfo = await Users.findOne({
+		where: {
+			reddit: user.reddit,
+		},
+	});
+	if (userInfo) {
 		log.info('user already present');
 		return response.json(400, {error: 'That user is already present'});
 	}
@@ -70,7 +81,7 @@ apiApp.post('/user', async (request, response) => {
 	// replace the name with the one from reddit in case the capitalization is different
 	user.reddit = redditResponse.body.data.name;
 	try {
-		db.insertUser(user);
+		await Users.create(user);
 		response.json(user);
 	} catch (error) {
 		response.error(error);
@@ -84,7 +95,11 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 	}
 	let userInfo;
 	try {
-		userInfo = db.getUser(redditName);
+		userInfo = await Users.findOne({
+			where: {
+				reddit: redditName,
+			},
+		});
 	} catch (error) {
 		return response.error(error);
 	}
@@ -95,24 +110,32 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 		return response.json(401, {error: 'You can only remove users of lower level than yourself'});
 	}
 	try {
-		db.deleteUser(redditName);
+		await Users.destroy({
+			where: {
+				reddit: redditName,
+			},
+		});
 		response.empty();
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/categories', (request, response) => {
+apiApp.get('/categories', async (request, response) => {
 	try {
-		response.json(db.getAllCategories());
+		response.json(await Categories.findAll());
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/category/:id', (request, response) => {
+apiApp.get('/category/:id', async (request, response) => {
 	try {
-		response.json(db.getCategory(request.params.id));
+		response.json(await Categories.findOne({
+			where: {
+				id: request.params.id,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -130,8 +153,7 @@ apiApp.post('/category', async (request, response) => {
 	}
 
 	try {
-		const {lastInsertRowid} = db.insertCategory(category);
-		response.json(db.getCategoryByRowid(lastInsertRowid));
+		response.json(await Categories.create(category));
 	} catch (error) {
 		response.error(error);
 	}
@@ -148,10 +170,14 @@ apiApp.patch('/category/:id', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	// HACK there's gotta be a better way to merge things than this wow
-	category = Object.assign({}, db.getCategory(category.id), category);
+	category = Object.assign({}, await Categories.findOne({
+		where: {
+			id: category.id,
+		},
+	}));
 	try {
-		db.updateCategory(category);
-		response.json(db.getCategory(category.id));
+		const res = await Categories.update(category, {where: {id: category.id}});
+		response.json(res);
 	} catch (error) {
 		response.error(error);
 	}
@@ -162,7 +188,11 @@ apiApp.delete('/category/:id', async (request, response) => {
 		return response.json(401, {error: 'You must be an admin to delete categories'});
 	}
 	try {
-		db.deleteCategory(request.params.id);
+		await Categories.destroy({
+			where: {
+				id: request.params.id,
+			},
+		});
 		response.empty();
 	} catch (error) {
 		response.error(error);

@@ -49,7 +49,6 @@ authApp.get('/reddit/callback', async (request, response) => {
 	}
 
 	sequelize.model('users').findOrCreate({
-		raw: true,
 		where: {
 			reddit: name,
 		},
