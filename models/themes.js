@@ -1,4 +1,4 @@
-module.exports = (sequelize, types) => sequelize.define('nominations', {
+module.exports = (sequelize, types) => sequelize.define('themes', {
 	anime: {
 		type: types.STRING,
 		allowNull: false,

@@ -1,4 +1,4 @@
-module.exports = (sequelize, types) => sequelize.define('nominations', {
+module.exports = (sequelize, types) => sequelize.define('users', {
 	reddit: {
 		type: types.STRING,
 		allowNull: false,

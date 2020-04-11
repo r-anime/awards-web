@@ -1,9 +1,8 @@
-module.exports = (sequelize, types) => sequelize.define('nominations', {
+module.exports = (sequelize, types) => sequelize.define('votes', {
 	reddit_user: {
 		type: types.STRING,
 		allowNull: false,
 	},
-	user_id: types.INTEGER,
 	category_id: {
 		type: types.INTEGER,
 		allowNull: false,
