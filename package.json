@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "db-migrate up && webpack && node index.js",
-    "deploy": "webpack && node index.js",
+    "start": "webpack && node index.js",
     "build": "webpack",
     "build-prod": "webpack -p",
-    "serve": "node index.js",
-    "migrate": "db-migrate up"
+    "serve": "node index.js"
   },
   "license": "MIT",
   "devDependencies": {

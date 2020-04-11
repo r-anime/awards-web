@@ -2,7 +2,7 @@
 const log = require('another-logger');
 const apiApp = require('polka')();
 const superagent = require('superagent');
-const db = require('../util/db');
+const sequelize = require('../models').sequelize;
 const parse = require('../themes/parser');
 // eslint-disable-next-line no-unused-vars
 const voteHelpers = require('../util/voteHelpers');
@@ -17,24 +17,29 @@ apiApp.get('/me', async (request, response) => {
 	} catch (error) {
 		return response.error(error);
 	}
-	let userInfo;
 	try {
-		userInfo = db.getUser(redditorInfo.name);
+		sequelize.model('users').findOne({
+			raw: true,
+			where: {
+				reddit: redditorInfo.name,
+			},
+		}).then(user => {
+			if (!user) {
+				return response.json(404, null);
+			}
+			response.json({
+				reddit: {
+					name: redditorInfo.name,
+					avatar: redditorInfo.subreddit.icon_img,
+					created: redditorInfo.created_utc,
+				},
+				level: user.level,
+				flags: user.flags,
+			});
+		});
 	} catch (error) {
 		return response.error(error);
 	}
-	if (!userInfo) {
-		return response.json(404, null);
-	}
-	response.json({
-		reddit: {
-			name: redditorInfo.name,
-			avatar: redditorInfo.subreddit.icon_img,
-			created: redditorInfo.created_utc,
-		},
-		level: userInfo.level,
-		flags: userInfo.flags,
-	});
 });
 
 apiApp.get('/users', (request, response) => {

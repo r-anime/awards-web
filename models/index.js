@@ -9,7 +9,7 @@ const config = require('../config');
 const sequelize = new Sequelize({
 	dialect: 'sqlite',
 	storage: path.join(config.db.path, config.db.filename),
-	logging: true,
+	logging: false,
 });
 
 
