@@ -2,7 +2,6 @@
 module.exports = (sequelize, types) => {
 	const noms = sequelize.define('nominations', {
 		anilist_id: types.INTEGER,
-		theme_id: types.INTEGER,
 		character_id: types.INTEGER,
 		writeup: {
 			type: types.STRING(10000),
@@ -32,6 +31,8 @@ module.exports = (sequelize, types) => {
 			defaultValue: true,
 		},
 	});
+
+	noms.belongsTo(sequelize.import('./themes'));
 
 	noms.belongsTo(sequelize.import('./categories'));
 
