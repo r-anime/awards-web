@@ -64,7 +64,7 @@ app.use('/login', (request, response) => response.end(hostPage));
 // and then start the server
 models.sequelize.sync().then(() => {
 	// Register Heather and Geo as admins so that we don't have to manually insert rows and fuck with sequelize
-	models.sequelize.model('Users').findOrCreate({
+	models.sequelize.model('users').findOrCreate({
 		where: {
 			reddit: 'EpicTroll27',
 		},
@@ -72,7 +72,7 @@ models.sequelize.sync().then(() => {
 			level: 4,
 		},
 	});
-	models.sequelize.model('Users').findOrCreate({
+	models.sequelize.model('users').findOrCreate({
 		where: {
 			reddit: 'geo1088',
 		},
