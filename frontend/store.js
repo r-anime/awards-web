@@ -121,9 +121,6 @@ const store = new Vuex.Store({
 		DELETE_NOMINATIONS (state) {
 			// state.nominations = [];
 		},
-		UPDATE_NOMINATIONS (state, nominations) {
-			state.nominations = nominations;
-		},
 		GET_ALL_NOMINATIONS (state, allNoms) {
 			state.allNoms = allNoms;
 		},
@@ -323,10 +320,6 @@ const store = new Vuex.Store({
 		async deleteNominations ({commit}, id) {
 			await makeRequest(`/api/category/${id}/nominations`, 'DELETE');
 			commit('DELETE_NOMINATIONS');
-		},
-		async updateNominations ({commit}, {categoryId, data}) {
-			await makeRequest(`/api/category/${categoryId}`, 'PATCH', {categoryId, ...data});
-			commit('UPDATE_NOMINATIONS');
 		},
 		async getAllNominations ({commit}) {
 			const noms = await makeRequest('/api/categories/nominations');

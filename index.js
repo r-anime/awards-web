@@ -63,6 +63,23 @@ app.use('/login', (request, response) => response.end(hostPage));
 // Synchronize sequelize models
 // and then start the server
 models.sequelize.sync().then(() => {
+	// Register Heather and Geo as admins so that we don't have to manually insert rows and fuck with sequelize
+	models.sequelize.model('Users').findOrCreate({
+		where: {
+			reddit: 'EpicTroll27',
+		},
+		defaults: {
+			level: 4,
+		},
+	});
+	models.sequelize.model('Users').findOrCreate({
+		where: {
+			reddit: 'geo1088',
+		},
+		defaults: {
+			level: 4,
+		},
+	});
 	if (config.https) {
 		// If we're using HTTPS, create an HTTPS server
 		const httpsOptions = {

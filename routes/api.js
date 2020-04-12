@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable multiline-comment-style */
 const log = require('another-logger');
 const apiApp = require('polka')();
@@ -11,6 +12,11 @@ const voteHelpers = require('../util/voteHelpers');
 // Sequelize models to avoid redundancy
 const Users = sequelize.model('users');
 const Categories = sequelize.model('categories');
+const Noms = sequelize.model('nominations');
+const Jurors = sequelize.model('jurors');
+const HMs = sequelize.model('honorable_mentions');
+const Themes = sequelize.model('themes');
+const Votes = sequelize.model('votes');
 
 apiApp.get('/me', async (request, response) => {
 	if (!request.session.redditAccessToken) {
@@ -123,7 +129,7 @@ apiApp.delete('/user/:reddit', async (request, response) => {
 
 apiApp.get('/categories', async (request, response) => {
 	try {
-		response.json(await Categories.findAll());
+		response.json(await Categories.findAll({where: {active: 1}}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -199,9 +205,17 @@ apiApp.delete('/category/:id', async (request, response) => {
 	}
 });
 
-apiApp.get('/category/:id/nominations', (request, response) => {
+apiApp.get('/category/:id/nominations', async (request, response) => {
 	try {
-		response.json(db.getNominationsByCategory(request.params.id));
+		response.json(await Noms.findAll({
+			where: {
+				categoryId: request.params.id,
+				active: 1,
+			},
+			include: {
+				model: Categories,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -220,23 +234,21 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 		response.error(error);
 	}
 	try {
-		const promise = new Promise((resolve, reject) => {
+		const promise = new Promise(async (resolve, reject) => {
 			try {
 				for (const nom of nominations) {
-					// log.success(nom);
-					db.insertNomination({
-						altName: nom.altName,
+					if (nom.themeId === -1) nom.themeId = null;
+					await Noms.create({
+						alt_name: nom.alt_name,
 						alt_img: nom.alt_img,
-						categoryID: request.params.id,
-						anilistID: nom.anilistID,
-						themeID: nom.themeID,
-						entryType: nom.entryType,
-						active: 1,
+						categoryId: request.params.id,
+						anilist_id: nom.anilist_id,
+						themeId: nom.themeId,
 						writeup: nom.writeup,
-						juryRank: nom.juryRank,
-						publicVotes: nom.publicVotes,
-						characterID: nom.characterID,
-						publicSupport: nom.publicSupport,
+						rank: nom.rank,
+						votes: nom.votes,
+						character_id: nom.character_id,
+						finished: nom.finished,
 						staff: nom.staff,
 					});
 				}
@@ -245,8 +257,15 @@ apiApp.post('/category/:id/nominations', async (request, response) => {
 				reject(err);
 			}
 		});
-		promise.then(() => {
-			response.json(db.getNominationsByCategory(request.params.id));
+		promise.then(async () => {
+			response.json(await Noms.findAll({
+				where: {
+					categoryId: request.params.id,
+				},
+				include: {
+					model: Categories,
+				},
+			}));
 		});
 	} catch (error) {
 		response.error(error);
@@ -258,45 +277,29 @@ apiApp.delete('/category/:id/nominations', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to delete nominations'});
 	}
 	try {
-		await db.deactivateNominationsByCategory(request.params.id);
+		await Noms.destroy({where: {categoryId: request.params.id}});
 		response.empty();
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.patch('/category/:id/nominations', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
-		return response.json(401, {error: 'You must be a host to modify nominations'});
-	}
-	let req;
+apiApp.get('/categories/nominations', async (request, response) => {
 	try {
-		req = await request.json();
-	} catch (error) {
-		response.error(error);
-	}
-	try {
-		await db.toggleActiveNominationsById({
-			id: req.id,
-			active: req.active,
-		});
-		response.json(await db.getNominationsByCategory(req.id));
+		response.json(await Noms.findAll({where: {active: true}}));
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/categories/nominations', (request, response) => {
+apiApp.get('/category/:id/jurors', async (request, response) => {
 	try {
-		response.json(db.getAllNominations());
-	} catch (error) {
-		response.error(error);
-	}
-});
-
-apiApp.get('/category/:id/jurors', (request, response) => {
-	try {
-		response.json(db.getJurorsByCategory(request.params.id));
+		response.json(await Jurors.findAll({
+			where: {
+				categoryId: request.params.id,
+				active: true,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -309,16 +312,15 @@ apiApp.post('/category/:id/jurors', async (request, response) => {
 	let jurors;
 	try {
 		jurors = await request.json();
-		log.success(jurors);
 	} catch (error) {
 		response.error(error);
 	}
 	try {
-		const promise = new Promise((resolve, reject) => {
+		const promise = new Promise(async (resolve, reject) => {
 			try {
 				for (const juror of jurors) {
 					// log.success(nom);
-					db.insertJuror({
+					await Jurors.create({
 						categoryId: request.params.id,
 						name: juror.name,
 						link: juror.link,
@@ -329,8 +331,13 @@ apiApp.post('/category/:id/jurors', async (request, response) => {
 				reject(err);
 			}
 		});
-		promise.then(() => {
-			response.json(db.getJurorsByCategory(request.params.id));
+		promise.then(async () => {
+			response.json(await Jurors.findAll({
+				where: {
+					categoryId: request.params.id,
+					active: true,
+				},
+			}));
 		});
 	} catch (error) {
 		response.error(error);
@@ -342,24 +349,29 @@ apiApp.delete('/category/:id/jurors', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to delete jurors'});
 	}
 	try {
-		await db.deactivateJurorsByCategory(request.params.id);
+		await Jurors.destroy({where: {categoryId: request.params.id}});
 		response.empty();
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/categories/jurors', (request, response) => {
+apiApp.get('/categories/jurors', async (request, response) => {
 	try {
-		response.json(db.getAllJurors());
+		response.json(await Jurors.findAll({where: {active: true}}));
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/category/:id/hms', (request, response) => {
+apiApp.get('/category/:id/hms', async (request, response) => {
 	try {
-		response.json(db.getHMsByCategory(request.params.id));
+		response.json(await HMs.findAll({
+			where: {
+				categoryId: request.params.id,
+				active: true,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -377,11 +389,11 @@ apiApp.post('/category/:id/hms', async (request, response) => {
 		response.error(error);
 	}
 	try {
-		const promise = new Promise((resolve, reject) => {
+		const promise = new Promise(async (resolve, reject) => {
 			try {
 				for (const hm of hms) {
 					// log.success(nom);
-					db.insertHM({
+					await HMs.create({
 						categoryId: request.params.id,
 						name: hm.name,
 						writeup: hm.writeup,
@@ -392,8 +404,8 @@ apiApp.post('/category/:id/hms', async (request, response) => {
 				reject(err);
 			}
 		});
-		promise.then(() => {
-			response.json(db.getHMsByCategory(request.params.id));
+		promise.then(async () => {
+			response.json(await HMs.findAll({where: {active: true}}));
 		});
 	} catch (error) {
 		response.error(error);
@@ -405,16 +417,16 @@ apiApp.delete('/category/:id/hms', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to delete honorable mentions.'});
 	}
 	try {
-		await db.deactivateHMsByCategory(request.params.id);
+		await HMs.destroy({where: {categoryId: request.params.id}});
 		response.empty();
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/categories/hms', (request, response) => {
+apiApp.get('/categories/hms', async (request, response) => {
 	try {
-		response.json(db.getAllHMs());
+		response.json(await HMs.findAll({where: {active: true}}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -424,7 +436,7 @@ apiApp.delete('/categories/wipeNominations', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to delete nominations data.'});
 	}
-	Promise.all([db.wipeNominations(), db.wipeJurors(), db.wipeHMs()]).then(() => response.empty(), error => response.error(error));
+	Promise.all([Noms.destroy({truncate: true}), Jurors.destroy({truncate: true}), HMs.destroy({truncate: true})]).then(() => response.empty(), error => response.error(error));
 });
 
 apiApp.post('/themes/create', async (request, response) => {
@@ -441,16 +453,16 @@ apiApp.post('/themes/create', async (request, response) => {
 	try {
 		const promise = new Promise((resolve, reject) => {
 			try {
-				themes.forEach(theme => {
-					db.insertThemes(theme);
+				themes.forEach(async theme => {
+					await Themes.create(theme);
 				});
 				resolve();
 			} catch (err) {
 				reject(err);
 			}
 		});
-		promise.then(() => {
-			response.json(db.getAllThemes());
+		promise.then(async () => {
+			response.json(await Themes.findAll());
 		});
 	} catch (error) {
 		response.error(error);
@@ -459,7 +471,7 @@ apiApp.post('/themes/create', async (request, response) => {
 
 apiApp.get('/themes', async (request, response) => {
 	try {
-		response.json(await db.getAllThemes());
+		response.json(await Themes.findAll());
 	} catch (error) {
 		response.error(error);
 	}
@@ -472,8 +484,7 @@ apiApp.delete('/themes/delete/:themeType', async (request, response) => {
 	try {
 		const promise = new Promise((resolve, reject) => {
 			try {
-				log.success(request.params.themeType);
-				db.deleteThemes(request.params.themeType);
+				Themes.destroy({where: {themeType: request.params.themeType}});
 				resolve();
 			} catch (err) {
 				reject(err);
@@ -489,7 +500,7 @@ apiApp.delete('/themes/delete/:themeType', async (request, response) => {
 
 apiApp.get('/categories/:group', async (request, response) => {
 	try {
-		response.json(await db.getCategoryByGroup(request.params.group));
+		response.json(await Categories.findAll({where: {active: true, awardsGroup: request.params.group}}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -498,8 +509,8 @@ apiApp.get('/categories/:group', async (request, response) => {
 apiApp.post('/deleteaccount', async (request, response) => {
 	const name = (await request.reddit().get('/api/v1/me')).body.name;
 	try {
-		db.deleteUser(name);
-		db.deleteAllVotesFromUser(name);
+		Users.destroy({where: {reddit: name}});
+		Votes.destroy({where: {reddit_user: name}});
 		request.session.destroy(() => {
 			response.empty();
 		});
@@ -513,8 +524,9 @@ apiApp.get('/voteSummary', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to view vote summary.'});
 	}
 	try {
-		const allVotes = await db.getAllVotes();
-		const allUsers = await db.getVoteUserCount();
+		const allVotes = await Votes.findAll();
+		// eslint-disable-next-line no-unused-vars
+		const [allUsers, userMeta] = await sequelize.query('SELECT COUNT(DISTINCT `reddit_user`) as `count` FROM `votes`');
 
 		// console.log(allUsers);
 
@@ -549,7 +561,7 @@ apiApp.get('/votes/all/get', async (request, response) => {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
-		response.json(await db.getVoteTotals());
+		response.json(await sequelize.query('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` GROUP BY `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC'));
 	} catch (error) {
 		response.error(error);
 	}
@@ -560,7 +572,7 @@ apiApp.get('/votes/dashboard/get', async (request, response) => {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
-		response.json(await db.getDashboardTotals());
+		response.json(await sequelize.query('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` WHERE `votes`.`anilist_id` IS NOT NULL AND `votes`.`theme_name` IS NULL GROUP BY `votes`.`category_id`, `votes`.`anilist_id` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC'));
 	} catch (error) {
 		response.error(error);
 	}
@@ -571,7 +583,7 @@ apiApp.get('/votes/oped/get', async (request, response) => {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
-		response.json(await db.getOPEDTotals());
+		response.json(await sequelize.query('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` WHERE `votes`.`theme_name` IS NOT NULL GROUP BY `votes`.`category_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC'));
 	} catch (error) {
 		response.error(error);
 	}

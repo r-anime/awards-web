@@ -1,10 +1,11 @@
+/* eslint-disable */
 const log = require('another-logger');
 const apiApp = require('polka')();
-const db = require('../util/db');
 const voteHelpers = require('../util/voteHelpers');
 
 // all of this needs to be rewritten with sequelize's syntax
 
+/*
 apiApp.post('/votes/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName, oldEnough: true})) {
@@ -71,3 +72,5 @@ apiApp.get('/votes/get', async (request, response) => {
 		response.error(error);
 	}
 });
+
+*/
