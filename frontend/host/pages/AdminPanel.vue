@@ -222,7 +222,6 @@ export default {
 						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
 					}
 				}
-				console.log(chars);
 				const showPromise = new Promise(async (resolve, reject) => {
 					try {
 						let showData = [];
@@ -266,12 +265,8 @@ export default {
 						data.anime[`${show.id}`] = show.title.romaji;
 					}
 					for (const char of allChars) {
-						console.log(char);
-						if (!char.media.edges) console.log(`${char} is the culprit.`);
-						if (!char) console.log(`${char} is the culprit.`);
-						if (!char.media) console.log(`${char} is the culprit.`);
 						let va = '';
-						if (char.media.edges[0].voiceActors[0]) va = char.media.edges[0].voiceActors[0].name.full;
+						if (char.media.edges.length > 0) va = char.media.edges[0].voiceActors[0].name.full;
 						data.characters[`${char.id}`] = {
 							name: char.name.full,
 							anime: char.media.nodes[0].title.romaji,
