@@ -43,6 +43,22 @@
                                         <b>Hosts:</b> /u/CadisRai, /u/hamptonwooster, /u/MalacostracaFlame, /u/PandavengerX, /u/Patureau, /u/UnseelieSeraph, /u/Vaxivop
                                     </div>
                                     <br/>
+                                    <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">2016</h2>
+                                    <div class="control has-text-centered">
+                                        <router-link to="/archive/2016" style="color:inherit">
+                                            <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
+                                        </router-link>
+                                        <a target="_blank" href="https://www.reddit.com/r/anime/comments/5saqbp/ranime_awards_2016_and_the_winners_are/dddkyie/" class="button is-large is-platinum is-outlined mb-10">Special Awards</a>
+                                    </div>
+                                    <br/>
+                                    <div class="has-text-centered has-text-light">
+                                        2016 was when the /r/anime Awards began through the efforts of a ragtag group of volunteers. With no clear structure to the proceedings or a fixed hierarchy, the Awards were born. Here are the people who made it happen:
+                                    </div>
+                                    <br/>
+                                    <div class="has-text-centered has-text-light">
+                                        <b>Organizers:</b> /u/AbundantToaster, /u/Cryzzalis, /u/lukeatlook, /u/geo1088, /u/lukeatlook, /u/Shaking807
+                                    </div>
+                                    <br/>
                                     <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">Other Credits</h2>
                                     <div class="has-text-centered has-text-light">
                                         <b>This archive of past results was only made possible through the tireless efforts of these volunteers:</b>
@@ -55,6 +71,7 @@
                                     <div class="has-text-justified has-text-periwinkle">
                                         The /r/anime Awards have been an ongoing volunteer efforts for 4 years in a row now. The strong foundation that we've built over these years wouldn't be possible without the invaluable help of the /r/anime mod-team and the indispensable feedback of the users of /r/anime. We'd would like to thank every member of /r/anime who voted and participated in these Awards throughout the year, whether as jurors or members of the public. We hope to see you again in the future!
                                     </div>
+                                    <br/>
                                 </div>
                             </section>
                         </div>
