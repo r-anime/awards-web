@@ -56,7 +56,7 @@
                                     </div>
                                     <br/>
                                     <div class="has-text-centered has-text-light">
-                                        <b>Organizers:</b> /u/AbundantToaster, /u/Cryzzalis, /u/geo1088, /u/lukeatlook, /u/Shaking807
+                                        <b>Organizers:</b> /u/AbundantToaster, /u/AdiMG, /u/Cryzzalis, /u/fordanguyen, /u/geo1088, /u/lukeatlook, /u/Shaking807, /u/__U_WOT_M8__
                                     </div>
                                     <br/>
                                     <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">Other Credits</h2>
