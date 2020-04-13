@@ -268,7 +268,7 @@ export default {
 						let va = '';
 						let charAnime = '';
 						if (char.media.edges.length > 0 && char.media.edges[0].voiceActors[0]) va = char.media.edges[0].voiceActors[0].name.full;
-						if (char.media.edges.nodes > 0 && char.media.nodes[0].title) charAnime = char.media.nodes[0].title.romaji;
+						if (char.media.nodes.length > 0 && char.media.nodes[0].title) charAnime = char.media.nodes[0].title.romaji;
 						data.characters[`${char.id}`] = {
 							name: char.name.full,
 							anime: charAnime,
