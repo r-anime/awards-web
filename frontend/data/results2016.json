@@ -27,13 +27,13 @@
      "21410": "Nejimaki Seirei Senki: Tenkyou no Alderamin",
      "21421": "Kiznaiver",
      "21428": "Hai to Gensou no Grimgar",
-     "21450": "JoJo no Kimyou na Bouken: Diamond wa Kudakenai",
+     "21450": "JoJo Part IV: Diamond is Unbreakable",
      "21455": "New Game!",
      "21457": "Kono Bijutsu-bu ni wa Mondai ga Aru!",
-     "21459": "Boku no Hero Academia",
+     "21459": "My Hero Academia",
      "21460": "Hibike! Euphonium 2",
      "21472": "Oshiete! Galko-chan",
-     "21495": "Tanaka-kun wa Itsumo Kedaruge",
+     "21495": "Tanaka-kun is Always Listless",
      "21507": "Mob Psycho 100",
      "21509": "Danganronpa 3: The End of Kibougamine Gakuen - Mirai-hen",
      "21540": "Concrete Revolutio: Choujin Gensou - THE LAST SONG",
@@ -77,17 +77,17 @@
     "characters": {
      "12055": {
       "name": "Yoshikage Kira",
-      "anime": "JoJo no Kimyou na Bouken: Diamond wa Kudakenai",
+      "anime": "JoJo Part IV: Diamond is Unbreakable",
       "va": "Toshiyuki Morikawa"
      },
      "12659": {
       "name": "Rohan Kishibe",
-      "anime": "JoJo no Kimyou na Bouken: Diamond wa Kudakenai",
+      "anime": "JoJo Part IV: Diamond is Unbreakable",
       "va": "Takahiro Sakurai"
      },
      "13085": {
       "name": "Josuke Higashikata",
-      "anime": "JoJo no Kimyou na Bouken: Diamond wa Kudakenai",
+      "anime": "JoJo Part IV: Diamond is Unbreakable",
       "va": "Yuuki Ono"
      },
      "18057": {
@@ -132,13 +132,13 @@
      },
      "89028": {
       "name": "Izuku Midoriya",
-      "anime": "Boku no Hero Academia",
+      "anime": "My Hero Academia",
       "va": "Daiki Yamashita"
      },
-     "89275": {
-      "name": "Satoru Fujinuma",
+     "89326": {
+      "name": "Sachiko Fujinuma",
       "anime": "Boku Dake ga Inai Machi",
-      "va": "Shinnosuke Mitsushima"
+      "va": "Minami Takayama"
      },
      "89334": {
       "name": "Arataka Reigen",
@@ -207,7 +207,7 @@
      },
      "89788": {
       "name": "Ohta",
-      "anime": "Tanaka-kun wa Itsumo Kedaruge Tokuten",
+      "anime": "Tanaka-kun is Always Listless",
       "va": "Yoshimasa Hosoya"
      },
      "89797": {
@@ -247,7 +247,7 @@
      },
      "884": {
          "name": "Gomorins",
-         "anime": "Kiznavier",
+         "anime": "Kiznaiver",
          "va": ""
      },
      "885": {
@@ -272,7 +272,7 @@
      },
      "122330": {
       "name": "Ayana Sakanagi",
-      "anime": "Mahou Shoujo Ikusei Keikaku",
+      "anime": "Magical Girl Raising Project",
       "va": "Inori Minase"
      },
      "129260": {
@@ -291,7 +291,7 @@
      "2510": "ERASED OP1 - Re:Re:",
      "2511": "Haikyuu!! 2 OP2 - Fly High",
      "2512": "Kiznaiver OP1 - Lay Your Hands On Me",
-     "2513": "Boku no Hero Academia OP1 - The Day",
+     "2513": "My Hero Academia OP1 - The Day",
      "2514": "Yuri!!! on Ice OP1 - History Maker",
      "2519": "HisoMaso ED1 - Le temps de la rentree",
      "2532": "Sakura Quest ED1 - Freesia",
@@ -303,12 +303,12 @@
      "2540": "JoJo Part IV ED1 - I Want You",
      "2541": "Haikyuu!! 3 ED1 - Mashi Mashi",
      "20992": "Haikyuu!! 2 ED2 - Hatsunetsu",
-     "2542": "Re: Zero ED1 - STYX HELIX",
+     "2542": "Re:Zero ED1 - STYX HELIX",
      "2543": "Hibike! Euphonium 2 ED1 - Vivace",
      "2544": "Kabaneri ED1 - ninelie",
      "2545": "Yuri!!! on Ice ED1 - You Only Live Once",
-     "21703": "Fune wo Amu OP1 - Shikaze",
-     "21421": "Kiznavier ED1 - Hajimari no Sokudo"
+     "21703": "Fune wo Amu OP1 - Shiokaze",
+     "21421": "Kiznaiver ED1 - Hajimari no Sokudo"
     },
     "sections": [
      {
@@ -445,7 +445,7 @@
          },
          {
           "id": 21428,
-          "altname": "Grimar of Fantasy and Ash",
+          "altname": "Grimgar of Fantasy and Ash",
           "altimg": "",
           "public": 194,
           "finished": 1223,
@@ -1421,7 +1421,7 @@
          },
          {
           "id": 89275,
-          "altname": "Sachiko Fujinuma",
+          "altname": "",
           "altimg": "",
           "public": -1,
           "finished": -1,
@@ -1858,7 +1858,7 @@
          },
          {
           "id": 21495,
-          "altname": "",
+          "altname": "Tanaka-kun is Always Listless",
           "altimg": "",
           "public": -1,
           "finished": -1,
@@ -2525,7 +2525,7 @@
           "jury": 4,
           "percent": 0.07395234182415776,
           "writeup": "Fukushima Jun lends his voice well to Kazuma, enhancing the comedy in Konosuba quite nicely. He gives us an \"Everyone around me is a moron\" attitude and portrays well how tired Kazuma is with all the shenanigans that his party gets into. Comedies tend to rely heavily on character interactions and Fukushima Jun gave a lot of personality to Kazuma. His performance is good but doesn't compare to the level and depth of the others above him which nets him the 4th spot on this list.",
-          "staff": "Fukushima Jun"
+          "staff": "Jun Fukushima"
          },
          {
           "id": 12055,
@@ -2549,7 +2549,7 @@
           "jury": -1,
           "percent": 0.11339359079704191,
           "writeup": "Kazuma Satou, professional NEET, dies a rather inglorious death and is given two possibilities by the rather obnoxious goddess Aqua: continue on to Heaven or reincarnate into another world.\n\nDeciding to not pass upon the dream of every gamer, Kazuma decides to start a new life in a fantasy world but not before forcing the annoying goddess to accompany him.",
-          "staff": "Takahashi Rie"
+          "staff": "Rie Takahashi"
          },
          {
           "id": 90170,
@@ -2561,7 +2561,7 @@
           "jury": 3,
           "percent": 0.2161051766639277,
           "writeup": "Matsuoka Yoshitsugu's performance as this crazed devotee will probably leave a lasting mark in the history of VA performances. The mild calmness you can hear in his voice adds layers to Betelgeuse's madness. He really steals the show as soon as he appeared and the way Matsuoka portrays his insanity helps so much in making it believable that stuff being done to Subaru is truly twisted. The two other performances were on a whole other level but there was a method to his madness and that earns Matsuoka's performance as Betelgeuse the third spot on this list.",
-          "staff": "Matsuoka Yoshitsugu"
+          "staff": "Yoshitsugu Matsuoka"
          },
          {
           "id": 88708,
@@ -2585,7 +2585,7 @@
           "jury": 1,
           "percent": 0.29663105998356615,
           "writeup": "The passion and precision of Ishida Akira's portrayal of Rakugo's protagonist played a huge role in the show's success. We first see him as the dignified Master of his craft, with his detached demeanor and biting tongue, before he slips into otherworldly character as a shinigami and captivates both the local audience and the viewer alike. The story follows Yakumo's life in rakugo from a young starving actor, into a rising talent, and eventually through the ranks to the reluctant role of Master. Ishida perfectly captures the fledgling Bon, the seductive Kikuhiko, and the absolute mastery of Yakumo… all while providing the audience with glimpses into the threads that bind these and other variations of the same character.",
-          "staff": "Ishida Akira"
+          "staff": "Akira Ishida"
          }
         ],
         "hms": []
@@ -3037,7 +3037,7 @@
         "nominees": [
          {
           "id": 21495,
-          "altname": "",
+          "altname": "Tanaka-kun is Always Listless",
           "altimg": "",
           "public": -1,
           "finished": -1,
@@ -3109,7 +3109,7 @@
          },
          {
           "id": 21450,
-          "altname": "JoJo's Bizarre Adventure: Diamond is Unbreakable",
+          "altname": "JoJo Part IV: Diamond is Unbreakable",
           "altimg": "",
           "public": 198,
           "finished": 859,
