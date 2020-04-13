@@ -65,7 +65,7 @@
                                     </div>
 									<br/>
                                     <div class="has-text-centered has-text-light">
-                                    /u/AdiMG, /u/Chem_chem, /u/irvom, /u/Ralon17, /u/RandomRedditorWithNo, /u/thyeggman, /u/unprecedentedwolf
+                                    /u/AdiMG, /u/Chem_chem, /u/irvom, /u/Ralon17, /u/RandomRedditorWithNo, /u/unprecedentedwolf
                                     </div>
                                     <br/>
                                     <div class="has-text-justified has-text-periwinkle">
