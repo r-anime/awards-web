@@ -69,7 +69,7 @@
                                     </div>
                                     <br/>
                                     <div class="has-text-justified has-text-periwinkle">
-                                        The /r/anime Awards have been an ongoing volunteer efforts for 4 years in a row now. The strong foundation that we've built over these years wouldn't be possible without the invaluable help of the /r/anime mod-team and the indispensable feedback of the users of /r/anime. We'd would like to thank every member of /r/anime who voted and participated in these Awards throughout the year, whether as jurors or members of the public. We hope to see you again in the future!
+                                        The /r/anime Awards have been an ongoing volunteer efforts for 4 years in a row now. The strong foundation that we've built over these years wouldn't be possible without the invaluable help of the /r/anime mod-team and the indispensable feedback of the users of /r/anime. We would like to thank every member of /r/anime who voted and participated in these Awards throughout the year, whether as jurors or members of the public. We hope to see you again in the future!
                                     </div>
                                     <br/>
                                 </div>
