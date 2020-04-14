@@ -200,6 +200,10 @@ apiApp.delete('/category/:id', async (request, response) => {
 				id: request.params.id,
 			},
 		});
+		await Entries.destroy({where: {categoryId: request.params.id}});
+		await Noms.destroy({where: {categoryId: request.params.id}});
+		await HMs.destroy({where: {categoryId: request.params.id}});
+		await Jurors.destroy({where: {categoryId: request.params.id}});
 		response.empty();
 	} catch (error) {
 		response.error(error);
@@ -462,11 +466,11 @@ apiApp.get('/categories/hms', async (request, response) => {
 	}
 });
 
-apiApp.delete('/categories/wipeNominations', async (request, response) => {
+apiApp.delete('/categories/wipeEverything', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
-		return response.json(401, {error: 'You must be an admin to delete nominations data.'});
+		return response.json(401, {error: 'You must be an admin to wipe everything.'});
 	}
-	Promise.all([Noms.destroy({truncate: true}), Jurors.destroy({truncate: true}), HMs.destroy({truncate: true})]).then(() => response.empty(), error => response.error(error));
+	Promise.all([Entries.destroy({truncate: true, restartIdentity: true}), Noms.destroy({truncate: true, restartIdentity: true}), Jurors.destroy({truncate: true, restartIdentity: true}), HMs.destroy({truncate: true, restartIdentity: true})]).then(() => response.empty(), error => response.error(error));
 });
 
 apiApp.post('/themes/create', async (request, response) => {
@@ -480,12 +484,13 @@ apiApp.post('/themes/create', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	const themes = await parse.readThemes(`./themes/${req.themeType.toUpperCase()}.csv`);
+	log.success(themes);
 	try {
-		const promise = new Promise((resolve, reject) => {
+		const promise = new Promise(async (resolve, reject) => {
 			try {
-				themes.forEach(async theme => {
+				for (const theme of themes) {
 					await Themes.create(theme);
-				});
+				}
 				resolve();
 			} catch (err) {
 				reject(err);
@@ -512,9 +517,9 @@ apiApp.delete('/themes/delete/:themeType', async (request, response) => {
 		return response.json(401, {error: 'You must be an admin to delete themes'});
 	}
 	try {
-		const promise = new Promise((resolve, reject) => {
+		const promise = new Promise(async (resolve, reject) => {
 			try {
-				Themes.destroy({where: {themeType: request.params.themeType}});
+				await Themes.destroy({where: {themeType: request.params.themeType}});
 				resolve();
 			} catch (err) {
 				reject(err);

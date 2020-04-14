@@ -143,10 +143,11 @@ const store = new Vuex.Store({
 		DELETE_HMS (state) {
 			// state.nominations = [];
 		},
-		WIPE_NOMS (state) {
-			state.nominations = [];
-			state.hms = [];
-			state.jurors = [];
+		WIPE_EVERYTHING (state) {
+			state.nominations = null;
+			state.hms = null;
+			state.jurors = null;
+			state.entries = null;
 		},
 		UPDATE_ENTRIES (state, entries) {
 			state.entries = entries;
@@ -361,9 +362,9 @@ const store = new Vuex.Store({
 			const hms = await makeRequest('/api/categories/hms');
 			commit('GET_HMS', hms);
 		},
-		async wipeNoms ({commit}) {
-			await makeRequest('/api/categories/wipeNominations', 'DELETE');
-			commit('WIPE_NOMS');
+		async wipeEverything ({commit}) {
+			await makeRequest('/api/categories/wipeEverything', 'DELETE');
+			commit('WIPE_EVERYTHING');
 		},
 		async getEntries ({commit}, id) {
 			const entries = await makeRequest(`/api/category/${id}/entries`);

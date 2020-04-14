@@ -68,6 +68,9 @@
 				/>
 			</div>
 		</div>
+		<div v-else-if="!loaded" class="show-picker-text">
+			Loading...
+		</div>
 		<div v-else class="show-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
