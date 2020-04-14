@@ -47,6 +47,7 @@ const store = new Vuex.Store({
 		hms: null,
 		jurors: null,
 		allNoms: null,
+		entries: null,
 	},
 	getters: {
 		isHost (state) {
@@ -146,6 +147,9 @@ const store = new Vuex.Store({
 			state.nominations = [];
 			state.hms = [];
 			state.jurors = [];
+		},
+		UPDATE_ENTRIES (state, entries) {
+			state.entries = entries;
 		},
 	},
 	actions: {
@@ -360,6 +364,14 @@ const store = new Vuex.Store({
 		async wipeNoms ({commit}) {
 			await makeRequest('/api/categories/wipeNominations', 'DELETE');
 			commit('WIPE_NOMS');
+		},
+		async getEntries ({commit}, id) {
+			const entries = await makeRequest(`/api/category/${id}/entries`);
+			commit('UPDATE_ENTRIES', entries);
+		},
+		async updateEntries ({commit}, {id, entries}) {
+			const data = await makeRequest(`/api/category/${id}/entries`, 'POST', entries);
+			commit('UPDATE_ENTRIES', data);
 		},
 	},
 });

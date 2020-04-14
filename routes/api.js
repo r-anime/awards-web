@@ -17,6 +17,7 @@ const Jurors = sequelize.model('jurors');
 const HMs = sequelize.model('honorable_mentions');
 const Themes = sequelize.model('themes');
 const Votes = sequelize.model('votes');
+const Entries = sequelize.model('entries');
 
 apiApp.get('/me', async (request, response) => {
 	if (!request.session.redditAccessToken) {
@@ -200,6 +201,35 @@ apiApp.delete('/category/:id', async (request, response) => {
 			},
 		});
 		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/category/:id/entries', async (request, response) => {
+	try {
+		response.json(await Entries.findAll({where: {categoryId: request.params.id}}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/category/:id/entries', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You must be a host to modify entries'});
+	}
+	let entries;
+	try {
+		entries = await request.json();
+	} catch (error) {
+		return response.json({error: 'Invalid JSON'});
+	}
+	try {
+		await Entries.destroy({where: {categoryId: request.params.id}});
+		for (const entry of entries) {
+			await Entries.create(entry);
+		}
+		response.json(await Entries.findAll());
 	} catch (error) {
 		response.error(error);
 	}
