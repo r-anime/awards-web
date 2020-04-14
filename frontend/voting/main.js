@@ -3,7 +3,7 @@ import '../styles/utilities.scss';
 
 // Import libraries
 import Vue from 'vue';
-import store from '../store';
+import store from './store';
 import router from './routes';
 
 import App from '../common/HostVoteApp';

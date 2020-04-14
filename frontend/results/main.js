@@ -1,6 +1,5 @@
 // Import libraries
 import Vue from 'vue';
-import store from '../store';
 import router from './routes';
 
 // fontawesome stuff
@@ -15,7 +14,6 @@ import App from './App';
 Vue.component('fa-icon', FontAwesomeIcon);
 
 const vm = new Vue({
-	store,
 	router,
 	render: create => create(App),
 });
