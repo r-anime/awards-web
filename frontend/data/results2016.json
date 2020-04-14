@@ -769,7 +769,7 @@
          },
          {
           "id": 21258,
-          "altname": "Shiaryuki-hime S2",
+          "altname": "Shirayuki-hime S2",
           "altimg": "https://i.imgur.com/9Tkx963.png",
           "public": 384,
           "finished": 756,
@@ -2371,9 +2371,9 @@
           "id": 20992,
           "altname": "",
           "altimg": "https://i.imgur.com/2WRQIN3.png",
-          "public": "",
-          "finished": "",
-          "support": -1,
+          "public": -1,
+          "finished": -1,
+          "support": 1,
           "jury": 8,
           "percent": -1,
           "writeup": "Hatsunetsu follows a narrative very akin to the events that it accompanied in the show. It tells a story of vengeance fueled by determination as Karasuno gets fired up to face off for the second time against Aoba Johsai. The art style was very clean, using black-and-white with just a touch of colours on the team's jersey's and ball to make them pop. The song is great with a slow but steady ramp-up to the payoff where our protagonists\"snap\" into full colour and are on the court ready to get their revenge. At times it seemed like there was a lack of stuff happening since scenes lingered for a bit too long and tended to look similar to the last. Hatsunetsu's strong narrative and bangin' song earns it a spot on this list but the mildly boring direction don't help it place higher than the EDs above it.",
@@ -2387,7 +2387,7 @@
           "finished": 550,
           "support": 0.08363636363636363,
           "jury": -1,
-          "percent": -1,
+          "percent": 0.036306235201262825,
           "writeup": "",
           "staff": "Performed by NICO Touches the Walls"
          },
@@ -2399,7 +2399,7 @@
           "finished": 762,
           "support": 0.07611548556430446,
           "jury": -1,
-          "percent": -1,
+          "percent": 0.045777426992896606,
           "writeup": "",
           "staff": "Directed by Yuichiro Hayashi, Sayo Yamamoto\n\nPerformed by Wataru Hatano"
          },
@@ -2411,7 +2411,7 @@
           "finished": 835,
           "support": 0.081437125748503,
           "jury": -1,
-          "percent": -1,
+          "percent": 0.053670086819258090,
           "writeup": "",
           "staff": "Directed by Haruhiko Mikimoto\n\nPerformed by Aimer × chelly"
          },
@@ -2423,7 +2423,7 @@
           "finished": 538,
           "support": 0.13011152416356878,
           "jury": 7,
-          "percent": -1,
+          "percent": 0.055248618784530386,
           "writeup": "I Want You shows the various stand users throughout the town of Morioh, adding more and more to the sequence as the series goes on, demonstrating the growth of the town's character as well. The scrolling, one shot look of the ED is definitely unique, and there are clever transitions added on for certain characters (Rohan mainly) that work well while keeping the unique look. Finally, the song is super chill and a great way to unwind after an intense stand battle.\n\nThis isn't to say that the ED is perfect, however. The scrolling of the camera doesn't always work, especially as more elements are added to the ED in the final legs of the series, creating a sense of visual clutter that can be difficult to follow. In addition, it lacks substance beyond the characters, with no real symbolism or foreshadowing to speak of when compared to the DiU OPs. Ultimately, the balance between I Want You's strengths and flaws make it end up at a respectable 7th place.",
           "staff": "Directed by Yasufumi Soejima\n\nPerformed by Savage Garden"
          },
@@ -2435,7 +2435,7 @@
           "finished": 1128,
           "support": 0.10283687943262411,
           "jury": 4,
-          "percent": -1,
+          "percent": 0.091554853985793212,
           "writeup": "Chiisana Boukensha was a wonderful ED which fit KonoSuba perfectly. The music really gives you the feeling that you're an adventurer who has just returned home from a day of exploration and fighting, which is what Kazuma and the gang spend their days doing. The characters and the setting are fleshed out in ways that the actual series with its abundance of comedy doesn't have the screentime for, and the time lapse shots of the village are truly stunning. Despite all of this, we decided that at times the ED was rather simple at times and left out some key characters and details which is why Chiisana Boukensha wasn't placed higher.",
           "staff": "Directed by Takaomi Kanasaki\n\nPerformed by Sora Amamiya, Rie Takahashi & Ai Kayano"
          },
@@ -2447,7 +2447,7 @@
           "finished": 1043,
           "support": 0.14093959731543623,
           "jury": 5,
-          "percent": -1,
+          "percent": 0.11602209944751381,
           "writeup": "With an emotional song and interesting animations Sore wa Chiisana really captures the whole thriller experience of Erased. It gives us some well-made references to the show and handles the pacing between song/animation in a satisfying way when the music goes from slow to fast and the animation keeps up with it. The artistic nature of the ED suit well with how the way Erased is directed and animated. It is a great ending for having as a gatekeeper of the top 5 of the year.",
           "staff": "Directed by Masashi Ishihama\n\nPerformed by Sayuri "
          },
@@ -2459,7 +2459,7 @@
           "finished": 1170,
           "support": 0.14957264957264957,
           "jury": 3,
-          "percent": -1,
+          "percent": 0.138121546961325967,
           "writeup": "Refrain Boy makes its mark by being fantastic in terms of visuals, it has a strong narrative following the relationship between Mob and Reigen but mostly of all it looks amazing. Everything in the entire opening except for a single thing is made by using oil paint on glass which is a very unique method that takes a lot of work, but made the ending look as fantastic as it did. In addition, the ED expands a lot on Reigen's character and keeps him in the audience's mind when the plot moves away from him in the middle. While the lack of substance beyond \"a day in the life of Reigen\" keeps it from going higher, the wonderful animation and execution on its target goal earn it a hard fought third place.",
           "staff": "Directed by Miyo Sato\n\nPerformed by ALL OFF"
          },
@@ -2471,7 +2471,7 @@
           "finished": 1021,
           "support": 0.26346718903036237,
           "jury": 9,
-          "percent": -1,
+          "percent": 0.212312549329123914,
           "writeup": "Styx Helix is a fantastic song that captures Subaru's character and what he strives and fights for very well, it captures the mental horror he goes through and the breakdown of his psyche, it's also a very significant tone setter for the show.\nIt portrays the relationship between Emilia of Subaru strongly with its visuals but aside from that the visuals are largely boring and insignificant, You could argue that the snowflakes bear heavy meaning on the vast amount of possibilities available for Subaru but even then it doesn't stand out much comparatively to the other nominees on here.\n\nAll in all the audio for Styx Helix is a very strong point while the visuals are somewhat stale to make it a top tier ending which causes Styx Helix to place 9th out of the 10 endings as despite of it all, it's still a good ending that definitely deserves a spot on the list.",
           "staff": "Directed by Tatsuya Koyanagi\n\nPerformed by MYTH&ROID"
          },
@@ -2483,7 +2483,7 @@
           "finished": 837,
           "support": 0.37992831541218636,
           "jury": 1,
-          "percent": -1,
+          "percent": 0.25098658247829518,
           "writeup": "FLIP FLAP FLIP FLAP is pure enchantment. The whimsical vibe that the ED instills from TO-MAS's song and from the cute images is the perfect way to wean the audience off from the last 20 minutes of adventures they experienced. In addition, the ED is the best use of split screen visuals seen this year, pulling your attention between the lavishly designed and storybook-esque fairytale panel on the top, and the cute antics between Papika and Cocona on the bottom, encouraging multiple watches to catch all the subtle details between the two. This visual presentation reflects upon the show's main narrative focus (the dynamic between the leads and their adventures), reinforcing it in a cute and charming way that feels completely unique and absolutely excellent. This ED defines its respective show in a more memorable way than anything else in 2016 and was ended up being a runaway favorite.",
           "staff": "Directed by Kiyotaka Oshiyama\n\nPerformed by TO-MAS ft. Chima"
          }
