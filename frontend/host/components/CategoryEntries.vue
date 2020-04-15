@@ -1,20 +1,24 @@
 <template>
-	<div>
+	<div v-if="loaded">
 		<show-picker
 			v-if="category.entryType === 'shows'"
-			v-model="selections"
+			v-model="computedEntries"
+			:category="category"
 		/>
 		<char-picker
 			v-else-if="category.entryType === 'characters'"
-			v-model="selections"
+			v-model="computedEntries"
+			:category="category"
 		/>
 		<VAPicker
 			v-else-if="category.entryType === 'vas'"
-			v-model="selections"
+			v-model="computedEntries"
+			:category="category"
 		/>
 		<ThemePicker
 			v-else-if="category.entryType === 'themes'"
-			v-model="selections"
+			v-model="computedEntries"
+			:category="category"
 		/>
 		<div class="submit-wrapper">
 			<button
@@ -43,7 +47,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import ShowPicker from './EntryLayouts/ShowPicker';
 import CharPicker from './EntryLayouts/CharPicker';
 import VAPicker from './EntryLayouts/VAPicker';
@@ -61,22 +65,25 @@ export default {
 	},
 	data () {
 		return {
-			selections: this.category.entries ? JSON.parse(this.category.entries) : [],
 			submitting: false,
+			computedEntries: null,
+			loaded: false,
 		};
+	},
+	computed: {
+		...mapState(['entries']),
 	},
 	methods: {
 		...mapActions([
-			'updateCategory',
+			'getEntries',
+			'updateEntries',
 		]),
 		async submit () {
 			this.submitting = true;
 			try {
-				await this.updateCategory({
+				await this.updateEntries({
 					id: this.category.id,
-					data: {
-						entries: JSON.stringify(this.selections),
-					},
+					entries: this.computedEntries,
 				});
 			} finally {
 				this.submitting = false;
@@ -96,6 +103,15 @@ export default {
 				entries[i].checked = false;
 			}
 		},
+	},
+	async mounted () {
+		await this.getEntries(this.category.id);
+		if (this.entries == null) {
+			this.computedEntries = [];
+		} else {
+			this.computedEntries = this.entries;
+		}
+		this.loaded = true;
 	},
 };
 </script>

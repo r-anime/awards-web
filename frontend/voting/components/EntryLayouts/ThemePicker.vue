@@ -176,7 +176,6 @@ export default {
 		async searchThemes () {
 			if (!this.search || this.search.length <= 2) {
 				this.themeData = [];
-				this.themeData = [];
 				this.shows = [];
 				this.total = 'No';
 				this.loaded = true;

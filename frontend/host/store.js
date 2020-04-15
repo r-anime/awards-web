@@ -5,11 +5,6 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const util = require('./util');
-const queries = require('./anilistQueries');
-
-const maxAccountDate = 1578009600; // sync with util/helpers.js for backend
-
 async function makeRequest (path, method = 'GET', body) {
 	if (typeof body === 'object' && body != null) {
 		body = JSON.stringify(body);
@@ -37,8 +32,6 @@ const store = new Vuex.Store({
 		users: null,
 		categories: null,
 		themes: null,
-		votingCats: null,
-		selections: null,
 		voteSummary: null,
 		voteTotals: null,
 		opedTotals: null,
@@ -47,6 +40,7 @@ const store = new Vuex.Store({
 		hms: null,
 		jurors: null,
 		allNoms: null,
+		entries: null,
 	},
 	getters: {
 		isHost (state) {
@@ -57,9 +51,6 @@ const store = new Vuex.Store({
 		},
 		isAdmin (state) {
 			return state.me && state.me.level >= 4;
-		},
-		accountOldEnough (state) {
-			return state.me && state.me.reddit && state.me.reddit.created < maxAccountDate;
 		},
 	},
 	mutations: {
@@ -94,12 +85,6 @@ const store = new Vuex.Store({
 		UPDATE_THEMES (state, themes) {
 			state.themes = themes;
 		},
-		GET_VOTING_CATEGORIES (state, votingCats) {
-			state.votingCats = votingCats;
-		},
-		UPDATE_SELECTIONS (state, selections) {
-			state.selections = selections;
-		},
 		GET_VOTE_SUMMARY (state, voteSummary) {
 			state.voteSummary = voteSummary;
 		},
@@ -120,9 +105,6 @@ const store = new Vuex.Store({
 		},
 		DELETE_NOMINATIONS (state) {
 			// state.nominations = [];
-		},
-		UPDATE_NOMINATIONS (state, nominations) {
-			state.nominations = nominations;
 		},
 		GET_ALL_NOMINATIONS (state, allNoms) {
 			state.allNoms = allNoms;
@@ -145,10 +127,14 @@ const store = new Vuex.Store({
 		DELETE_HMS (state) {
 			// state.nominations = [];
 		},
-		WIPE_NOMS (state) {
-			state.nominations = [];
-			state.hms = [];
-			state.jurors = [];
+		WIPE_EVERYTHING (state) {
+			state.nominations = null;
+			state.hms = null;
+			state.jurors = null;
+			state.entries = null;
+		},
+		UPDATE_ENTRIES (state, entries) {
+			state.entries = entries;
 		},
 	},
 	actions: {
@@ -202,100 +188,6 @@ const store = new Vuex.Store({
 			const themes = await makeRequest(`/api/themes/delete/${themeType}`, 'DELETE');
 			commit('UPDATE_THEMES', themes);
 		},
-		async getVotingCategories ({commit, state, dispatch}, group) {
-			if (!state.categories) {
-				await dispatch('getCategories');
-			}
-			const votingCats = state.categories.filter(cat => cat.awardsGroup === group);
-			commit('GET_VOTING_CATEGORIES', votingCats);
-		},
-		async initializeSelections ({commit, state, dispatch}) {
-			if (!state.categories) {
-				await dispatch('getCategories');
-			}
-			const selections = {};
-			const allIDs = {
-				shows: [],
-				chars: [],
-				vas: [],
-			};
-			// this is gonna hold all themes data from data and after squashing, push it into selections
-			const themeObject = {
-				op: [],
-				ed: [],
-			};
-			for (const cat of state.categories) {
-				selections[cat.id] = [];
-			}
-			const votes = await makeRequest('/api/votes/get');
-			// Check if user has voted
-			if (votes.length !== 0) {
-				// Big fucking messy code that I will surely end myself after writing
-				// Haha yes, this just had to become EVEN FUCKING SLOWER, we basically need theme info to load votes
-				if (!state.themes) {
-					await dispatch('getThemes');
-				}
-				for (const vote of votes) {
-					const category = state.categories.find(cat => cat.id === vote.category_id); // retrieve category associated with the vote
-					if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
-						// Dashboard categories have their anilist stored elsewhere
-						allIDs.shows.push(vote.anilist_id);
-					} else if (vote.theme_name) {
-						// Theme category so we're gonna push the whole theme and SQUASH this shit later
-						const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
-						themeObject[theme.themeType].push(theme);
-					} else if (category.entryType === 'characters') {
-						// All of these are pushing anilist IDs into a bunch of arrays for querying
-						allIDs.chars.push(vote.entry_id);
-					} else if (category.entryType === 'vas') {
-						allIDs.vas.push(vote.entry_id);
-					} else if (category.entryType === 'shows') {
-						allIDs.shows.push(vote.entry_id);
-					}
-				}
-				// Check if user actually voted for any OPs/EDs
-				if (themeObject.op.length !== 0 || themeObject.ed.length !== 0) {
-					// Pull anilist IDs of themes
-					let themeArr = [];
-					if (themeObject.op.length !== 0) {
-						themeArr = themeArr.concat(themeObject.op.map(theme => theme.anilistID));
-					}
-					if (themeObject.ed.length !== 0) {
-						themeArr = themeArr.concat(themeObject.ed.map(theme => theme.anilistID));
-					}
-					const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
-					const edCat = state.categories.find(cat => cat.name.includes('ED'));
-					const anilistData = await util.makeQuery(queries.themeByIDQuery, themeArr); // await ahhhhhh
-					for (const theme of themeObject.op) {
-						const foundTheme = anilistData.find(show => show.id === theme.anilistID); // search for show info associated with theme
-						selections[opCat.id].push({...foundTheme, ...theme}); // SQUASH them together and push into selections
-					}
-					for (const theme of themeObject.ed) { // repeat
-						const foundTheme = anilistData.find(show => show.id === theme.anilistID);
-						selections[edCat.id].push({...foundTheme, ...theme});
-					}
-				}
-				// The final yeet
-				const showsData = allIDs.shows.length === 0 ? [] : await util.makeQuery(queries.showByIDQuery, allIDs.shows); // need to make these execute asynchronously somehow
-				const charData = allIDs.chars.length === 0 ? [] : await util.makeQuery(queries.charByIDQuery, allIDs.chars);
-				const vaData = allIDs.vas.length === 0 ? [] : await util.makeQuery(queries.vaByIDQuery, allIDs.vas);
-				for (const vote of votes) {
-					const category = state.categories.find(cat => cat.id === vote.category_id); // find category associated with vote
-					if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
-						if (vote.anilist_id && !vote.theme_name) { // if dashboard cat, compare anilist_id instead
-							selections[category.id].push(showsData.find(show => show.id === vote.anilist_id));
-						} else if (category.entryType === 'shows') {
-							selections[category.id].push(showsData.find(show => show.id === vote.entry_id)); // just push stuff into objects
-						} else if (category.entryType === 'characters') {
-							selections[category.id].push(charData.find(char => char.id === vote.entry_id));
-						} else if (category.entryType === 'vas') {
-							selections[category.id].push(vaData.find(va => va.id === vote.entry_id));
-						}
-					}
-				}
-			}
-			commit('UPDATE_SELECTIONS', selections);
-		},
 		async getVoteSummary ({commit}) {
 			const voteSummary = await makeRequest('/api/voteSummary');
 			commit('GET_VOTE_SUMMARY', voteSummary);
@@ -323,10 +215,6 @@ const store = new Vuex.Store({
 		async deleteNominations ({commit}, id) {
 			await makeRequest(`/api/category/${id}/nominations`, 'DELETE');
 			commit('DELETE_NOMINATIONS');
-		},
-		async updateNominations ({commit}, {categoryId, data}) {
-			await makeRequest(`/api/category/${categoryId}`, 'PATCH', {categoryId, ...data});
-			commit('UPDATE_NOMINATIONS');
 		},
 		async getAllNominations ({commit}) {
 			const noms = await makeRequest('/api/categories/nominations');
@@ -364,9 +252,17 @@ const store = new Vuex.Store({
 			const hms = await makeRequest('/api/categories/hms');
 			commit('GET_HMS', hms);
 		},
-		async wipeNoms ({commit}) {
-			await makeRequest('/api/categories/wipeNominations', 'DELETE');
-			commit('WIPE_NOMS');
+		async wipeEverything ({commit}) {
+			await makeRequest('/api/categories/wipeEverything', 'DELETE');
+			commit('WIPE_EVERYTHING');
+		},
+		async getEntries ({commit}, id) {
+			const entries = await makeRequest(`/api/category/${id}/entries`);
+			commit('UPDATE_ENTRIES', entries);
+		},
+		async updateEntries ({commit}, {id, entries}) {
+			const data = await makeRequest(`/api/category/${id}/entries`, 'POST', entries);
+			commit('UPDATE_ENTRIES', data);
 		},
 	},
 });

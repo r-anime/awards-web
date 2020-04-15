@@ -57,16 +57,19 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="show-picker-overflow-wrap">
+		<div v-else-if="selections.length" class="show-picker-overflow-wrap">
 			<div class="show-picker-entries">
 				<ThemePickerEntry
-					v-for="show in value"
+					v-for="show in selections"
 					:key="'selected' + show.id"
 					:show="show"
 					:selected="showSelected(show)"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
+		</div>
+		<div v-else-if="!loaded" class="show-picker-text">
+			Loading...
 		</div>
 		<div v-else class="show-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
@@ -78,6 +81,8 @@
 import ThemePickerEntry from './ThemePickerEntry';
 import {mapActions, mapState} from 'vuex';
 const Fuse = require('fuse.js');
+const util = require('../../../util');
+const aq = require('../../../anilistQueries');
 
 const options = {
 	shouldSort: true,
@@ -85,7 +90,7 @@ const options = {
 	location: 0,
 	distance: 70,
 	maxPatternLength: 64,
-	minMatchCharLength: 1,
+	minMatchCharLength: 3,
 	keys: [
 		'title',
 		'anime',
@@ -121,20 +126,25 @@ export default {
 	},
 	props: {
 		value: Array,
+		category: Object,
 	},
 	computed: {
 		...mapState([
 			'themes',
 		]),
+		showIDs () {
+			return this.value.map(show => show.anilist_id);
+		},
 	},
 	data () {
 		return {
-			loaded: true,
+			loaded: false,
 			typingTimeout: null,
 			search: '',
 			shows: [],
 			showData: [],
 			themeData: [],
+			selections: [],
 			total: 'No',
 			selectedTab: 'selections',
 			idArr: [],
@@ -192,19 +202,24 @@ export default {
 		toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
-				this.$emit('input', [...this.value, show]);
+				this.selections.push(show);
+				this.$emit('input', [...this.value, {
+					themeId: show.id,
+					categoryId: this.category.id,
+					anilist_id: show.anilistID,
+				}]);
 			} else {
 				if (!this.showSelected(show)) return;
-				const index = this.value.findIndex(s => s.id === show.id);
+				let index = this.selections.findIndex(s => s.themeId === show.id);
 				const arr = [...this.value];
+				this.selections.splice(index, 1);
+				index = this.value.findIndex(s => s.themeId === show.id);
 				arr.splice(index, 1);
 				this.$emit('input', arr);
 			}
 		},
 		requiredShowData (index) {
-			const found = this.showData.find(show => {
-				return show.id === this.themeData[index].anilistID;
-			});
+			const found = this.showData.find(show => show.id === this.themeData[index].anilistID);
 			return found;
 		},
 		// I hate what I'm about to do here
@@ -219,6 +234,34 @@ export default {
 		if (!this.themes) {
 			this.getThemes();
 		}
+		const showPromise = new Promise(async (resolve, reject) => {
+			try {
+				let showData = [];
+				if (this.showIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+						showData = [...showData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(showData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+
+		showPromise.then(showData => {
+			this.value.forEach(element => {
+				const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
+				const requiredShow = showData.find(show => show.id === element.anilist_id);
+				this.selections.push({...requiredShow, ...requiredTheme});
+			});
+			this.loaded = true;
+		});
 	},
 };
 </script>

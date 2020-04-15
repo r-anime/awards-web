@@ -6,7 +6,7 @@
                 <div class="column is-narrow field">
                     <label class="label">Alternate Name</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="" v-model="nom.altName" @input="emitUpdate">
+                        <input class="input" type="text" placeholder="" v-model="nom.alt_name" @input="emitUpdate">
                     </div>
                     <p class="help">Overrides default name</p>
                 </div>
@@ -20,8 +20,8 @@
                 <div class="column is-narrow field">
                     <label class="label">Show Anilist ID</label>
                     <div class="control">
-                        <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilistidfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilistID" @input="emitUpdate">
-                        <select class="input" v-else v-model="nom.anilistID" @input="emitUpdate">
+                        <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilist_idfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilist_id" @input="emitUpdate">
+                        <select class="input" v-else v-model="nom.anilist_id" @input="emitUpdate">
                             <option value="-1">Select A Show</option>
                             <option v-for="(entry, index) in entries" :key="index" :value="entry.id">{{entry.title.userPreferred}}</option>
                         </select>
@@ -30,13 +30,13 @@
                 <div class="column is-narrow field" v-if="category.entryType=='characters'||category.entryType=='vas'">
                     <label class="label">Character Anilist ID</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="" v-model="nom.characterID" @input="emitUpdate">
+                        <input class="input" type="text" placeholder="" v-model="nom.character_id" @input="emitUpdate">
                     </div>
                 </div>
                 <div class="column is-narrow field" v-if="category.entryType=='themes'">
                     <label class="label">Theme ID</label>
                     <div class="control">
-                        <select class="input" v-model="nom.themeID" @input="emitUpdate(); setAnilistID();">
+                        <select class="input" v-model="nom.themeID" @input="emitUpdate(); setanilist_id();">
                             <option value="-1">Select A Theme</option>
                             <option v-for="(entry, index) in alphathemes" :key="index" :value="entry.id">{{entry.title + " " + entry.themeNo}}</option>
                         </select>
@@ -45,21 +45,21 @@
                 <div class="column is-narrow field">
                     <label class="label">Jury Rank</label>
                     <div class="control">
-                        <input class="input" type="number" placeholder="" v-model="nom.juryRank" @input="emitUpdate">
+                        <input class="input" type="number" placeholder="" v-model="nom.rank" @input="emitUpdate">
                     </div>
                     <p class="help">Leave alone for unshared test cat public noms</p>
                 </div>
                 <div class="column is-narrow field">
                     <label class="label">Vote Count</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="" v-model="nom.publicVotes" @input="emitUpdate">
+                        <input class="input" type="text" placeholder="" v-model="nom.votes" @input="emitUpdate">
                     </div>
                     <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
                 <div class="column is-narrow field">
                     <label class="label">Support Count</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="" v-model="nom.publicSupport" @input="emitUpdate">
+                        <input class="input" type="text" placeholder="" v-model="nom.finished" @input="emitUpdate">
                     </div>
                     <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
@@ -101,9 +101,9 @@ export default {
 		emitDelete () {
 			this.$emit('delete');
 		},
-		setAnilistID () {
+		setanilist_id () {
 			// eslint-disable-next-line eqeqeq
-			this.nom.anilistID = this.themes.find(el => el.id == event.target.value).anilistID;
+			this.nom.anilist_id = this.themes.find(el => el.id == event.target.value).anilist_id;
 		},
 	},
 	computed: {

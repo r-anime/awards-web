@@ -57,16 +57,19 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="va-picker-overflow-wrap">
+		<div v-else-if="selections.length" class="va-picker-overflow-wrap">
 			<div class="va-picker-entries">
 				<VAPickerEntry
-					v-for="va in value"
+					v-for="va in selections"
 					:key="'selected' + va.id"
 					:va="va"
 					:selected="showSelected(va)"
 					@action="toggleShow(va, $event)"
 				/>
 			</div>
+		</div>
+		<div v-else-if="!loaded" class="va-picker-text">
+			Loading...
 		</div>
 		<div v-else class="va-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
@@ -76,6 +79,8 @@
 
 <script>
 import VAPickerEntry from './VAPickerEntry';
+const util = require('../../../util');
+const aq = require('../../../anilistQueries');
 
 const VASearchQuery = `query ($search: String) {
   character: Page(page: 1, perPage: 50) {
@@ -122,6 +127,7 @@ export default {
 	},
 	props: {
 		value: Array,
+		category: Object,
 	},
 	data () {
 		return {
@@ -129,9 +135,15 @@ export default {
 			typingTimeout: null,
 			search: '',
 			vas: [],
+			selections: [],
 			total: 'No',
 			selectedTab: 'selections',
 		};
+	},
+	computed: {
+		charIDs () {
+			return this.value.map(show => show.character_id);
+		},
 	},
 	methods: {
 		handleInput (event) {
@@ -166,8 +178,19 @@ export default {
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.vas = data.data.character.results;
-			this.total = data.data.character.pageInfo.total || 'No';
-			this.loaded = true;
+			const promise = new Promise((resolve, reject) => {
+				try {
+					this.vas = this.vas.filter(va => va.media.nodes.length > 0 && va.media.edges.length > 0);
+					this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
+					resolve();
+				} catch (error) {
+					reject(error);
+				}
+			});
+			promise.then(() => {
+				this.total = this.vas.length;
+				this.loaded = true;
+			});
 		},
 		showSelected (va) {
 			return this.value.some(s => s.id === va.id);
@@ -175,15 +198,44 @@ export default {
 		toggleShow (va, select = true) {
 			if (select) {
 				if (this.showSelected(va)) return;
-				this.$emit('input', [...this.value, va]);
+				this.selections.push(va);
+				this.$emit('input', [...this.value, {character_id: va.id, categoryId: this.category.id}]);
 			} else {
 				if (!this.showSelected(va)) return;
-				const index = this.value.findIndex(s => s.id === va.id);
+				let index = this.selections.findIndex(c => c.id === va.id);
 				const arr = [...this.value];
+				this.selections.splice(index, 1);
+				index = this.value.findIndex(s => s.character_id === va.id);
 				arr.splice(index, 1);
 				this.$emit('input', arr);
 			}
 		},
+	},
+	mounted () {
+		const charPromise = new Promise(async (resolve, reject) => {
+			try {
+				let charData = [];
+				if (this.charIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
+						charData = [...charData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(charData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+
+		charPromise.then(charData => {
+			this.selections = charData;
+			this.loaded = true;
+		});
 	},
 };
 </script>

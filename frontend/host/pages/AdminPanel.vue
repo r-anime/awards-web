@@ -25,7 +25,7 @@
 		<button class="button is-success" :class="{'is-loading' : generating}" @click="generateJSON">Generate JSON</button>
 	</div>
 
-	<h2 class="title is-4">Wipe Nominations, Jurors and HMs</h2>
+	<h2 class="title is-4">Wipe and reset all category data</h2>
 	<div class="buttons">
 		<button class="button is-success" :class="{'is-loading' : wiping}" @click="wipeTables">Wipe results tables</button>
 	</div>
@@ -86,11 +86,11 @@ export default {
 			'getThemes',
 			'getAllJurors',
 			'getAllHMs',
-			'wipeNoms',
+			'wipeEverything',
 		]),
 		async wipeTables () {
 			this.wiping = true;
-			await this.wipeNoms();
+			await this.wipeEverything();
 			this.wiping = false;
 		},
 		disableButtons (type, action) {

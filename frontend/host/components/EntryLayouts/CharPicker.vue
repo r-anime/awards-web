@@ -57,16 +57,19 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value.length" class="char-picker-overflow-wrap">
+		<div v-else-if="selections.length && loaded" class="char-picker-overflow-wrap">
 			<div class="char-picker-entries">
 				<char-picker-entry
-					v-for="char in value"
+					v-for="char in selections"
 					:key="'selected' + char.id"
 					:char="char"
 					:selected="showSelected(char)"
 					@action="toggleShow(char, $event)"
 				/>
 			</div>
+		</div>
+		<div v-else-if="loaded" class="char-picker-text">
+			Loading...
 		</div>
 		<div v-else class="char-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
@@ -76,6 +79,8 @@
 
 <script>
 import CharPickerEntry from './CharPickerEntry';
+const util = require('../../../util');
+const aq = require('../../../anilistQueries');
 
 const charSearchQuery = `query ($search: String) {
   character: Page(page: 1, perPage: 50) {
@@ -116,6 +121,7 @@ export default {
 	},
 	props: {
 		value: Array,
+		category: Object,
 	},
 	data () {
 		return {
@@ -123,9 +129,15 @@ export default {
 			typingTimeout: null,
 			search: '',
 			chars: [],
+			selections: [],
 			total: 'No',
 			selectedTab: 'selections',
 		};
+	},
+	computed: {
+		charIDs () {
+			return this.value.map(show => show.character_id);
+		},
 	},
 	methods: {
 		handleInput (event) {
@@ -164,20 +176,49 @@ export default {
 			this.loaded = true;
 		},
 		showSelected (char) {
-			return this.value.some(s => s.id === char.id);
+			return this.selections.some(s => s.id === char.id);
 		},
 		toggleShow (char, select = true) {
 			if (select) {
 				if (this.showSelected(char)) return;
-				this.$emit('input', [...this.value, char]);
+				this.selections.push(char);
+				this.$emit('input', [...this.value, {character_id: char.id, categoryId: this.category.id}]);
 			} else {
 				if (!this.showSelected(char)) return;
-				const index = this.value.findIndex(s => s.id === char.id);
+				let index = this.selections.findIndex(c => c.id === char.id);
 				const arr = [...this.value];
+				this.selections.splice(index, 1);
+				index = this.value.findIndex(s => s.character_id === char.id);
 				arr.splice(index, 1);
 				this.$emit('input', arr);
 			}
 		},
+	},
+	mounted () {
+		const charPromise = new Promise(async (resolve, reject) => {
+			try {
+				let charData = [];
+				if (this.charIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
+						charData = [...charData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(charData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+
+		charPromise.then(charData => {
+			this.selections = charData;
+			this.loaded = true;
+		});
 	},
 };
 </script>

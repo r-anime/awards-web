@@ -53,16 +53,15 @@ export default {
 		insertField () {
 			// fuck lenlo
 			this.nomdata.push({
-				altName: '',
+				alt_name: '',
 				alt_img: '',
-				categoryID: this.category.id,
-				entryType: this.category.entryType,
-				anilistID: -1,
-				characterID: -1,
-				themeID: -1,
-				juryRank: -1,
-				publicVotes: -1,
-				publicSupport: -1,
+				categoryId: this.category.id,
+				anilist_id: -1,
+				character_id: -1,
+				themeId: -1,
+				rank: -1,
+				votes: -1,
+				finished: -1,
 				staff: '',
 				writeup: '',
 			});
@@ -117,17 +116,17 @@ export default {
 		});
 		Promise.all([nomPromise, themePromise]).then(() => {
 			for (const nom of this.nominations) {
+				if (nom.themeId == null) nom.themeId = -1;
 				this.nomdata.push({
-					altName: nom.alt_name,
+					alt_name: nom.alt_name,
 					alt_img: nom.alt_img,
-					categoryID: this.category.id,
-					entryType: this.category.entryType,
-					anilistID: nom.anilist_id,
-					characterID: nom.character_id,
-					themeID: nom.theme_id,
-					juryRank: nom.rank,
-					publicVotes: nom.votes,
-					publicSupport: nom.finished,
+					categoryId: this.category.id,
+					anilist_id: nom.anilist_id,
+					character_id: nom.character_id,
+					themeId: nom.themeId,
+					rank: nom.rank,
+					votes: nom.votes,
+					finished: nom.finished,
 					staff: nom.staff,
 					writeup: nom.writeup,
 				});

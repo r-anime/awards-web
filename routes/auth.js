@@ -2,7 +2,7 @@ const log = require('another-logger');
 const superagent = require('superagent');
 const authApp = require('polka')();
 const config = require('../config');
-const db = require('../util/db');
+const sequelize = require('../models').sequelize;
 
 function query (obj) {
 	return Object.keys(obj)
@@ -47,15 +47,18 @@ authApp.get('/reddit/callback', async (request, response) => {
 	} catch (res) {
 		log.error('Error getting reddit user info:', res.status, res.body);
 	}
-	const user = db.getUser(name);
-	if (!user) {
-		db.insertUser({
+
+	sequelize.model('users').findOrCreate({
+		where: {
 			reddit: name,
+		},
+		defaults: {
 			level: 0,
 			flags: 0,
-		});
-	}
-	response.redirect('/login');
+		},
+	}).then(() => {
+		response.redirect('/login');
+	});
 });
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
