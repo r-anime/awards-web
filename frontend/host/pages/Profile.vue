@@ -54,7 +54,7 @@ export default {
 	},
 	methods: {
 		deleteAccount () {
-			fetch('/api/deleteaccount', {
+			fetch('/api/user/deleteaccount', {
 				method: 'POST',
 			}).then(() => {
 				window.location.pathname = '/';

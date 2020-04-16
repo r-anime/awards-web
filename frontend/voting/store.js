@@ -67,13 +67,13 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		async getMe ({commit}) {
-			const response = await fetch('/api/me');
+			const response = await fetch('/api/user/me');
 			if (!response.ok) return;
 			const me = await response.json();
 			commit('GET_ME', me);
 		},
 		async getCategories ({commit}) {
-			const categories = await makeRequest('/api/categories');
+			const categories = await makeRequest('/api/category/all');
 			commit('GET_CATEGORIES', categories);
 		},
 		async getThemes ({commit}) {

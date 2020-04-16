@@ -139,14 +139,14 @@ const store = new Vuex.Store({
 	},
 	actions: {
 		async getMe ({commit}) {
-			const response = await fetch('/api/me');
+			const response = await fetch('/api/user/me');
 			if (!response.ok) return;
 			const me = await response.json();
 			commit('GET_ME', me);
 		},
 
 		async getUsers ({commit}) {
-			const users = await makeRequest('/api/users');
+			const users = await makeRequest('/api/user/all');
 			commit('GET_USERS', users);
 		},
 		async addUser ({commit}, user) {
@@ -159,7 +159,7 @@ const store = new Vuex.Store({
 		},
 
 		async getCategories ({commit}) {
-			const categories = await makeRequest('/api/categories');
+			const categories = await makeRequest('/api/category/all');
 			commit('GET_CATEGORIES', categories);
 		},
 		async createCategory ({commit}, {data}) {
@@ -189,7 +189,7 @@ const store = new Vuex.Store({
 			commit('UPDATE_THEMES', themes);
 		},
 		async getVoteSummary ({commit}) {
-			const voteSummary = await makeRequest('/api/voteSummary');
+			const voteSummary = await makeRequest('/api/votes/summary');
 			commit('GET_VOTE_SUMMARY', voteSummary);
 		},
 		async getVoteTotals ({commit}) {
@@ -217,7 +217,7 @@ const store = new Vuex.Store({
 			commit('DELETE_NOMINATIONS');
 		},
 		async getAllNominations ({commit}) {
-			const noms = await makeRequest('/api/categories/nominations');
+			const noms = await makeRequest('/api/category/nominations/all');
 			commit('GET_ALL_NOMINATIONS', noms);
 		},
 		async getJurors ({commit}, categoryId) {
@@ -233,7 +233,7 @@ const store = new Vuex.Store({
 			commit('DELETE_JURORS');
 		},
 		async getAllJurors ({commit}) {
-			const jurors = await makeRequest('/api/categories/jurors');
+			const jurors = await makeRequest('/api/category/jurors/all');
 			commit('GET_JURORS', jurors);
 		},
 		async getHMs ({commit}, categoryId) {
@@ -249,11 +249,11 @@ const store = new Vuex.Store({
 			commit('DELETE_HMS');
 		},
 		async getAllHMs ({commit}) {
-			const hms = await makeRequest('/api/categories/hms');
+			const hms = await makeRequest('/api/category/hms/all');
 			commit('GET_HMS', hms);
 		},
 		async wipeEverything ({commit}) {
-			await makeRequest('/api/categories/wipeEverything', 'DELETE');
+			await makeRequest('/api/category/wipeEverything', 'DELETE');
 			commit('WIPE_EVERYTHING');
 		},
 		async getEntries ({commit}, id) {
