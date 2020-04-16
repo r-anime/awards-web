@@ -74,10 +74,39 @@
 		<div v-else class="va-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
+		<div class="submit-wrapper">
+			<button
+				class="button is-success"
+				:class="{'is-loading': submitting}"
+				@click="submit"
+			>
+				Update Entries
+			</button>
+			<button
+				class="button is-primary"
+				@click="clear"
+			>
+				Clear Selections
+			</button>
+			<button
+				class="button is-primary"
+				@click="selectAll"
+			>
+				Select All
+			</button>
+
+			<button
+				class="button is-primary"
+				@click="unselectAll"
+			>
+				Unselect All
+			</button>
+		</div>
 	</div>
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 import VAPickerEntry from './VAPickerEntry';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
@@ -138,14 +167,24 @@ export default {
 			selections: [],
 			total: 'No',
 			selectedTab: 'selections',
+			submitting: false,
 		};
 	},
 	computed: {
 		charIDs () {
 			return this.value.map(show => show.character_id);
 		},
+		submissions () {
+			return this.selections.map(item => ({
+				character_id: item.id,
+				categoryId: this.category.id,
+			}));
+		},
 	},
 	methods: {
+		...mapActions([
+			'updateEntries',
+		]),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -193,22 +232,41 @@ export default {
 			});
 		},
 		showSelected (va) {
-			return this.value.some(s => s.id === va.id);
+			return this.selections.some(s => s.id === va.id);
 		},
 		toggleShow (va, select = true) {
 			if (select) {
 				if (this.showSelected(va)) return;
 				this.selections.push(va);
-				this.$emit('input', [...this.value, {character_id: va.id, categoryId: this.category.id}]);
 			} else {
 				if (!this.showSelected(va)) return;
-				let index = this.selections.findIndex(c => c.id === va.id);
-				const arr = [...this.value];
+				const index = this.selections.findIndex(c => c.id === va.id);
 				this.selections.splice(index, 1);
-				index = this.value.findIndex(s => s.character_id === va.id);
-				arr.splice(index, 1);
-				this.$emit('input', arr);
 			}
+		},
+		async submit () {
+			this.submitting = true;
+			try {
+				await this.updateEntries({
+					id: this.category.id,
+					entries: this.submissions,
+				});
+			} finally {
+				this.submitting = false;
+			}
+		},
+		selectAll () {
+			for (const va of this.vas) {
+				this.toggleShow(va, true);
+			}
+		},
+		unselectAll () {
+			for (const va of this.vas) {
+				this.toggleShow(va, false);
+			}
+		},
+		clear () {
+			this.selections = [];
 		},
 	},
 	mounted () {
@@ -271,5 +329,10 @@ export default {
 	flex: 0 1 100%;
 	padding: 0.75rem;
 	text-align: center;
+}
+.submit-wrapper {
+	box-shadow: inset 0 1px #dbdbdb;
+	text-align: center;
+	padding: 5px;
 }
 </style>

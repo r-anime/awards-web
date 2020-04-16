@@ -74,10 +74,39 @@
 		<div v-else class="show-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
+		<div class="submit-wrapper">
+			<button
+				class="button is-success"
+				:class="{'is-loading': submitting}"
+				@click="submit"
+			>
+				Update Entries
+			</button>
+			<button
+				class="button is-primary"
+				@click="clear"
+			>
+				Clear Selections
+			</button>
+			<button
+				class="button is-primary"
+				@click="selectAll"
+			>
+				Select All
+			</button>
+
+			<button
+				class="button is-primary"
+				@click="unselectAll"
+			>
+				Unselect All
+			</button>
+		</div>
 	</div>
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 import ShowPickerEntry from './ShowPickerEntry';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
@@ -126,14 +155,24 @@ export default {
 			selections: [],
 			total: 'No',
 			selectedTab: 'selections',
+			submitting: false,
 		};
 	},
 	computed: {
 		showIDs () {
 			return this.value.map(show => show.anilist_id);
 		},
+		submissions () {
+			return this.selections.map(item => ({
+				anilist_id: item.id,
+				categoryId: this.category.id,
+			}));
+		},
 	},
 	methods: {
+		...mapActions([
+			'updateEntries',
+		]),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -176,16 +215,35 @@ export default {
 			if (select) {
 				if (this.showSelected(show)) return;
 				this.selections.push(show);
-				this.$emit('input', [...this.value, {anilist_id: show.id, categoryId: this.category.id}]);
 			} else {
 				if (!this.showSelected(show)) return;
-				let index = this.selections.findIndex(s => s.id === show.id);
-				const arr = [...this.value];
+				const index = this.selections.findIndex(s => s.id === show.id);
 				this.selections.splice(index, 1);
-				index = this.value.findIndex(s => s.anilist_id === show.id);
-				arr.splice(index, 1);
-				this.$emit('input', arr);
 			}
+		},
+		async submit () {
+			this.submitting = true;
+			try {
+				await this.updateEntries({
+					id: this.category.id,
+					entries: this.submissions,
+				});
+			} finally {
+				this.submitting = false;
+			}
+		},
+		selectAll () {
+			for (const show of this.shows) {
+				this.toggleShow(show, true);
+			}
+		},
+		unselectAll () {
+			for (const show of this.shows) {
+				this.toggleShow(show, false);
+			}
+		},
+		clear () {
+			this.selections = [];
 		},
 	},
 	mounted () {
@@ -248,5 +306,10 @@ export default {
 	flex: 0 1 100%;
 	padding: 0.75rem;
 	text-align: center;
+}
+.submit-wrapper {
+	box-shadow: inset 0 1px #dbdbdb;
+	text-align: center;
+	padding: 5px;
 }
 </style>

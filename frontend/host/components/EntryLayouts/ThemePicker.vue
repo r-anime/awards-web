@@ -74,6 +74,34 @@
 		<div v-else class="show-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
+		<div class="submit-wrapper">
+			<button
+				class="button is-success"
+				:class="{'is-loading': submitting}"
+				@click="submit"
+			>
+				Update Entries
+			</button>
+			<button
+				class="button is-primary"
+				@click="clear"
+			>
+				Clear Selections
+			</button>
+			<button
+				class="button is-primary"
+				@click="selectAll"
+			>
+				Select All
+			</button>
+
+			<button
+				class="button is-primary"
+				@click="unselectAll"
+			>
+				Unselect All
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -135,6 +163,13 @@ export default {
 		showIDs () {
 			return this.value.map(show => show.anilist_id);
 		},
+		submissions () {
+			return this.selections.map(item => ({
+				themeId: item.id,
+				categoryId: this.category.id,
+				anilist_id: item.anilistID,
+			}));
+		},
 	},
 	data () {
 		return {
@@ -148,10 +183,14 @@ export default {
 			total: 'No',
 			selectedTab: 'selections',
 			idArr: [],
+			submitting: false,
 		};
 	},
 	methods: {
-		...mapActions(['getThemes']),
+		...mapActions([
+			'getThemes',
+			'updateEntries',
+		]),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -197,25 +236,16 @@ export default {
 			this.squashObjects();
 		},
 		showSelected (show) {
-			return this.value.some(s => s.id === show.id);
+			return this.selections.some(s => s.id === show.id);
 		},
 		toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
 				this.selections.push(show);
-				this.$emit('input', [...this.value, {
-					themeId: show.id,
-					categoryId: this.category.id,
-					anilist_id: show.anilistID,
-				}]);
 			} else {
 				if (!this.showSelected(show)) return;
-				let index = this.selections.findIndex(s => s.themeId === show.id);
-				const arr = [...this.value];
+				const index = this.selections.findIndex(s => s.themeId === show.id);
 				this.selections.splice(index, 1);
-				index = this.value.findIndex(s => s.themeId === show.id);
-				arr.splice(index, 1);
-				this.$emit('input', arr);
 			}
 		},
 		requiredShowData (index) {
@@ -228,6 +258,30 @@ export default {
 				const fetchData = this.requiredShowData(index);
 				this.shows.push({...fetchData, ...element});
 			});
+		},
+		async submit () {
+			this.submitting = true;
+			try {
+				await this.updateEntries({
+					id: this.category.id,
+					entries: this.submissions,
+				});
+			} finally {
+				this.submitting = false;
+			}
+		},
+		selectAll () {
+			for (const show of this.shows) {
+				this.toggleShow(show, true);
+			}
+		},
+		unselectAll () {
+			for (const show of this.shows) {
+				this.toggleShow(show, false);
+			}
+		},
+		clear () {
+			this.selections = [];
 		},
 	},
 	mounted () {
@@ -297,5 +351,10 @@ export default {
 	flex: 0 1 100%;
 	padding: 0.75rem;
 	text-align: center;
+}
+.submit-wrapper {
+	box-shadow: inset 0 1px #dbdbdb;
+	text-align: center;
+	padding: 5px;
 }
 </style>

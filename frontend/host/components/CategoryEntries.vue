@@ -20,29 +20,6 @@
 			v-model="computedEntries"
 			:category="category"
 		/>
-		<div class="submit-wrapper">
-			<button
-				class="button is-success"
-				:class="{'is-loading': submitting}"
-				@click="submit"
-			>
-				Update Entries
-			</button>
-
-			<button
-				class="button is-primary"
-				@click="selectAll"
-			>
-				Select All
-			</button>
-
-			<button
-				class="button is-primary"
-				@click="unselectAll"
-			>
-				Unselect All
-			</button>
-		</div>
 	</div>
 </template>
 
@@ -65,7 +42,6 @@ export default {
 	},
 	data () {
 		return {
-			submitting: false,
 			computedEntries: null,
 			loaded: false,
 		};
@@ -76,50 +52,12 @@ export default {
 	methods: {
 		...mapActions([
 			'getEntries',
-			'updateEntries',
 		]),
-		async submit () {
-			this.submitting = true;
-			try {
-				await this.updateEntries({
-					id: this.category.id,
-					entries: this.computedEntries,
-				});
-			} finally {
-				this.submitting = false;
-			}
-		},
-		selectAll () {
-			const entries = document.querySelectorAll('.item-picker-entry-cb');
-
-			for (let i = 0; i < entries.length; ++i) {
-				entries[i].checked = true;
-			}
-		},
-		unselectAll () {
-			const entries = document.querySelectorAll('.item-picker-entry-cb');
-
-			for (let i = 0; i < entries.length; ++i) {
-				entries[i].checked = false;
-			}
-		},
 	},
 	async mounted () {
 		await this.getEntries(this.category.id);
-		if (this.entries == null) {
-			this.computedEntries = [];
-		} else {
-			this.computedEntries = this.entries;
-		}
+		this.computedEntries = this.entries;
 		this.loaded = true;
 	},
 };
 </script>
-
-<style lang="scss">
-.submit-wrapper {
-	box-shadow: inset 0 1px #dbdbdb;
-	text-align: center;
-	padding: 5px;
-}
-</style>
