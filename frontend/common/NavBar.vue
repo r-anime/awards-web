@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import {mapState} from 'vuex';
 import NavBarLink from './NavBarLink';
 import logo from '../../img/awards2019.png';
 
@@ -68,18 +67,6 @@ export default {
 		};
 	},
 	computed: {
-		...mapState([
-			'me',
-		]),
-		levelDesignator () {
-			switch (this.me.level) {
-				case 4: return '[Admin]';
-				case 3: return '[Mod]';
-				case 2: return '[Host]';
-				case 1: return '[Juror]';
-				default: return '';
-			}
-		},
 		namedRoutes () {
 			return this.routes.filter(route => route.name);
 		},
