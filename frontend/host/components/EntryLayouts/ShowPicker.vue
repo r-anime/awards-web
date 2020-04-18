@@ -191,6 +191,36 @@ const showSearchQuery = `
     }
 `;
 
+const showImportQuery = `query ($page: Int, $formats: [MediaFormat], $start: FuzzyDateInt, $end: FuzzyDateInt) {
+	anime: Page(page: $page, perPage: 50) {
+	  pageInfo {
+		total
+		perPage
+		currentPage
+		lastPage
+		hasNextPage
+	  }
+	  results: media(type: ANIME, isAdult: false, format_in: $formats, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
+		id
+		format
+		startDate {
+		  year
+		}
+		title {
+		  romaji
+		  english
+		  native
+		  userPreferred
+		}
+		coverImage {
+		  large
+		}
+		siteUrl
+	  }
+	}
+  }
+  `;
+
 export default {
 	components: {
 		ShowPickerEntry,
@@ -308,6 +338,27 @@ export default {
 			const dateArr = date.split('-');
 			return Number(`${dateArr[0]}${dateArr[1]}${dateArr[2]}`);
 		},
+		async importQuery (query, page, formats, start, end) {
+			const response = await fetch('https://graphql.anilist.co', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({
+					query,
+					variables: {
+						page,
+						formats,
+						start,
+						end,
+					},
+				}),
+			});
+			if (!response.ok) return alert('no bueno');
+			const data = await response.json();
+			return data; // bad hardcode for the bad function
+		},
 		importShows () {
 			this.importing = true;
 			const showPromise = new Promise(async (resolve, reject) => {
@@ -317,7 +368,7 @@ export default {
 					let page = 1;
 					while (!lastPage) {
 						// eslint-disable-next-line no-await-in-loop
-						const returnData = await util.importQuery(aq.showImportQuery, page, this.formats, this.fuzzyDate(this.startDate), this.fuzzyDate(this.endDate));
+						const returnData = await this.importQuery(showImportQuery, page, this.formats, this.fuzzyDate(this.startDate), this.fuzzyDate(this.endDate));
 						showData = [...showData, ...returnData.data.anime.results];
 						lastPage = returnData.data.anime.pageInfo.currentPage === returnData.data.anime.pageInfo.lastPage;
 						page++;

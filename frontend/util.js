@@ -45,28 +45,6 @@ async function paginatedQuery (query, idArr, page) {
 	return data; // bad hardcode for the bad function
 }
 
-async function importQuery (query, page, formats, start, end) {
-	const response = await fetch('https://graphql.anilist.co', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json',
-		},
-		body: JSON.stringify({
-			query,
-			variables: {
-				page,
-				formats,
-				start,
-				end,
-			},
-		}),
-	});
-	if (!response.ok) return alert('no bueno');
-	const data = await response.json();
-	return data; // bad hardcode for the bad function
-}
-
 // Begin stuff that got imported from the old public voting site and hasn't been used yet
 
 // Returns true if the first string is roughly included in the second string.
@@ -133,5 +111,4 @@ module.exports = {
 	paginatedQuery,
 	slugify,
 	getPrettyRank,
-	importQuery,
 };

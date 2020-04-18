@@ -529,36 +529,6 @@ const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 	}
   }`;
 
-const showImportQuery = `query ($page: Int, $formats: [MediaFormat], $start: FuzzyDateInt, $end: FuzzyDateInt) {
-	anime: Page(page: $page, perPage: 50) {
-	  pageInfo {
-		total
-		perPage
-		currentPage
-		lastPage
-		hasNextPage
-	  }
-	  results: media(type: ANIME, isAdult: false, format_in: $formats, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
-		id
-		format
-		startDate {
-		  year
-		}
-		title {
-		  romaji
-		  english
-		  native
-		  userPreferred
-		}
-		coverImage {
-		  large
-		}
-		siteUrl
-	  }
-	}
-  }
-  `;
-
 module.exports = {
 	showQuery,
 	showQuerySimple,
@@ -576,5 +546,4 @@ module.exports = {
 	blacklist,
 	splitCours,
 	allBlacklist,
-	showImportQuery,
 };
