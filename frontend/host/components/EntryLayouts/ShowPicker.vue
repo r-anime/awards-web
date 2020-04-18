@@ -101,11 +101,64 @@
 			>
 				Unselect All
 			</button>
+			<button
+				class="button is-primary"
+				@click="modalOpen = true"
+			>
+				Batch Import
+			</button>
 		</div>
+
+		<modal-generic v-model="modalOpen">
+		<div class="field">
+			<label class="label">Eligibility Start:</label>
+			<div class="control">
+				<input v-model="startDate" class="input" type="date">
+			</div>
+		</div>
+		<div class="field">
+			<label class="label">Eligibility End:</label>
+			<div class="control">
+				<input v-model="endDate" class="input" type="date">
+			</div>
+		</div>
+		<div class="field">
+			<label class="label">Formats:</label>
+			<div class="control">
+				<label class="checkbox">
+					<input v-model="formats" value="TV" type="checkbox"> TV Anime
+				</label>
+				<label class="checkbox">
+					<input v-model="formats" value="TV_SHORT" type="checkbox"> TV Shorts
+				</label>
+				<label class="checkbox">
+					<input v-model="formats" value="MOVIE" type="checkbox"> Movies
+				</label>
+				<label class="checkbox">
+					<input v-model="formats" value="OVA" type="checkbox"> OVAs
+				</label>
+				<label class="checkbox">
+					<input v-model="formats" value="ONA" type="checkbox"> ONAs
+				</label>
+				<label class="checkbox">
+					<input v-model="formats" value="SPECIAL" type="checkbox"> Specials
+				</label>
+				<label class="checkbox">
+					<input v-model="formats" value="MUSIC" type="checkbox"> MVs
+				</label>
+			</div>
+		</div>
+		<div class="field">
+			<div class="control">
+				<button @click="importShows" class="button is-primary" :class="{'is-loading': importing}">Import</button>
+			</div>
+		</div>
+		</modal-generic>
 	</div>
 </template>
 
 <script>
+import ModalGeneric from '../ModalGeneric';
 import {mapActions} from 'vuex';
 import ShowPickerEntry from './ShowPickerEntry';
 const util = require('../../../util');
@@ -141,6 +194,7 @@ const showSearchQuery = `
 export default {
 	components: {
 		ShowPickerEntry,
+		ModalGeneric,
 	},
 	props: {
 		value: Array,
@@ -156,6 +210,11 @@ export default {
 			total: 'No',
 			selectedTab: 'selections',
 			submitting: false,
+			modalOpen: false,
+			startDate: '2020-01-13',
+			endDate: '2021-01-12',
+			formats: [],
+			importing: false,
 		};
 	},
 	computed: {
@@ -244,6 +303,38 @@ export default {
 		},
 		clear () {
 			this.selections = [];
+		},
+		fuzzyDate (date) {
+			const dateArr = date.split('-');
+			return Number(`${dateArr[0]}${dateArr[1]}${dateArr[2]}`);
+		},
+		importShows () {
+			this.importing = true;
+			const showPromise = new Promise(async (resolve, reject) => {
+				try {
+					let showData = [];
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.importQuery(aq.showImportQuery, page, this.formats, this.fuzzyDate(this.startDate), this.fuzzyDate(this.endDate));
+						showData = [...showData, ...returnData.data.anime.results];
+						lastPage = returnData.data.anime.pageInfo.currentPage === returnData.data.anime.pageInfo.lastPage;
+						page++;
+					}
+					resolve(showData);
+				} catch (error) {
+					reject(error);
+				}
+			});
+			showPromise.then(showData => {
+				this.shows = showData;
+				this.selectedTab = 'search';
+				this.total = this.shows.length;
+				this.loaded = true;
+				this.importing = false;
+				this.modalOpen = false;
+			});
 		},
 	},
 	mounted () {
