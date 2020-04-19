@@ -431,7 +431,7 @@ export default {
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
 						if (char.voiceActors.length === 0) continue;
-						const found = show.characters.edges.find(item => item.node.id === char.node.id);
+						const found = this.vas.find(item => item.id === char.node.id);
 						if (found !== undefined) continue;
 						this.vas.push({
 							id: char.node.id,
