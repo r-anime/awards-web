@@ -357,7 +357,7 @@ export default {
 			});
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
-			return data; // bad hardcode for the bad function
+			return data;
 		},
 		importShows () {
 			this.importing = true;
