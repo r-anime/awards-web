@@ -254,6 +254,8 @@ export default {
 		submissions () {
 			return this.selections.map(item => ({
 				anilist_id: item.id,
+				character_id: null,
+				themeId: null,
 				categoryId: this.category.id,
 			}));
 		},

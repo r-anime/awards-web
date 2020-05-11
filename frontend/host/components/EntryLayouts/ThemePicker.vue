@@ -168,6 +168,7 @@ export default {
 				themeId: item.id,
 				categoryId: this.category.id,
 				anilist_id: item.anilistID,
+				character_id: null,
 			}));
 		},
 	},

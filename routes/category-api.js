@@ -9,6 +9,9 @@ const Jurors = sequelize.model('jurors');
 const HMs = sequelize.model('honorable_mentions');
 const Entries = sequelize.model('entries');
 
+// eslint-disable-next-line no-unused-vars
+const log = require('another-logger');
+
 apiApp.get('/all', async (request, response) => {
 	try {
 		response.json(await Categories.findAll({where: {active: 1}}));
@@ -118,11 +121,40 @@ apiApp.post('/:id/entries', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	try {
-		await Entries.destroy({where: {categoryId: request.params.id}});
 		for (const entry of entries) {
-			await Entries.create(entry);
+			await Entries.findOrCreate({
+				where: {
+					anilist_id: entry.anilist_id,
+					character_id: entry.character_id,
+					themeId: entry.themeId,
+				},
+				defaults: {
+					categoryId: request.params.id,
+				},
+			});
 		}
-		response.json(await Entries.findAll());
+
+		const ogEntries = await Entries.findAll({
+			where: {
+				categoryId: request.params.id,
+			},
+		});
+
+		for (const entry of ogEntries) {
+			const found = entries.find(element => element.anilist_id === entry.anilist_id && element.character_id === entry.character_id && element.themeId === entry.themeId);
+			if (!found) {
+				await Entries.destroy({
+					where: {
+						id: entry.id,
+					},
+				});
+			}
+		}
+		response.json(await Entries.findAll({
+			where: {
+				categoryId: request.params.id,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}

@@ -285,6 +285,7 @@ export default {
 			return this.selections.map(item => ({
 				character_id: item.anilistID,
 				anilist_id: item.media.nodes[0].id,
+				themeId: null,
 				categoryId: this.category.id,
 			}));
 		},
