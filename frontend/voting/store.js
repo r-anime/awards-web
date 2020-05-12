@@ -8,7 +8,7 @@ Vue.use(Vuex);
 const util = require('../util');
 const queries = require('../anilistQueries');
 
-const maxAccountDate = 1578009600; // sync with util/helpers.js for backend
+const constants = require('../../constants');
 
 async function makeRequest (path, method = 'GET', body) {
 	if (typeof body === 'object' && body != null) {
@@ -42,7 +42,7 @@ const store = new Vuex.Store({
 	},
 	getters: {
 		accountOldEnough (state) {
-			return state.me && state.me.reddit && state.me.reddit.created < maxAccountDate;
+			return state.me && state.me.reddit && state.me.reddit.created < constants.maxAccountDate;
 		},
 	},
 	mutations: {

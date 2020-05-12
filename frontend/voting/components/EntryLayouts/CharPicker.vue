@@ -83,6 +83,7 @@
 import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
 const queries = require('../../../anilistQueries');
+const constants = require('../../../../constants');
 
 export default {
 	components: {
@@ -154,12 +155,12 @@ export default {
 					for (const char of this.chars) {
 						if (this.category.name.includes('Main')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'MAIN');
 						else if (this.category.name.includes('Supporting')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'SUPPORTING');
-						char.media.nodes = char.media.nodes.filter(node => queries.eligibilityStart <= this.findDate(node) && this.findDate(node) <= queries.eligibilityEnd);
+						char.media.nodes = char.media.nodes.filter(node => constants.eligibilityStart <= this.findDate(node) && this.findDate(node) <= constants.eligibilityEnd);
 					}
 					this.chars = this.chars.filter(char => char.media.nodes.length !== 0 && char.media.edges.length !== 0);
 					// this loop really needs to run after the first one to avoid errors
 					for (const [count, char] of this.chars.entries()) {
-						if (!char.media.nodes.some(media => !queries.blacklist.includes(media.id))) this.chars.splice(count, 1);
+						if (!char.media.nodes.some(media => !constants.blacklist.includes(media.id))) this.chars.splice(count, 1);
 					}
 					resolve();
 				} catch (err) {

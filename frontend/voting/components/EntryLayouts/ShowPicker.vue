@@ -80,7 +80,7 @@
 import ShowPickerEntry from './ShowPickerEntry';
 import util from '../../../util';
 const queries = require('../../../anilistQueries');
-
+const constants = require('../../../../constants');
 
 export default {
 	components: {
@@ -136,7 +136,7 @@ export default {
 					query: this.correctQuery,
 					variables: {
 						search: this.search,
-						blacklist: queries.allBlacklist,
+						blacklist: constants.allBlacklist,
 					},
 				}),
 			});
@@ -186,7 +186,7 @@ export default {
 			},
 			body: JSON.stringify({
 				query: this.correctQuery.replace(/search: \$search, |\$search: String, /g, ''), // lol
-				blacklist: queries.allBlacklist,
+				blacklist: constants.allBlacklist,
 			}),
 		});
 		if (!response.ok) return alert('no bueno');
@@ -199,7 +199,7 @@ export default {
 			},
 			body: JSON.stringify({
 				query: this.correctQuery.replace(/search: \$search, |\$search: String, /g, '').replace('1', Math.floor(Math.random() * Math.ceil(totalShows / 50) + 1)), // i wish for death
-				blacklist: queries.allBlacklist,
+				blacklist: constants.allBlacklist,
 			}),
 		});
 		if (!nextResponse.ok) return alert('no bueno');

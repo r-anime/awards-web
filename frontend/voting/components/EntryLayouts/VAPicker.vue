@@ -79,6 +79,7 @@
 <script>
 import VAPickerEntry from './VAPickerEntry';
 const queries = require('../../../anilistQueries');
+const constants = require('../../../../constants');
 
 export default {
 	components: {
@@ -143,11 +144,11 @@ export default {
 			const promise = new Promise((resolve, reject) => {
 				try {
 					for (const va of this.vas) {
-						va.media.nodes = va.media.nodes.filter(node => queries.eligibilityStart <= this.findDate(node) && this.findDate(node) <= queries.eligibilityEnd);
+						va.media.nodes = va.media.nodes.filter(node => constants.eligibilityStart <= this.findDate(node) && this.findDate(node) <= constants.eligibilityEnd);
 					}
 					this.vas = this.vas.filter(va => va.media.nodes.length !== 0);
 					for (const [count, va] of this.vas.entries()) {
-						if (!va.media.nodes.some(node => !queries.blacklist.includes(node.id))) this.vas.splice(count, 1);
+						if (!va.media.nodes.some(node => !constants.blacklist.includes(node.id))) this.vas.splice(count, 1);
 					}
 					resolve();
 				} catch (err) {
