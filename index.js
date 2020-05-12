@@ -12,7 +12,7 @@ const logging = require('./util/logging'); // Request logging middleware
 const helpers = require('./util/helpers'); // Generic request/response helpers
 const config = require('./config'); // Generic configuration
 
-const models = require('./models');
+const sequelize = require('./models').sequelize;
 
 // Routes for non-frontend things
 const api = require('./routes/api');
@@ -41,7 +41,7 @@ app.use(
 		resave: false,
 		saveUninitialized: false,
 		store: new SequelizeStore({
-			db: models.sequelize,
+			db: sequelize,
 		}),
 	}),
 	// Static assets
@@ -62,24 +62,55 @@ app.use('/login', (request, response) => response.end(hostPage));
 
 // Synchronize sequelize models
 // and then start the server
-models.sequelize.sync().then(() => {
-	// Register Heather and Geo as admins so that we don't have to manually insert rows and fuck with sequelize
-	models.sequelize.model('users').findOrCreate({
-		where: {
-			reddit: 'EpicTroll27',
-		},
-		defaults: {
-			level: 4,
-		},
+sequelize.sync().then(async () => {
+	// A sequelize transaction to create required rows in tables
+	await sequelize.transaction(async t => {
+		try {
+			// Register Heather and Geo as admins so that we don't have to manually insert rows and fuck with sequelize
+			await sequelize.model('users').findOrCreate({
+				where: {
+					reddit: 'EpicTroll27',
+				},
+				defaults: {
+					level: 4,
+				},
+				transaction: t,
+			});
+			await sequelize.model('users').findOrCreate({
+				where: {
+					reddit: 'geo1088',
+				},
+				defaults: {
+					level: 4,
+				},
+				transaction: t,
+			});
+			// Initialize the locks table if it hasn't already
+			await sequelize.model('locks').findOrCreate({
+				where: {
+					name: 'hostResults',
+				},
+				defaults: {
+					flag: true,
+				},
+				transaction: t,
+			});
+
+			await sequelize.model('locks').findOrCreate({
+				where: {
+					name: 'voting',
+				},
+				defaults: {
+					flag: true,
+				},
+				transaction: t,
+			});
+		} catch (error) {
+			log.error(error);
+		}
 	});
-	models.sequelize.model('users').findOrCreate({
-		where: {
-			reddit: 'geo1088',
-		},
-		defaults: {
-			level: 4,
-		},
-	});
+
+
 	if (config.https) {
 		// If we're using HTTPS, create an HTTPS server
 		const httpsOptions = {
