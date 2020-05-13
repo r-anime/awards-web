@@ -101,7 +101,7 @@ sequelize.sync().then(async () => {
 					name: 'voting',
 				},
 				defaults: {
-					flag: true,
+					flag: false,
 				},
 				transaction: t,
 			});
