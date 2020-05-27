@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 <template>
-    <div class="section">
+<div v-if="locked !== null">
+    <div class="section" v-if="locked === false">
         <h2 class="title">Results</h2>
         <div v-if="!loaded || !dashTotals || !opedTotals" class="content">
             <p>Loading...</p>
@@ -52,6 +53,10 @@
 			</div>
         </div>
     </div>
+	<div v-else-if="locked" class="section">
+		You are not allowed to view the results at this time.
+	</div>
+</div>
 </template>
 
 <style>
@@ -82,6 +87,7 @@ export default {
 			showIDs: [],
 			charIDs: [],
 			loaded: false,
+			locked: null,
 		};
 	},
 	computed: {
@@ -92,7 +98,10 @@ export default {
 			'opedTotals',
 			'themes',
 			'voteSummary',
+			'locks',
+			'me',
 		]),
+		// eslint-disable-next-line multiline-comment-style
 		/*
 		groupedThemeVotes () {
 			const themeVotes = this.voteTotals.filter(vote => vote.theme_name);
@@ -143,6 +152,8 @@ export default {
 			'getOPEDTotals',
 			'getThemes',
 			'getVoteSummary',
+			'getLocks',
+			'getMe',
 		]),
 		isDashboard (category) {
 			if (category.awardsGroup === 'genre') {
@@ -158,16 +169,16 @@ export default {
 		},
 		votesFor (category) {
 			let allVotes = [];
-			//console.log(category.name);
+			// console.log(category.name);
 			if (this.isDashboard(category)) {
 				allVotes = this.dashTotals.filter(vote => vote.category_id === category.id);
-				//console.log('dashboard');
+				// console.log('dashboard');
 			} else if (category.entryType === 'themes') {
 				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
-				//console.log('op/ed');
+				// console.log('op/ed');
 			} else {
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
-				//console.log('other');
+				// console.log('other');
 			}
 			const entries = [];
 			for (const vote of allVotes) {
@@ -222,7 +233,7 @@ export default {
 					});
 				}
 			}
-			//console.log(allVotes);
+			// console.log(allVotes);
 			// console.log(entries);
 			return entries;
 		},
@@ -244,6 +255,7 @@ export default {
 							},
 						}),
 					});
+					// eslint-disable-next-line no-alert
 					if (!showResponse.ok) return alert('no bueno');
 					const returnData = await showResponse.json();
 					this.showData = [...this.showData, ...returnData.data.Page.results];
@@ -271,6 +283,7 @@ export default {
 							},
 						}),
 					});
+					// eslint-disable-next-line no-alert
 					if (!charaResponse.ok) return alert('no bueno');
 					const returnData = await charaResponse.json();
 					this.charData = [...this.charData, ...returnData.data.Page.results];
@@ -322,6 +335,7 @@ export default {
 						let lastPage = false;
 						let page = 1;
 						while (!lastPage) {
+							// eslint-disable-next-line no-await-in-loop
 							const returnData = await this.fetchShows(page);
 							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
 							page++;
@@ -336,6 +350,7 @@ export default {
 						let lastPage = false;
 						let page = 1;
 						while (!lastPage) {
+							// eslint-disable-next-line no-await-in-loop
 							const returnData = await this.fetchChars(page);
 							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
 							page++;
@@ -352,19 +367,68 @@ export default {
 		},
 	},
 	mounted () {
-		this.sendQueries();
-		if (!this.themes) {
-			this.getThemes();
-		}
-		if (!this.dashTotals) {
-			this.getDashboardTotals();
-		}
-		if (!this.opedTotals) {
-			this.getOPEDTotals();
-		}
-		if (!this.voteSummary) {
-			this.getVoteSummary();
-		}
+		Promise.all([this.getLocks(), this.getMe()]).then(() => {
+			const lock = this.locks.find(aLock => aLock.name === 'hostResults');
+			if (lock.flag) this.locked = false;
+			else if (!lock.flag && this.me.level <= lock.level) this.locked = true;
+			if (this.locked) {
+				this.loaded = true;
+			} else {
+				const queryPromise = new Promise(async (resolve, reject) => {
+					try {
+						await this.sendQueries();
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				const themePromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.themes) {
+							await this.getThemes();
+						}
+						resolve();
+					} catch (error) {
+						reject(error);
+					}
+				});
+				Promise.all([queryPromise, themePromise]).then(() => {
+					const dashPromise = new Promise(async (resolve, reject) => {
+						try {
+							if (!this.dashTotals) {
+								await this.getDashboardTotals();
+							}
+							resolve();
+						} catch (error) {
+							reject(error);
+						}
+					});
+					const opedPromise = new Promise(async (resolve, reject) => {
+						try {
+							if (!this.opedTotals) {
+								await this.getOPEDTotals();
+							}
+							resolve();
+						} catch (error) {
+							reject(error);
+						}
+					});
+					const summaryPromise = new Promise(async (resolve, reject) => {
+						try {
+							if (!this.voteSummary) {
+								await this.getVoteSummary();
+							}
+							resolve();
+						} catch (error) {
+							reject(error);
+						}
+					});
+					Promise.all([dashPromise, opedPromise, summaryPromise]).then(() => {
+						this.loaded = true;
+					});
+				});
+			}
+		});
 	},
 };
 </script>
