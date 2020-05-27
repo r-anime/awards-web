@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
 
@@ -11,19 +12,21 @@ apiApp.get('/all', async (request, response) => {
 	}
 });
 
-apiApp.post('/:name', async (request, response) => {
+apiApp.post('/', async (request, response) => {
 	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to modify locks.'});
 	}
 
-	let newLock;
+	let newLocks;
 	try {
-		newLock = await request.json();
+		newLocks = await request.json();
 	} catch (error) {
 		response.error('Invalid request.');
 	}
 	try {
-		await Locks.update(newLock, {where: {name: newLock.name}});
+		for (const lock of newLocks) {
+			await Locks.update(lock, {where: {name: lock.name}});
+		}
 		response.empty();
 	} catch (error) {
 		response.error(error);

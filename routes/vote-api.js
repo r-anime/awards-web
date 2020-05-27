@@ -5,7 +5,7 @@ const sequelize = require('../models').sequelize;
 const Votes = sequelize.model('votes');
 
 apiApp.get('/summary', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
 		return response.json(401, {error: 'You must be a host to view vote summary.'});
 	}
 	try {

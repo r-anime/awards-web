@@ -41,6 +41,7 @@ const store = new Vuex.Store({
 		jurors: null,
 		allNoms: null,
 		entries: null,
+		locks: null,
 	},
 	getters: {
 		isHost (state) {
@@ -135,6 +136,9 @@ const store = new Vuex.Store({
 		},
 		UPDATE_ENTRIES (state, entries) {
 			state.entries = entries;
+		},
+		UPDATE_LOCKS (state, locks) {
+			state.locks = locks;
 		},
 	},
 	actions: {
@@ -263,6 +267,14 @@ const store = new Vuex.Store({
 		async updateEntries ({commit}, {id, entries}) {
 			const data = await makeRequest(`/api/category/${id}/entries`, 'POST', entries);
 			commit('UPDATE_ENTRIES', data);
+		},
+		async getLocks ({commit}) {
+			const locks = await makeRequest('/api/locks/all');
+			commit('UPDATE_LOCKS', locks);
+		},
+		async updateLocks ({commit}, locks) {
+			await makeRequest('/api/locks', 'POST', locks);
+			commit('UPDATE_LOCKS', locks);
 		},
 	},
 });

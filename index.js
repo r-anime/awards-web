@@ -69,7 +69,7 @@ sequelize.sync().then(async () => {
 			// Register Heather and Geo as admins so that we don't have to manually insert rows and fuck with sequelize
 			await sequelize.model('users').findOrCreate({
 				where: {
-					reddit: 'EpicTroll27',
+					reddit: 'JoseiToAoiTori',
 				},
 				defaults: {
 					level: 4,
@@ -91,6 +91,7 @@ sequelize.sync().then(async () => {
 					name: 'hostResults',
 				},
 				defaults: {
+					level: 2,
 					flag: true,
 				},
 				transaction: t,
@@ -101,6 +102,7 @@ sequelize.sync().then(async () => {
 					name: 'voting',
 				},
 				defaults: {
+					level: 3,
 					flag: false,
 				},
 				transaction: t,
