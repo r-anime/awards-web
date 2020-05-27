@@ -42,7 +42,7 @@ apiApp.get('/summary', async (request, response) => {
 });
 
 apiApp.get('/all/get', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
@@ -55,7 +55,7 @@ apiApp.get('/all/get', async (request, response) => {
 });
 
 apiApp.get('/dashboard/get', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
@@ -68,7 +68,7 @@ apiApp.get('/dashboard/get', async (request, response) => {
 });
 
 apiApp.get('/oped/get', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
 		response.json(401, {error: 'You must be an host to see vote totals.'});
 	}
 	try {
@@ -82,7 +82,7 @@ apiApp.get('/oped/get', async (request, response) => {
 
 
 apiApp.get('/all/delete', async (request, response) => {
-	if (!await request.authenticate({level: 4})) {
+	if (!await request.authenticate({level: 4, lock: 'hostResults'})) {
 		return response.json(401, {error: 'You must be an admin to delete all votes.'});
 	}
 	return response.json(400, {error: "I don't think you want to do that"});
