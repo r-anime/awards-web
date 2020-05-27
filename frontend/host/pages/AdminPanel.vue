@@ -1,5 +1,5 @@
 <template>
-<div class="section">
+<div v-if="loaded" class="section">
 	<h2 class="title is-3">Admin Tools</h2>
 	<h2 class="title is-4">OP/ED Shit</h2>
 	<div class="buttons">
@@ -28,6 +28,41 @@
 	<h2 class="title is-4">Wipe and reset all category data</h2>
 	<div class="buttons">
 		<button class="button is-success" :class="{'is-loading' : wiping}" @click="wipeTables">Wipe results tables</button>
+	</div>
+
+	<h2 class="title is-3">Change locks</h2>
+	<div v-for="lock in computedLocks" :key="lock.id" class="field">
+		<div class="field">
+			<div class="control">
+				<h3 class="title is-4">{{lock.name}}</h3>
+			</div>
+		</div>
+		<div class="control">
+			<div class="columns is-vcentered">
+				<div class="column">
+					<p class="has-text-black has-text-weight-semibold">Lock Level:</p>
+					<div class="select">
+						<select v-model="lock.level">
+							<option v-bind:value="1">1</option>
+							<option v-bind:value="2">2</option>
+							<option v-bind:value="3">3</option>
+						</select>
+					</div>
+				</div>
+				<div class="column">
+					<p class="has-text-black has-text-weight-semibold">Lock Flag:</p>
+					<div class="select">
+						<select v-model="lock.flag">
+							<option v-bind:value="true">true</option>
+							<option v-bind:value="false">false</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="field">
+		<button class="button is-success" :class="{'is-loading' : locking}" @click="submitLocks">Change locks</button>
 	</div>
 
 	<modal-generic v-model="JSONOpen">
@@ -66,6 +101,9 @@ export default {
 			wiping: false,
 			data: '',
 			copyText: 'Copy to clipboard',
+			loaded: false,
+			computedLocks: null,
+			locking: false,
 		};
 	},
 	computed: {
@@ -75,6 +113,7 @@ export default {
 			'themes',
 			'hms',
 			'jurors',
+			'locks',
 		]),
 	},
 	methods: {
@@ -87,11 +126,17 @@ export default {
 			'getAllJurors',
 			'getAllHMs',
 			'wipeEverything',
+			'getLocks',
+			'updateLocks',
 		]),
 		async wipeTables () {
 			this.wiping = true;
 			await this.wipeEverything();
 			this.wiping = false;
+		},
+		computedLock (lock) {
+			if (lock.flag) return 'Unlocked';
+			return 'Locked';
 		},
 		disableButtons (type, action) {
 			if (action === 'create') {
@@ -155,6 +200,16 @@ export default {
 			setTimeout(() => {
 				this.copyText = 'Copy to clipboard';
 			}, 2000);
+		},
+		async submitLocks () {
+			this.locking = true;
+			try {
+				await this.updateLocks(this.computedLocks);
+			} catch (error) {
+				console.log(error);
+			} finally {
+				this.locking = false;
+			}
 		},
 		generateJSON () {
 			this.generating = true;
@@ -326,6 +381,11 @@ export default {
 				});
 			});
 		},
+	},
+	async mounted () {
+		await this.getLocks();
+		this.computedLocks = this.locks;
+		this.loaded = true;
 	},
 };
 </script>
