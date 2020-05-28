@@ -92,7 +92,7 @@ sequelize.sync().then(async () => {
 				},
 				defaults: {
 					level: 2,
-					flag: true,
+					flag: false,
 				},
 				transaction: t,
 			});

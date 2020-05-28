@@ -1,4 +1,4 @@
-const maxAccountDate = 1578009600;
+const maxAccountDate = 0; // push it back to 1578009600 when heather's account is old enough
 const eligibilityStart = new Date(2020, 1, 13); // Year, Month, Day
 const eligibilityEnd = new Date(2021, 1, 12);
 

@@ -99,7 +99,7 @@ apiApp.get('/all/delete', async (request, response) => {
 
 apiApp.post('/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName, oldEnough: true})) {
+	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'voting'})) {
 		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	let req;
@@ -165,7 +165,7 @@ apiApp.post('/submit', async (request, response) => {
 
 apiApp.get('/get', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName, oldEnough: true})) {
+	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'voting'})) {
 		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	try {

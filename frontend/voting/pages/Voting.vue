@@ -30,14 +30,6 @@ export default {
 		NavBar,
 	},
 };
-
-// window.onbeforeunload = function () {
-// 	if (app.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
-// };
-
-// fetch('/data/test.json').then(res => res.json()).then(({shows}) => {
-// 	app.shows = shuffle(shows);
-// });
 </script>
 
 <style lang="scss">
