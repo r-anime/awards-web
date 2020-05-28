@@ -115,9 +115,9 @@ const store = new Vuex.Store({
 				}
 				for (const vote of votes) {
 					const category = state.categories.find(cat => cat.id === vote.category_id); // retrieve category associated with the vote
-					if (vote.anilist_id && !vote.theme_name) { // This condition is fulfilled for dashboard cats only
-						// Dashboard categories have their anilist stored elsewhere
-						allIDs.shows.push(vote.anilist_id);
+					if (category.entryType === 'shows') {
+						// All of these are pushing anilist IDs into a bunch of arrays for querying
+						allIDs.shows.push(vote.entry_id);
 					} else if (vote.theme_name) {
 						// Theme category so we're gonna push the whole theme and SQUASH this shit later
 						const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
@@ -127,8 +127,6 @@ const store = new Vuex.Store({
 						allIDs.chars.push(vote.entry_id);
 					} else if (category.entryType === 'vas') {
 						allIDs.vas.push(vote.entry_id);
-					} else if (category.entryType === 'shows') {
-						allIDs.shows.push(vote.entry_id);
 					}
 				}
 				// Check if user actually voted for any OPs/EDs
@@ -174,8 +172,8 @@ const store = new Vuex.Store({
 			}
 			commit('UPDATE_SELECTIONS', selections);
 		},
-		async getEntries ({commit}, id) {
-			const entries = await makeRequest(`/api/category/${id}/entries`);
+		async getEntries ({commit}) {
+			const entries = await makeRequest('/api/category/entries/all');
 			commit('GET_ENTRIES', entries);
 		},
 	},

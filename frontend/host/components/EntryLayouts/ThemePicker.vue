@@ -218,13 +218,12 @@ export default {
 			if (!response.ok) return alert('no bueno');
 			const data = await response.json();
 			this.showData = data.data.Page.media;
-			this.loaded = true;
 		},
 		async searchThemes () {
 			if (!this.search) {
-				this.loaded = true;
 				this.themeData = [];
 				this.total = 'No';
+				this.loaded = true;
 				return;
 			}
 			const fuse = new Fuse(this.themes, options);
@@ -259,6 +258,7 @@ export default {
 				const fetchData = this.requiredShowData(index);
 				this.shows.push({...fetchData, ...element});
 			});
+			this.loaded = true;
 		},
 		async submit () {
 			this.submitting = true;

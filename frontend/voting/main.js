@@ -22,7 +22,6 @@ router.beforeEach(async (to, from, next) => {
 			// The user is not logged in, so have them log in
 			return next('/login');
 		}
-		return next();
 	}
 	next();
 });

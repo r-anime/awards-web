@@ -78,8 +78,9 @@
 
 <script>
 import ShowPickerEntry from './ShowPickerEntry';
-import {mapState, mapActions} from 'vuex';
 const Fuse = require('fuse.js');
+const util = require('../../../util');
+const aq = require('../../../anilistQueries');
 
 const options = {
 	shouldSort: true,
@@ -103,6 +104,7 @@ export default {
 	props: {
 		value: Object,
 		category: Object,
+		entries: Array,
 	},
 	data () {
 		return {
@@ -112,13 +114,15 @@ export default {
 			shows: null,
 			total: 'No',
 			selectedTab: 'selections',
+			showData: null,
 		};
 	},
 	computed: {
-		...mapState(['entries']),
+		showIDs () {
+			return this.entries.map(show => show.anilist_id);
+		},
 	},
 	methods: {
-		...mapActions(['getEntries']),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -130,12 +134,12 @@ export default {
 		},
 		sendQuery () {
 			if (!this.search || this.search.length <= 2) {
-				this.shows = this.entries;
+				this.shows = this.showData;
 				this.total = this.shows.length;
 				this.loaded = true;
 				return;
 			}
-			const entries = this.entries;
+			const entries = this.showData;
 			const fuse = new Fuse(entries, options);
 			this.shows = fuse.search(this.search);
 			this.total = this.shows.length;
@@ -166,18 +170,61 @@ export default {
 		},
 	},
 	watch: {
-		async category () {
+		category () {
 			this.loaded = false;
 			this.search = '';
 			this.selectedTab = 'selections';
-			this.shows = await this.getEntries(this.category.id);
-			this.loaded = true;
+			const showPromise = new Promise(async (resolve, reject) => {
+				try {
+					let showData = [];
+					if (this.showIDs) {
+						let lastPage = false;
+						let page = 1;
+						while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+							const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+							showData = [...showData, ...returnData.data.Page.results];
+							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+							page++;
+						}
+					}
+					resolve(showData);
+				} catch (error) {
+					reject(error);
+				}
+			});
+			showPromise.then(showData => {
+				this.showData = showData;
+				this.shows = showData;
+				this.loaded = true;
+			});
 		},
 	},
-	async mounted () {
-		await this.getEntries(this.category.id);
-		this.shows = this.entries;
-		this.loaded = true;
+	mounted () {
+		const showPromise = new Promise(async (resolve, reject) => {
+			try {
+				let showData = [];
+				if (this.showIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+						showData = [...showData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(showData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+		showPromise.then(showData => {
+			this.showData = showData;
+			this.shows = showData;
+			this.loaded = true;
+		});
 	},
 };
 </script>

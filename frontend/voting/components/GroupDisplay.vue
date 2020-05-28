@@ -1,6 +1,6 @@
 <template>
 	<body>
-		<div v-if="votingCats && selectedCategory && selections">
+		<div v-if="loaded">
 			<category-group-header :title="groupName">
 				<template v-slot:tab-bar>
 					<category-group-tab-bar v-model="selectedTab" :tabs="votingCats"/>
@@ -15,12 +15,10 @@
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 					is better solved by v-if's so here's yet another hack-->
 					<!-- it's okay this is exactly how i did it last year too lol -->
-					<VAPicker v-if="selectedCategory.entryType === 'vas'" :category="selectedCategory" :value="selections"/>
-					<ShowPicker v-else-if="showQueryCat" :category="selectedCategory" :value="selections"/>
-					<DashboardPicker v-else-if="dashboardCat" :category="selectedCategory" :value="selections"/>
-					<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :category="selectedCategory" :value="selections"/>
-					<TestPicker v-else-if="group === 'test' || selectedCategory.name.includes('Cast')" :category="selectedCategory" :value="selections"/>
-					<CharPicker v-else-if="group === 'character'" :category="selectedCategory" :value="selections"/>
+					<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+					<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+					<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+					<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
 				</div>
 				<div class="submit-wrapper">
 					<button
@@ -54,10 +52,8 @@ import categoryGroupHeader from './CategoryGroupHeader';
 import categoryGroupTabBar from './CategoryGroupTabBar';
 
 // Import all the entry components here, there's a better way to do this but fuck that
-import DashboardPicker from './EntryLayouts/DashboardPicker';
 import CharPicker from './EntryLayouts/CharPicker';
 import ThemePicker from './EntryLayouts/ThemePicker';
-import TestPicker from './EntryLayouts/TestPicker';
 import VAPicker from './EntryLayouts/VAPicker';
 import ShowPicker from './EntryLayouts/ShowPicker';
 
@@ -67,10 +63,8 @@ export default {
 	components: {
 		categoryGroupHeader,
 		categoryGroupTabBar,
-		DashboardPicker,
 		CharPicker,
 		ThemePicker,
-		TestPicker,
 		VAPicker,
 		ShowPicker,
 	},
@@ -85,13 +79,14 @@ export default {
 			changesSinceSave: false,
 			submitting: false,
 			SelectedTabName: null,
+			loaded: false,
 		};
 	},
 	computed: {
 		...mapState([
 			'votingCats',
-			'categories',
 			'selections',
+			'entries',
 		]),
 		groupName () {
 			switch (this.group) {
@@ -112,25 +107,8 @@ export default {
 		selectedCategory () {
 			return this.votingCats.find(cat => cat.id === this.selectedTab);
 		},
-		showQueryCat () {
-			if (this.group === 'main' && this.selectedCategory.name === 'Anime of the Year') {
-				return true;
-			} else if (this.group === 'production' && this.selectedCategory.entryType !== 'themes' && !this.selectedCategory.name.includes('OST') && this.selectedCategory.entryType !== 'vas') {
-				return true;
-			}
-			return false;
-		},
-		dashboardCat () {
-			if (this.group === 'genre') {
-				return true;
-			} else if (this.group === 'main' && this.selectedCategory.name !== 'Anime of the Year') {
-				return true;
-			} else if (this.group === 'test' && this.selectedCategory.name.includes('Sports')) {
-				return true;
-			} else if (this.selectedCategory.name.includes('OST') && this.group === 'production') {
-				return true;
-			}
-			return false;
+		computedEntries () {
+			return this.entries.filter(entry => entry.categoryId === this.selectedCategory.id);
 		},
 		snooImage () {
 			return snoo;
@@ -144,8 +122,8 @@ export default {
 			deep: true,
 		},
 		group: {
-			async handler (newGroup) {
-				await this.getVotingCategories(newGroup);
+			handler (newGroup) {
+				this.getVotingCategories(newGroup);
 				this.selectedTab = this.votingCats[0].id;
 				this.selectedTabName = this.votingCats[0].name;
 			},
@@ -154,8 +132,8 @@ export default {
 	methods: {
 		...mapActions([
 			'getVotingCategories',
-			'getCategories',
 			'initializeSelections',
+			'getEntries',
 		]),
 		leave () {
 			if (this.changesSinceSave) {
@@ -175,12 +153,13 @@ export default {
 			}
 		},
 	},
-	async mounted () {
-		await this.getVotingCategories(this.group);
-		await this.initializeSelections();
-		this.changesSinceSave = false;
-		this.selectedTab = this.votingCats[0].id;
-		this.selectedTabName = this.votingCats[0].name;
+	mounted () {
+		Promise.all([this.initializeSelections(), this.getEntries(), this.getVotingCategories(this.group)]).then(() => {
+			this.changesSinceSave = false;
+			this.selectedTab = this.votingCats[0].id;
+			this.selectedTabName = this.votingCats[0].name;
+			this.loaded = true;
+		});
 	},
 	created () {
 		window.onbeforeunload = () => {
@@ -195,5 +174,10 @@ export default {
 	flex: 0 1 100%;
 	padding: 0.75rem;
 	text-align: center;
+}
+.submit-wrapper {
+	box-shadow: inset 0 1px #dbdbdb;
+	text-align: center;
+	padding: 5px;
 }
 </style>

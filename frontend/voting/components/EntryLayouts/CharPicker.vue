@@ -83,7 +83,26 @@
 import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
 const queries = require('../../../anilistQueries');
-const constants = require('../../../../constants');
+const util = require('../../../util');
+const Fuse = require('fuse.js');
+
+const options = {
+	shouldSort: true,
+	threshold: 0.3,
+	location: 0,
+	distance: 70,
+	maxPatternLength: 64,
+	minMatchCharLength: 3,
+	keys: [
+		'name.full',
+		'name.alternative',
+		'name.native',
+		'media.nodes.title.romaji',
+		'media.nodes.title.english',
+		'media.nodes.title.native',
+		'media.nodes.title.userPreferred',
+	],
+};
 
 export default {
 	components: {
@@ -92,21 +111,26 @@ export default {
 	props: {
 		category: Object,
 		value: Object,
+		entries: Array,
 	},
 	data () {
 		return {
-			loaded: true,
+			loaded: false,
 			typingTimeout: null,
 			search: '',
 			chars: [],
 			total: 'No',
 			selectedTab: 'selections',
+			charData: null,
 		};
 	},
 	computed: {
 		...mapState([
 			'votingCats',
 		]),
+		charIDs () {
+			return this.entries.map(char => char.character_id);
+		},
 	},
 	methods: {
 		handleInput (event) {
@@ -118,59 +142,18 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		findDate (node) {
-			let date;
-			try {
-				date = new Date(node.endDate.year, node.endDate.month, node.endDate.day);
-			} catch (err) {
-				date = new Date(2016, 0, 0);
-			}
-			return date;
-		},
-		async sendQuery () {
-			if (!this.search) {
-				this.loaded = true;
-				this.chars = [];
-				this.total = 'No';
-				return;
-			}
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: queries.charQuery,
-					variables: {
-						search: this.search,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.chars = data.data.character.results;
-			const promise = new Promise((resolve, reject) => {
-				try {
-					for (const char of this.chars) {
-						if (this.category.name.includes('Main')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'MAIN');
-						else if (this.category.name.includes('Supporting')) char.media.edges = char.media.edges.filter(edge => edge.characterRole === 'SUPPORTING');
-						char.media.nodes = char.media.nodes.filter(node => constants.eligibilityStart <= this.findDate(node) && this.findDate(node) <= constants.eligibilityEnd);
-					}
-					this.chars = this.chars.filter(char => char.media.nodes.length !== 0 && char.media.edges.length !== 0);
-					// this loop really needs to run after the first one to avoid errors
-					for (const [count, char] of this.chars.entries()) {
-						if (!char.media.nodes.some(media => !constants.blacklist.includes(media.id))) this.chars.splice(count, 1);
-					}
-					resolve();
-				} catch (err) {
-					reject(err);
-				}
-			});
-			promise.then(() => {
+		sendQuery () {
+			if (!this.search || this.search.length <= 2) {
+				this.chars = this.charData;
 				this.total = this.chars.length;
 				this.loaded = true;
-			});
+				return;
+			}
+			const entries = this.charData;
+			const fuse = new Fuse(entries, options);
+			this.chars = fuse.search(this.search);
+			this.total = this.chars.length;
+			this.loaded = true;
 		},
 		characterSelected (char) {
 			return this.value[this.category.id].some(s => s.id === char.id);
@@ -221,10 +204,60 @@ export default {
 	},
 	watch: {
 		category () {
+			this.loaded = false;
 			this.search = '';
 			this.selectedTab = 'selections';
-			this.chars = [];
+			const charPromise = new Promise(async (resolve, reject) => {
+				try {
+					let charData = [];
+					if (this.charIDs) {
+						let lastPage = false;
+						let page = 1;
+						while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+							const returnData = await util.paginatedQuery(queries.charQuerySimple, this.charIDs, page);
+							charData = [...charData, ...returnData.data.Page.results];
+							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+							page++;
+						}
+					}
+					resolve(charData);
+				} catch (error) {
+					reject(error);
+				}
+			});
+			charPromise.then(charData => {
+				this.charData = charData;
+				this.chars = charData;
+				this.loaded = true;
+			});
 		},
+	},
+	mounted () {
+		const charPromise = new Promise(async (resolve, reject) => {
+			try {
+				let charData = [];
+				if (this.charIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(queries.charQuerySimple, this.charIDs, page);
+						charData = [...charData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(charData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+		charPromise.then(charData => {
+			this.charData = charData;
+			this.chars = charData;
+			this.loaded = true;
+		});
 	},
 };
 </script>

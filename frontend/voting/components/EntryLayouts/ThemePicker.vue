@@ -79,6 +79,8 @@
 import ThemePickerEntry from './ThemePickerEntry';
 import {mapActions, mapState} from 'vuex';
 const Fuse = require('fuse.js');
+const util = require('../../../util');
+const aq = require('../../../anilistQueries');
 
 const options = {
 	shouldSort: true,
@@ -93,29 +95,6 @@ const options = {
 	],
 };
 
-const themeSearchQuery = `query ($id: [Int]) {
-  Page {
-    media(id_in: $id) {
-      id
-      format
-      startDate {
-        year
-      }
-      title {
-        romaji
-        english
-        native
-        userPreferred
-      }
-      coverImage {
-        large
-      }
-      siteUrl
-    }
-  }
-}
-`;
-
 export default {
 	components: {
 		ThemePickerEntry,
@@ -123,24 +102,28 @@ export default {
 	props: {
 		value: Object,
 		category: Object,
+		entries: Array,
 	},
 	computed: {
 		...mapState([
 			'themes',
 			'selections',
 		]),
+		showIDs () {
+			return this.entries.map(show => show.anilist_id);
+		},
 	},
 	data () {
 		return {
-			loaded: true,
+			loaded: false,
 			typingTimeout: null,
 			search: '',
 			shows: [],
 			showData: [],
 			themeData: [],
+			selections: [],
 			total: 'No',
 			selectedTab: 'selections',
-			idArr: [],
 		};
 	},
 	methods: {
@@ -154,43 +137,18 @@ export default {
 				this.searchThemes();
 			}, 750);
 		},
-		async sendQuery () {
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: themeSearchQuery,
-					variables: {
-						id: this.idArr,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.showData = data.data.Page.media;
-			this.loaded = true;
-		},
-		async searchThemes () {
+		searchThemes () {
 			if (!this.search || this.search.length <= 2) {
-				this.themeData = [];
-				this.shows = [];
-				this.total = 'No';
+				this.shows = this.selections;
+				this.total = this.shows.length;
 				this.loaded = true;
 				return;
 			}
-			this.shows = [];
-			const fuse = new Fuse(this.themes, options);
-			this.themeData = fuse.search(this.search);
-			this.themeData = this.themeData.filter(theme => this.category.name.includes(theme.themeType.toUpperCase()));
-			this.total = this.themeData.length;
-			this.themeData.forEach(element => {
-				this.idArr.push(element.anilistID);
-			});
-			await this.sendQuery();
-			this.squashObjects();
+			const entries = this.selections;
+			const fuse = new Fuse(entries, options);
+			this.shows = fuse.search(this.search);
+			this.total = this.shows.length;
+			this.loaded = true;
 		},
 		showSelected (show) {
 			return this.value[this.category.id].some(s => s.id === show.id);
@@ -228,22 +186,40 @@ export default {
 				this.$emit('input', this.value);
 			}
 		},
-		requiredShowData (index) {
-			const found = this.showData.find(show => show.id === this.themeData[index].anilistID);
-			return found;
-		},
-		// I hate what I'm about to do here
-		squashObjects () {
-			this.themeData.forEach((element, index) => {
-				const fetchData = this.requiredShowData(index);
-				this.shows.push({...fetchData, ...element});
-			});
-		},
 	},
 	mounted () {
 		if (!this.themes) {
 			this.getThemes();
 		}
+		const showPromise = new Promise(async (resolve, reject) => {
+			try {
+				let showData = [];
+				if (this.showIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+						showData = [...showData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(showData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+
+		showPromise.then(showData => {
+			this.entries.forEach(element => {
+				const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
+				const requiredShow = showData.find(show => show.id === element.anilist_id);
+				this.selections.push({...requiredShow, ...requiredTheme});
+			});
+			this.shows = this.selections;
+			this.loaded = true;
+		});
 	},
 	watch: {
 		category () {

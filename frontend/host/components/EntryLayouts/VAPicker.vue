@@ -153,7 +153,7 @@ const VASearchQuery = `query ($search: String) {
       image {
         large
       }
-      media(sort: [END_DATE_DESC,START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
+      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 1) {
         nodes {
           id
           title {
@@ -250,7 +250,7 @@ export default {
 	},
 	data () {
 		return {
-			loaded: true,
+			loaded: false,
 			typingTimeout: null,
 			search: '',
 			vas: [],
@@ -292,9 +292,9 @@ export default {
 		},
 		async sendQuery () {
 			if (!this.search) {
-				this.loaded = true;
 				this.vas = [];
 				this.total = 'No';
+				this.loaded = true;
 				return;
 			}
 			const response = await fetch('https://graphql.anilist.co', {
@@ -456,6 +456,7 @@ export default {
 						});
 					}
 				}
+				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
 				this.selectedTab = 'search';
 				this.total = this.vas.length;
 				this.loaded = true;

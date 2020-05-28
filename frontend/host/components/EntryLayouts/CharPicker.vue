@@ -172,7 +172,7 @@ const charSearchQuery = `query ($search: String) {
       image {
         large
       }
-      media(sort: [END_DATE_DESC,START_DATE_DESC], type: ANIME, page: 1, perPage: 1) {
+      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 1) {
         nodes {
           id
           title {
@@ -447,7 +447,7 @@ export default {
 					const anime = show.title.romaji || show.title.userPreferred;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
-						if (this.roles === 'main' && char.role === 'SUPPORTING' || this.roles === 'supp' && char.role === 'MAIN') {
+						if (this.roles === 'main' && char.role === 'SUPPORTING' || this.roles === 'supp' && char.role === 'MAIN' || char.role === 'BACKGROUND') {
 							continue;
 						}
 

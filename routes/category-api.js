@@ -102,6 +102,14 @@ apiApp.get('/:group', async (request, response) => {
 	}
 });
 
+apiApp.get('/entries/all', async (request, response) => {
+	try {
+		response.json(await Entries.findAll());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.get('/:id/entries', async (request, response) => {
 	try {
 		response.json(await Entries.findAll({where: {categoryId: request.params.id}}));
@@ -120,6 +128,11 @@ apiApp.post('/:id/entries', async (request, response) => {
 	} catch (error) {
 		return response.json({error: 'Invalid JSON'});
 	}
+	const ogEntries = await Entries.findAll({
+		where: {
+			categoryId: request.params.id,
+		},
+	});
 	try {
 		for (const entry of entries) {
 			await Entries.findOrCreate({
@@ -133,12 +146,6 @@ apiApp.post('/:id/entries', async (request, response) => {
 				},
 			});
 		}
-
-		const ogEntries = await Entries.findAll({
-			where: {
-				categoryId: request.params.id,
-			},
-		});
 
 		for (const entry of ogEntries) {
 			const found = entries.find(element => element.anilist_id === entry.anilist_id && element.character_id === entry.character_id && element.themeId === entry.themeId);

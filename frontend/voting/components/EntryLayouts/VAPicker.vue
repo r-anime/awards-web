@@ -79,7 +79,29 @@
 <script>
 import VAPickerEntry from './VAPickerEntry';
 const queries = require('../../../anilistQueries');
-const constants = require('../../../../constants');
+const util = require('../../../util');
+const Fuse = require('fuse.js');
+
+const options = {
+	shouldSort: true,
+	threshold: 0.3,
+	location: 0,
+	distance: 70,
+	maxPatternLength: 64,
+	minMatchCharLength: 3,
+	keys: [
+		'name.full',
+		'name.alternative',
+		'name.native',
+		'media.edges.voiceActors.name.full',
+		'media.edges.voiceActors.name.alternative',
+		'media.edges.voiceActors.name.native',
+		'media.nodes.title.romaji',
+		'media.nodes.title.english',
+		'media.nodes.title.native',
+		'media.nodes.title.userPreferred',
+	],
+};
 
 export default {
 	components: {
@@ -88,16 +110,23 @@ export default {
 	props: {
 		value: Object,
 		category: Object,
+		entries: Array,
 	},
 	data () {
 		return {
-			loaded: true,
+			loaded: false,
 			typingTimeout: null,
 			search: '',
 			vas: [],
 			total: 'No',
 			selectedTab: 'selections',
+			vaData: null,
 		};
+	},
+	computed: {
+		vaIDs () {
+			return this.entries.map(char => char.character_id);
+		},
 	},
 	methods: {
 		handleInput (event) {
@@ -109,56 +138,18 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		findDate (node) {
-			let date;
-			try {
-				date = new Date(node.endDate.year, node.endDate.month, node.endDate.day);
-			} catch (err) {
-				date = new Date(2016, 0, 0);
-			}
-			return date;
-		},
-		async sendQuery () {
-			if (!this.search) {
-				this.loaded = true;
-				this.vas = [];
-				this.total = 'No';
-				return;
-			}
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: queries.vaQuery,
-					variables: {
-						search: this.search,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.vas = data.data.character.results;
-			const promise = new Promise((resolve, reject) => {
-				try {
-					for (const va of this.vas) {
-						va.media.nodes = va.media.nodes.filter(node => constants.eligibilityStart <= this.findDate(node) && this.findDate(node) <= constants.eligibilityEnd);
-					}
-					this.vas = this.vas.filter(va => va.media.nodes.length !== 0);
-					for (const [count, va] of this.vas.entries()) {
-						if (!va.media.nodes.some(node => !constants.blacklist.includes(node.id))) this.vas.splice(count, 1);
-					}
-					resolve();
-				} catch (err) {
-					reject(err);
-				}
-			});
-			promise.then(() => {
+		sendQuery () {
+			if (!this.search || this.search.length <= 2) {
+				this.vas = this.vaData;
 				this.total = this.vas.length;
 				this.loaded = true;
-			});
+				return;
+			}
+			const entries = this.vaData;
+			const fuse = new Fuse(entries, options);
+			this.vas = fuse.search(this.search);
+			this.total = this.vas.length;
+			this.loaded = true;
 		},
 		showSelected (va) {
 			return this.value[this.category.id].some(s => s.id === va.id);
@@ -186,10 +177,62 @@ export default {
 	},
 	watch: {
 		category () {
+			this.loaded = false;
 			this.search = '';
 			this.selectedTab = 'selections';
-			this.vas = [];
+			const charPromise = new Promise(async (resolve, reject) => {
+				try {
+					let charData = [];
+					if (this.vaIDs) {
+						let lastPage = false;
+						let page = 1;
+						while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+							const returnData = await util.paginatedQuery(queries.charQuerySimple, this.vaIDs, page);
+							charData = [...charData, ...returnData.data.Page.results];
+							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+							page++;
+						}
+					}
+					resolve(charData);
+				} catch (error) {
+					reject(error);
+				}
+			});
+			charPromise.then(charData => {
+				this.vaData = charData;
+				this.vas = charData;
+				this.loaded = true;
+			});
 		},
+	},
+	mounted () {
+		const charPromise = new Promise(async (resolve, reject) => {
+			try {
+				let charData = [];
+				if (this.vaIDs) {
+					let lastPage = false;
+					let page = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await util.paginatedQuery(queries.charQuerySimple, this.vaIDs, page);
+						charData = [...charData, ...returnData.data.Page.results];
+						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+						page++;
+					}
+				}
+				resolve(charData);
+			} catch (error) {
+				reject(error);
+			}
+		});
+		charPromise.then(charData => {
+			charData = charData.filter(va => va.media.nodes.length > 0 && va.media.edges.length > 0);
+			charData = charData.filter(va => va.media.edges[0].voiceActors.length > 0);
+			this.vaData = charData;
+			this.vas = charData;
+			this.loaded = true;
+		});
 	},
 };
 </script>
