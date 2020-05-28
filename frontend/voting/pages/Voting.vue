@@ -18,6 +18,7 @@
 			</template>
 		</nav-bar>
 		<!--Close voting view <router-view/>-->
+		<router-view/>
 	</body>
 </template>
 

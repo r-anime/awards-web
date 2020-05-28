@@ -1,3 +1,4 @@
+<!--Entries pulled from the dashboard, this code needs to be changed, will use ShowPickerEntry.-->
 <template>
 	<div class="show-picker">
 		<div class="tabs is-centered show-picker-tabs">
@@ -41,9 +42,9 @@
 				</div>
 			</div>
 
-			<div v-if="loaded && displayedShows.length" class="show-picker-entries">
+			<div v-if="loaded && shows.length" class="show-picker-entries">
 				<show-picker-entry
-					v-for="show in displayedShows"
+					v-for="show in shows"
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
@@ -71,16 +72,29 @@
 		<div v-else class="show-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
-		<a v-if="this.category.name !== 'Sports'" href="https://forms.gle/GzkoRQmuF6G8bLE78" style="display: block; text-align: center; margin-bottom: 2px;">Are we missing something?</a>
+		<a href="https://forms.gle/GzkoRQmuF6G8bLE78" style="display: block; text-align: center; margin-bottom: 2px;">Are we missing something?</a>
 	</div>
 </template>
 
 <script>
-/* eslint-disable no-alert */
 import ShowPickerEntry from './ShowPickerEntry';
-import util from '../../../util';
-const queries = require('../../../anilistQueries');
-const constants = require('../../../../constants');
+import {mapState, mapActions} from 'vuex';
+const Fuse = require('fuse.js');
+
+const options = {
+	shouldSort: true,
+	threshold: 0.3,
+	location: 0,
+	distance: 70,
+	maxPatternLength: 64,
+	minMatchCharLength: 3,
+	keys: [
+		'title.romaji',
+		'title.english',
+		'title.native',
+		'title.userPreferred',
+	],
+};
 
 export default {
 	components: {
@@ -95,21 +109,16 @@ export default {
 			loaded: false,
 			typingTimeout: null,
 			search: '',
-			shows: [],
-			defaultShows: [],
+			shows: null,
 			total: 'No',
 			selectedTab: 'selections',
 		};
 	},
 	computed: {
-		displayedShows () {
-			return this.search ? this.shows : this.defaultShows;
-		},
-		correctQuery () {
-			return this.category.awardsGroup === 'production' ? queries.prodQuery : queries.showQuery;
-		},
+		...mapState(['entries']),
 	},
 	methods: {
+		...mapActions(['getEntries']),
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -119,30 +128,16 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		async sendQuery () {
-			if (!this.search) {
+		sendQuery () {
+			if (!this.search || this.search.length <= 2) {
+				this.shows = this.entries;
+				this.total = this.shows.length;
 				this.loaded = true;
-				this.shows = [];
-				this.total = 'No';
 				return;
 			}
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: this.correctQuery,
-					variables: {
-						search: this.search,
-						blacklist: constants.allBlacklist,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.shows = data.data.anime.results;
+			const entries = this.entries;
+			const fuse = new Fuse(entries, options);
+			this.shows = fuse.search(this.search);
 			this.total = this.shows.length;
 			this.loaded = true;
 		},
@@ -171,40 +166,17 @@ export default {
 		},
 	},
 	watch: {
-		category () {
+		async category () {
+			this.loaded = false;
 			this.search = '';
 			this.selectedTab = 'selections';
-			this.shows = [];
+			this.shows = await this.getEntries(this.category.id);
+			this.loaded = true;
 		},
 	},
 	async mounted () {
-		const response = await fetch('https://graphql.anilist.co', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-			},
-			body: JSON.stringify({
-				query: this.correctQuery.replace(/search: \$search, |\$search: String, /g, ''), // lol
-				blacklist: constants.allBlacklist,
-			}),
-		});
-		if (!response.ok) return alert('no bueno');
-		const totalShows = (await response.json()).data.anime.pageInfo.total;
-		const nextResponse = await fetch('https://graphql.anilist.co', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-			},
-			body: JSON.stringify({
-				query: this.correctQuery.replace(/search: \$search, |\$search: String, /g, '').replace('1', Math.floor(Math.random() * Math.ceil(totalShows / 50) + 1)), // i wish for death
-				blacklist: constants.allBlacklist,
-			}),
-		});
-		if (!nextResponse.ok) return alert('no bueno');
-		const data = await nextResponse.json();
-		this.defaultShows = util.shuffle(data.data.anime.results);
+		await this.getEntries(this.category.id);
+		this.shows = this.entries;
 		this.loaded = true;
 	},
 };

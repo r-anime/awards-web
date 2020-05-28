@@ -1,8 +1,10 @@
+/* eslint-disable no-await-in-loop */
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
 
 // Sequelize models to avoid redundancy
 const Votes = sequelize.model('votes');
+const Categories = sequelize.model('categories');
 
 apiApp.get('/summary', async (request, response) => {
 	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
@@ -43,7 +45,7 @@ apiApp.get('/summary', async (request, response) => {
 
 apiApp.get('/all/get', async (request, response) => {
 	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
-		response.json(401, {error: 'You must be an host to see vote totals.'});
+		response.json(401, {error: 'You must be a host to see vote totals.'});
 	}
 	try {
 		// eslint-disable-next-line no-unused-vars
@@ -56,7 +58,7 @@ apiApp.get('/all/get', async (request, response) => {
 
 apiApp.get('/dashboard/get', async (request, response) => {
 	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
-		response.json(401, {error: 'You must be an host to see vote totals.'});
+		response.json(401, {error: 'You must be a host to see vote totals.'});
 	}
 	try {
 		// eslint-disable-next-line no-unused-vars
@@ -69,7 +71,7 @@ apiApp.get('/dashboard/get', async (request, response) => {
 
 apiApp.get('/oped/get', async (request, response) => {
 	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
-		response.json(401, {error: 'You must be an host to see vote totals.'});
+		response.json(401, {error: 'You must be a host to see vote totals.'});
 	}
 	try {
 		// eslint-disable-next-line no-unused-vars
@@ -82,7 +84,7 @@ apiApp.get('/oped/get', async (request, response) => {
 
 
 apiApp.get('/all/delete', async (request, response) => {
-	if (!await request.authenticate({level: 4, lock: 'hostResults'})) {
+	if (!await request.authenticate({level: 4})) {
 		return response.json(401, {error: 'You must be an admin to delete all votes.'});
 	}
 	return response.json(400, {error: "I don't think you want to do that"});
@@ -95,54 +97,60 @@ apiApp.get('/all/delete', async (request, response) => {
 	// }
 });
 
-// all of this needs to be rewritten with sequelize's syntax
-
-// eslint-disable-next-line multiline-comment-style
-/*
-const voteHelpers = require('../util/voteHelpers');
-apiApp.post('/votes/submit', async (request, response) => {
+apiApp.post('/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName, oldEnough: true})) {
 		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
-	await db.deleteAllVotesFromUser(userName);
 	let req;
 	try {
 		req = Object.entries(await request.json());
 	} catch (error) {
 		return response.json(400, {error: 'Invalid JSON'});
 	}
-	const categories = await db.getAllCategories();
+	const categories = await Categories.findAll({where: {active: 1}});
+	const userVotes = await Votes.findAll({where: {reddit_user: userName}});
 	// This entire loop needs to be a promise
-	const promise = new Promise((resolve, reject) => {
+	const promise = new Promise(async (resolve, reject) => {
 		try {
 			for (const [id, entries] of req) {
 				if (entries.length === 0) {
 					continue;
 				}
+				// eslint-disable-next-line eqeqeq
 				const category = categories.find(cat => cat.id == id); // The eqeq is very important
 				for (const entry of entries) {
 					if (entry == null) continue;
-					if (voteHelpers.isOPED(category)) {
-						db.pushUserThemeVotes({
-							redditUser: userName,
-							categoryId: category.id,
-							entryId: entry.id,
-							themeName: entry.title,
-							anilistId: entry.anilistID,
-						});
-					} else if (voteHelpers.isDashboard(category)) {
-						db.pushUserDashboardVotes({
-							redditUser: userName,
-							categoryId: category.id,
-							entryId: entries.indexOf(entry),
-							anilistId: entry.id,
+					if (category.entryType === 'themes') {
+						await Votes.findOrCreate({
+							where: {
+								entry_id: entry.id,
+							},
+							defaults: {
+								reddit_user: userName,
+								category_id: category.id,
+								theme_name: entry.title,
+								anilist_id: entry.anilistID,
+							},
 						});
 					} else {
-						db.pushUserVotes({
-							redditUser: userName,
-							categoryId: category.id,
-							entryId: entry.id,
+						await Votes.findOrCreate({
+							where: {
+								entry_id: entry.id,
+							},
+							defaults: {
+								reddit_user: userName,
+								category_id: category.id,
+							},
+						});
+					}
+				}
+				const filteredVotes = userVotes.filter(vote => vote.category_id === category.id);
+				for (const vote of filteredVotes) {
+					const found = entries.find(entry => entry.id === vote.entry_id);
+					if (!found) {
+						await Votes.destroy({
+							where: {entry_id: vote.entry_id},
 						});
 					}
 				}
@@ -155,18 +163,16 @@ apiApp.post('/votes/submit', async (request, response) => {
 	promise.then(() => response.empty());
 });
 
-apiApp.get('/votes/get', async (request, response) => {
+apiApp.get('/get', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName, oldEnough: true})) {
 		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
 	}
 	try {
-		response.json(await db.getAllUserVotes(userName));
+		response.json(await Votes.findAll({where: {reddit_user: userName}}));
 	} catch (error) {
 		response.error(error);
 	}
 });
-
-*/
 
 module.exports = apiApp;

@@ -9,14 +9,16 @@ import router from './routes';
 // Handle authentication on page navigation
 router.beforeEach(async (to, from, next) => {
 	// We must have the user info loaded before we can route
-	if (to.path.startsWith('/login')) await store.dispatch('getMe');
+	if (to.path.startsWith('/login')) {
+		if (!store.state.me) await store.dispatch('getMe');
+	}
 	if (to.path.startsWith('/host')) {
 		// Fetch core user data and store it on the Vue instance when we get it
 		// NOTE: This is done as its own thing rather than in the Vue instance's
 		//       `created` hook because having the promise lets us use `await` to ensure
 		//       we have user data before navigating (which is important for when the
 		//       page is initially loading)
-		await store.dispatch('getMe');
+		if (!store.state.me) await store.dispatch('getMe');
 		if (!store.state.me) {
 			// The user is not logged in, so have them log in
 			return next('/login');
