@@ -176,63 +176,77 @@ export default {
 		},
 	},
 	watch: {
-		category () {
+		async category () {
 			this.loaded = false;
 			this.search = '';
 			this.selectedTab = 'selections';
-			const charPromise = new Promise(async (resolve, reject) => {
-				try {
-					let charData = [];
-					if (this.vaIDs) {
-						let lastPage = false;
-						let page = 1;
-						while (!lastPage) {
-						// eslint-disable-next-line no-await-in-loop
+			const promiseArray = [];
+			let charData = [];
+			if (this.vaIDs) {
+				let page = 1;
+				const someData = await util.paginatedQuery(queries.charQuerySimple, this.vaIDs, page);
+				charData = [...charData, ...someData.data.Page.results];
+				const lastPage = someData.data.Page.pageInfo.lastPage;
+				page = 2;
+				while (page < lastPage) {
+					// eslint-disable-next-line no-loop-func
+					promiseArray.push(new Promise(async (resolve, reject) => {
+						try {
 							const returnData = await util.paginatedQuery(queries.charQuerySimple, this.vaIDs, page);
-							charData = [...charData, ...returnData.data.Page.results];
-							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-							page++;
+							resolve(returnData.data.Page.results);
+						} catch (error) {
+							reject(error);
 						}
-					}
-					resolve(charData);
-				} catch (error) {
-					reject(error);
+					}));
+					page++;
 				}
-			});
-			charPromise.then(charData => {
-				this.vaData = charData;
-				this.vas = charData;
-				this.loaded = true;
-			});
+				Promise.all(promiseArray).then(finalData => {
+					for (const data of finalData) {
+						charData = [...charData, ...data];
+					}
+					this.vaData = charData;
+					this.vas = charData;
+					this.vas = this.vas.filter(va => va.media.nodes.length > 0 && va.media.edges.length > 0);
+					this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
+					this.loaded = true;
+				});
+			}
+			this.loaded = true;
 		},
 	},
-	mounted () {
-		const charPromise = new Promise(async (resolve, reject) => {
-			try {
-				let charData = [];
-				if (this.vaIDs) {
-					let lastPage = false;
-					let page = 1;
-					while (!lastPage) {
-						// eslint-disable-next-line no-await-in-loop
+	async mounted () {
+		const promiseArray = [];
+		let charData = [];
+		if (this.vaIDs) {
+			let page = 1;
+			const someData = await util.paginatedQuery(queries.charQuerySimple, this.vaIDs, page);
+			charData = [...charData, ...someData.data.Page.results];
+			const lastPage = someData.data.Page.pageInfo.lastPage;
+			page = 2;
+			while (page < lastPage) {
+				// eslint-disable-next-line no-loop-func
+				promiseArray.push(new Promise(async (resolve, reject) => {
+					try {
 						const returnData = await util.paginatedQuery(queries.charQuerySimple, this.vaIDs, page);
-						charData = [...charData, ...returnData.data.Page.results];
-						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-						page++;
+						resolve(returnData.data.Page.results);
+					} catch (error) {
+						reject(error);
 					}
-				}
-				resolve(charData);
-			} catch (error) {
-				reject(error);
+				}));
+				page++;
 			}
-		});
-		charPromise.then(charData => {
-			charData = charData.filter(va => va.media.nodes.length > 0 && va.media.edges.length > 0);
-			charData = charData.filter(va => va.media.edges[0].voiceActors.length > 0);
-			this.vaData = charData;
-			this.vas = charData;
-			this.loaded = true;
-		});
+			Promise.all(promiseArray).then(finalData => {
+				for (const data of finalData) {
+					charData = [...charData, ...data];
+				}
+				this.vaData = charData;
+				this.vas = charData;
+				this.vas = this.vas.filter(va => va.media.nodes.length > 0 && va.media.edges.length > 0);
+				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
+				this.loaded = true;
+			});
+		}
+		this.loaded = true;
 	},
 };
 </script>

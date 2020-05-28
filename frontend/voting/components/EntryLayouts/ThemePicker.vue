@@ -121,7 +121,7 @@ export default {
 			shows: [],
 			showData: [],
 			themeData: [],
-			selections: [],
+			backup: [],
 			total: 'No',
 			selectedTab: 'selections',
 		};
@@ -139,12 +139,12 @@ export default {
 		},
 		searchThemes () {
 			if (!this.search || this.search.length <= 2) {
-				this.shows = this.selections;
+				this.shows = this.backup;
 				this.total = this.shows.length;
 				this.loaded = true;
 				return;
 			}
-			const entries = this.selections;
+			const entries = this.backup;
 			const fuse = new Fuse(entries, options);
 			this.shows = fuse.search(this.search);
 			this.total = this.shows.length;
@@ -187,47 +187,86 @@ export default {
 			}
 		},
 	},
-	mounted () {
+	async mounted () {
 		if (!this.themes) {
 			this.getThemes();
 		}
-		const showPromise = new Promise(async (resolve, reject) => {
-			try {
-				let showData = [];
-				if (this.showIDs) {
-					let lastPage = false;
-					let page = 1;
-					while (!lastPage) {
-						// eslint-disable-next-line no-await-in-loop
+		const promiseArray = [];
+		let showData = [];
+		if (this.showIDs) {
+			let page = 1;
+			const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+			showData = [...showData, ...someData.data.Page.results];
+			const lastPage = someData.data.Page.pageInfo.lastPage;
+			page = 2;
+			while (page < lastPage) {
+				// eslint-disable-next-line no-loop-func
+				promiseArray.push(new Promise(async (resolve, reject) => {
+					try {
 						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
-						showData = [...showData, ...returnData.data.Page.results];
-						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-						page++;
+						resolve(returnData.data.Page.results);
+					} catch (error) {
+						reject(error);
 					}
-				}
-				resolve(showData);
-			} catch (error) {
-				reject(error);
+				}));
+				page++;
 			}
-		});
-
-		showPromise.then(showData => {
-			this.entries.forEach(element => {
-				const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
-				const requiredShow = showData.find(show => show.id === element.anilist_id);
-				this.selections.push({...requiredShow, ...requiredTheme});
+			Promise.all(promiseArray).then(finalData => {
+				for (const data of finalData) {
+					showData = [...showData, ...data];
+				}
+				this.entries.forEach(element => {
+					const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
+					const requiredShow = showData.find(show => show.id === element.anilist_id);
+					this.backup.push({...requiredShow, ...requiredTheme});
+				});
+				this.shows = this.backup;
+				this.loaded = true;
 			});
-			this.shows = this.selections;
-			this.loaded = true;
-		});
+		}
+		this.loaded = true;
 	},
 	watch: {
-		category () {
+		async category () {
 			this.search = '';
 			this.selectedTab = 'selections';
 			this.shows = [];
 			this.showData = [];
 			this.themeData = [];
+			const promiseArray = [];
+			let showData = [];
+			if (this.showIDs) {
+				let page = 1;
+				const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+				showData = [...showData, ...someData.data.Page.results];
+				const lastPage = someData.data.Page.pageInfo.lastPage;
+				page = 2;
+				while (page < lastPage) {
+					// eslint-disable-next-line no-loop-func
+					promiseArray.push(new Promise(async (resolve, reject) => {
+						try {
+							const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+							resolve(returnData.data.Page.results);
+						} catch (error) {
+							reject(error);
+						}
+					}));
+					page++;
+				}
+				Promise.all(promiseArray).then(finalData => {
+					for (const data of finalData) {
+						showData = [...showData, ...data];
+					}
+					this.entries.forEach(element => {
+						const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
+						const requiredShow = showData.find(show => show.id === element.anilist_id);
+						this.backup.push({...requiredShow, ...requiredTheme});
+					});
+					this.shows = this.backup;
+					this.loaded = true;
+				});
+			}
+			this.loaded = true;
 		},
 	},
 };

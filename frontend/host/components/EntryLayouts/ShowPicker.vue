@@ -390,31 +390,36 @@ export default {
 			});
 		},
 	},
-	mounted () {
-		const showPromise = new Promise(async (resolve, reject) => {
-			try {
-				let showData = [];
-				if (this.showIDs) {
-					let lastPage = false;
-					let page = 1;
-					while (!lastPage) {
-						// eslint-disable-next-line no-await-in-loop
+	async mounted () {
+		const promiseArray = [];
+		let showData = [];
+		if (this.showIDs) {
+			let page = 1;
+			const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+			showData = [...showData, ...someData.data.Page.results];
+			const lastPage = someData.data.Page.pageInfo.lastPage;
+			page = 2;
+			while (page < lastPage) {
+				// eslint-disable-next-line no-loop-func
+				promiseArray.push(new Promise(async (resolve, reject) => {
+					try {
 						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
-						showData = [...showData, ...returnData.data.Page.results];
-						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-						page++;
+						resolve(returnData.data.Page.results);
+					} catch (error) {
+						reject(error);
 					}
-				}
-				resolve(showData);
-			} catch (error) {
-				reject(error);
+				}));
+				page++;
 			}
-		});
-
-		showPromise.then(showData => {
-			this.selections = showData;
-			this.loaded = true;
-		});
+			Promise.all(promiseArray).then(finalData => {
+				for (const data of finalData) {
+					showData = [...showData, ...data];
+				}
+				this.selections = showData;
+				this.loaded = true;
+			});
+		}
+		this.loaded = true;
 	},
 };
 </script>

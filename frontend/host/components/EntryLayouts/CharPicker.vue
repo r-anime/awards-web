@@ -481,34 +481,39 @@ export default {
 			});
 		},
 	},
-	mounted () {
-		const charPromise = new Promise(async (resolve, reject) => {
-			try {
-				let charData = [];
-				if (this.charIDs) {
-					let lastPage = false;
-					let page = 1;
-					while (!lastPage) {
-						// eslint-disable-next-line no-await-in-loop
+	async mounted () {
+		const promiseArray = [];
+		let charData = [];
+		if (this.charIDs) {
+			let page = 1;
+			const someData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
+			charData = [...charData, ...someData.data.Page.results];
+			const lastPage = someData.data.Page.pageInfo.lastPage;
+			page = 2;
+			while (page < lastPage) {
+				// eslint-disable-next-line no-loop-func
+				promiseArray.push(new Promise(async (resolve, reject) => {
+					try {
 						const returnData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
-						charData = [...charData, ...returnData.data.Page.results];
-						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-						page++;
+						resolve(returnData.data.Page.results);
+					} catch (error) {
+						reject(error);
 					}
+				}));
+				page++;
+			}
+			Promise.all(promiseArray).then(finalData => {
+				for (const data of finalData) {
+					charData = [...charData, ...data];
 				}
-				resolve(charData);
-			} catch (error) {
-				reject(error);
-			}
-		});
-
-		charPromise.then(charData => {
-			for (const char of charData) {
-				char.anilistID = char.id;
-			}
-			this.selections = charData;
-			this.loaded = true;
-		});
+				for (const char of charData) {
+					char.anilistID = char.id;
+				}
+				this.selections = charData;
+				this.loaded = true;
+			});
+		}
+		this.loaded = true;
 	},
 };
 </script>
