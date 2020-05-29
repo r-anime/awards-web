@@ -199,7 +199,7 @@ export default {
 			showData = [...showData, ...someData.data.Page.results];
 			const lastPage = someData.data.Page.pageInfo.lastPage;
 			page = 2;
-			while (page < lastPage) {
+			while (page <= lastPage) {
 				// eslint-disable-next-line no-loop-func
 				promiseArray.push(new Promise(async (resolve, reject) => {
 					try {
@@ -241,7 +241,7 @@ export default {
 				showData = [...showData, ...someData.data.Page.results];
 				const lastPage = someData.data.Page.pageInfo.lastPage;
 				page = 2;
-				while (page < lastPage) {
+				while (page <= lastPage) {
 					// eslint-disable-next-line no-loop-func
 					promiseArray.push(new Promise(async (resolve, reject) => {
 						try {
