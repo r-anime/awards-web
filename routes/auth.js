@@ -48,7 +48,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 		log.error('Error getting reddit user info:', res.status, res.body);
 	}
 
-	sequelize.model('users').findOrCreate({
+	const [user, created] = await sequelize.model('users').findOrCreate({
 		where: {
 			reddit: name,
 		},
@@ -56,9 +56,10 @@ authApp.get('/reddit/callback', async (request, response) => {
 			level: 0,
 			flags: 0,
 		},
-	}).then(() => {
-		response.redirect('/login');
 	});
+	if (created) response.redirect('/apps');
+	else if (user.level >= 2) response.redirect('/login');
+	else response.redirect('/apps');
 });
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
