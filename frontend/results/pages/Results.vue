@@ -167,6 +167,7 @@ import marked from 'marked';
 
 
 const aq = require('../../anilistQueries');
+const util = require('../../util');
 
 export default {
 	props: ['slug', 'year'],
@@ -351,30 +352,62 @@ export default {
 			for (const char in this.results.characters) {
 				this.charIDs.push(char);
 			}
+			const showPromiseArr = [];
+			const charPromiseArr = [];
 			const showPromise = new Promise(async (resolve, reject) => {
 				try {
-					let lastPage = false;
 					let page = 1;
-					while (!lastPage) {
-						const returnData = await this.fetchShows(page, this.showIDs);
-						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+					const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+					this.showData = [...this.showData, ...someData.data.Page.results];
+					const lastPage = someData.data.Page.pageInfo.lastPage;
+					page = 2;
+					while (page <= lastPage) {
+						// eslint-disable-next-line no-loop-func
+						showPromiseArr.push(new Promise(async (resolve2, reject2) => {
+							try {
+								const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+								resolve2(returnData.data.Page.results);
+							} catch (error) {
+								reject2(error);
+							}
+						}));
 						page++;
 					}
-					resolve();
+					Promise.all(showPromiseArr).then(finalData => {
+						for (const data of finalData) {
+							this.showData = [...this.showData, ...data];
+						}
+						resolve();
+					});
 				} catch (err) {
 					reject(err);
 				}
 			});
 			const charPromise = new Promise(async (resolve, reject) => {
 				try {
-					let lastPage = false;
 					let page = 1;
-					while (!lastPage) {
-						const returnData = await this.fetchChars(page, this.charIDs);
-						lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+					const someData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
+					this.charData = [...this.charData, ...someData.data.Page.results];
+					const lastPage = someData.data.Page.pageInfo.lastPage;
+					page = 2;
+					while (page <= lastPage) {
+						// eslint-disable-next-line no-loop-func
+						charPromiseArr.push(new Promise(async (resolve2, reject2) => {
+							try {
+								const returnData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
+								resolve2(returnData.data.Page.results);
+							} catch (error) {
+								reject2(error);
+							}
+						}));
 						page++;
 					}
-					resolve();
+					Promise.all(charPromiseArr).then(finalData => {
+						for (const data of finalData) {
+							this.charData = [...this.charData, ...data];
+						}
+						resolve();
+					});
 				} catch (err) {
 					reject(err);
 				}
