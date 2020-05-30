@@ -20,6 +20,7 @@ const auth = require('./routes/auth');
 
 const indexPage = fs.readFileSync(path.join(config.publicDir, 'index.html'));
 const hostPage = fs.readFileSync(path.join(config.publicDir, 'host.html'));
+const appsPage = fs.readFileSync(path.join(config.publicDir, 'jurorApps.html'));
 
 // Define the main application
 const app = polka({
@@ -59,6 +60,8 @@ app.use('/auth', auth);
 app.use('/host', (request, response) => response.end(hostPage));
 // Login is a stupid route that needs to be handled better and hosted at /host instead of /login
 app.use('/login', (request, response) => response.end(hostPage));
+
+app.use('/apps', (request, response) => response.end(appsPage));
 
 // Synchronize sequelize models
 // and then start the server
