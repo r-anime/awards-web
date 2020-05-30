@@ -57,9 +57,8 @@ authApp.get('/reddit/callback', async (request, response) => {
 			flags: 0,
 		},
 	});
-	if (created) response.redirect('/apps');
-	else if (user.level >= 2) response.redirect('/login');
-	else response.redirect('/apps');
+	if (created || user.level <= 2) response.redirect('/apps');
+	else response.redirect('/login');
 });
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
