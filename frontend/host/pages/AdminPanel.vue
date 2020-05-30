@@ -359,7 +359,7 @@ export default {
 									support: nom.votes / nom.finished,
 									jury: nom.rank,
 									percent: nom.votes / totalVotes,
-									writeup: nom.writeup,
+									writeup: nom.writeup.replace(/’/g, "'"),
 									staff: nom.staff,
 								});
 							}
