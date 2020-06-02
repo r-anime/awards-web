@@ -57,7 +57,7 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="selections.length" class="show-picker-overflow-wrap">
+		<div v-else-if="selections.length && loaded" class="show-picker-overflow-wrap">
 			<div class="show-picker-entries">
 				<ThemePickerEntry
 					v-for="show in selections"

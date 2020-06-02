@@ -57,7 +57,7 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="selections.length" class="va-picker-overflow-wrap">
+		<div v-else-if="selections.length && loaded" class="va-picker-overflow-wrap">
 			<div class="va-picker-entries">
 				<VAPickerEntry
 					v-for="va in selections"
@@ -106,6 +106,12 @@
 			>
 				Batch Import
 			</button>
+			<button
+				class="button is-primary"
+				@click="importOpen = true"
+			>
+				AniList ID Import
+			</button>
 		</div>
 
 		<modal-generic v-model="modalOpen">
@@ -124,6 +130,20 @@
 		<div class="field">
 			<div class="control">
 				<button @click="importShows" class="button is-primary" :class="{'is-loading': importing}">Import</button>
+			</div>
+		</div>
+		</modal-generic>
+
+		<modal-generic v-model="importOpen">
+		<div class="field">
+			<label class="label">Line seperated AniList IDs of shows:</label>
+			<div class="control">
+				<textarea v-model="anilistIDs" class="textarea" placeholder="Line separated anilist IDs of shows here"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="control">
+				<button @click="importShowsFromIDs" class="button is-primary" :class="{'is-loading': importing}">Import</button>
 			</div>
 		</div>
 		</modal-generic>
@@ -239,6 +259,63 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
 }
 `;
 
+const importFromIDsQuery = `query ($page: Int,$charPage: Int, $id:[Int]) {
+  anime: Page(page: $page, perPage: 50) {
+    pageInfo {
+      total
+      perPage
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    results: media(type: ANIME, isAdult: false, countryOfOrigin: JP, id_in:$id) {
+      id
+      title {
+        romaji
+        english
+        native
+        userPreferred
+      }
+      characters(page: $charPage, perPage: 50) {
+        pageInfo {
+          total
+          perPage
+          currentPage
+          lastPage
+          hasNextPage
+        }
+        edges {
+          id
+          node {
+            id
+            name {
+              first
+              last
+              full
+              native
+            }
+            siteUrl
+            image {
+              large
+              medium
+            }
+          }
+          role
+          voiceActors(language: JAPANESE) {
+            id
+            name {
+              first
+              last
+              full
+              native
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
+
 export default {
 	components: {
 		VAPickerEntry,
@@ -262,6 +339,8 @@ export default {
 			startDate: '2020-01-13',
 			endDate: '2021-01-12',
 			importing: false,
+			anilistIDs: '',
+			importOpen: false,
 		};
 	},
 	computed: {
@@ -275,6 +354,9 @@ export default {
 				anilist_id: item.media.nodes[0].id,
 				themeId: null,
 			}));
+		},
+		anilistIDArr () {
+			return this.anilistIDs.split('\n');
 		},
 	},
 	methods: {
@@ -389,6 +471,100 @@ export default {
 			const data = await response.json();
 			return data;
 		},
+		async importFromIDsQuery (page, charPage) {
+			const response = await fetch('https://graphql.anilist.co', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({
+					query: importFromIDsQuery,
+					variables: {
+						// eslint-disable-next-line radix
+						id: this.anilistIDArr,
+						page,
+						charPage,
+					},
+				}),
+			});
+			if (!response.ok) return alert('no bueno');
+			const data = await response.json();
+			return data;
+		},
+		importShowsFromIDs () {
+			this.importing = true;
+			const charPromise = new Promise(async (resolve, reject) => {
+				try {
+					let showData = [];
+					let lastPage = false;
+					let nextCharaPage = false;
+					let page = 1;
+					let charPage = 1;
+					while (!lastPage) {
+						// eslint-disable-next-line no-await-in-loop
+						const returnData = await this.importFromIDsQuery(page, charPage);
+						// check if any anime here have a next page for charas
+						nextCharaPage = returnData.data.anime.results.some(item => item.characters.pageInfo.hasNextPage);
+						while (nextCharaPage) {
+							charPage++;
+							// eslint-disable-next-line no-await-in-loop
+							const nextData = await this.importFromIDsQuery(page, charPage);
+							nextData.data.anime.results = nextData.data.anime.results.filter(item => item.characters.edges.length > 0);
+							for (const item of nextData.data.anime.results) {
+								const index = returnData.data.anime.results.findIndex(anime => anime.id === item.id);
+								returnData.data.anime.results[index].characters.edges = [...returnData.data.anime.results[index].characters.edges, ...item.characters.edges];
+							}
+							nextCharaPage = nextData.data.anime.results.some(item => item.characters.pageInfo.hasNextPage);
+						}
+						charPage = 1;
+						nextCharaPage = false;
+						showData = [...showData, ...returnData.data.anime.results];
+						lastPage = returnData.data.anime.pageInfo.currentPage === returnData.data.anime.pageInfo.lastPage;
+						page++;
+					}
+					resolve(showData);
+				} catch (error) {
+					reject(error);
+				}
+			});
+			charPromise.then(showData => {
+				this.vas = [];
+				for (const show of showData) {
+					if (show.characters.edges.length === 0) continue;
+					const anime = show.title.romaji || show.title.userPreferred;
+					const mediaID = show.id;
+					for (const char of show.characters.edges) {
+						this.vas.push({
+							id: char.id,
+							anilistID: char.node.id,
+							name: char.node.name,
+							image: char.node.image,
+							siteUrl: char.node.siteUrl,
+							media: {
+								nodes: [{
+									id: mediaID,
+									title: {
+										romaji: anime,
+									},
+								}],
+								edges: [{
+									id: char.id,
+									characterRole: char.role,
+									voiceActors: char.voiceActors,
+								}],
+							},
+						});
+					}
+				}
+				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
+				this.selectedTab = 'search';
+				this.total = this.vas.length;
+				this.loaded = true;
+				this.importing = false;
+				this.importOpen = false;
+			});
+		},
 		importShows () {
 			this.importing = true;
 			const charPromise = new Promise(async (resolve, reject) => {
@@ -433,8 +609,6 @@ export default {
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
 						if (char.voiceActors.length === 0) continue;
-						const found = this.vas.find(item => item.id === char.node.id);
-						if (found !== undefined) continue;
 						this.vas.push({
 							id: char.node.id,
 							name: char.node.name,

@@ -58,7 +58,7 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value[category.id].length" class="show-picker-overflow-wrap">
+		<div v-else-if="value[category.id].length && loaded" class="show-picker-overflow-wrap">
 			<div class="show-picker-entries">
 				<show-picker-entry
 					v-for="show in value[category.id]"
@@ -68,6 +68,9 @@
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
+		</div>
+		<div v-else-if="!loaded" class="char-picker-text">
+			Loading...
 		</div>
 		<div v-else class="show-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.

@@ -61,7 +61,7 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value[category.id].length" class="char-picker-overflow-wrap">
+		<div v-else-if="value[category.id].length && loaded" class="char-picker-overflow-wrap">
 			<div class="char-picker-entries">
 				<char-picker-entry
 					v-for="char in value[category.id]"
@@ -71,6 +71,9 @@
 					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
+		</div>
+		<div v-else-if="!loaded" class="char-picker-text">
+			Loading...
 		</div>
 		<div v-else class="char-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
