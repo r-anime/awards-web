@@ -23,25 +23,6 @@
 						:route="route"
 					/>
 				</div>
-				<div class="navbar-end">
-					<nav-bar-link v-if="me">
-						<img class="navbar-user-avatar" :src="me.reddit.avatar">
-						/u/{{me.reddit.name}} {{levelDesignator}}
-
-						<template slot="dropdown">
-							<router-link
-								class="navbar-item"
-								active-class="is-active"
-								to="/profile"
-							>
-								Profile settings
-							</router-link>
-							<a class="navbar-item" href="/auth/logout">
-								Log out
-							</a>
-						</template>
-					</nav-bar-link>
-				</div>
 			</div>
 		</div>
 	</nav>

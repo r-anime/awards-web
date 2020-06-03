@@ -14,6 +14,7 @@ import Acknowledgements from './pages/Acknowledgements';
 import ResultsPage from './pages/Results';
 import ArchiveLanding from './pages/ArchiveLanding';
 import ExtraAwardsPage from './pages/ExtraAwards';
+import Allocations from './pages/Allocations';
 
 import ResultsContainer from './components/ResultsContainer';
 import Archive from './components/Archive';
@@ -33,7 +34,7 @@ export default new VueRouter({
 			component: ResultLayout,
 			children: [
 				{path: '', component: Home},
-				{path: 'thanks', component: About},
+				{path: '/thanks', component: About},
 				{
 					path: 'results',
 					redirect: 'results/all',
@@ -49,6 +50,7 @@ export default new VueRouter({
 				{path: '/acknowledgements', component: Acknowledgements},
 				{path: '/about', component: About},
 				{path: '/extra', component: ExtraAwardsPage},
+				{path: '/allocations', component: Allocations},
 				{
 					path: '/archive',
 					component: Archive,

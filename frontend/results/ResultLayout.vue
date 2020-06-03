@@ -1,52 +1,77 @@
 <template>
 	<body>
+		<div v-if="loaded">
 			<nav-bar
-				:routes="[
-					{name: 'Genre', path: '/results/genre'},
-					{name: 'Character', path: '/results/character'},
-					{name: 'Production', path: '/results/production'},
-					{name: 'Main', path: '/results/main'},
-					{name: 'Test', path: '/results/test'},
-					{name: 'View All', path: '/results/all'},
-					{name: 'Extra', path: '/extra'},
-					{name: 'Archive', path: '/archive'},
-					{name: 'Acknowledgements', path: '/acknowledgements'},
-					{name: 'About/Credits', path: '/about'},
-				]"
+				:routes="routes"
 				class="is-dperiwinkle has-periwinkle-underline"
 			>
-			<template v-slot:title>
-				<router-link to="/" style="color: inherit;">
-					<h1 class="is-size-4">/r/anime Awards</h1>
-				</router-link>
-				<span class="tag is-small" style="margin-left:0.8rem;">Host Dashboard</span>
-			</template>
-		</nav-bar>
-		<router-view/>
-		<footer class="hero-foot footer has-background-dperiwinkle has-text-light">
-			<div class="container has-text-centered">
-				<small class="has-text-light">
-					The r/anime Awards are a rag tag group of volunteers passionate about showcasing the shows we love. As such, we do not own or claim ownership of
-					any of the shows, characters, or images showcased on this site.
-					All copyrights and/or trademarks of any character and/or image used belong to their respective owner(s). Please don't sue us.
-				</small>
-				<br>
-				<br>
-				<br>
-				<router-link to="/about" style="color:inherit">
-					<a class="footerLink has-text-light">About/Credits</a>
-				</router-link>
-			</div>
-		</footer>
+				<template v-slot:title>
+					<router-link to="/" style="color: inherit;">
+						<h1 class="is-size-4">/r/anime Awards</h1>
+					</router-link>
+					<span class="tag is-small" style="margin-left:0.8rem;">Host Dashboard</span>
+				</template>
+			</nav-bar>
+			<router-view/>
+			<footer class="hero-foot footer has-background-dperiwinkle has-text-light">
+				<div class="container has-text-centered">
+					<small class="has-text-light">
+						The r/anime Awards are a rag tag group of volunteers passionate about showcasing the shows we love. As such, we do not own or claim ownership of
+						any of the shows, characters, or images showcased on this site.
+						All copyrights and/or trademarks of any character and/or image used belong to their respective owner(s). Please don't sue us.
+					</small>
+					<br>
+					<br>
+					<br>
+					<router-link to="/about" style="color:inherit">
+						<a class="footerLink has-text-light">About/Credits</a>
+					</router-link>
+				</div>
+			</footer>
+		</div>
 	</body>
 </template>
 
 <script>
 import NavBar from '../common/NavBar.vue';
+import {mapState, mapActions} from 'vuex';
 
 export default {
 	components: {
 		NavBar,
+	},
+	data () {
+		return {
+			routes: [
+				{name: 'Genre', path: '/results/genre'},
+				{name: 'Character', path: '/results/character'},
+				{name: 'Production', path: '/results/production'},
+				{name: 'Main', path: '/results/main'},
+				{name: 'Test', path: '/results/test'},
+				{name: 'View All', path: '/results/all'},
+				{name: 'Extra', path: '/extra'},
+				{name: 'Archive', path: '/archive'},
+				{name: 'Acknowledgements', path: '/acknowledgements'},
+				{name: 'About/Credits', path: '/about'},
+			],
+			loaded: false,
+		};
+	},
+	computed: {
+		...mapState(['locks']),
+	},
+	methods: {
+		...mapActions(['getLocks']),
+	},
+	async mounted () {
+		if (!this.locks) {
+			await this.getLocks();
+		}
+		const allocLock = this.locks.find(lock => lock.name === 'allocations');
+		if (allocLock.flag) {
+			this.routes.push({name: 'Allocations', path: '/allocations'});
+		}
+		this.loaded = true;
 	},
 };
 </script>

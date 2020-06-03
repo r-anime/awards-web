@@ -67,49 +67,60 @@ app.use('/apps', (request, response) => response.end(appsPage));
 // and then start the server
 sequelize.sync().then(async () => {
 	// A sequelize transaction to create required rows in tables
-	await sequelize.transaction(async t => {
+	await sequelize.transaction(t => {
 		try {
 			// Register Heather and Geo as admins so that we don't have to manually insert rows and fuck with sequelize
-			await sequelize.model('users').findOrCreate({
-				where: {
-					reddit: 'JoseiToAoiTori',
-				},
-				defaults: {
-					level: 4,
-				},
-				transaction: t,
-			});
-			await sequelize.model('users').findOrCreate({
-				where: {
-					reddit: 'geo1088',
-				},
-				defaults: {
-					level: 4,
-				},
-				transaction: t,
-			});
-			// Initialize the locks table if it hasn't already
-			await sequelize.model('locks').findOrCreate({
-				where: {
-					name: 'hostResults',
-				},
-				defaults: {
-					level: 2,
-					flag: false,
-				},
-				transaction: t,
-			});
-
-			await sequelize.model('locks').findOrCreate({
-				where: {
-					name: 'voting',
-				},
-				defaults: {
-					level: 3,
-					flag: false,
-				},
-				transaction: t,
-			});
+			return Promise.all([
+				sequelize.model('users').findOrCreate({
+					where: {
+						reddit: 'JoseiToAoiTori',
+					},
+					defaults: {
+						level: 4,
+					},
+					transaction: t,
+				}),
+				sequelize.model('users').findOrCreate({
+					where: {
+						reddit: 'geo1088',
+					},
+					defaults: {
+						level: 4,
+					},
+					transaction: t,
+				}),
+				// Initialize the locks table if it hasn't already
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'hostResults',
+					},
+					defaults: {
+						level: 2,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'voting',
+					},
+					defaults: {
+						level: 3,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'allocations',
+					},
+					defaults: {
+						level: 0,
+						flag: false,
+					},
+					transaction: t,
+				}),
+			]);
 		} catch (error) {
 			log.error(error);
 		}

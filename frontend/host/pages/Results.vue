@@ -369,8 +369,8 @@ export default {
 	mounted () {
 		Promise.all([this.getLocks(), this.getMe()]).then(() => {
 			const lock = this.locks.find(aLock => aLock.name === 'hostResults');
-			if (lock.flag) this.locked = false;
-			else if (!lock.flag && this.me.level <= lock.level) this.locked = true;
+			if (lock.flag || this.me.level > lock.level) this.locked = false;
+			else this.locked = true;
 			if (this.locked) {
 				this.loaded = true;
 			} else {

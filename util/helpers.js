@@ -3,6 +3,7 @@ const superagent = require('superagent');
 const config = require('../config');
 const constants = require('../constants');
 const sequelize = require('../models').sequelize;
+const log = require('another-logger');
 
 const requestHelpers = {
 	reddit () {
@@ -80,18 +81,17 @@ const requestHelpers = {
 	},
 	async authenticate ({level, name, oldEnough, lock}) {
 		let lockStatus;
-		// check if lock parameter was passed
+		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
+		const userInfo = await sequelize.model('users').findOne({where: {reddit: redditInfo.name}});
 		if (lock) {
 			// get the lock row
 			lockStatus = await sequelize.model('locks').findOne({where: {name: lock}});
 			// if user's level is immune to the lock, skip this code
-			if (level <= lockStatus.level) {
+			if (userInfo.level <= lockStatus.level) {
 				// if the lock applies to this user level and the lock is active, authentication fails
 				if (!lockStatus.flag) return false;
 			}
 		}
-		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
-		const userInfo = await sequelize.model('users').findOne({where: {reddit: redditInfo.name}});
 		if (level && (!userInfo || userInfo.level < level)) return false;
 		if (name && redditInfo.name !== name) return false;
 		if (oldEnough && redditInfo.created_utc >= constants.maxAccountDate) return false;

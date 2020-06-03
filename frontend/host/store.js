@@ -58,7 +58,6 @@ const store = new Vuex.Store({
 		GET_ME (state, me) {
 			state.me = me;
 		},
-
 		GET_USERS (state, users) {
 			state.users = users;
 		},
@@ -148,7 +147,6 @@ const store = new Vuex.Store({
 			const me = await response.json();
 			commit('GET_ME', me);
 		},
-
 		async getUsers ({commit}) {
 			const users = await makeRequest('/api/user/all');
 			commit('GET_USERS', users);
