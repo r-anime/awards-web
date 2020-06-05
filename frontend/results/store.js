@@ -29,16 +29,32 @@ async function makeRequest (path, method = 'GET', body) {
 const store = new Vuex.Store({
 	state: {
 		locks: null,
+		categories: null,
+		entries: null,
 	},
 	mutations: {
-		UPDATE_LOCKS (state, locks) {
+		GET_CATEGORIES (state, categories) {
+			state.categories = categories;
+		},
+		GET_ENTRIES (state, entries) {
+			state.entries = entries;
+		},
+		GET_LOCKS (state, locks) {
 			state.locks = locks;
 		},
 	},
 	actions: {
+		async getCategories ({commit}) {
+			const categories = await makeRequest('/api/category/all');
+			commit('GET_CATEGORIES', categories);
+		},
+		async getEntries ({commit}) {
+			const entries = await makeRequest('/api/category/entries/all');
+			commit('GET_ENTRIES', entries);
+		},
 		async getLocks ({commit}) {
 			const locks = await makeRequest('/api/locks/all');
-			commit('UPDATE_LOCKS', locks);
+			commit('GET_LOCKS', locks);
 		},
 	},
 });

@@ -159,7 +159,6 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/user/${reddit}`, 'DELETE');
 			commit('REMOVE_USER', reddit);
 		},
-
 		async getCategories ({commit}) {
 			const categories = await makeRequest('/api/category/all');
 			commit('GET_CATEGORIES', categories);
