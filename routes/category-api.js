@@ -79,16 +79,17 @@ apiApp.delete('/:id', async (request, response) => {
 		return response.json(401, {error: 'You must be an admin to delete categories'});
 	}
 	try {
-		await Categories.destroy({
+		Promise.all([Categories.destroy({
 			where: {
 				id: request.params.id,
 			},
+		}),
+		Entries.destroy({where: {categoryId: request.params.id}}),
+		Noms.destroy({where: {categoryId: request.params.id}}),
+		HMs.destroy({where: {categoryId: request.params.id}}),
+		Jurors.destroy({where: {categoryId: request.params.id}})]).then(() => {
+			response.empty();
 		});
-		await Entries.destroy({where: {categoryId: request.params.id}});
-		await Noms.destroy({where: {categoryId: request.params.id}});
-		await HMs.destroy({where: {categoryId: request.params.id}});
-		await Jurors.destroy({where: {categoryId: request.params.id}});
-		response.empty();
 	} catch (error) {
 		response.error(error);
 	}
@@ -128,40 +129,66 @@ apiApp.post('/:id/entries', async (request, response) => {
 	} catch (error) {
 		return response.json({error: 'Invalid JSON'});
 	}
+	let promiseArr = [];
 	const ogEntries = await Entries.findAll({
 		where: {
 			categoryId: request.params.id,
 		},
 	});
+	const t = await sequelize.transaction();
 	try {
 		for (const entry of entries) {
-			await Entries.findOrCreate({
-				where: {
-					anilist_id: entry.anilist_id,
-					character_id: entry.character_id,
-					themeId: entry.themeId,
-				},
-				defaults: {
-					categoryId: request.params.id,
-				},
-			});
+			promiseArr.push(new Promise(async (resolve, reject) => {
+				try {
+					await Entries.findOrCreate({
+						where: {
+							anilist_id: entry.anilist_id,
+							character_id: entry.character_id,
+							themeId: entry.themeId,
+						},
+						defaults: {
+							categoryId: request.params.id,
+						},
+						transaction: t,
+					});
+					resolve();
+				} catch (error) {
+					reject(error);
+				}
+			}));
 		}
 
-		for (const entry of ogEntries) {
-			const found = entries.find(element => element.anilist_id === entry.anilist_id && element.character_id === entry.character_id && element.themeId === entry.themeId);
-			if (!found) {
-				await Entries.destroy({
-					where: {
-						id: entry.id,
-					},
-				});
+		Promise.all(promiseArr).then(async () => {
+			await t.commit();
+			const t2 = await sequelize.transaction();
+			promiseArr = [];
+			for (const entry of ogEntries) {
+				const found = entries.find(element => element.anilist_id === entry.anilist_id && element.character_id === entry.character_id && element.themeId === entry.themeId);
+				if (!found) {
+					promiseArr.push(new Promise(async (resolve, reject) => {
+						try {
+							await Entries.destroy({
+								where: {
+									id: entry.id,
+								},
+								transaction: t2,
+							});
+							resolve();
+						} catch (error) {
+							reject(error);
+						}
+					}));
+				}
 			}
-		}
-		response.json(await Entries.findAll({
-			where: {
-				categoryId: request.params.id,
-			},
-		}));
+			Promise.all(promiseArr).then(async () => {
+				await t2.commit();
+				response.json(await Entries.findAll({
+					where: {
+						categoryId: request.params.id,
+					},
+				}));
+			});
+		});
 	} catch (error) {
 		response.error(error);
 	}
