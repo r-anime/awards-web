@@ -226,8 +226,9 @@ export default {
 				this.shows = this.backup;
 				this.loaded = true;
 			});
+		} else {
+			this.loaded = true;
 		}
-		this.loaded = true;
 	},
 	watch: {
 		async category () {
@@ -268,8 +269,9 @@ export default {
 					this.shows = this.backup;
 					this.loaded = true;
 				});
+			} else {
+				this.loaded = true;
 			}
-			this.loaded = true;
 		},
 	},
 };
