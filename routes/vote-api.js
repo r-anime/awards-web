@@ -108,59 +108,68 @@ apiApp.post('/submit', async (request, response) => {
 	} catch (error) {
 		return response.json(400, {error: 'Invalid JSON'});
 	}
-	const categories = await Categories.findAll({where: {active: 1}});
-	const userVotes = await Votes.findAll({where: {reddit_user: userName}});
-	// This entire loop needs to be a promise
-	const promise = new Promise(async (resolve, reject) => {
-		try {
-			for (const [id, entries] of req) {
-				if (entries.length === 0) {
-					continue;
+	const t = await sequelize.transaction();
+	Promise.all([Categories.findAll({where: {active: 1}}), Votes.findAll({where: {reddit_user: userName}})]).then(data => {
+		const categories = data[0];
+		const userVotes = data[1];
+		let promiseArr = [];
+
+		for (const [id, entries] of req) {
+			if (entries.length === 0) {
+				continue;
+			}
+			// eslint-disable-next-line eqeqeq
+			const category = categories.find(cat => cat.id == id); // The eqeq is very important
+			for (const entry of entries) {
+				if (entry == null) continue;
+				if (category.entryType === 'themes') {
+					promiseArr.push(Votes.findOrCreate({
+						where: {
+							entry_id: entry.id,
+						},
+						defaults: {
+							reddit_user: userName,
+							category_id: category.id,
+							theme_name: entry.title,
+							anilist_id: entry.anilistID,
+						},
+						transaction: t,
+					}));
+				} else {
+					promiseArr.push(Votes.findOrCreate({
+						where: {
+							entry_id: entry.id,
+						},
+						defaults: {
+							reddit_user: userName,
+							category_id: category.id,
+						},
+						transaction: t,
+					}));
 				}
-				// eslint-disable-next-line eqeqeq
-				const category = categories.find(cat => cat.id == id); // The eqeq is very important
-				for (const entry of entries) {
-					if (entry == null) continue;
-					if (category.entryType === 'themes') {
-						await Votes.findOrCreate({
-							where: {
-								entry_id: entry.id,
-							},
-							defaults: {
-								reddit_user: userName,
-								category_id: category.id,
-								theme_name: entry.title,
-								anilist_id: entry.anilistID,
-							},
-						});
-					} else {
-						await Votes.findOrCreate({
-							where: {
-								entry_id: entry.id,
-							},
-							defaults: {
-								reddit_user: userName,
-								category_id: category.id,
-							},
-						});
-					}
-				}
+			}
+			// eslint-disable-next-line no-loop-func
+			Promise.all(promiseArr).then(async () => {
+				await t.commit();
+				promiseArr = [];
+				const t2 = await sequelize.transaction();
 				const filteredVotes = userVotes.filter(vote => vote.category_id === category.id);
 				for (const vote of filteredVotes) {
 					const found = entries.find(entry => entry.id === vote.entry_id);
 					if (!found) {
-						await Votes.destroy({
+						promiseArr.push(Votes.destroy({
 							where: {entry_id: vote.entry_id},
-						});
+							transaction: t2,
+						}));
 					}
 				}
-			}
-			resolve();
-		} catch (err) {
-			reject(err);
+				Promise.all(promiseArr).then(async () => {
+					await t2.commit();
+					response.empty();
+				});
+			});
 		}
 	});
-	promise.then(() => response.empty());
 });
 
 apiApp.get('/get', async (request, response) => {
