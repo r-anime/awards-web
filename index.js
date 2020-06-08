@@ -120,6 +120,16 @@ sequelize.sync().then(async () => {
 					},
 					transaction: t,
 				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'juryGuide',
+					},
+					defaults: {
+						level: 0,
+						flag: false,
+					},
+					transaction: t,
+				}),
 			]);
 		} catch (error) {
 			log.error(error);
