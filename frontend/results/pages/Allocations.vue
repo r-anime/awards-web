@@ -4,7 +4,7 @@
             <div class="columns is-centered">
                 <div class="column is-10-fullhd is-11-widescreen is-12-desktop is-12-tablet">
                     <section class="section">
-                        <h1 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">Category Allocations</h1>
+                        <h1 class="title is-2 has-text-platinum has-text-centered pb-20">Category Allocations</h1>
                         <div v-if="locked" class="has-text-light has-text-centered">
                             <section class="hero is-fullheight-with-navbar section has-background-dark">
                                 <h2 class="title is-3">You cannot see allocations at this time.</h2>
@@ -12,8 +12,8 @@
                         </div>
                         <div v-else-if="loaded" class="columns is-centered">
                             <div class="column is-2">
-                                <nav class="panel has-background-periwinkle is-platinum">
-                                    <p class="panel-heading has-text-light has-text-centered">Categories</p>
+                                <nav class="panel">
+                                    <p class="panel-heading has-background-light has-text-dark has-text-centered">Categories</p>
                                     <AllocationLink
 									v-for="category in filteredCategories"
 									:key="category.id"
@@ -208,6 +208,22 @@ export default {
 	height: calc(100vh - 141px - 46px);
 	overflow-y: auto;
 }
+
+
+.show-picker-overflow-wrap::-webkit-scrollbar {
+    width: 8px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+}
+
 .show-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;
@@ -231,4 +247,5 @@ export default {
 	padding: 0.75rem;
 	text-align: center;
 }
+
 </style>

@@ -456,6 +456,21 @@ export default {
 	padding: 0.75rem;
 	text-align: center;
 }
+
+.show-picker-overflow-wrap::-webkit-scrollbar {
+    width: 8px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+}
+
 .submit-wrapper {
 	box-shadow: inset 0 1px #dbdbdb;
 	text-align: center;

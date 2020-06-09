@@ -284,6 +284,21 @@ export default {
 	height: calc(100vh - 410px);
 	overflow-y: auto;
 }
+
+.show-picker-overflow-wrap::-webkit-scrollbar {
+    width: 8px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+}
+
 .show-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;
