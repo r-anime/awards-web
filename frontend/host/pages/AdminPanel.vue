@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import ModalGeneric from '../components/ModalGeneric';
+import ModalGeneric from '../../common/ModalGeneric';
 import {mapActions, mapState} from 'vuex';
 const aq = require('../../anilistQueries');
 const util = require('../../util');

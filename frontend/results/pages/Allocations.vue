@@ -1,4 +1,5 @@
 <template>
+	<div>
     <div class="has-background-dark">
         <div class="container">
             <div class="columns is-centered">
@@ -10,7 +11,8 @@
                                 <h2 class="title is-3">You cannot see allocations at this time.</h2>
                             </section>
                         </div>
-                        <div v-else-if="loaded" class="columns is-centered">
+						<div v-else-if="loaded">
+                        <div class="columns is-centered">
                             <div class="column is-2">
                                 <nav class="panel">
                                     <p class="panel-heading has-background-light has-text-dark has-text-centered">Categories</p>
@@ -54,6 +56,10 @@
                                 </div>
                             </div>
                         </div>
+						<section class="section has-text-centered">
+							<a @click="modalOpen = true" class="title is-3 has-text-platinum has-text-centered pb-20">Have any issues with the allocations? Click here to complain!</a>
+						</section>
+						</div>
                         <section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
                             <div class="container">
                                 <div class="columns is-desktop is-vcentered">
@@ -70,10 +76,31 @@
             </div>
         </div>
     </div>
+	<modal-generic v-model="modalOpen">
+		<div class="field">
+			<label class="label has-text-dark">Username:</label>
+			<div class="control">
+				<input v-model="username" class="input has-text-dark" maxlength="50" type="text" placeholder="Optional"/>
+			</div>
+		</div>
+		<div class="field">
+			<label class="label has-text-dark">Message:</label>
+			<div class="control">
+				<textarea v-model="message" class="textarea has-text-dark" maxlength="1950" placeholder="Your message here"/>
+			</div>
+		</div>
+		<div class="field">
+			<div class="control">
+				<button :disabled="sent" @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">{{text}}</button>
+			</div>
+		</div>
+		</modal-generic>
+	</div>
 </template>
 
 
 <script>
+import ModalGeneric from '../../common/ModalGeneric';
 import {mapState, mapActions} from 'vuex';
 import AllocationCard from '../components/AllocationCard';
 import AllocationLink from '../components/AllocationLink';
@@ -100,6 +127,7 @@ export default {
 	components: {
 		AllocationCard,
 		AllocationLink,
+		ModalGeneric,
 	},
 	data () {
 		return {
@@ -111,6 +139,12 @@ export default {
 			selectedCategory: null,
 			search: '',
 			total: 'No',
+			username: '',
+			message: '',
+			modalOpen: false,
+			submitting: false,
+			sent: false,
+			text: 'Submit',
 		};
 	},
 	computed: {
@@ -184,6 +218,19 @@ export default {
 				this.shows = showData;
 				this.fetched = true;
 			});
+		},
+		async sendMessage () {
+			this.submitting = true;
+			await fetch('/api/complain/allocations', {
+				method: 'POST',
+				body: JSON.stringify({
+					username: this.username,
+					message: this.message,
+				}),
+			});
+			this.submitting = false;
+			this.text = 'Sent!';
+			this.sent = true;
 		},
 	},
 	mounted () {

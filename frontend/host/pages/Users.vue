@@ -70,7 +70,7 @@
 
 <script>
 import {mapState, mapGetters, mapActions} from 'vuex';
-import ModalGeneric from '../components/ModalGeneric';
+import ModalGeneric from '../../common/ModalGeneric';
 
 export default {
 	components: {

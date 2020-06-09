@@ -22,6 +22,9 @@ const indexPage = fs.readFileSync(path.join(config.publicDir, 'index.html'));
 const hostPage = fs.readFileSync(path.join(config.publicDir, 'host.html'));
 const appsPage = fs.readFileSync(path.join(config.publicDir, 'jurorApps.html'));
 
+// Discord stuff
+const {yuuko} = require('./bot/index');
+
 // Define the main application
 const app = polka({
 	// The frontend uses history mode, so any route that isn't already defined
@@ -135,7 +138,11 @@ sequelize.sync().then(async () => {
 			log.error(error);
 		}
 	});
-
+	// Connect to Discord
+	yuuko.connect();
+	yuuko.once('ready', () => {
+		log.success('Connected to Discord');
+	});
 
 	if (config.https) {
 		// If we're using HTTPS, create an HTTPS server

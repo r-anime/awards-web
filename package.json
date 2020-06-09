@@ -42,10 +42,12 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@geo1088/express-session-rethinkdb": "^0.4.2",
     "@polka/send-type": "^0.5.2",
+    "add": "^2.0.6",
     "another-logger": "^2.0.0",
     "bulma": "^0.8.0",
     "connect-session-sequelize": "^6.1.1",
     "csv-parse": "^4.6.5",
+    "eris": "^0.13.1",
     "express-session": "^1.15.6",
     "fuse.js": "^3.4.6",
     "marked": "^0.8.0",
@@ -54,6 +56,8 @@
     "sequelize": "^5.21.6",
     "sqlite3": "^4.1.1",
     "superagent": "^5.0.2",
-    "vuex": "^3.1.1"
+    "vuex": "^3.1.1",
+    "yarn": "^1.22.4",
+    "yuuko": "^2.0.0"
   }
 }

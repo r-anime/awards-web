@@ -151,7 +151,7 @@
 </template>
 
 <script>
-import ModalGeneric from '../ModalGeneric';
+import ModalGeneric from '../../../common/ModalGeneric';
 import {mapActions} from 'vuex';
 import VAPickerEntry from './VAPickerEntry';
 const util = require('../../../util');
