@@ -642,7 +642,7 @@ export default {
 	async mounted () {
 		const promiseArray = [];
 		let charData = [];
-		if (this.charIDs) {
+		if (this.charIDs.length) {
 			let page = 1;
 			const someData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
 			charData = [...charData, ...someData.data.Page.results];
@@ -667,8 +667,9 @@ export default {
 				this.selections = charData;
 				this.loaded = true;
 			});
+		} else {
+			this.loaded = true;
 		}
-		this.loaded = true;
 	},
 };
 </script>

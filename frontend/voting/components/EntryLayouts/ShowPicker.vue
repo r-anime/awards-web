@@ -205,8 +205,9 @@ export default {
 					this.shows = showData;
 					this.loaded = true;
 				});
+			} else {
+				this.loaded = true;
 			}
-			this.loaded = true;
 		},
 	},
 	async mounted () {
@@ -238,8 +239,9 @@ export default {
 				this.shows = showData;
 				this.loaded = true;
 			});
+		} else {
+			this.loaded = true;
 		}
-		this.loaded = true;
 	},
 };
 </script>

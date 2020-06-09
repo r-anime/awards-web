@@ -213,8 +213,9 @@ export default {
 					this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
 					this.loaded = true;
 				});
+			} else {
+				this.loaded = true;
 			}
-			this.loaded = true;
 		},
 	},
 	async mounted () {
@@ -248,8 +249,9 @@ export default {
 				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
 				this.loaded = true;
 			});
+		} else {
+			this.loaded = true;
 		}
-		this.loaded = true;
 	},
 };
 </script>

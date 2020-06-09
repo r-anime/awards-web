@@ -1,4 +1,4 @@
-const maxAccountDate = 0; // push it back to 1578009600 when heather's account is old enough
+const maxAccountDate = 1735689600; // convert this date for voting later
 
 module.exports = {
 	maxAccountDate,

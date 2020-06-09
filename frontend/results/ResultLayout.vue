@@ -52,7 +52,7 @@ export default {
 				{name: 'Extra', path: '/extra'},
 				{name: 'Archive', path: '/archive'},
 				{name: 'Acknowledgements', path: '/acknowledgements'},
-				{name: 'About/Credits', path: '/about'},
+				{name: 'About', path: '/about'},
 			],
 			loaded: false,
 		};
@@ -68,8 +68,12 @@ export default {
 			await this.getLocks();
 		}
 		const allocLock = this.locks.find(lock => lock.name === 'allocations');
+		const guideLock = this.locks.find(lock => lock.name === 'juryGuide');
+		if (guideLock.flag) {
+			this.routes.unshift({name: 'Jury Guide', path: '/juryguide'});
+		}
 		if (allocLock.flag) {
-			this.routes.push({name: 'Allocations', path: '/allocations'});
+			this.routes.unshift({name: 'Allocations', path: '/allocations'});
 		}
 		this.loaded = true;
 	},
