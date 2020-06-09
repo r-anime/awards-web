@@ -78,15 +78,9 @@
     </div>
 	<modal-generic v-model="modalOpen">
 		<div class="field">
-			<label class="label has-text-dark">Username:</label>
-			<div class="control">
-				<input v-model="username" class="input has-text-dark" maxlength="50" type="text" placeholder="Optional"/>
-			</div>
-		</div>
-		<div class="field">
 			<label class="label has-text-dark">Message:</label>
 			<div class="control">
-				<textarea v-model="message" class="textarea has-text-dark" maxlength="1950" placeholder="Your message here"/>
+				<textarea v-model="message" class="textarea has-text-dark" maxlength="1985" placeholder="e.g X show should be in Y category"/>
 			</div>
 		</div>
 		<div class="field">
@@ -139,7 +133,6 @@ export default {
 			selectedCategory: null,
 			search: '',
 			total: 'No',
-			username: '',
 			message: '',
 			modalOpen: false,
 			submitting: false,
@@ -223,10 +216,7 @@ export default {
 			this.submitting = true;
 			await fetch('/api/complain/allocations', {
 				method: 'POST',
-				body: JSON.stringify({
-					username: this.username,
-					message: this.message,
-				}),
+				body: JSON.stringify(this.message),
 			});
 			this.submitting = false;
 			this.text = 'Sent!';

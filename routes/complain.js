@@ -12,8 +12,8 @@ apiApp.post('/allocations', async (request, response) => {
 	try {
 		yuuko.createMessage(config.discord.complaintsChannel, {
 			embed: {
-				title: req.username === '' ? 'Anonymous' : req.username,
-				description: req.message,
+				title: 'New Complaint',
+				description: req,
 				color: 8302335,
 			},
 		});
