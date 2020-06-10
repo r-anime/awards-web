@@ -43,6 +43,7 @@
 					<p class="has-text-black has-text-weight-semibold">Lock Level:</p>
 					<div class="select">
 						<select v-model="lock.level">
+							<option v-bind:value="0">0</option>
 							<option v-bind:value="1">1</option>
 							<option v-bind:value="2">2</option>
 							<option v-bind:value="3">3</option>
