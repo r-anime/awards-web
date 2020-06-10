@@ -14,8 +14,8 @@
 						<div v-else-if="loaded">
                         <div class="columns is-centered">
                             <div class="column is-2">
-                                <nav class="panel">
-                                    <p class="panel-heading has-background-light has-text-dark has-text-centered">Categories</p>
+                                <nav class="panel is-platinum has-background-white">
+                                    <p class="panel-heading">Categories</p>
                                     <AllocationLink
 									v-for="category in filteredCategories"
 									:key="category.id"
@@ -31,7 +31,7 @@
                                         <div class="show-picker-search-bar">
                                             <div class="field has-addons">
                                                 <p class="control has-icons-left is-expanded">
-                                                    <input class="input is-small" type="text" :value="search" @input="handleInput($event)" placeholder="Search by title..." />
+                                                    <input class="input is-small has-text-dark" type="text" :value="search" @input="handleInput($event)" placeholder="Search by title..." />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-search" />
                                                     </span>
@@ -240,6 +240,8 @@ export default {
 </script>
 
 <style lang="scss">
+@use "../../styles/utilities" as *;
+
 .show-picker-overflow-wrap {
 	/* TODO hardcode bad */
 	height: calc(100vh - 141px - 46px);

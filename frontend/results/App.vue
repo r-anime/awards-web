@@ -371,6 +371,19 @@ footer {
     transition: background 0.15s;
 }
 
+.is-platinum .panel-block{
+    border-left: 0px solid $platinum;
+    transition: border-width 0.15s;
+}
+
+.is-platinum .panel-block.is-active {
+	border-left: 5px solid $platinum;
+}
+
+.is-platinum .panel-block:hover{
+    //border-left: 5px solid $platinum;
+}
+
 //responsive tables
 @include until($tablet) {
     .table-responsive {

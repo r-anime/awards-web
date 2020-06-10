@@ -1,5 +1,5 @@
 <template>
-	<a @click="catChange" class="panel-block" :class="activeLink">
+	<a @click="catChange" class="panel-block has-text-dark" :class="activeLink">
 		{{name}}
 	</a>
 </template>
@@ -18,9 +18,11 @@ export default {
 	computed: {
 		activeLink () {
 			if (this.value.name === this.name) {
-				return 'has-background-platinum has-text-light';
+				return 'is-active';
+				// return 'has-background-platinum has-text-light';
 			}
-			return 'has-background-light has-text-dark';
+			return '';
+			// return 'has-background-light has-text-dark';
 		},
 	},
 };
