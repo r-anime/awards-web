@@ -28,6 +28,7 @@ module.exports = {
 	discord: {
 		token: 'Token here',
 		complaintsChannel: 'Channel ID for complaints here',
+		auditChannel: 'Channel ID for logging website actions',
 	},
 	// Un-comment this in production to enable HTTPS support
 	// https: {

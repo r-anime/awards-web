@@ -7,6 +7,9 @@ const sequelize = require('../models').sequelize;
 const Users = sequelize.model('users');
 const Votes = sequelize.model('votes');
 
+const {yuuko} = require('../bot/index');
+const config = require('../config');
+
 apiApp.get('/me', async (request, response) => {
 	if (!request.session.redditAccessToken) {
 		return response.json(401);
@@ -54,7 +57,8 @@ apiApp.post('/', async (request, response) => {
 	} catch (error) {
 		return response.json({error: 'Invalid JSON'});
 	}
-	if (!await request.authenticate({level: user.level + 1})) {
+	const auth = await request.authenticate({level: user.level + 1});
+	if (!auth) {
 		return response.json(401, {error: 'You can only set users to levels below your own'});
 	}
 	log.info(user);
@@ -63,6 +67,7 @@ apiApp.post('/', async (request, response) => {
 			reddit: user.reddit,
 		},
 	});
+	log.success(userInfo);
 	if (userInfo) {
 		log.info('user already present');
 		return response.json(400, {error: 'That user is already present'});
@@ -77,6 +82,13 @@ apiApp.post('/', async (request, response) => {
 	user.reddit = redditResponse.body.data.name;
 	try {
 		await Users.create(user);
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'User Added',
+				description: `User ${user.reddit} was created or added by **${auth}** with level **${user.level}**.`,
+				color: 8302335,
+			},
+		});
 		response.json(user);
 	} catch (error) {
 		response.error(error);
@@ -101,13 +113,21 @@ apiApp.delete('/:reddit', async (request, response) => {
 	if (!userInfo) {
 		return response.json(400, {error: 'The specified user does not exist'});
 	}
-	if (!await request.authenticate({level: userInfo.level + 1})) {
+	const auth = await request.authenticate({level: userInfo.level + 1});
+	if (!auth) {
 		return response.json(401, {error: 'You can only remove users of lower level than yourself'});
 	}
 	try {
 		await Users.destroy({
 			where: {
 				reddit: redditName,
+			},
+		});
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'User Removed',
+				description: `User ${userInfo.reddit} was removed by **${auth}**.`,
+				color: 8302335,
 			},
 		});
 		response.empty();

@@ -1,4 +1,3 @@
-const log = require('another-logger');
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
 const parse = require('../themes/parser');
@@ -6,8 +5,12 @@ const parse = require('../themes/parser');
 // Sequelize models to avoid redundancy
 const Themes = sequelize.model('themes');
 
+const {yuuko} = require('../bot/index');
+const config = require('../config');
+
 apiApp.post('/create', async (request, response) => {
-	if (!await request.authenticate({level: 4})) {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to modify themes'});
 	}
 	let req;
@@ -17,7 +20,6 @@ apiApp.post('/create', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	const themes = await parse.readThemes(`./themes/${req.themeType.toUpperCase()}.csv`);
-	log.success(themes);
 	try {
 		const promise = new Promise(async (resolve, reject) => {
 			try {
@@ -31,6 +33,13 @@ apiApp.post('/create', async (request, response) => {
 			}
 		});
 		promise.then(async () => {
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: `${req.themeType.toUpperCase()}s imported`,
+					description: `${req.themeType.toUpperCase()}s were imported by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.json(await Themes.findAll());
 		});
 	} catch (error) {
@@ -47,7 +56,8 @@ apiApp.get('/', async (request, response) => {
 });
 
 apiApp.delete('/delete/:themeType', async (request, response) => {
-	if (!await request.authenticate({level: 4})) {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to delete themes'});
 	}
 	try {
@@ -60,6 +70,13 @@ apiApp.delete('/delete/:themeType', async (request, response) => {
 			}
 		});
 		promise.then(() => {
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: `${request.params.themeType.toUpperCase()}s deleted`,
+					description: `${request.params.themeType.toUpperCase()}s were deleted by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.empty();
 		});
 	} catch (error) {

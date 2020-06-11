@@ -11,6 +11,8 @@ const Entries = sequelize.model('entries');
 
 // eslint-disable-next-line no-unused-vars
 const log = require('another-logger');
+const {yuuko} = require('../bot/index');
+const config = require('../config');
 
 apiApp.get('/all', async (request, response) => {
 	try {
@@ -18,6 +20,25 @@ apiApp.get('/all', async (request, response) => {
 	} catch (error) {
 		response.error(error);
 	}
+});
+
+apiApp.delete('/wipeEverything', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to wipe everything.'});
+	}
+	const t = await sequelize.transaction();
+	Promise.all([Entries.destroy({truncate: true, restartIdentity: true, transaction: t}), Noms.destroy({truncate: true, restartIdentity: true, transaction: t}), Jurors.destroy({truncate: true, restartIdentity: true, transaction: t}), HMs.destroy({truncate: true, restartIdentity: true, transaction: t})]).then(async () => {
+		await t.commit();
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'Full Category Data Wipe',
+				description: `There was a full category data wipe by **${auth}**.`,
+				color: 8302335,
+			},
+		});
+		response.empty();
+	}, error => response.error(error));
 });
 
 apiApp.get('/:id', async (request, response) => {
@@ -33,12 +54,20 @@ apiApp.get('/:id', async (request, response) => {
 });
 
 apiApp.post('/', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
 		return response.json(401, {error: 'You must be a host to create categories'});
 	}
 	let category;
 	try {
 		category = await request.json();
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'Category Created',
+				description: `A category called **${category.name}** was created by **${auth}**.`,
+				color: 8302335,
+			},
+		});
 	} catch (error) {
 		return response.json({error: 'Invalid JSON'});
 	}
@@ -51,7 +80,8 @@ apiApp.post('/', async (request, response) => {
 });
 
 apiApp.patch('/:id', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
 		return response.json(401, {error: 'You must be a host to modify categories'});
 	}
 	let category;
@@ -60,24 +90,31 @@ apiApp.patch('/:id', async (request, response) => {
 	} catch (error) {
 		return response.json({error: 'Invalid JSON'});
 	}
-	// HACK there's gotta be a better way to merge things than this wow
-	category = Object.assign({}, await Categories.findOne({
-		where: {
-			id: category.id,
+	yuuko.createMessage(config.discord.auditChannel, {
+		embed: {
+			title: 'Category Modified',
+			description: `A category called **${category.name}** was modified by **${auth}**. It may or may not have been a different name previously.`,
+			color: 8302335,
 		},
-	}));
+	});
 	try {
-		const res = await Categories.update(category, {where: {id: category.id}});
-		response.json(res);
+		await Categories.update(category, {where: {id: category.id}});
+		response.json(await Categories.findOne({where: {id: category.id}}));
 	} catch (error) {
 		response.error(error);
 	}
 });
 
 apiApp.delete('/:id', async (request, response) => {
-	if (!await request.authenticate({level: 4})) {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to delete categories'});
 	}
+	const category = await Categories.findOne({
+		where: {
+			id: request.params.id,
+		},
+	});
 	try {
 		Promise.all([Categories.destroy({
 			where: {
@@ -88,16 +125,15 @@ apiApp.delete('/:id', async (request, response) => {
 		Noms.destroy({where: {categoryId: request.params.id}}),
 		HMs.destroy({where: {categoryId: request.params.id}}),
 		Jurors.destroy({where: {categoryId: request.params.id}})]).then(() => {
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'Category Deleted',
+					description: `A category called **${category.name}** was deleted by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.empty();
 		});
-	} catch (error) {
-		response.error(error);
-	}
-});
-
-apiApp.get('/:group', async (request, response) => {
-	try {
-		response.json(await Categories.findAll({where: {active: true, awardsGroup: request.params.group}}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -120,7 +156,8 @@ apiApp.get('/:id/entries', async (request, response) => {
 });
 
 apiApp.post('/:id/entries', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
 		return response.json(401, {error: 'You must be a host to modify entries'});
 	}
 	let entries;
@@ -182,6 +219,14 @@ apiApp.post('/:id/entries', async (request, response) => {
 			}
 			Promise.all(promiseArr).then(async () => {
 				await t2.commit();
+				const category = await Categories.findOne({where: {id: request.params.id}});
+				yuuko.createMessage(config.discord.auditChannel, {
+					embed: {
+						title: 'Entries Modified',
+						description: `Entries of a category called **${category.name}** were modified by **${auth}**.`,
+						color: 8302335,
+					},
+				});
 				response.json(await Entries.findAll({
 					where: {
 						categoryId: request.params.id,
@@ -211,7 +256,8 @@ apiApp.get('/:id/nominations', async (request, response) => {
 });
 
 apiApp.post('/:id/nominations', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
 		return response.json(401, {error: 'You must be a host to add nominations'});
 	}
 
@@ -247,6 +293,14 @@ apiApp.post('/:id/nominations', async (request, response) => {
 			}
 		});
 		promise.then(async () => {
+			const category = await Categories.findOne({where: {id: request.params.id}});
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'Nominations Modified',
+					description: `Nominations of a category called **${category.name}** were modified by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.json(await Noms.findAll({
 				where: {
 					categoryId: request.params.id,
@@ -295,7 +349,8 @@ apiApp.get('/:id/jurors', async (request, response) => {
 });
 
 apiApp.post('/:id/jurors', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
 		return response.json(401, {error: 'You must be a host to add jurors'});
 	}
 	let jurors;
@@ -321,6 +376,14 @@ apiApp.post('/:id/jurors', async (request, response) => {
 			}
 		});
 		promise.then(async () => {
+			const category = await Categories.findOne({where: {id: request.params.id}});
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'Jurors Modified',
+					description: `Jurors of a category called **${category.name}** were modified by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.json(await Jurors.findAll({
 				where: {
 					categoryId: request.params.id,
@@ -367,7 +430,8 @@ apiApp.get('/:id/hms', async (request, response) => {
 });
 
 apiApp.post('/:id/hms', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
 		return response.json(401, {error: 'You must be a host to add honorable mentions'});
 	}
 	let hms;
@@ -394,6 +458,14 @@ apiApp.post('/:id/hms', async (request, response) => {
 			}
 		});
 		promise.then(async () => {
+			const category = await Categories.findOne({where: {id: request.params.id}});
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'HMs Modified',
+					description: `Honourable Mentions of a category called **${category.name}** were modified by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.json(await HMs.findAll({where: {active: true}}));
 		});
 	} catch (error) {
@@ -419,13 +491,6 @@ apiApp.get('/hms/all', async (request, response) => {
 	} catch (error) {
 		response.error(error);
 	}
-});
-
-apiApp.delete('/wipeEverything', async (request, response) => {
-	if (!await request.authenticate({level: 4})) {
-		return response.json(401, {error: 'You must be an admin to wipe everything.'});
-	}
-	Promise.all([Entries.destroy({truncate: true, restartIdentity: true}), Noms.destroy({truncate: true, restartIdentity: true}), Jurors.destroy({truncate: true, restartIdentity: true}), HMs.destroy({truncate: true, restartIdentity: true})]).then(() => response.empty(), error => response.error(error));
 });
 
 module.exports = apiApp;

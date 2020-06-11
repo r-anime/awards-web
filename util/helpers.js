@@ -3,7 +3,7 @@ const superagent = require('superagent');
 const config = require('../config');
 const constants = require('../constants');
 const sequelize = require('../models').sequelize;
-const log = require('another-logger');
+const {yuuko} = require('../bot/index');
 
 const requestHelpers = {
 	reddit () {
@@ -95,7 +95,7 @@ const requestHelpers = {
 		if (level && (!userInfo || userInfo.level < level)) return false;
 		if (name && redditInfo.name !== name) return false;
 		if (oldEnough && redditInfo.created_utc >= constants.maxAccountDate) return false;
-		return true;
+		return redditInfo.name;
 	},
 };
 const responseHelpers = {
@@ -129,6 +129,13 @@ const responseHelpers = {
 		if (message instanceof Error) {
 			message = message.toString();
 		}
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: `Error ${status}`,
+				description: `${message}`,
+				color: 8302335,
+			},
+		});
 		this.json(status, {status, message});
 	},
 	empty (status = 204) {
