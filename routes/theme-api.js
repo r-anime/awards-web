@@ -28,8 +28,9 @@ apiApp.post('/create', async (request, response) => {
 					await Themes.create(theme);
 				}
 				resolve();
-			} catch (err) {
-				reject(err);
+			} catch (error) {
+				response.error(error);
+				reject(error);
 			}
 		});
 		promise.then(async () => {
@@ -41,7 +42,7 @@ apiApp.post('/create', async (request, response) => {
 				},
 			});
 			response.json(await Themes.findAll());
-		});
+		}, error => response.error(error));
 	} catch (error) {
 		response.error(error);
 	}
@@ -65,8 +66,9 @@ apiApp.delete('/delete/:themeType', async (request, response) => {
 			try {
 				await Themes.destroy({where: {themeType: request.params.themeType}});
 				resolve();
-			} catch (err) {
-				reject(err);
+			} catch (error) {
+				response.error(error);
+				reject(error);
 			}
 		});
 		promise.then(() => {
@@ -78,7 +80,7 @@ apiApp.delete('/delete/:themeType', async (request, response) => {
 				},
 			});
 			response.empty();
-		});
+		}, error => response.error(error));
 	} catch (error) {
 		response.error(error);
 	}

@@ -166,10 +166,10 @@ apiApp.post('/submit', async (request, response) => {
 				Promise.all(promiseArr).then(async () => {
 					await t2.commit();
 					response.empty();
-				});
-			});
+				}, error => response.error(error));
+			}, error => response.error(error));
 		}
-	});
+	}, error => response.error(error));
 });
 
 apiApp.get('/get', async (request, response) => {

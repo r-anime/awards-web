@@ -61,13 +61,11 @@ apiApp.post('/', async (request, response) => {
 	if (!auth) {
 		return response.json(401, {error: 'You can only set users to levels below your own'});
 	}
-	log.info(user);
 	const userInfo = await Users.findOne({
 		where: {
 			reddit: user.reddit,
 		},
 	});
-	log.success(userInfo);
 	if (userInfo) {
 		log.info('user already present');
 		return response.json(400, {error: 'That user is already present'});

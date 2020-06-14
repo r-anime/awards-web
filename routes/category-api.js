@@ -133,7 +133,7 @@ apiApp.delete('/:id', async (request, response) => {
 				},
 			});
 			response.empty();
-		});
+		}, error => response.error(error));
 	} catch (error) {
 		response.error(error);
 	}
@@ -190,6 +190,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 					});
 					resolve();
 				} catch (error) {
+					response.error(error);
 					reject(error);
 				}
 			}));
@@ -212,6 +213,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 							});
 							resolve();
 						} catch (error) {
+							response.error(error);
 							reject(error);
 						}
 					}));
@@ -232,7 +234,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 						categoryId: request.params.id,
 					},
 				}));
-			});
+			}, error => response.error(error));
 		});
 	} catch (error) {
 		response.error(error);
@@ -288,8 +290,9 @@ apiApp.post('/:id/nominations', async (request, response) => {
 					});
 				}
 				resolve();
-			} catch (err) {
-				reject(err);
+			} catch (error) {
+				response.error(error);
+				reject(error);
 			}
 		});
 		promise.then(async () => {
@@ -309,7 +312,7 @@ apiApp.post('/:id/nominations', async (request, response) => {
 					model: Categories,
 				},
 			}));
-		});
+		}, error => response.error(error));
 	} catch (error) {
 		response.error(error);
 	}
@@ -371,8 +374,9 @@ apiApp.post('/:id/jurors', async (request, response) => {
 					});
 				}
 				resolve();
-			} catch (err) {
-				reject(err);
+			} catch (error) {
+				response.error(error);
+				reject(error);
 			}
 		});
 		promise.then(async () => {
@@ -390,7 +394,7 @@ apiApp.post('/:id/jurors', async (request, response) => {
 					active: true,
 				},
 			}));
-		});
+		}, error => response.error(error));
 	} catch (error) {
 		response.error(error);
 	}
@@ -437,7 +441,6 @@ apiApp.post('/:id/hms', async (request, response) => {
 	let hms;
 	try {
 		hms = await request.json();
-		// log.success(nominations);
 	} catch (error) {
 		response.error(error);
 	}
@@ -445,7 +448,6 @@ apiApp.post('/:id/hms', async (request, response) => {
 		const promise = new Promise(async (resolve, reject) => {
 			try {
 				for (const hm of hms) {
-					// log.success(nom);
 					await HMs.create({
 						categoryId: request.params.id,
 						name: hm.name,
@@ -453,8 +455,9 @@ apiApp.post('/:id/hms', async (request, response) => {
 					});
 				}
 				resolve();
-			} catch (err) {
-				reject(err);
+			} catch (error) {
+				response.error(error);
+				reject(error);
 			}
 		});
 		promise.then(async () => {
@@ -467,7 +470,7 @@ apiApp.post('/:id/hms', async (request, response) => {
 				},
 			});
 			response.json(await HMs.findAll({where: {active: true}}));
-		});
+		}, error => response.error(error));
 	} catch (error) {
 		response.error(error);
 	}
