@@ -8,18 +8,12 @@ const Themes = sequelize.model('themes');
 const {yuuko} = require('../bot/index');
 const config = require('../config');
 
-apiApp.post('/create', async (request, response) => {
+apiApp.get('/create', async (request, response) => {
 	const auth = await request.authenticate({level: 4});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to modify themes'});
 	}
-	let req;
-	try {
-		req = await request.json();
-	} catch (error) {
-		return response.json({error: 'Invalid JSON'});
-	}
-	const themes = await parse.readThemes(`./themes/${req.themeType.toUpperCase()}.csv`);
+	const themes = await parse.readThemes('./themes/theme-data.csv');
 	try {
 		const promise = new Promise(async (resolve, reject) => {
 			try {
@@ -36,8 +30,8 @@ apiApp.post('/create', async (request, response) => {
 		promise.then(async () => {
 			yuuko.createMessage(config.discord.auditChannel, {
 				embed: {
-					title: `${req.themeType.toUpperCase()}s imported`,
-					description: `${req.themeType.toUpperCase()}s were imported by **${auth}**.`,
+					title: 'Themes imported',
+					description: `Themes were imported by **${auth}**.`,
 					color: 8302335,
 				},
 			});
@@ -56,7 +50,7 @@ apiApp.get('/', async (request, response) => {
 	}
 });
 
-apiApp.delete('/delete/:themeType', async (request, response) => {
+apiApp.delete('/delete', async (request, response) => {
 	const auth = await request.authenticate({level: 4});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to delete themes'});
@@ -64,7 +58,8 @@ apiApp.delete('/delete/:themeType', async (request, response) => {
 	try {
 		const promise = new Promise(async (resolve, reject) => {
 			try {
-				await Themes.destroy({where: {themeType: request.params.themeType}});
+				await Themes.destroy({truncate: true, restartIdentity: true});
+				await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'themes'");
 				resolve();
 			} catch (error) {
 				response.error(error);
@@ -74,8 +69,8 @@ apiApp.delete('/delete/:themeType', async (request, response) => {
 		promise.then(() => {
 			yuuko.createMessage(config.discord.auditChannel, {
 				embed: {
-					title: `${request.params.themeType.toUpperCase()}s deleted`,
-					description: `${request.params.themeType.toUpperCase()}s were deleted by **${auth}**.`,
+					title: 'Themes deleted',
+					description: `Themes were deleted by **${auth}**.`,
 					color: 8302335,
 				},
 			});

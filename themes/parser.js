@@ -21,43 +21,26 @@ function idGetter (arr) {
       }
 }
 
-function themeType (file) {
+function themeType (inputTheme) {
     switch (true) {
-        case file.includes('OP.csv'):
+        case inputTheme.includes('OP'):
             return 'op';
-        case file.includes('ED.csv'):
+        case inputTheme.includes('ED'):
             return 'ed';
-        case file.includes('OST.csv'):
-            return 'ost';
+        default:
+            return '';
     }
 }
 
-function themeNo (num, type) {
-    if (type === 'ost') {
-        return ``;
-    }
-    else if (num != '' && num.includes('.')) {
-        const arr = num.split('.');
-        return `${type.toUpperCase()}${arr[0]} v${arr[1]}`;
-    }
-    else if (num === '') {
-        return `${type.toUpperCase()}1`;
-    }
-    else {
-        return `${type.toUpperCase()}${num}`;
-    }
-}
-
-function objectify (themeArray,file) {
+function objectify (themeArray) {
     let objectArray = [];
-    let type = themeType(file);
     themeArray.forEach((theme,index) => {
         objectArray[index] = {
             anime: theme[0],
             title: theme[1],
-            themeType: type,
-            anilistID: parseInt(theme[2]),
-            themeNo: themeNo(theme[3],type),
+            themeType: themeType(theme[3]),
+            anilistID: theme[2],
+            themeNo: theme[3],
             link: theme[4],
         };
     });
@@ -74,7 +57,7 @@ async function readThemes(file) {
             }, function (err,output) {
                 if (err) throw err;
                 idGetter(output);
-                objectOut = objectify(output,file);
+                objectOut = objectify(output);
                 resolve(objectOut);
             });
         });

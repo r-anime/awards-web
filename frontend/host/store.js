@@ -181,12 +181,12 @@ const store = new Vuex.Store({
 			const themes = await makeRequest('/api/themes');
 			commit('UPDATE_THEMES', themes);
 		},
-		async createThemes ({commit}, {data}) {
-			const themes = await makeRequest('/api/themes/create', 'POST', data);
+		async createThemes ({commit}) {
+			const themes = await makeRequest('/api/themes/create');
 			commit('UPDATE_THEMES', themes);
 		},
-		async deleteThemes ({commit}, themeType) {
-			const themes = await makeRequest(`/api/themes/delete/${themeType}`, 'DELETE');
+		async deleteThemes ({commit}) {
+			const themes = await makeRequest('/api/themes/delete', 'DELETE');
 			commit('UPDATE_THEMES', themes);
 		},
 		async getVoteSummary ({commit}) {
