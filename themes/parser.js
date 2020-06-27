@@ -5,7 +5,7 @@ const parser = require('csv-parse');
 themes = [];
 
 function idGetter (arr) {
-    const regex = /(?!\/)\d+(?=\/)/gm;
+    const regex = /\/[0-9]+/gm;
     for (i of arr) {
         while ((m = regex.exec(i[2])) !== null) {
             // This is necessary to avoid infinite loops with zero-width matches
@@ -16,6 +16,8 @@ function idGetter (arr) {
             // The result can be accessed through the `m`-variable.
             m.forEach((match) => {
                 i[2] = `${match}`;
+                i[2] = i[2].substring(1, i[2].length);
+                i[2] = parseInt(i[2]);
             });
         }
       }

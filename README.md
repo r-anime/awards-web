@@ -3,6 +3,8 @@
 [![dependency status](https://img.shields.io/david/Geo1088/awards-nomination-mkii.svg)](https://david-dm.org/geo1088/awards-nomination-mkii)
 ![built with Vue.js](https://img.shields.io/badge/built_with_Vue.js-4FC08D.svg?logo=vue.js&logoColor=fff)
 
+Uses [this project](https://github.com/JoseiToAoiTori/animethemes-scraper) to grab themes from /r/AnimeThemes.
+
 ## Usage
 
 Requires Node 10+ and SQLite3.
