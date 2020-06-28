@@ -13,6 +13,16 @@ const sequelize = new Sequelize({
 	queries: {
 		raw: true,
 	},
+	retry: {
+		match: [
+			/SQLITE_BUSY/,
+		],
+		max: 10,
+	},
+	pool: {
+		max: 10,
+	},
+	transactionType: 'IMMEDIATE',
 });
 
 
