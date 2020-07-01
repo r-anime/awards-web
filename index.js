@@ -133,6 +133,26 @@ sequelize.sync().then(async () => {
 					},
 					transaction: t,
 				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'awards-ongoing',
+					},
+					defaults: {
+						level: 0,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'apps-open',
+					},
+					defaults: {
+						level: 0,
+						flag: false,
+					},
+					transaction: t,
+				}),
 			]);
 		} catch (error) {
 			log.error(error);

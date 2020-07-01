@@ -10,22 +10,10 @@ function query (obj) {
 		.join('&');
 }
 
-
-authApp.get('/reddit', (request, response) => {
-	const queryString = query({
-		client_id: config.reddit.clientId,
-		response_type: 'code',
-		state: 'test state', // TODO
-		redirect_uri: `${config.host}/auth/reddit/callback`,
-		duration: 'permanent',
-		scope: 'identity',
-	});
-	response.redirect(`https://old.reddit.com/api/v1/authorize?${queryString}`);
-});
 authApp.get('/reddit/callback', async (request, response) => {
 	const {error, state, code} = request.query;
 	if (error) return response.end(error);
-	if (state !== 'test state') return response.end('Invalid state');
+	if (state !== request.session.redditState) return response.end('Invalid state');
 	const data = await superagent.post('https://www.reddit.com/api/v1/access_token')
 		.auth(config.reddit.clientId, config.reddit.clientSecret)
 		.query({
@@ -48,7 +36,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 		log.error('Error getting reddit user info:', res.status, res.body);
 	}
 
-	const [user, created] = await sequelize.model('users').findOrCreate({
+	await sequelize.model('users').findOrCreate({
 		where: {
 			reddit: name,
 		},
@@ -57,8 +45,8 @@ authApp.get('/reddit/callback', async (request, response) => {
 			flags: 0,
 		},
 	});
-	if (created || user.level <= 2) response.redirect('/apps');
-	else response.redirect('/login');
+	const {next} = JSON.parse(state);
+	response.redirect(`/${next}`);
 });
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
@@ -71,6 +59,25 @@ authApp.get('/logout', (request, response) => {
 	request.session.destroy(() => {
 		response.redirect('/login');
 	});
+});
+
+// Keep this at the bottom to avoid conflicts with other routes
+authApp.get('/reddit/:next', (request, response) => {
+	log.success(request.params.next);
+	const state = JSON.stringify({
+		next: request.params.next || '/',
+		unique: `${Math.random()}`, // TODO: this should be secure
+	});
+	const queryString = query({
+		client_id: config.reddit.clientId,
+		response_type: 'code',
+		state,
+		redirect_uri: `${config.host}/auth/reddit/callback`,
+		duration: 'permanent',
+		scope: 'identity',
+	});
+	request.session.redditState = state;
+	response.redirect(`https://old.reddit.com/api/v1/authorize?${queryString}`);
 });
 
 module.exports = authApp;

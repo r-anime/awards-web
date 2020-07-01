@@ -42,7 +42,7 @@
 						</template>
 					</nav-bar-link>
 					<span v-else class="navbar-item">
-						<a class="button is-orangered" href="/auth/reddit">
+						<a class="button is-orangered" href="/auth/reddit/login">
 							Log in with Reddit
 						</a>
 					</span>

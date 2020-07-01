@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 import PublicLayout from './PublicLayout';
 import HostLayout from './HostLayout';
 
-import Profile from './pages/Profile';
+import Profile from '../common/Profile';
 import Login from './pages/HostLogin';
 import Categories from './pages/Categories';
 import Users from './pages/Users';

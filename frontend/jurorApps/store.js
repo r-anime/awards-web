@@ -29,21 +29,14 @@ async function makeRequest (path, method = 'GET', body) {
 const store = new Vuex.Store({
 	state: {
 		me: null,
-	},
-	getters: {
-		isHost (state) {
-			return state.me && state.me.level >= 2;
-		},
-		isMod (state) {
-			return state.me && state.me.level >= 3;
-		},
-		isAdmin (state) {
-			return state.me && state.me.level >= 4;
-		},
+		locks: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
 			state.me = me;
+		},
+		GET_LOCKS (state, locks) {
+			state.locks = locks;
 		},
 	},
 	actions: {
@@ -52,6 +45,10 @@ const store = new Vuex.Store({
 			if (!response.ok) return;
 			const me = await response.json();
 			commit('GET_ME', me);
+		},
+		async getLocks ({commit}) {
+			const locks = await makeRequest('/api/locks/all');
+			commit('GET_LOCKS', locks);
 		},
 	},
 });

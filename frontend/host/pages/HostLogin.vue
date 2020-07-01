@@ -23,7 +23,7 @@
 						<div class="content has-text-centered" v-else>
 							<h3>Hello, you're not logged in</h3>
 							<p>
-								<a href="/auth/reddit" class="button is-platinum is-large">
+								<a href="/auth/reddit/login" class="button is-platinum is-large">
 									Log in with Reddit
 								</a>
 							</p>

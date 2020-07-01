@@ -74,6 +74,7 @@ export default {
 		if (allocLock.flag) {
 			this.routes.unshift({name: 'Allocations', path: '/allocations'});
 		}
+		this.routes.push({name: 'Profile', path: '/profile'});
 		this.loaded = true;
 	},
 };

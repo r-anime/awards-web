@@ -5,6 +5,11 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+import AppsLayout from './AppsLayout';
+
+import Profile from '../common/Profile';
+import AppPage from './pages/AppPage';
+
 import NotFound from '../common/NotFound';
 
 export default new VueRouter({
@@ -15,7 +20,14 @@ export default new VueRouter({
 	},
 	routes: [
 		// Default layout
-
+		{
+			path: '/apps',
+			component: AppsLayout,
+			children: [
+				{path: '', component: AppPage},
+				{path: '/profile', component: Profile},
+			],
+		},
 		// 404 route - keep last
 		{path: '*', component: NotFound},
 	],
