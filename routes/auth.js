@@ -63,7 +63,6 @@ authApp.get('/logout', (request, response) => {
 
 // Keep this at the bottom to avoid conflicts with other routes
 authApp.get('/reddit/:next', (request, response) => {
-	log.success(request.params.next);
 	const state = JSON.stringify({
 		next: request.params.next || '/',
 		unique: `${Math.random()}`, // TODO: this should be secure
