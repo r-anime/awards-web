@@ -4,7 +4,7 @@
 			<div v-if="category" class="menu">
 				<p class="menu-label">{{category.name}}</p>
 				<ul class="menu-list">
-					<li class="">
+					<li>
 						<router-link
 							:to="categoryPageLink('info')"
 							active-class="is-active"

@@ -42,6 +42,10 @@ const store = new Vuex.Store({
 		allNoms: null,
 		entries: null,
 		locks: null,
+		applications: null,
+		questionGroups: null,
+		answers: null,
+		scores: null,
 	},
 	getters: {
 		isHost (state) {
@@ -138,6 +142,29 @@ const store = new Vuex.Store({
 		},
 		UPDATE_LOCKS (state, locks) {
 			state.locks = locks;
+		},
+		GET_APPLICATIONS (state, applications) {
+			state.applications = applications;
+		},
+		CREATE_APPLICATION (state, application) {
+			state.applications.push(application);
+		},
+		UPDATE_APPLICATION (state, application) {
+			const index = state.applications.findIndex(app => app.id === application.id);
+			state.applications.splice(index, 1, application);
+		},
+		DELETE_APPLICATION (state, applicationID) {
+			const index = state.applications.findIndex(app => app.id === applicationID);
+			state.applications.splice(index, 1);
+		},
+		GET_QUESTION_GROUPS (state, questionGroups) {
+			state.questionGroups = questionGroups;
+		},
+		GET_ANSWERS (state, answers) {
+			state.answers = answers;
+		},
+		GET_SCORES (state, scores) {
+			state.scores = scores;
 		},
 	},
 	actions: {
@@ -272,6 +299,34 @@ const store = new Vuex.Store({
 		async updateLocks ({commit}, locks) {
 			await makeRequest('/api/locks', 'POST', locks);
 			commit('UPDATE_LOCKS', locks);
+		},
+		async getApplications ({commit}) {
+			const apps = await makeRequest('/api/juror-apps/applications');
+			commit('GET_APPLICATIONS', apps);
+		},
+		async getQuestionGroups ({commit}) {
+			const questionGroups = await makeRequest('/api/juror-apps/question-groups');
+			commit('GET_QUESTION_GROUPS', questionGroups);
+		},
+		async getAnswers ({commit}) {
+			const answers = await makeRequest('/api/juror-apps/answers');
+			commit('GET_ANSWERS', answers);
+		},
+		async getScores ({commit}) {
+			const scores = await makeRequest('/api/juror-apps/scores');
+			commit('GET_SCORES', scores);
+		},
+		async createApplication ({commit}, application) {
+			const app = await makeRequest('/api/juror-apps/application', 'POST', application);
+			commit('CREATE_APPLICATION', app);
+		},
+		async updateApplication ({commit}, application) {
+			const app = await makeRequest('/api/juror-apps/application', 'PATCH', application);
+			commit('UPDATE_APPLICATION', app);
+		},
+		async deleteApplication ({commit}, application) {
+			await makeRequest('/api/juror-apps/application', 'PATCH', application);
+			commit('DELETE_APPLICATION', application.id);
 		},
 	},
 });

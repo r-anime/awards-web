@@ -50,6 +50,7 @@ export default {
 				{name: 'Categories', path: '/host/categories'},
 				this.me && this.me.level >= 4 && {name: 'Admin Panel', path: '/host/admin'},
 				{name: 'Users', path: '/host/users'},
+				{name: 'Juror Applications', path: '/host/applications'},
 				{name: 'Results Summary', path: '/host/results'},
 			].filter(s => s);
 		},

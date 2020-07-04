@@ -16,6 +16,8 @@ import Users from './pages/Users';
 import Results from './pages/Results';
 import AllCategories from './pages/AllCategories';
 import AdminPanel from './pages/AdminPanel';
+import Applications from './pages/Applications';
+import AllApplications from './pages/AllApplications';
 
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
@@ -24,6 +26,10 @@ import CategoryJurors from './components/CategoryJurors';
 import CategoryHMs from './components/CategoryHMs';
 import CategoryInfo from './components/CategoryInfo';
 import CategoryTools from './components/CategoryTools';
+import SingleApplication from './components/SingleApplication';
+import ApplicationQuestions from './components/ApplicationQuestions';
+import ApplicationGrading from './components/ApplicationGrading';
+import ApplicationInfo from './components/ApplicationInfo';
 
 import NotFound from '../common/NotFound';
 
@@ -133,6 +139,59 @@ export default new VueRouter({
 									meta: {
 										title: 'Tools',
 									},
+								},
+							],
+						},
+					],
+				},
+				{
+					path: 'applications',
+					meta: {
+						title: 'Jury Applications',
+					},
+					component: Applications,
+					children: [
+						{
+							path: '',
+							component: AllApplications,
+						},
+						{
+							path: ':appID',
+							props: true,
+							component: SingleApplication,
+							meta: {
+								title ({$store, $route}) {
+									if (!$store.state.applications) return '...';
+									// eslint-disable-next-line eqeqeq
+									const application = $store.state.applications.find(app => `${app.id}` == $route.params.appID);
+									return application ? application.year : '(Unknown application)';
+								},
+							},
+							children: [
+								{
+									path: '',
+									redirect: 'info',
+								},
+								{
+									path: 'info',
+									meta: {
+										title: 'Information',
+									},
+									component: ApplicationInfo,
+								},
+								{
+									path: 'questions',
+									meta: {
+										title: 'Questions',
+									},
+									component: ApplicationQuestions,
+								},
+								{
+									path: 'grading',
+									meta: {
+										title: 'Grading',
+									},
+									component: ApplicationGrading,
 								},
 							],
 						},
