@@ -1,0 +1,106 @@
+<template>
+    <div class="column is-12 is-6-desktop">
+        <div class="notification">
+			<h2 class="title is-3">Question Group {{index + 1}}</h2>
+            <div class="columns is-multiline">
+                <div class="column is-narrow field">
+                    <label class="label">Order</label>
+                    <div class="control">
+                        <input class="input" type="text" v-model="questionGroup.order" @input="emitUpdate">
+                    </div>
+                </div>
+                <div class="column is-narrow field">
+                    <label class="label">Weight</label>
+                    <div class="control">
+                        <input class="input" type="text" v-model="questionGroup.weight" @input="emitUpdate">
+                    </div>
+                </div>
+            </div>
+			<div v-for="(question,index) in questionGroup.questions" :key="index">
+				<button class="delete is-pulled-right" @click="deleteQuestion(index)"></button>
+				<h2 class="title is-5">Question#{{index + 1}}</h2>
+				<label class="label">Question Text</label>
+				<div class="control">
+					<input class="textarea" type="text" rows="1" v-model="question.question" @input="emitUpdate">
+				</div>
+				<div class="columns is-multiline">
+					<div class="column is-narrow field">
+						<label class="label">Order</label>
+						<div class="control">
+							<input class="input" type="text" v-model="question.order" @input="emitUpdate">
+						</div>
+					</div>
+					<div class="column is-narrow field">
+						<label class="label">Type</label>
+						<div class="control">
+							<select class="input" v-model="question.type" @input="emitUpdate">
+								<option value="essay">Essay</option>
+								<option value="preference">Preference</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br/><br/>
+			<div class="control">
+				<div class="buttons">
+					<button @click="updateGroup" class="button is-primary" :class="{'is-loading': updating}">Save</button>
+					<button @click="addQuestion" class="button is-primary" >Add Question</button>
+					<button @click="emitDelete" class="button is-danger" :class="{'is-loading': deleting}">Delete</button>
+				</div>
+			</div>
+        </div>
+    </div>
+</template>
+
+<script>
+import {mapActions} from 'vuex';
+export default {
+	props: {
+		questionGroup: Object,
+		index: Number,
+	},
+	data () {
+		return {
+			deleting: false,
+			updating: false,
+		};
+	},
+	methods: {
+		...mapActions(['deleteQuestionGroup', 'updateQuestionGroup']),
+		emitUpdate () {
+			this.$emit('toggle', this.questionGroup);
+		},
+		async emitDelete () {
+			this.deleting = true;
+			await this.deleteQuestionGroup(this.questionGroup.id);
+			this.$emit('delete');
+			this.deleting = false;
+		},
+		deleteQuestion (index) {
+			this.questionGroup.questions.splice(index, 1);
+			this.$emit('toggle', this.questionGroup);
+		},
+		addQuestion () {
+			this.questionGroup.questions.push({
+				question: '',
+				type: 'essay',
+				order: -1,
+				group_id: this.questionGroup.id,
+			});
+			this.$emit('toggle', this.questionGroup);
+		},
+		async updateGroup () {
+			if (!parseInt(this.questionGroup.order, 10) || !parseFloat(this.questionGroup.weight)) {
+				// eslint-disable-next-line no-alert
+				alert('Please enter numbers, not strings');
+				return;
+			}
+			this.updating = true;
+			const qg = await this.updateQuestionGroup(this.questionGroup);
+			this.$emit('toggle', qg);
+			this.updating = false;
+		},
+	},
+};
+</script>

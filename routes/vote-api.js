@@ -126,8 +126,13 @@ apiApp.post('/submit', async (request, response) => {
 					promiseArr.push(Votes.findOrCreate({
 						where: {
 							entry_id: entry.id,
+							reddit_user: userName,
+							category_id: category.id,
+							theme_name: entry.title,
+							anilist_id: entry.anilistID,
 						},
 						defaults: {
+							entry_id: entry.id,
 							reddit_user: userName,
 							category_id: category.id,
 							theme_name: entry.title,
@@ -139,8 +144,11 @@ apiApp.post('/submit', async (request, response) => {
 					promiseArr.push(Votes.findOrCreate({
 						where: {
 							entry_id: entry.id,
+							reddit_user: userName,
+							category_id: category.id,
 						},
 						defaults: {
+							entry_id: entry.id,
 							reddit_user: userName,
 							category_id: category.id,
 						},

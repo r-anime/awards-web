@@ -182,8 +182,12 @@ apiApp.post('/:id/entries', async (request, response) => {
 							anilist_id: entry.anilist_id,
 							character_id: entry.character_id,
 							themeId: entry.themeId,
+							categoryId: request.params.id,
 						},
 						defaults: {
+							anilist_id: entry.anilist_id,
+							character_id: entry.character_id,
+							themeId: entry.themeId,
 							categoryId: request.params.id,
 						},
 						transaction: t,

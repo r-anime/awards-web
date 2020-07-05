@@ -160,6 +160,17 @@ const store = new Vuex.Store({
 		GET_QUESTION_GROUPS (state, questionGroups) {
 			state.questionGroups = questionGroups;
 		},
+		CREATE_QUESTION_GROUP (state, questionGroup) {
+			state.questionGroups.push(questionGroup);
+		},
+		DELETE_QUESTION_GROUP (state, groupID) {
+			const index = state.questionGroups.findIndex(qg => qg.id === groupID);
+			state.questionGroups.splice(index, 1);
+		},
+		UPDATE_QUESTION_GROUP (state, questionGroup) {
+			const index = state.questionGroups.findIndex(qg => qg.id === questionGroup.id);
+			state.questionGroups.splice(index, 1, questionGroup);
+		},
 		GET_ANSWERS (state, answers) {
 			state.answers = answers;
 		},
@@ -304,18 +315,6 @@ const store = new Vuex.Store({
 			const apps = await makeRequest('/api/juror-apps/applications');
 			commit('GET_APPLICATIONS', apps);
 		},
-		async getQuestionGroups ({commit}) {
-			const questionGroups = await makeRequest('/api/juror-apps/question-groups');
-			commit('GET_QUESTION_GROUPS', questionGroups);
-		},
-		async getAnswers ({commit}) {
-			const answers = await makeRequest('/api/juror-apps/answers');
-			commit('GET_ANSWERS', answers);
-		},
-		async getScores ({commit}) {
-			const scores = await makeRequest('/api/juror-apps/scores');
-			commit('GET_SCORES', scores);
-		},
 		async createApplication ({commit}, application) {
 			const app = await makeRequest('/api/juror-apps/application', 'POST', application);
 			commit('CREATE_APPLICATION', app);
@@ -327,6 +326,30 @@ const store = new Vuex.Store({
 		async deleteApplication ({commit}, application) {
 			await makeRequest('/api/juror-apps/application', 'PATCH', application);
 			commit('DELETE_APPLICATION', application.id);
+		},
+		async getQuestionGroups ({commit}) {
+			const questionGroups = await makeRequest('/api/juror-apps/question-groups');
+			commit('GET_QUESTION_GROUPS', questionGroups);
+		},
+		async createQuestionGroup ({commit}, questionGroup) {
+			const qg = await makeRequest('/api/juror-apps/question-group', 'POST', questionGroup);
+			commit('CREATE_QUESTION_GROUP', qg);
+		},
+		async deleteQuestionGroup ({commit}, groupID) {
+			await makeRequest(`/api/juror-apps/question-group/${groupID}`, 'DELETE');
+			commit('DELETE_QUESTION_GROUP', groupID);
+		},
+		async updateQuestionGroup ({commit}, questionGroup) {
+			const qg = await makeRequest(`/api/juror-apps/question-group/${questionGroup.id}`, 'PATCH', questionGroup);
+			commit('UPDATE_QUESTION_GROUP', qg);
+		},
+		async getAnswers ({commit}) {
+			const answers = await makeRequest('/api/juror-apps/answers');
+			commit('GET_ANSWERS', answers);
+		},
+		async getScores ({commit}) {
+			const scores = await makeRequest('/api/juror-apps/scores');
+			commit('GET_SCORES', scores);
 		},
 	},
 });

@@ -12,7 +12,7 @@
                 <div class="column is-narrow field">
                     <label class="label">Profile Link</label>
                     <div class="control">
-                        <input class="input" type="test" placeholder="" v-model="juror.link" @input="emitUpdate">
+                        <input class="input" type="text" placeholder="" v-model="juror.link" @input="emitUpdate">
                     </div>
                     <p class="help">Link to juror's Reddit profile (or other if requested)</p>
                 </div>

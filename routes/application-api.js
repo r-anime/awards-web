@@ -81,20 +81,158 @@ apiApp.patch('/application', async (request, response) => {
 
 apiApp.get('/question-groups', async (request, response) => {
 	try {
-		response.json(await QuestionGroups.findAll({
+		let questionGroups = await QuestionGroups.findAll({
 			where: {
 				active: true,
 			},
-			include: [{
-				model: Applications,
-				as: 'application',
-				required: true,
+			raw: false,
+			include: [
+				{
+					model: Questions,
+					as: 'questions',
+				},
+			],
+		});
+		questionGroups = questionGroups.map(qg => {
+			const data = qg.get();
+			for (let i = 0; i < qg.questions.length; i++) {
+				const questionData = qg.questions[i].get();
+				qg.questions[i] = questionData;
+			}
+			return data;
+		});
+		response.json(questionGroups);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/question-group', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to create a question group'});
+	}
+	let questionGroup;
+	try {
+		questionGroup = await request.json();
+	} catch (error) {
+		return response.json({error: 'Invalid JSON'});
+	}
+	try {
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'New Question Group',
+				description: `A new Juror App Question Group was created by **${auth}**.`,
+				color: 8302335,
 			},
-			{
-				model: Questions,
-				required: true,
-			}],
-		}));
+		});
+		questionGroup = await QuestionGroups.create({
+			order: questionGroup.order,
+			weight: questionGroup.weight,
+			app_id: questionGroup.app_id,
+		});
+		questionGroup = await QuestionGroups.findOne({
+			where: {
+				id: questionGroup.id,
+			},
+			raw: false,
+			include: [
+				{
+					model: Questions,
+					as: 'questions',
+				},
+			],
+		});
+		response.json(questionGroup.get());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.delete('/question-group/:id', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to delete a question group'});
+	}
+	try {
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'Question Group Deleted',
+				description: `A Juror App Question Group was deleted by **${auth}**.`,
+				color: 8302335,
+			},
+		});
+		await QuestionGroups.update({active: false}, {where: {id: request.params.id}});
+		await Questions.update({active: false}, {where: {group_id: request.params.id}});
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.patch('/question-group/:id', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to modify a question group'});
+	}
+	let questionGroup;
+	try {
+		questionGroup = await request.json();
+	} catch (error) {
+		return response.json({error: 'Invalid JSON'});
+	}
+	try {
+		await QuestionGroups.update({order: questionGroup.order, weight: questionGroup.weight}, {where: {id: request.params.id}});
+		const ogQuestions = await Questions.findAll({where: {group_id: request.params.id}});
+		const promiseArr = [];
+		const t = await sequelize.transaction();
+		for (const question of questionGroup.questions) {
+			if (question.id) {
+				const found = ogQuestions.find(quest => quest.id === question.id);
+				if (!found) {
+					promiseArr.push(Questions.create(question, {transaction: t}));
+				}
+			} else {
+				promiseArr.push(Questions.create(question, {transaction: t}));
+			}
+		}
+		for (const question of ogQuestions) {
+			const found = questionGroup.questions.find(quest => {
+				if (!quest.id) return false;
+				return quest.id === question.id;
+			});
+			if (!found) {
+				promiseArr.push(Questions.destroy({where: {id: question.id}, transaction: t}));
+			}
+		}
+		Promise.all(promiseArr).then(async () => {
+			await t.commit();
+			questionGroup = await QuestionGroups.findOne({
+				where: {
+					id: request.params.id,
+				},
+				raw: false,
+				include: [
+					{
+						model: Questions,
+						as: 'questions',
+					},
+				],
+			});
+			questionGroup = questionGroup.get();
+			for (let i = 0; i < questionGroup.questions.length; i++) {
+				const questionData = questionGroup.questions[i].get();
+				questionGroup.questions[i] = questionData;
+			}
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'Application Questions Modified',
+					description: `A Juror App Question Group was modified by **${auth}**.`,
+					color: 8302335,
+				},
+			});
+			response.json(questionGroup);
+		});
 	} catch (error) {
 		response.error(error);
 	}
