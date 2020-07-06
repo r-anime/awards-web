@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 export default {
 	props: {
 		questionGroup: Object,
@@ -66,8 +66,11 @@ export default {
 			updating: false,
 		};
 	},
+	computed: {
+		...mapState(['questionGroups']),
+	},
 	methods: {
-		...mapActions(['deleteQuestionGroup', 'updateQuestionGroup']),
+		...mapActions(['deleteQuestionGroup', 'updateQuestionGroup', 'getQuestionGroups']),
 		emitUpdate () {
 			this.$emit('toggle', this.questionGroup);
 		},
@@ -97,8 +100,8 @@ export default {
 				return;
 			}
 			this.updating = true;
-			const qg = await this.updateQuestionGroup(this.questionGroup);
-			this.$emit('toggle', qg);
+			await this.updateQuestionGroup(this.questionGroup);
+			this.emitUpdate();
 			this.updating = false;
 		},
 	},

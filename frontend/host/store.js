@@ -340,8 +340,8 @@ const store = new Vuex.Store({
 			commit('DELETE_QUESTION_GROUP', groupID);
 		},
 		async updateQuestionGroup ({commit}, questionGroup) {
-			const qg = await makeRequest(`/api/juror-apps/question-group/${questionGroup.id}`, 'PATCH', questionGroup);
-			commit('UPDATE_QUESTION_GROUP', qg);
+			await makeRequest(`/api/juror-apps/question-group/${questionGroup.id}`, 'PATCH', questionGroup);
+			commit('UPDATE_QUESTION_GROUP', questionGroup);
 		},
 		async getAnswers ({commit}) {
 			const answers = await makeRequest('/api/juror-apps/answers');

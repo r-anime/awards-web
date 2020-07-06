@@ -89,6 +89,7 @@ export default {
 			createQuestionGroupOpen: false,
 			order: '',
 			weight: '',
+			name: '',
 		};
 	},
 	computed: {
@@ -102,6 +103,7 @@ export default {
 			'getQuestionGroups',
 			'createQuestionGroup',
 			'deleteQuestionGroup',
+			'updateQuestionGroup',
 		]),
 		async submitCreateQuestionGroup () {
 			if (!parseInt(this.order, 10) || !parseFloat(this.weight)) {

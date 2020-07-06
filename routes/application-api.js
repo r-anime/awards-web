@@ -114,9 +114,9 @@ apiApp.get('/question-groups', async (request, response) => {
 		});
 		questionGroups = questionGroups.map(qg => {
 			const data = qg.get();
-			for (let i = 0; i < qg.questions.length; i++) {
-				const questionData = qg.questions[i].get();
-				qg.questions[i] = questionData;
+			for (let i = 0; i < data.questions.length; i++) {
+				const questionData = data.questions[i].get();
+				data.questions[i] = questionData;
 			}
 			return data;
 		});
@@ -202,7 +202,7 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	try {
-		await QuestionGroups.update({order: questionGroup.order, weight: questionGroup.weight}, {where: {id: request.params.id}});
+		await QuestionGroups.update({order: questionGroup.order, weight: questionGroup.weight, name: questionGroup.name}, {where: {id: request.params.id}});
 		const ogQuestions = await Questions.findAll({where: {group_id: request.params.id}});
 		const promiseArr = [];
 		const t = await sequelize.transaction();
@@ -227,23 +227,6 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 		}
 		Promise.all(promiseArr).then(async () => {
 			await t.commit();
-			questionGroup = await QuestionGroups.findOne({
-				where: {
-					id: request.params.id,
-				},
-				raw: false,
-				include: [
-					{
-						model: Questions,
-						as: 'questions',
-					},
-				],
-			});
-			questionGroup = questionGroup.get();
-			for (let i = 0; i < questionGroup.questions.length; i++) {
-				const questionData = questionGroup.questions[i].get();
-				questionGroup.questions[i] = questionData;
-			}
 			yuuko.createMessage(config.discord.auditChannel, {
 				embed: {
 					title: 'Application Questions Modified',
@@ -251,7 +234,7 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 					color: 8302335,
 				},
 			});
-			response.json(questionGroup);
+			response.empty();
 		});
 	} catch (error) {
 		response.error(error);
