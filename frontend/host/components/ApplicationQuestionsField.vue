@@ -1,7 +1,7 @@
 <template>
     <div class="column is-12 is-6-desktop">
         <div class="notification">
-			<h2 class="title is-3">Question Group {{index + 1}}</h2>
+			<h2 class="title is-3">{{questionGroup.name}}</h2>
             <div class="columns is-multiline">
                 <div class="column is-narrow field">
                     <label class="label">Order</label>

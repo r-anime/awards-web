@@ -22,6 +22,17 @@
 	<modal-generic v-model="createQuestionGroupOpen">
       <h3 class="title">Create Question Group</h3>
       <form v-if="isAdmin" @submit.prevent="submitCreateQuestionGroup">
+		<div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              v-model="name"
+              placeholder="Group name."
+            />
+          </div>
+        </div>
         <div class="field">
           <label class="label">Order</label>
           <div class="control">
@@ -102,6 +113,7 @@ export default {
 			this.createQuestionGroupOpen = true;
 			try {
 				await this.createQuestionGroup({
+					name: this.name,
 					order: parseInt(this.order, 10),
 					weight: parseFloat(this.weight),
 					app_id: this.application.id,

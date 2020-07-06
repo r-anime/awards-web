@@ -30,6 +30,7 @@ const store = new Vuex.Store({
 	state: {
 		me: null,
 		locks: null,
+		application: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
@@ -37,6 +38,9 @@ const store = new Vuex.Store({
 		},
 		GET_LOCKS (state, locks) {
 			state.locks = locks;
+		},
+		GET_APPLICATION (state, app) {
+			state.application = app;
 		},
 	},
 	actions: {
@@ -49,6 +53,11 @@ const store = new Vuex.Store({
 		async getLocks ({commit}) {
 			const locks = await makeRequest('/api/locks/all');
 			commit('GET_LOCKS', locks);
+		},
+		async getApplication ({commit}) {
+			const application = await makeRequest('/api/juror-apps/applications/latest/full');
+			console.log(application);
+			commit('GET_APPLICATION', application);
 		},
 	},
 });

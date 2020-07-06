@@ -24,6 +24,25 @@ apiApp.get('/applications', async (request, response) => {
 	}
 });
 
+apiApp.get('/applications/latest/full', async (request, response) => {
+	try {
+		const apps = await Applications.findAll({
+			limit: 1,
+			where: {active: true},
+			order: [['year', 'DESC']],
+			include: {
+				all: true,
+				nested: true,
+				// model: QuestionGroups,
+				// as: 'question_groups',
+			},
+		});
+		response.json(apps);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.post('/application', async (request, response) => {
 	const auth = await request.authenticate({level: 4});
 	if (!auth) {
@@ -127,6 +146,7 @@ apiApp.post('/question-group', async (request, response) => {
 			},
 		});
 		questionGroup = await QuestionGroups.create({
+			name: questionGroup.name,
 			order: questionGroup.order,
 			weight: questionGroup.weight,
 			app_id: questionGroup.app_id,
