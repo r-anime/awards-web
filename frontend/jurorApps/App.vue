@@ -352,6 +352,12 @@ html, body{
     transition: background 0.15s;
 }
 
+footer {
+    a {
+        text-decoration: underline;
+    }
+}
+
 //responsive tables
 @include until($tablet) {
     .table-responsive {
