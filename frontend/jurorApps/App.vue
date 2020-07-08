@@ -280,11 +280,11 @@ html, body{
     padding-bottom: 2rem;
 }
 
-.has-periwinkle-underline{
+.has-periwinkle-underline {
     border-bottom: 1px solid $llperiwinkle;
 }
 
-.has-flaired-underline{
+.has-flaired-underline {
     border-width: 0 0 2px;
     border-style: solid;
     border-image:
@@ -296,7 +296,7 @@ html, body{
         ) 100% 1 1 1;
 }
 
-.has-flaired-underline-thin{
+.has-flaired-underline-thin {
     border-width: 0 0 1px;
     border-style: solid;
     border-image:
@@ -318,25 +318,6 @@ html, body{
             $gold 50%,
             rgba(255,255,255, 0) 100%
         ) 100% 1 1 1;
-}
-
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
-    height: 0;
-}
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-footer {
-    a {
-        text-decoration: underline;
-    }
 }
 
 // bulma override

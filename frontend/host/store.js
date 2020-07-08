@@ -45,7 +45,6 @@ const store = new Vuex.Store({
 		applications: null,
 		questionGroups: null,
 		answers: null,
-		scores: null,
 	},
 	getters: {
 		isHost (state) {
@@ -174,8 +173,9 @@ const store = new Vuex.Store({
 		GET_ANSWERS (state, answers) {
 			state.answers = answers;
 		},
-		GET_SCORES (state, scores) {
-			state.scores = scores;
+		PUSH_SCORE (state, score) {
+			const index = state.answers.findIndex(answer => answer.id === score.answer_id);
+			state.answers[index].scores.push(score);
 		},
 	},
 	actions: {
@@ -327,8 +327,8 @@ const store = new Vuex.Store({
 			await makeRequest('/api/juror-apps/application', 'PATCH', application);
 			commit('DELETE_APPLICATION', application.id);
 		},
-		async getQuestionGroups ({commit}) {
-			const questionGroups = await makeRequest('/api/juror-apps/question-groups');
+		async getQuestionGroups ({commit}, appID) {
+			const questionGroups = await makeRequest(`/api/juror-apps/question-groups/${appID}`);
 			commit('GET_QUESTION_GROUPS', questionGroups);
 		},
 		async createQuestionGroup ({commit}, questionGroup) {
@@ -343,13 +343,12 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/juror-apps/question-group/${questionGroup.id}`, 'PATCH', questionGroup);
 			commit('UPDATE_QUESTION_GROUP', questionGroup);
 		},
-		async getAnswers ({commit}) {
-			const answers = await makeRequest('/api/juror-apps/answers');
+		async getAnswers ({commit}, appID) {
+			const answers = await makeRequest(`/api/juror-apps/answers/${appID}`);
 			commit('GET_ANSWERS', answers);
 		},
-		async getScores ({commit}) {
-			const scores = await makeRequest('/api/juror-apps/scores');
-			commit('GET_SCORES', scores);
+		pushScore ({commit}, score) {
+			commit('PUSH_SCORE', score);
 		},
 	},
 });

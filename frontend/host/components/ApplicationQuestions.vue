@@ -2,6 +2,13 @@
 	<div v-if="loaded">
 		<div v-if="isAdmin" class="section">
 			<div class="level title-margin">
+				<div class="level-left">
+					<div class="level-item">
+						<div class="control">
+							<h2 class="title is-3">Questions</h2>
+						</div>
+					</div>
+				</div>
 				<div class="level-right">
 					<div class="level-item">
 						<div class="control">
@@ -102,8 +109,6 @@ export default {
 		...mapActions([
 			'getQuestionGroups',
 			'createQuestionGroup',
-			'deleteQuestionGroup',
-			'updateQuestionGroup',
 		]),
 		async submitCreateQuestionGroup () {
 			if (!parseInt(this.order, 10) || !parseFloat(this.weight)) {
@@ -134,9 +139,7 @@ export default {
 		},
 	},
 	async mounted () {
-		if (!this.questionGroups) {
-			await this.getQuestionGroups();
-		}
+		await this.getQuestionGroups(this.application.id);
 		this.items = this.questionGroups;
 		this.loaded = true;
 	},

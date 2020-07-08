@@ -10,6 +10,7 @@ const QuestionAnswers = sequelize.model('question_answers');
 const QuestionGroups = sequelize.model('question_groups');
 const Questions = sequelize.model('questions');
 const Scores = sequelize.model('scores');
+const Users = sequelize.model('users');
 
 // eslint-disable-next-line no-unused-vars
 const log = require('another-logger');
@@ -98,11 +99,12 @@ apiApp.patch('/application', async (request, response) => {
 	}
 });
 
-apiApp.get('/question-groups', async (request, response) => {
+apiApp.get('/question-groups/:appID', async (request, response) => {
 	try {
 		let questionGroups = await QuestionGroups.findAll({
 			where: {
 				active: true,
+				app_id: request.params.appID,
 			},
 			raw: false,
 			include: [
@@ -241,7 +243,7 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 	}
 });
 
-apiApp.get('/answers', async (request, response) => {
+apiApp.get('/answers/:appID', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
@@ -249,37 +251,77 @@ apiApp.get('/answers', async (request, response) => {
 	try {
 		response.json(await Answers.findAll({
 			where: {
-				active: true,
+				'active': true,
+				'$question.question_group.application.id$': request.params.appID,
 			},
-			include: [{
-				model: Questions,
-				as: 'question',
-				required: true,
-			},
-			{
-				model: Applicants,
-				as: 'applicant',
-				required: true,
-			}],
+			include: [
+				{
+					model: Questions,
+					as: 'question',
+					include: [
+						{
+							model: QuestionGroups,
+							as: 'question_group',
+							include: [{
+								model: Applications,
+								as: 'application',
+							}],
+						},
+					],
+				},
+				{
+					model: Applicants,
+					as: 'applicant',
+					include: [
+						{
+							model: Users,
+							as: 'user',
+						},
+					],
+				},
+				{
+					model: Scores,
+					as: 'scores',
+				},
+			],
 		}));
 	} catch (error) {
 		response.error(error);
 	}
 });
 
-apiApp.get('/scores', async (request, response) => {
+apiApp.post('/score', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
-		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
+		return response.json(401, {error: 'You must be a host to grade apps.'});
+	}
+	let score;
+	try {
+		score = await request.json();
+	} catch (error) {
+		return response.json({error: 'Invalid JSON'});
 	}
 	try {
-		response.json(await Scores.findAll({
-			include: {
-				model: Answers,
-				as: 'answer',
-				required: true,
+		score = await Scores.create(score);
+		const answer = await Answers.findOne({
+			where: {
+				id: score.answer_id,
 			},
-		}));
+			include: [
+				{
+					model: Questions,
+					as: 'question',
+				},
+			],
+		});
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'Application Answer Scored',
+				description: `A Juror App answer was scored by **${auth}**. The question was **${answer.question.question}**.`,
+				color: 8302335,
+			},
+		});
+		response.json(score);
 	} catch (error) {
 		response.error(error);
 	}

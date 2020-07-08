@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		user_id: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 		active: {
 			type: DataTypes.BOOLEAN,
 			allowNull: false,
@@ -26,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
 				name: 'applicant_id',
 				allowNull: true,
 			},
+		});
+		applicants.belongsTo(models.users, {
+			foreignKey: 'user_id',
+			as: 'user',
 		});
 	};
 

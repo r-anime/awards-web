@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		host_name: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 	});
 
 	scores.associate = models => {
