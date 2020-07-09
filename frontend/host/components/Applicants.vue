@@ -12,7 +12,7 @@
 						<router-link
 							:to="{name: 'applicant', params: {applicantID: applicant.id}}"
 							class="has-text-dark"
-						>Applicant {{applicant.id}}</router-link>
+						>{{linkText(applicant)}}</router-link>
 					</h3>
 					<br/>
 					<button :disabled="!isAdmin" class="button is-danger">Delete Applicant</button>
@@ -35,19 +35,33 @@ export default {
 		return {
 			filteredApplicants: null,
 			loaded: false,
+			lock: null,
 		};
 	},
 	computed: {
-		...mapState(['applicants']),
-		...mapGetters(['isAdmin']),
+		...mapState(['applicants', 'locks', 'me']),
+		...mapGetters(['isAdmin', 'getLocks', 'getMe']),
 	},
 	methods: {
 		...mapActions(['getApplicants']),
+		linkText (applicant) {
+			if (this.lock.flag || this.me.level > this.lock.level) {
+				return applicant.user.reddit;
+			}
+			return `Applicant ${applicant.id}`;
+		},
 	},
 	async mounted () {
 		if (!this.applicants) {
 			await this.getApplicants();
 		}
+		if (!this.locks) {
+			await this.getLocks();
+		}
+		if (!this.me) {
+			await this.getMe();
+		}
+		this.lock = this.locks.find(lock => lock.name === 'app-names');
 		this.filteredApplicants = this.applicants.filter(applicant => applicant.app_id === this.application.id);
 		this.loaded = true;
 	},

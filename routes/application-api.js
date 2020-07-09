@@ -340,7 +340,7 @@ apiApp.get('/applicants', async (request, response) => {
 	try {
 		response.json(await Applicants.findAll({
 			where: {
-				active: 1,
+				active: true,
 			},
 			include: [
 				{

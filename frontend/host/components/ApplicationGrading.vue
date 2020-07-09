@@ -1,5 +1,5 @@
 <template>
-	<div v-if="loaded">
+	<div v-if="loaded && !locked">
 		<div class="section">
 			<div class="level title-margin">
 				<div class="level-left">
@@ -54,7 +54,10 @@
 			</div>
 		</div>
 	</div>
-	<div v-else>
+	<div v-else-if="locked">
+		You cannot grade applications at this time.
+	</div>
+	<div v-else-if="!loaded">
 		Loading...
 	</div>
 </template>
@@ -74,6 +77,7 @@ export default {
 	data () {
 		return {
 			loaded: false,
+			locked: null,
 			selectedQuestionID: '-1',
 			currentAnswer: null,
 			score: '',
@@ -82,7 +86,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['me', 'answers', 'questionGroups']),
+		...mapState(['me', 'answers', 'questionGroups', 'locks']),
 		questions () {
 			const arr = [];
 			for (const questionGroup of this.filteredQuestionGroups) {
@@ -94,7 +98,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['getMe', 'getAnswers', 'getQuestionGroups', 'pushScore']),
+		...mapActions(['getMe', 'getAnswers', 'getQuestionGroups', 'pushScore', 'getLocks']),
 		randomAnswer () {
 			const filteredAnswers = this.answers.filter(answer => answer.scores.length < 3 && !answer.scores.some(score => score.host_name === this.me.reddit.name) && answer.question.id === parseInt(this.selectedQuestionID, 10) && answer.question.type === 'essay');
 			if (filteredAnswers.length > 0) {
@@ -143,7 +147,17 @@ export default {
 		if (!this.questionGroups) {
 			await this.getQuestionGroups();
 		}
-		this.filteredQuestionGroups = this.questionGroups.filter(qg => qg.application.id === this.application.id);
+		if (!this.locks) {
+			await this.getLocks();
+		}
+		const gradingLock = this.locks.find(lock => lock.name === 'grading-open');
+		if (gradingLock.flag || this.me.level > gradingLock.level) {
+			this.locked = false;
+			this.filteredQuestionGroups = this.questionGroups.filter(qg => qg.application.id === this.application.id);
+		} else {
+			this.locked = true;
+			this.filteredQuestionGroups = [];
+		}
 		this.loaded = true;
 	},
 };
