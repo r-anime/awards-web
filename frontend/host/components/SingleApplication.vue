@@ -28,6 +28,14 @@
 							Grading
 						</router-link>
 					</li>
+					<li>
+						<router-link
+							:to="applicationPageLink('applicants')"
+							active-class="is-active"
+						>
+							Applicants
+						</router-link>
+					</li>
 				</ul>
 			</div>
 		</aside>

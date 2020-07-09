@@ -45,6 +45,7 @@ const store = new Vuex.Store({
 		applications: null,
 		questionGroups: null,
 		answers: null,
+		applicants: null,
 	},
 	getters: {
 		isHost (state) {
@@ -176,6 +177,13 @@ const store = new Vuex.Store({
 		PUSH_SCORE (state, score) {
 			const index = state.answers.findIndex(answer => answer.id === score.answer_id);
 			state.answers[index].scores.push(score);
+		},
+		GET_APPLICANTS (state, applicants) {
+			state.applicants = applicants;
+		},
+		DELETE_APPLICANT (state, applicantID) {
+			const index = state.applicants.findIndex(applicant => applicant.id === applicantID);
+			state.applicants.splice(index, 1);
 		},
 	},
 	actions: {
@@ -327,8 +335,8 @@ const store = new Vuex.Store({
 			await makeRequest('/api/juror-apps/application', 'PATCH', application);
 			commit('DELETE_APPLICATION', application.id);
 		},
-		async getQuestionGroups ({commit}, appID) {
-			const questionGroups = await makeRequest(`/api/juror-apps/question-groups/${appID}`);
+		async getQuestionGroups ({commit}) {
+			const questionGroups = await makeRequest('/api/juror-apps/question-groups');
 			commit('GET_QUESTION_GROUPS', questionGroups);
 		},
 		async createQuestionGroup ({commit}, questionGroup) {
@@ -343,12 +351,20 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/juror-apps/question-group/${questionGroup.id}`, 'PATCH', questionGroup);
 			commit('UPDATE_QUESTION_GROUP', questionGroup);
 		},
-		async getAnswers ({commit}, appID) {
-			const answers = await makeRequest(`/api/juror-apps/answers/${appID}`);
+		async getAnswers ({commit}) {
+			const answers = await makeRequest('/api/juror-apps/answers');
 			commit('GET_ANSWERS', answers);
 		},
 		pushScore ({commit}, score) {
 			commit('PUSH_SCORE', score);
+		},
+		async getApplicants ({commit}) {
+			const applicants = await makeRequest('/api/juror-apps/applicants');
+			commit('GET_APPLICANTS', applicants);
+		},
+		async deleteApplicant ({commit}, applicantID) {
+			await makeRequest(`/api/juror-apps/applicant/${applicantID}`, 'DELETE');
+			commit('DELETE_APPLICANT', applicantID);
 		},
 	},
 });

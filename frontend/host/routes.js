@@ -30,6 +30,8 @@ import SingleApplication from './components/SingleApplication';
 import ApplicationQuestions from './components/ApplicationQuestions';
 import ApplicationGrading from './components/ApplicationGrading';
 import ApplicationInfo from './components/ApplicationInfo';
+import Applicants from './components/Applicants';
+import SingleApplicant from './components/SingleApplicant';
 
 import NotFound from '../common/NotFound';
 
@@ -192,6 +194,27 @@ export default new VueRouter({
 										title: 'Grading',
 									},
 									component: ApplicationGrading,
+								},
+								{
+									path: 'applicants',
+									meta: {
+										title: 'Applicants',
+									},
+									component: Applicants,
+								},
+								{
+									name: 'applicant',
+									path: 'applicant/:applicantID',
+									props: true,
+									component: SingleApplicant,
+									meta: {
+										title ({$store, $route}) {
+											if (!$store.state.applicants) return '...';
+											// eslint-disable-next-line eqeqeq
+											const applicant = $store.state.applicants.find(applicant => `${applicant.id}` == $route.params.applicantID);
+											return applicant ? applicant.id : '(Unknown applicant)';
+										}
+									},
 								},
 							],
 						},

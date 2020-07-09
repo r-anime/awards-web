@@ -36,7 +36,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 		log.error('Error getting reddit user info:', res.status, res.body);
 	}
 
-	await sequelize.model('users').findOrCreate({
+	const [user] = await sequelize.model('users').findOrCreate({
 		where: {
 			reddit: name,
 		},
@@ -46,6 +46,20 @@ authApp.get('/reddit/callback', async (request, response) => {
 		},
 	});
 	const {next} = JSON.parse(state);
+	if (next === 'apps') {
+		const apps = await sequelize.model('applications').findAll({
+			limit: 1,
+			where: {active: true},
+			order: [['year', 'DESC']],
+		});
+		await sequelize.model('applicants').findOrCreate({
+			where: {
+				user_id: user.id,
+				active: true,
+				app_id: apps[0].id,
+			},
+		});
+	}
 	response.redirect(`/${next}`);
 });
 // debug stuff

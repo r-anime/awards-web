@@ -99,18 +99,21 @@ apiApp.patch('/application', async (request, response) => {
 	}
 });
 
-apiApp.get('/question-groups/:appID', async (request, response) => {
+apiApp.get('/question-groups', async (request, response) => {
 	try {
 		let questionGroups = await QuestionGroups.findAll({
 			where: {
 				active: true,
-				app_id: request.params.appID,
 			},
 			raw: false,
 			include: [
 				{
 					model: Questions,
 					as: 'questions',
+				},
+				{
+					model: Applications,
+					as: 'application',
 				},
 			],
 		});
@@ -120,6 +123,7 @@ apiApp.get('/question-groups/:appID', async (request, response) => {
 				const questionData = data.questions[i].get();
 				data.questions[i] = questionData;
 			}
+			data.application = data.application.get();
 			return data;
 		});
 		response.json(questionGroups);
@@ -243,7 +247,7 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 	}
 });
 
-apiApp.get('/answers/:appID', async (request, response) => {
+apiApp.get('/answers', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
@@ -251,8 +255,7 @@ apiApp.get('/answers/:appID', async (request, response) => {
 	try {
 		response.json(await Answers.findAll({
 			where: {
-				'active': true,
-				'$question.question_group.application.id$': request.params.appID,
+				active: true,
 			},
 			include: [
 				{
@@ -262,10 +265,12 @@ apiApp.get('/answers/:appID', async (request, response) => {
 						{
 							model: QuestionGroups,
 							as: 'question_group',
-							include: [{
-								model: Applications,
-								as: 'application',
-							}],
+							include: [
+								{
+									model: Applications,
+									as: 'application',
+								},
+							],
 						},
 					],
 				},
@@ -322,6 +327,48 @@ apiApp.post('/score', async (request, response) => {
 			},
 		});
 		response.json(score);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/applicants', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a retrieve applicants.'});
+	}
+	try {
+		response.json(await Applicants.findAll({
+			where: {
+				active: 1,
+			},
+			include: [
+				{
+					model: Users,
+					as: 'user',
+				},
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.delete('/applicant/:id', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to delete an applicant.'});
+	}
+	try {
+		await Applicants.update({active: false}, {where: {id: request.params.id}});
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'Applicant Deleted',
+				description: `An applicant for jury was binned by **${auth}**.`,
+				color: 8302335,
+			},
+		});
+		response.empty();
 	} catch (error) {
 		response.error(error);
 	}

@@ -126,7 +126,7 @@ export default {
 					app_id: this.application.id,
 				});
 			} finally {
-				this.items = this.questionGroups;
+				this.items = this.questionGroups.filter(qg => qg.application.id === this.application.id);
 				this.submitting = false;
 				this.createQuestionGroupOpen = false;
 			}
@@ -139,8 +139,10 @@ export default {
 		},
 	},
 	async mounted () {
-		await this.getQuestionGroups(this.application.id);
-		this.items = this.questionGroups;
+		if (!this.questionGroups) {
+			await this.getQuestionGroups();
+		}
+		this.items = this.questionGroups.filter(qg => qg.application.id === this.application.id);
 		this.loaded = true;
 	},
 };

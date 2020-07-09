@@ -34,17 +34,22 @@
 				There are no answers left to grade for this question.
 			</div>
 			<div v-else>
-				<div class="control">
+				<div class="field">
 					<h2 class="title is-4">Application</h2>
-					<Viewer :initialValue="currentAnswer.answer"/>
+					<div class="control">
+						<Viewer :initialValue="currentAnswer.answer"/>
+					</div>
 				</div>
-				<br/><br/>
-				<h2 class="title is-4">Grade this application</h2>
-				<div class="control">
-					<input type="text" class="input" v-model="score" placeholder="Value between 0 and 5"/>
+				<div class="field">
+					<h2 class="title is-4">Grade this application</h2>
+					<div class="control">
+						<input type="text" class="input" v-model="score" placeholder="Value between 0 and 5"/>
+					</div>
 				</div>
-				<div class="control">
-					<button @click="submitScore" class="button is-primary" :class="{'is-loading': submitting}">Confirm score</button>
+				<div class="field">
+					<div class="control">
+						<button @click="submitScore" class="button is-primary" :class="{'is-loading': submitting}">Confirm score</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -72,6 +77,7 @@ export default {
 			selectedQuestionID: '-1',
 			currentAnswer: null,
 			score: '',
+			filteredQuestionGroups: null,
 			submitting: false,
 		};
 	},
@@ -79,7 +85,7 @@ export default {
 		...mapState(['me', 'answers', 'questionGroups']),
 		questions () {
 			const arr = [];
-			for (const questionGroup of this.questionGroups) {
+			for (const questionGroup of this.filteredQuestionGroups) {
 				for (const question of questionGroup.questions) {
 					arr.push(question);
 				}
@@ -90,7 +96,7 @@ export default {
 	methods: {
 		...mapActions(['getMe', 'getAnswers', 'getQuestionGroups', 'pushScore']),
 		randomAnswer () {
-			const filteredAnswers = this.answers.filter(answer => answer.scores.length < 3 && !answer.scores.some(score => score.host_name === this.me.reddit.name) && answer.question.id === parseInt(this.selectedQuestionID, 10));
+			const filteredAnswers = this.answers.filter(answer => answer.scores.length < 3 && !answer.scores.some(score => score.host_name === this.me.reddit.name) && answer.question.id === parseInt(this.selectedQuestionID, 10) && answer.question.type === 'essay');
 			if (filteredAnswers.length > 0) {
 				this.currentAnswer = filteredAnswers[Math.floor(Math.random() * filteredAnswers.length)];
 			} else {
@@ -127,13 +133,18 @@ export default {
 			this.randomAnswer();
 		},
 	},
-	mounted () {
+	async mounted () {
 		if (!this.me) {
-			this.getMe();
+			await this.getMe();
 		}
-		Promise.all([this.getAnswers(this.application.id), this.getQuestionGroups(this.application.id)]).then(() => {
-			this.loaded = true;
-		});
+		if (!this.answers) {
+			await this.getAnswers();
+		}
+		if (!this.questionGroups) {
+			await this.getQuestionGroups();
+		}
+		this.filteredQuestionGroups = this.questionGroups.filter(qg => qg.application.id === this.application.id);
+		this.loaded = true;
 	},
 };
 </script>
