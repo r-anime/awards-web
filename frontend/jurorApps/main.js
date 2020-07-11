@@ -15,7 +15,8 @@ router.beforeEach(async (to, from, next) => {
 		if (!store.state.me) await store.dispatch('getMe');
 		if (!store.state.me) {
 			// The user is not logged in, so have them log in
-			return next('/auth/reddit/apps');
+			window.location.href = '/auth/reddit/apps';
+			return;
 		}
 		// The user is logged in, send them to the next page
 		return next();

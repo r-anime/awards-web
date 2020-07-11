@@ -31,6 +31,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 	let name;
 	try {
 		name = (await request.reddit().get('/api/v1/me')).body.name;
+		request.session.reddit_name = name;
 		log.info(name);
 	} catch (res) {
 		log.error('Error getting reddit user info:', res.status, res.body);
@@ -69,9 +70,9 @@ authApp.get('/reddit/debug', (request, response) => {
 });
 
 // Deletes session
-authApp.get('/logout', (request, response) => {
+authApp.get('/logout/:next', (request, response) => {
 	request.session.destroy(() => {
-		response.redirect('/login');
+		response.redirect(`/${request.params.next}`);
 	});
 });
 

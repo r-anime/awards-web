@@ -19,7 +19,7 @@
 							Get in here and judge some anime or whatever.
 							Click the big button right the fuck now.
 							</p>
-							<a href="/auth/reddit/apps" class="button is-success">Jury Applications</a>
+							<a href="/apps" class="button is-success">Jury Applications</a>
 						</div>
 						<div v-else>
 							<nav class="homeIntroThingy level mt-40">

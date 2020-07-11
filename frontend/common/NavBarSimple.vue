@@ -36,7 +36,7 @@
 							>
 								Profile settings
 							</router-link>
-							<a class="navbar-item" href="/auth/logout">
+							<a class="navbar-item" href="/auth/logout/login">
 								Log out
 							</a>
 						</template>

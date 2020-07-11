@@ -22,6 +22,7 @@
 						:key="route.path"
 						:route="route"
 					/>
+					<a v-if="logout" class="navbar-item" href="/auth/logout/apps">Log Out</a>
 				</div>
 			</div>
 		</div>
@@ -40,6 +41,7 @@ export default {
 		routes: Array,
 		fullwidth: Boolean,
 		vertical: Boolean,
+		logout: Boolean,
 	},
 	data () {
 		return {

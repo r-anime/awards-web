@@ -31,6 +31,8 @@ const store = new Vuex.Store({
 		me: null,
 		locks: null,
 		application: null,
+		applicant: null,
+		myAnswers: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
@@ -41,6 +43,12 @@ const store = new Vuex.Store({
 		},
 		GET_APPLICATION (state, app) {
 			state.application = app;
+		},
+		GET_APPLICANT (state, applicant) {
+			state.applicant = applicant;
+		},
+		GET_ANSWERS (state, answers) {
+			state.myAnswers = answers;
 		},
 	},
 	actions: {
@@ -56,8 +64,15 @@ const store = new Vuex.Store({
 		},
 		async getApplication ({commit}) {
 			const application = await makeRequest('/api/juror-apps/applications/latest/full');
-			console.log(application);
 			commit('GET_APPLICATION', application);
+		},
+		async getApplicant ({commit}) {
+			const applicant = await makeRequest('/api/juror-apps/applicant');
+			commit('GET_APPLICANT', applicant);
+		},
+		async getAnswers ({commit}, applicantID) {
+			const answers = await makeRequest(`/api/juror-apps/my-answers/${applicantID}`);
+			commit('GET_ANSWERS', answers);
 		},
 	},
 });

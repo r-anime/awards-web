@@ -27,17 +27,30 @@ apiApp.get('/applications', async (request, response) => {
 
 apiApp.get('/applications/latest/full', async (request, response) => {
 	try {
-		const apps = await Applications.findAll({
+		let apps = await Applications.findAll({
 			limit: 1,
 			where: {active: true},
 			order: [['year', 'DESC']],
-			include: {
-				all: true,
-				nested: true,
-				// model: QuestionGroups,
-				// as: 'question_groups',
-			},
+			include: [
+				{
+					model: QuestionGroups,
+					as: 'question_groups',
+					include: [
+						{
+							model: Questions,
+							as: 'questions',
+						},
+					],
+				},
+			],
 		});
+		apps = apps[0].get();
+		for (let i = 0; i < apps.question_groups.length; i++) {
+			apps.question_groups[i] = apps.question_groups[i].get();
+			for (let j = 0; j < apps.question_groups[i].questions.length; j++) {
+				apps.question_groups[i].questions[j] = apps.question_groups[i].questions[j].get();
+			}
+		}
 		response.json(apps);
 	} catch (error) {
 		response.error(error);
@@ -369,6 +382,102 @@ apiApp.delete('/applicant/:id', async (request, response) => {
 			},
 		});
 		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/applicant', async (request, response) => {
+	let userName;
+	if (request.session.reddit_name) {
+		userName = request.session.reddit_name;
+	} else {
+		userName = (await request.reddit().get('/api/v1/me')).body.name;
+	}
+	if (!await request.authenticate({name: userName})) {
+		return response.json(401, {error: 'Invalid user.'});
+	}
+	try {
+		const applicant = await Applicants.findAll({
+			where: {
+				'$user.reddit$': userName,
+			},
+			limit: 1,
+			order: [['app_id', 'DESC']],
+			include: [
+				{
+					model: Users,
+					as: 'user',
+				},
+			],
+		});
+		response.json(applicant[0]);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/submit', async (request, response) => {
+	let userName;
+	if (request.session.reddit_name) {
+		userName = request.session.reddit_name;
+	} else {
+		userName = (await request.reddit().get('/api/v1/me')).body.name;
+	}
+	if (!await request.authenticate({name: userName})) {
+		return response.json(401, {error: 'Invalid user.'});
+	}
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		return response.json(400, {error: 'Invalid JSON'});
+	}
+	try {
+		const [answer, created] = await Answers.findOrCreate({
+			where: {
+				question_id: req.question_id,
+				applicant_id: req.applicant_id,
+			},
+			defaults: {
+				answer: req.answer,
+			},
+		});
+		if (!created) {
+			await Answers.update(
+				{
+					answer: req.answer,
+				},
+				{
+					where: {
+						question_id: req.question_id,
+						applicant_id: req.applicant_id,
+					},
+				}
+			);
+		}
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/my-answers/:applicant_id', async (request, response) => {
+	let userName;
+	if (request.session.reddit_name) {
+		userName = request.session.reddit_name;
+	} else {
+		userName = (await request.reddit().get('/api/v1/me')).body.name;
+	}
+	if (!await request.authenticate({name: userName})) {
+		return response.json(401, {error: 'Invalid user.'});
+	}
+	try {
+		response.json(await Answers.findAll({
+			where: {
+				applicant_id: request.params.applicant_id,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}

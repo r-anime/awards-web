@@ -25,7 +25,7 @@ export default new VueRouter({
 			component: AppsLayout,
 			children: [
 				{path: '', component: AppPage},
-				{path: '/profile', component: Profile},
+				{path: 'profile', component: Profile},
 			],
 		},
 		// 404 route - keep last

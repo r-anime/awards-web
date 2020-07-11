@@ -3,6 +3,7 @@
 		<div v-if="loaded">
 			<nav-bar
 				:routes="routes"
+				:logout="this.me ? true : false"
 				class="is-dperiwinkle has-periwinkle-underline"
 			>
 				<template v-slot:title>
@@ -47,14 +48,17 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['locks']),
+		...mapState(['locks', 'me']),
 	},
 	methods: {
-		...mapActions(['getLocks']),
+		...mapActions(['getLocks', 'getMe']),
 	},
 	async mounted () {
 		if (!this.locks) {
 			await this.getLocks();
+		}
+		if (!this.me) {
+			await this.getMe();
 		}
 		const allocLock = this.locks.find(lock => lock.name === 'allocations');
 		const guideLock = this.locks.find(lock => lock.name === 'juryGuide');
@@ -74,7 +78,7 @@ export default {
 		if (allocLock.flag) {
 			this.routes.unshift({name: 'Allocations', path: '/allocations'});
 		}
-		this.routes.push({name: 'Profile', path: '/profile'});
+		if (this.me) this.routes.push({name: 'Profile', path: '/apps/profile'});
 		this.loaded = true;
 	},
 };
