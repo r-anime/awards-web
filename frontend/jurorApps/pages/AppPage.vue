@@ -56,6 +56,7 @@ export default {
 			'me',
 			'applicant',
 			'myAnswers',
+			'locks',
 		]),
 	},
 	data () {
@@ -70,7 +71,7 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(['getApplication', 'getApplicant', 'getAnswers']),
+		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks']),
 		handleInput (questionID) {
 			if (!this.changed) {
 				return;
@@ -92,20 +93,26 @@ export default {
 		},
 	},
 	mounted () {
-		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant()]).then(async () => {
-			await this.getAnswers(this.applicant.id);
-			this.computedApplication = this.application;
-			this.computedApplication.question_groups = this.computedApplication.question_groups.filter(qg => qg.active);
-			for (let i = 0; i < this.computedApplication.question_groups.length; i++) {
-				this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.filter(question => question.active);
-				for (const question of this.computedApplication.question_groups[i].questions) {
-					const found = this.myAnswers.find(answer => answer.question_id === question.id);
-					if (found) {
-						this.answers[question.id] = found.answer;
-					} else {
-						this.answers[question.id] = '';
+		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks()]).then(async () => {
+			const appLock = this.locks.find(lock => lock.name === 'apps-open');
+			if (appLock.flag) {
+				this.locked = false;
+				await this.getAnswers(this.applicant.id);
+				this.computedApplication = this.application;
+				this.computedApplication.question_groups = this.computedApplication.question_groups.filter(qg => qg.active);
+				for (let i = 0; i < this.computedApplication.question_groups.length; i++) {
+					this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.filter(question => question.active);
+					for (const question of this.computedApplication.question_groups[i].questions) {
+						const found = this.myAnswers.find(answer => answer.question_id === question.id);
+						if (found) {
+							this.answers[question.id] = found.answer;
+						} else {
+							this.answers[question.id] = '';
+						}
 					}
 				}
+			} else {
+				this.locked = true;
 			}
 			this.loaded = true;
 		});

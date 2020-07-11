@@ -48,18 +48,25 @@ authApp.get('/reddit/callback', async (request, response) => {
 	});
 	const {next} = JSON.parse(state);
 	if (next === 'apps') {
-		const apps = await sequelize.model('applications').findAll({
-			limit: 1,
-			where: {active: true},
-			order: [['year', 'DESC']],
-		});
-		await sequelize.model('applicants').findOrCreate({
+		const lock = await sequelize.model('locks').findOne({
 			where: {
-				user_id: user.id,
-				active: true,
-				app_id: apps[0].id,
+				name: 'apps-open',
 			},
 		});
+		if (lock.flag) {
+			const apps = await sequelize.model('applications').findAll({
+				limit: 1,
+				where: {active: true},
+				order: [['year', 'DESC']],
+			});
+			await sequelize.model('applicants').findOrCreate({
+				where: {
+					user_id: user.id,
+					active: true,
+					app_id: apps[0].id,
+				},
+			});
+		}
 	}
 	response.redirect(`/${next}`);
 });
