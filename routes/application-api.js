@@ -228,7 +228,14 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 		for (const question of questionGroup.questions) {
 			if (question.id) {
 				const found = ogQuestions.find(quest => quest.id === question.id);
-				if (!found) {
+				if (found) {
+					promiseArr.push(Questions.update(question, {
+						where: {
+							id: question.id,
+						},
+						transaction: t,
+					}));
+				} else {
 					promiseArr.push(Questions.create(question, {transaction: t}));
 				}
 			} else {
