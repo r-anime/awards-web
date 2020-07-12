@@ -16,8 +16,8 @@
 								</div>
 							</div>
 						</div>
-						<div v-if="q.type == 'preference'">
-							preferences go here
+						<div v-else-if="q.type == 'preference'">
+							{{getCategoriesByGroup(q.question)}}
 						</div>
 					</div>
 			</div>
@@ -57,6 +57,7 @@ export default {
 			'applicant',
 			'myAnswers',
 			'locks',
+			'categories',
 		]),
 	},
 	data () {
@@ -71,7 +72,13 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks']),
+		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks', 'getCategories']),
+		getCategoriesByGroup (group) {
+			const _output = this.categories.filter(cat => cat.awardsGroup == group);
+			console.log(_output);
+			// console.log(this.categories);
+			return _output;
+		},
 		handleInput (questionID) {
 			if (!this.changed) {
 				return;
@@ -93,7 +100,7 @@ export default {
 		},
 	},
 	mounted () {
-		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks()]).then(async () => {
+		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
 			if (appLock.flag) {
 				this.locked = false;

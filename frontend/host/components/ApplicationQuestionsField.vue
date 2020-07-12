@@ -19,9 +19,32 @@
 			<div v-for="(question,index) in questionGroup.questions" :key="index">
 				<button class="delete is-pulled-right" @click="deleteQuestion(index)"></button>
 				<h2 class="title is-5">Question#{{index + 1}}</h2>
-				<label class="label">Question Text</label>
-				<div class="control">
-					<input class="textarea" type="text" rows="1" v-model="question.question" @input="emitUpdate">
+				<div v-if="question.type=='preference'">
+					<label class="label">Category Type</label>
+					<div class="control">
+						<div class="select">
+							<select v-model="question.question" @input="emitUpdate">
+								<option value="" disabled>Select One</option>
+								<option value="genre">Genre Awards</option>
+								<option value="character">Character Awards</option>
+								<option value="production">Production Awards</option>
+								<option value="test">Test Category</option>
+								<option value="main">Main Awards</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div v-else-if="question.type=='choice'">
+					<label class="label">Choices</label>
+					<div class="control">
+						<input class="textarea" type="text" rows="1" v-model="question.question" @input="emitUpdate">
+					</div>
+				</div>
+				<div v-else>
+					<label class="label">Question Text</label>
+					<div class="control">
+						<input class="textarea" type="text" rows="1" v-model="question.question" @input="emitUpdate">
+					</div>
 				</div>
 				<div class="columns is-multiline">
 					<div class="column is-narrow field">
@@ -35,6 +58,7 @@
 						<div class="control">
 							<select class="input" v-model="question.type" @input="emitUpdate">
 								<option value="essay">Essay</option>
+								<option value="choice">Multiple Choice (not implemented)</option>
 								<option value="preference">Preference</option>
 							</select>
 						</div>

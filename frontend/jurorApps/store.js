@@ -33,6 +33,7 @@ const store = new Vuex.Store({
 		application: null,
 		applicant: null,
 		myAnswers: null,
+		categories: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
@@ -49,6 +50,9 @@ const store = new Vuex.Store({
 		},
 		GET_ANSWERS (state, answers) {
 			state.myAnswers = answers;
+		},
+		GET_CATEGORIES (state, categories) {
+			state.categories = categories;
 		},
 	},
 	actions: {
@@ -67,12 +71,31 @@ const store = new Vuex.Store({
 			commit('GET_APPLICATION', application);
 		},
 		async getApplicant ({commit}) {
-			const applicant = await makeRequest('/api/juror-apps/applicant');
-			commit('GET_APPLICANT', applicant);
+			try {
+				const result = await fetch('/api/juror-apps/applicant');
+				if (!result.ok) {
+					const json = await result.json();
+					throw json.error;
+				}
+				if (result.status === 204) {
+					return;
+				}
+				commit('GET_APPLICANT', result.json);
+			} catch (error) {
+				commit('GET_APPLICANT', {});
+			}
 		},
 		async getAnswers ({commit}, applicantID) {
 			const answers = await makeRequest(`/api/juror-apps/my-answers/${applicantID}`);
 			commit('GET_ANSWERS', answers);
+		},
+		async getCategories ({commit}) {
+			const categories = await makeRequest('/api/category/all');
+			commit('GET_CATEGORIES', categories);
+		},
+		async getCategoriesByGroup ({commit}, group) {
+			const categories = await makeRequest(`/api/category/${group}`);
+			commit('GET_CATEGORIES', categories);
 		},
 	},
 });
