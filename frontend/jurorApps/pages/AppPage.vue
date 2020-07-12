@@ -1,13 +1,13 @@
 <template>
 	<section class="section" v-if="loaded && !locked">
 		<div class="container">
-			<div v-for="(qg, index) in computedApplication.question_groups"
-					:key="index">
+			<div v-for="(qg, qg_index) in computedApplication.question_groups"
+					:key="qg_index">
 					<h2>Question Group {{qg.name}}</h2>
-					<div v-for="(q, index2) in qg.questions"
-						:key="index2">
-						<h3>Question: {{q.question}}</h3>
+					<div v-for="(q, q_index) in qg.questions"
+						:key="q_index">
 						<div v-if="q.type == 'essay'">
+							<h3>Question: {{q.question}}</h3>
 							<Editor :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
 							<div class="level is-mobile">
 								<div class="level-left"></div>
@@ -16,9 +16,29 @@
 								</div>
 							</div>
 						</div>
-						<div v-else-if="q.type == 'preference'">
-							{{getCategoriesByGroup(q.question)}}
+						<div v-else-if="q.type == 'choice'">
+							<h3>Question: {{multipleChoiceQuestion(q.question)}}</h3>
+							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index">
+								<input type="radio" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]">
+								<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
+							</div>
 						</div>
+						<div v-else-if="q.type == 'preference'">
+							<h3>{{q.question}} Preferences</h3>
+							<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
+								<h4>{{category.name}}</h4>
+								<div v-for="index in 5" :key="index">
+									<input type="radio"
+										:id="`category-${category.id}-${index}`"
+										:value="`${index}`"
+										v-model="mc_answers[q.id + '-' + category.id]"
+										@change="handlePrefInput(q.id, category.id)"
+									>
+									<label :for="`category-${category.id}-${index}`"> {{index}} </label>
+								</div>
+							</div>
+						</div>
+						<br>
 					</div>
 			</div>
 		</div>
@@ -67,17 +87,24 @@ export default {
 			loaded: false,
 			locked: null,
 			typingTimeout: null,
-			answers: {},
+			answers: [],
+			mc_answers: [], //temp variable to model pref questions
 			changed: false,
 		};
 	},
 	methods: {
 		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks', 'getCategories']),
 		getCategoriesByGroup (group) {
-			const _output = this.categories.filter(cat => cat.awardsGroup == group);
-			console.log(_output);
-			// console.log(this.categories);
+			const _output = this.categories.filter(cat => cat.awardsGroup === group.question);
 			return _output;
+		},
+		multipleChoiceQuestion (str) {
+			const _output = str.split('\n');
+			return _output.slice(0, 1)[0];
+		},
+		multipleChoiceAnswers (str) {
+			const _output = str.split('\n');
+			return _output.slice(1);
 		},
 		handleInput (questionID) {
 			if (!this.changed) {
@@ -97,6 +124,13 @@ export default {
 				});
 				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
 			}, 2000);
+		},
+		handlePrefInput (questionID, categoryID) {
+			if (typeof this.answers[questionID] !== 'object') {
+				this.answers[questionID] = [];
+			}
+			this.answers[questionID][categoryID] = this.mc_answers[`${questionID}-${categoryID}`];
+			console.log(this.answers);
 		},
 	},
 	mounted () {

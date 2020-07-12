@@ -37,8 +37,10 @@
 				<div v-else-if="question.type=='choice'">
 					<label class="label">Choices</label>
 					<div class="control">
-						<input class="textarea" type="text" rows="1" v-model="question.question" @input="emitUpdate">
+						<textarea class="textarea" rows="5" v-model="question.question" @input="emitUpdate">
+						</textarea>
 					</div>
+					<p class="help">Deliminate with new lines:<br>Question<br>Choice1<br>Choice2<br>etc...</p>
 				</div>
 				<div v-else>
 					<label class="label">Question Text</label>
@@ -58,7 +60,7 @@
 						<div class="control">
 							<select class="input" v-model="question.type" @input="emitUpdate">
 								<option value="essay">Essay</option>
-								<option value="choice">Multiple Choice (not implemented)</option>
+								<option value="choice">Multiple Choice (kinda implemented?)</option>
 								<option value="preference">Preference</option>
 							</select>
 						</div>
