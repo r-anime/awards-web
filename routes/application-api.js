@@ -417,6 +417,7 @@ apiApp.get('/applicant', async (request, response) => {
 				},
 			],
 		});
+		// console.log(applicant);
 		response.json(applicant);
 	} catch (error) {
 		response.error(error);
