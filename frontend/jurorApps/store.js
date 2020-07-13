@@ -71,19 +71,8 @@ const store = new Vuex.Store({
 			commit('GET_APPLICATION', application);
 		},
 		async getApplicant ({commit}) {
-			try {
-				const result = await fetch('/api/juror-apps/applicant');
-				if (!result.ok) {
-					const json = await result.json();
-					throw json.error;
-				}
-				if (result.status === 204) {
-					return;
-				}
-				commit('GET_APPLICANT', result.json);
-			} catch (error) {
-				commit('GET_APPLICANT', {});
-			}
+			const applicant = await makeRequest('/api/juror-apps/applicant');
+			commit('GET_APPLICANT', applicant);
 		},
 		async getAnswers ({commit}, applicantID) {
 			const answers = await makeRequest(`/api/juror-apps/my-answers/${applicantID}`);

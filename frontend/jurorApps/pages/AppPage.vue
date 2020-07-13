@@ -138,10 +138,6 @@ export default {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
 			if (appLock.flag) {
 				this.locked = false;
-				if (JSON.stringify(this.applicant) === undefined) {
-					console.log('New Applicant');
-					// TODO: Autoinsert a new Applicant if we don't find one attached to logged in user
-				}
 				await this.getAnswers(this.applicant.id);
 				this.computedApplication = this.application;
 				this.computedApplication.question_groups = this.computedApplication.question_groups.filter(qg => qg.active);

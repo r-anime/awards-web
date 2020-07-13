@@ -396,19 +396,20 @@ apiApp.delete('/applicant/:id', async (request, response) => {
 
 apiApp.get('/applicant', async (request, response) => {
 	let userName;
+	if (!await request.authenticate({name: userName})) {
+		return response.json(401, {error: 'Invalid user.'});
+	}
 	if (request.session.reddit_name) {
 		userName = request.session.reddit_name;
 	} else {
 		userName = (await request.reddit().get('/api/v1/me')).body.name;
 	}
-	if (!await request.authenticate({name: userName})) {
-		return response.json(401, {error: 'Invalid user.'});
-	}
 	try {
-		const applicant = await Applicants.findOne({
+		let applicant = await Applicants.findAll({
 			where: {
 				'$user.reddit$': userName,
 			},
+			limit: 1,
 			order: [['app_id', 'DESC']],
 			include: [
 				{
@@ -417,7 +418,8 @@ apiApp.get('/applicant', async (request, response) => {
 				},
 			],
 		});
-		// console.log(applicant);
+		applicant = applicant[0].get();
+		applicant.user = applicant.user.get();
 		response.json(applicant);
 	} catch (error) {
 		response.error(error);
