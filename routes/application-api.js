@@ -405,11 +405,10 @@ apiApp.get('/applicant', async (request, response) => {
 		return response.json(401, {error: 'Invalid user.'});
 	}
 	try {
-		const applicant = await Applicants.findAll({
+		const applicant = await Applicants.findOne({
 			where: {
 				'$user.reddit$': userName,
 			},
-			limit: 1,
 			order: [['app_id', 'DESC']],
 			include: [
 				{
@@ -418,7 +417,7 @@ apiApp.get('/applicant', async (request, response) => {
 				},
 			],
 		});
-		response.json(applicant[0]);
+		response.json(applicant);
 	} catch (error) {
 		response.error(error);
 	}
@@ -432,6 +431,7 @@ apiApp.post('/submit', async (request, response) => {
 		userName = (await request.reddit().get('/api/v1/me')).body.name;
 	}
 	if (!await request.authenticate({name: userName})) {
+		console.log(userName);
 		return response.json(401, {error: 'Invalid user.'});
 	}
 	let req;
