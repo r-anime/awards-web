@@ -40,10 +40,10 @@ export default {
 	},
 	computed: {
 		...mapState(['applicants', 'locks', 'me']),
-		...mapGetters(['isAdmin', 'getLocks', 'getMe']),
+		...mapGetters(['isAdmin']),
 	},
 	methods: {
-		...mapActions(['getApplicants']),
+		...mapActions(['getApplicants', 'getLocks', 'getMe']),
 		linkText (applicant) {
 			if (this.lock.flag || this.me.level > this.lock.level) {
 				return applicant.user.reddit;
