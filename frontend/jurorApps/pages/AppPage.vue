@@ -9,17 +9,11 @@
 						<div v-if="q.type == 'essay'">
 							<h3>Question: {{q.question}}</h3>
 							<Editor :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
-							<div class="level is-mobile">
-								<div class="level-left"></div>
-								<div class="level-right">
-									<p :ref="`save-text-${q.id}`" class="is-size-5 has-text-success">Saved!</p>
-								</div>
-							</div>
 						</div>
 						<div v-else-if="q.type == 'choice'">
 							<h3>Question: {{multipleChoiceQuestion(q.question)}}</h3>
 							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index">
-								<input type="radio" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]">
+								<input type="radio" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
 								<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
 							</div>
 						</div>
@@ -30,12 +24,19 @@
 								<div v-for="index in 5" :key="index">
 									<input type="radio"
 										:id="`category-${category.id}-${index}`"
-										:value="`${index}`"
-										v-model="mc_answers[q.id + '-' + category.id]"
-										@change="handlePrefInput(q.id, category.id)"
+										:value="index"
+										:name="`pref-${q.id}-${category.id}`"
+										v-model="mc_answers[`${q.id}-${category.id}`]"
+										@change="handlePrefInput(q.id, category.id, $event)"
 									>
 									<label :for="`category-${category.id}-${index}`"> {{index}} </label>
 								</div>
+							</div>
+						</div>
+						<div class="level is-mobile">
+							<div class="level-left"></div>
+							<div class="level-right">
+								<p :ref="`save-text-${q.id}`" class="is-size-5 has-text-success">Saved!</p>
 							</div>
 						</div>
 						<br>
@@ -86,7 +87,7 @@ export default {
 			computedApplication: null,
 			loaded: false,
 			locked: null,
-			typingTimeout: null,
+			typingTimeout: [],
 			answers: [],
 			mc_answers: [], // temp variable to model pref questions
 			changed: false,
@@ -111,9 +112,9 @@ export default {
 				return;
 			}
 			const md = this.$refs[`editor-${questionID}`][0].invoke('getMarkdown');
-			clearTimeout(this.typingTimeout);
+			clearTimeout(this.typingTimeout[questionID]);
 			this.$refs[`save-text-${questionID}`][0].innerText = 'Saving...';
-			this.typingTimeout = setTimeout(async () => {
+			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
 					method: 'POST',
 					body: JSON.stringify({
@@ -125,12 +126,41 @@ export default {
 				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
 			}, 2000);
 		},
-		handlePrefInput (questionID, categoryID) {
+		handlePrefInput (questionID, categoryID, event) {
 			if (typeof this.answers[questionID] !== 'object') {
 				this.answers[questionID] = [];
 			}
-			this.answers[questionID][categoryID] = this.mc_answers[`${questionID}-${categoryID}`];
-			console.log(this.answers);
+			this.answers[questionID][categoryID] = event.target.value;
+			clearTimeout(this.typingTimeout[questionID]);
+			this.$refs[`save-text-${questionID}`][0].innerText = 'Saving...';
+			console.log(this.answers[questionID]);
+			this.typingTimeout[questionID] = setTimeout(async () => {
+				await fetch('/api/juror-apps/submit', {
+					method: 'POST',
+					body: JSON.stringify({
+						answer: JSON.stringify(this.answers[questionID]),
+						question_id: questionID,
+						applicant_id: this.applicant.id,
+					}),
+				});
+				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
+			}, 2000);
+		},
+		handleMCInput (questionID) {
+			const md = this.answers[questionID];
+			clearTimeout(this.typingTimeout[questionID]);
+			this.$refs[`save-text-${questionID}`][0].innerText = 'Saving...';
+			this.typingTimeout[questionID] = setTimeout(async () => {
+				await fetch('/api/juror-apps/submit', {
+					method: 'POST',
+					body: JSON.stringify({
+						answer: md,
+						question_id: questionID,
+						applicant_id: this.applicant.id,
+					}),
+				});
+				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
+			}, 2000);
 		},
 	},
 	mounted () {
@@ -146,9 +176,23 @@ export default {
 					for (const question of this.computedApplication.question_groups[i].questions) {
 						const found = this.myAnswers.find(answer => answer.question_id === question.id);
 						if (found) {
-							this.answers[question.id] = found.answer;
+							if (question.type === 'preference') {
+								this.answers[question.id] = JSON.parse(found.answer);
+								for (const key in this.answers[question.id]) {
+									const index = `${question.id}-${key}`;
+									console.log(index, this.answers[question.id][key]);
+									this.mc_answers[index] = this.answers[question.id][key];
+								}
+							} else {
+								this.answers[question.id] = found.answer;
+							}
 						} else {
-							this.answers[question.id] = '';
+							// eslint-disable-next-line no-lonely-if
+							if (question.type === 'preference') {
+								this.answers[question.id] = [];
+							} else {
+								this.answers[question.id] = '';
+							}
 						}
 					}
 				}
