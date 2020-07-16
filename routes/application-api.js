@@ -316,9 +316,9 @@ apiApp.get('/answers', async (request, response) => {
 });
 
 apiApp.post('/score', async (request, response) => {
-	const auth = await request.authenticate({level: 2});
+	const auth = await request.authenticate({level: 2, lock: 'grading-open'});
 	if (!auth) {
-		return response.json(401, {error: 'You must be a host to grade apps.'});
+		return response.json(401, {error: 'You must be a host to grade apps. Alternatively, grading may not be open yet.'});
 	}
 	let score;
 	try {
@@ -355,7 +355,7 @@ apiApp.post('/score', async (request, response) => {
 apiApp.get('/applicants', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
-		return response.json(401, {error: 'You must be a retrieve applicants.'});
+		return response.json(401, {error: 'You must be host to retrieve applicants.'});
 	}
 	try {
 		response.json(await Applicants.findAll({
@@ -396,7 +396,7 @@ apiApp.delete('/applicant/:id', async (request, response) => {
 
 apiApp.get('/applicant', async (request, response) => {
 	let userName;
-	if (!await request.authenticate({name: userName})) {
+	if (!await request.authenticate({name: userName, lock: 'apps-open'})) {
 		return response.json(401, {error: 'Invalid user.'});
 	}
 	if (request.session.reddit_name) {
@@ -433,8 +433,7 @@ apiApp.post('/submit', async (request, response) => {
 	} else {
 		userName = (await request.reddit().get('/api/v1/me')).body.name;
 	}
-	if (!await request.authenticate({name: userName})) {
-		console.log(userName);
+	if (!await request.authenticate({name: userName, lock: 'apps-open'}, {name: request.session.reddit_name})) {
 		return response.json(401, {error: 'Invalid user.'});
 	}
 	let req;
@@ -444,6 +443,7 @@ apiApp.post('/submit', async (request, response) => {
 		return response.json(400, {error: 'Invalid JSON'});
 	}
 	try {
+		// eslint-disable-next-line no-unused-vars
 		const [answer, created] = await Answers.findOrCreate({
 			where: {
 				question_id: req.question_id,

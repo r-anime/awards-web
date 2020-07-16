@@ -22,14 +22,6 @@ apiApp.get('/all', async (request, response) => {
 	}
 });
 
-apiApp.get('/:group', async (request, response) => {
-	try {
-		response.json(await Categories.findAll({where: {awardsGroup: request.params.group}}));
-	} catch (error) {
-		response.error(error);
-	}
-});
-
 apiApp.delete('/wipeEverything', async (request, response) => {
 	const auth = await request.authenticate({level: 4});
 	if (!auth) {

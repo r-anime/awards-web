@@ -82,10 +82,6 @@ const store = new Vuex.Store({
 			const categories = await makeRequest('/api/category/all');
 			commit('GET_CATEGORIES', categories);
 		},
-		async getCategoriesByGroup ({commit}, group) {
-			const categories = await makeRequest(`/api/category/${group}`);
-			commit('GET_CATEGORIES', categories);
-		},
 	},
 });
 

@@ -79,9 +79,14 @@ const requestHelpers = {
 	json () {
 		return this.body().then(body => JSON.parse(body));
 	},
-	async authenticate ({level, name, oldEnough, lock}) {
+	async authenticate ({level, name, oldEnough, lock}, redditSession = null) {
 		let lockStatus;
-		const redditInfo = (await this.reddit().get('/api/v1/me')).body;
+		let redditInfo;
+		if (redditSession) {
+			redditInfo = redditSession;
+		} else {
+			redditInfo = (await this.reddit().get('/api/v1/me')).body;
+		}
 		const userInfo = await sequelize.model('users').findOne({where: {reddit: redditInfo.name}});
 		if (lock) {
 			// get the lock row

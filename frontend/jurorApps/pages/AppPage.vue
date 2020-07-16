@@ -88,8 +88,8 @@ export default {
 			loaded: false,
 			locked: null,
 			typingTimeout: [],
-			answers: [],
-			mc_answers: [], // temp variable to model pref questions
+			answers: {},
+			mc_answers: {}, // temp variable to model pref questions
 			changed: false,
 		};
 	},
@@ -178,10 +178,9 @@ export default {
 						if (found) {
 							if (question.type === 'preference') {
 								this.answers[question.id] = JSON.parse(found.answer);
-								for (const key in this.answers[question.id]) {
+								for (const [key, value] of Object.entries(this.answers[question.id])) {
 									const index = `${question.id}-${key}`;
-									console.log(index, this.answers[question.id][key]);
-									this.mc_answers[index] = this.answers[question.id][key];
+									this.mc_answers[index] = value;
 								}
 							} else {
 								this.answers[question.id] = found.answer;
@@ -189,7 +188,12 @@ export default {
 						} else {
 							// eslint-disable-next-line no-lonely-if
 							if (question.type === 'preference') {
-								this.answers[question.id] = [];
+								const categories = this.categories.filter(category => category.awardsGroup === question.question);
+								this.answers[question.id] = {};
+								for (const category of categories) {
+									this.answers[question.id][category.id] = '3';
+									this.mc_answers[`${question.id}-${category.id}`] = '3';
+								}
 							} else {
 								this.answers[question.id] = '';
 							}
