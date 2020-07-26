@@ -78,7 +78,7 @@
     </div>
 	<modal-generic v-model="modalOpen">
 		<div class="field">
-			<label class="label has-text-dark">Message:</label>
+			<label class="label has-text-dark">Message</label>
 			<div class="control">
 				<textarea v-model="message" class="textarea has-text-dark" maxlength="1985" placeholder="e.g X show should be in Y category"/>
 			</div>

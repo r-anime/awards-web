@@ -9,12 +9,14 @@ const resultsRoutes = [
 	{name: 'Archive', path: '/archive'},
 	{name: 'Acknowledgements', path: '/acknowledgements'},
 	{name: 'About', path: '/about'},
+	{name: 'Feedback', path: '/feedback'},
 ];
 
 const ongoingRoutes = [
 	{name: 'Archive', path: '/archive'},
 	{name: 'Acknowledgements', path: '/acknowledgements'},
 	{name: 'About', path: '/about'},
+	{name: 'Feedback', path: '/feedback'},
 ];
 
 module.exports = {

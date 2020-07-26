@@ -25,10 +25,12 @@ module.exports = {
 		clientSecret: 'Reddit application client secret',
 		userAgent: 'web:geo1088/animeawards-mkii:0.0.1 (by /u/YOURNAMEGOESHERE)',
 	},
+	// Discord credentials and logging channels
 	discord: {
 		token: 'Token here',
-		complaintsChannel: 'Channel ID for complaints here',
 		auditChannel: 'Channel ID for logging website actions',
+		complaintsChannel: 'Channel ID for allocation complaints here',
+		feedbackChannel: 'Channel ID for feedback directed at /r/anime mods',
 	},
 	// Un-comment this in production to enable HTTPS support
 	// https: {

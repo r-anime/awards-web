@@ -16,6 +16,7 @@ import ArchiveLanding from './pages/ArchiveLanding';
 import ExtraAwardsPage from './pages/ExtraAwards';
 import Allocations from './pages/Allocations';
 import JuryGuide from './pages/JuryGuide';
+import Feedback from './pages/Feedback';
 
 import ResultsContainer from './components/ResultsContainer';
 import Archive from './components/Archive';
@@ -52,6 +53,7 @@ export default new VueRouter({
 				{path: '/about', component: About},
 				{path: '/extra', component: ExtraAwardsPage},
 				{path: '/allocations', component: Allocations},
+				{path: '/feedback', component: Feedback},
 				{path: '/juryguide', component: JuryGuide},
 				{
 					path: '/archive',
