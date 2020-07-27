@@ -46,7 +46,7 @@ apiApp.post('/feedback', async (request, response) => {
 	}
 	if (request.session.complaints <= 5) {
 		try {
-			yuuko.createMessage(config.discord.complaintsChannel, {
+			yuuko.createMessage('736900303554740284', {
 				embed: {
 					title: `Feedback from ${req.user ? req.user : 'Anonymous'}`,
 					description: req.message,
