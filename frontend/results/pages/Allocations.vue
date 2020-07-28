@@ -82,6 +82,7 @@
 			<div class="control">
 				<textarea v-model="message" class="textarea has-text-dark" maxlength="1985" placeholder="e.g X show should be in Y category"/>
 			</div>
+			<p class="help is-platinum">{{message.length}}/1985</p>
 		</div>
 		<div class="field">
 			<div class="control">
@@ -224,7 +225,9 @@ export default {
 		},
 	},
 	mounted () {
-		Promise.all([this.getLocks(), this.getEntries(), this.getCategories()]).then(async () => {
+		Promise.all([this.locks ? Promise.resolve() : this.getLocks(),
+			this.entries ? Promise.resolve() : this.getEntries(),
+			this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
 			this.selectedCategory = this.filteredCategories[0];
 			const allocLock = this.locks.find(lock => lock.name === 'allocations');
 			if (!allocLock.flag) {

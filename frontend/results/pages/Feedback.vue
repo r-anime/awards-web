@@ -19,12 +19,14 @@
 								<div class="control">
 									<input v-model="username" class="input has-text-dark" maxlength="30" placeholder="Optional"/>
 								</div>
+								<p class="help is-platinum">{{username.length}}/30</p>
 							</div>
 							<div class="field">
 								<label class="label has-text-light">Feedback</label>
 								<div class="control">
 									<textarea v-model="message" class="textarea has-text-dark" maxlength="1950" placeholder="Your feedback goes here"/>
 								</div>
+								<p class="help is-platinum">{{message.length}}/1950</p>
 							</div>
 							<div class="field">
 								<div class="control">
