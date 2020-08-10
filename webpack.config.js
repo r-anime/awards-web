@@ -64,6 +64,7 @@ module.exports = {
 				test: /\.scss$/,
 				use: [
 					'vue-style-loader',
+					// so for some reason bumping css loader kills all our css. look into this later.
 					'css-loader',
 					{
 						loader: 'sass-loader',
