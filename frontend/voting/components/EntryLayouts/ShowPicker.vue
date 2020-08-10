@@ -81,7 +81,7 @@
 
 <script>
 import ShowPickerEntry from './ShowPickerEntry';
-const Fuse = require('fuse.js');
+import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
 
@@ -145,6 +145,7 @@ export default {
 			const entries = this.showData;
 			const fuse = new Fuse(entries, options);
 			this.shows = fuse.search(this.search);
+			this.shows = this.shows.map(show => show.item);
 			this.total = this.shows.length;
 			this.loaded = true;
 		},

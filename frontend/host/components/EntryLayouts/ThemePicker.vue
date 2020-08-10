@@ -108,7 +108,7 @@
 <script>
 import ThemePickerEntry from './ThemePickerEntry';
 import {mapActions, mapState} from 'vuex';
-const Fuse = require('fuse.js');
+import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
 
@@ -228,6 +228,7 @@ export default {
 			}
 			const fuse = new Fuse(this.themes, options);
 			this.themeData = fuse.search(this.search);
+			this.themeData = this.themeData.map(td => td.item);
 			this.total = this.themeData.length;
 			this.themeData.forEach(element => {
 				this.idArr.push(element.anilistID);

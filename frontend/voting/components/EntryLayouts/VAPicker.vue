@@ -83,7 +83,7 @@
 import VAPickerEntry from './VAPickerEntry';
 const queries = require('../../../anilistQueries');
 const util = require('../../../util');
-const Fuse = require('fuse.js');
+import Fuse from 'fuse.js/dist/fuse.basic.min';
 
 const options = {
 	shouldSort: true,
@@ -151,6 +151,7 @@ export default {
 			const entries = this.vaData;
 			const fuse = new Fuse(entries, options);
 			this.vas = fuse.search(this.search);
+			this.vas = this.vas.map(va => va.item);
 			this.total = this.vas.length;
 			this.loaded = true;
 		},

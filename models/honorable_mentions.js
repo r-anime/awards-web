@@ -16,9 +16,10 @@ module.exports = (sequelize, DataTypes) => {
 		},
 	});
 
-	hms.belongsTo(sequelize.import('./categories'));
-
-	sequelize.import('./categories').hasMany(hms);
+	hms.associate = models => {
+		hms.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'Category'});
+		models.categories.hasMany(hms);
+	};
 
 	return hms;
 };

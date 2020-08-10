@@ -99,7 +99,7 @@ import ModalGeneric from '../../common/ModalGeneric';
 import {mapState, mapActions} from 'vuex';
 import AllocationCard from '../components/AllocationCard';
 import AllocationLink from '../components/AllocationLink';
-const Fuse = require('fuse.js');
+import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../util');
 const aq = require('../../anilistQueries');
 
@@ -181,6 +181,7 @@ export default {
 			}
 			const fuse = new Fuse(this.shows, options);
 			this.shows = fuse.search(this.search);
+			this.shows = this.shows.map(show => show.item);
 			this.total = this.shows.length;
 			this.fetched = true;
 		},

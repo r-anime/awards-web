@@ -16,9 +16,10 @@ module.exports = (sequelize, types) => {
 		},
 	});
 
-	jurors.belongsTo(sequelize.import('./categories'));
-
-	sequelize.import('./categories').hasMany(jurors);
+	jurors.associate = models => {
+		jurors.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'Category'});
+		models.categories.hasMany(jurors);
+	};
 
 	return jurors;
 };

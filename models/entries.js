@@ -4,11 +4,14 @@ module.exports = (sequelize, types) => {
 		character_id: types.INTEGER,
 	});
 
-	entries.belongsTo(sequelize.import('./themes'));
+	entries.associate = models => {
+		entries.belongsTo(models.themes, {foreignKey: 'themeId', as: 'Theme'});
+	};
 
-	entries.belongsTo(sequelize.import('./categories'));
-
-	sequelize.import('./categories').hasMany(entries);
+	entries.associate = models => {
+		entries.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'Category'});
+		models.categories.hasMany(entries);
+	};
 
 	return entries;
 };

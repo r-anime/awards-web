@@ -87,7 +87,7 @@ import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
 const queries = require('../../../anilistQueries');
 const util = require('../../../util');
-const Fuse = require('fuse.js');
+import Fuse from 'fuse.js/dist/fuse.basic.min';
 
 const options = {
 	shouldSort: true,
@@ -155,6 +155,7 @@ export default {
 			const entries = this.charData;
 			const fuse = new Fuse(entries, options);
 			this.chars = fuse.search(this.search);
+			this.chars = this.chars.map(char => char.item);
 			this.total = this.chars.length;
 			this.loaded = true;
 		},
