@@ -48,7 +48,10 @@
 					<div class="control">
 						<div v-if="answer.scores.length">
 							<ul>
-								<li v-for="score in answer.scores" :key="score.id">{{score.host_name}}: <b>{{score.score}}</b></li>
+								<li v-for="score in answer.scores" :key="score.id">
+								{{score.host_name}}: <b>{{score.score}}</b>
+								<a v-if="isAdmin" @click="submitDeleteScore(score)" class="tag is-danger">Delete</a>
+								</li>
 							</ul>
 						</div>
 						<div v-else>
@@ -79,7 +82,7 @@
 <script>
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import {Viewer} from '@toast-ui/vue-editor';
-import {mapActions, mapState} from 'vuex';
+import {mapActions, mapState, mapGetters} from 'vuex';
 export default {
 	props: ['applicantID'],
 	components: {
@@ -95,9 +98,10 @@ export default {
 	},
 	computed: {
 		...mapState(['answers', 'locks', 'me', 'applicants', 'categories']),
+		...mapGetters(['isAdmin']),
 	},
 	methods: {
-		...mapActions(['getAnswers', 'getLocks', 'getMe', 'getApplicants', 'getCategories']),
+		...mapActions(['getAnswers', 'getLocks', 'getMe', 'getApplicants', 'getCategories', 'deleteScore']),
 		header () {
 			if (this.lock.flag || this.me.level > this.lock.level) {
 				const found = this.applicants.find(applicant => applicant.id === parseInt(this.applicantID, 10));
@@ -117,6 +121,9 @@ export default {
 				});
 			}
 			return returnArr;
+		},
+		async submitDeleteScore (score) {
+			await this.deleteScore(score);
 		},
 	},
 	async mounted () {

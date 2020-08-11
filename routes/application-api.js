@@ -352,6 +352,26 @@ apiApp.post('/score', async (request, response) => {
 	}
 });
 
+apiApp.delete('/score/:id', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to delete scores.'});
+	}
+	try {
+		await Scores.destroy({where: {id: request.params.id}});
+		yuuko.createMessage(config.discord.auditChannel, {
+			embed: {
+				title: 'Application Score Deleted',
+				description: `An application score was deleted by **${auth}**.`,
+				color: 8302335,
+			},
+		});
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.get('/applicants', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
