@@ -10,11 +10,11 @@ jobs:
     - uses: actions/checkout@v1
     - uses: webfactory/ssh-agent@v0.1.1
       with:
-        ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
+        ssh-private-key: ${{ secrets.AWARDS_WEB_SSH_KEY }}
     - run: |
-        ssh -o StrictHostKeyChecking=no root@159.203.108.203 << EOF
-          cd /home/george/animeawards-mkii
+        ssh -o StrictHostKeyChecking=no awards-web@134.209.0.181 << EOF
+          cd /home/awards-web/awards-web
           git fetch --all
           git reset --hard origin/master
-          systemctl restart animeawards
+          sudo systemctl restart awards-web.service
         EOF
