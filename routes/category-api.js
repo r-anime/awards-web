@@ -252,9 +252,10 @@ apiApp.get('/:id/nominations', async (request, response) => {
 				categoryId: request.params.id,
 				active: 1,
 			},
-			include: {
+			include: [{
 				model: Categories,
-			},
+				as: 'category',
+			}],
 		}));
 	} catch (error) {
 		response.error(error);
@@ -312,9 +313,10 @@ apiApp.post('/:id/nominations', async (request, response) => {
 				where: {
 					categoryId: request.params.id,
 				},
-				include: {
+				include: [{
 					model: Categories,
-				},
+					as: 'category',
+				}],
 			}));
 		}, error => response.error(error));
 	} catch (error) {

@@ -91,7 +91,7 @@ export default {
 			const arr = [];
 			for (const questionGroup of this.filteredQuestionGroups) {
 				for (const question of questionGroup.questions) {
-					arr.push(question);
+					if (question.type === 'essay') arr.push(question);
 				}
 			}
 			return arr;

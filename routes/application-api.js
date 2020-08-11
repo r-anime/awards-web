@@ -463,7 +463,7 @@ apiApp.post('/submit', async (request, response) => {
 						question_id: req.question_id,
 						applicant_id: req.applicant_id,
 					},
-				}
+				},
 			);
 		}
 		response.empty();

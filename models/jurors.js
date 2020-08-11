@@ -17,7 +17,7 @@ module.exports = (sequelize, types) => {
 	});
 
 	jurors.associate = models => {
-		jurors.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'Category'});
+		jurors.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'category'});
 		models.categories.hasMany(jurors);
 	};
 

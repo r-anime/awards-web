@@ -33,11 +33,11 @@ module.exports = (sequelize, types) => {
 	});
 
 	noms.associate = models => {
-		noms.belongsTo(models.themes, {foreignKey: 'themeId', as: 'Theme'});
+		noms.belongsTo(models.themes, {foreignKey: 'themeId', as: 'theme'});
 	};
 
 	noms.associate = models => {
-		noms.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'Category'});
+		noms.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'category'});
 		models.categories.hasMany(noms);
 	};
 

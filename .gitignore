@@ -5,7 +5,7 @@ node_modules
 .vscode
 
 # Generated bundles
-public/*[.png, .svg, .jpg, .gif, .js, .gz, .html]
+public/*[.png, .svg, .jpg, .gif, .js, .gz, .html, .br]
 
 !public/template.html
 

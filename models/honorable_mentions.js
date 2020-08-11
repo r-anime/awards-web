@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 	});
 
 	hms.associate = models => {
-		hms.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'Category'});
+		hms.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'category'});
 		models.categories.hasMany(hms);
 	};
 

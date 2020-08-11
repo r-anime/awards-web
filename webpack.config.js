@@ -126,9 +126,12 @@ module.exports = {
 			excludeChunks: ['main', 'host', 'vote'],
 		}),
 		new CompressionPlugin({
-			filename: '[path].gz[query]',
-			algorithm: 'gzip',
-			test: /\.js$|\.css$|\.html$/,
+			filename: '[path].br[query]',
+			algorithm: 'brotliCompress',
+			test: /\.(js|css|html|svg)$/,
+			compressionOptions: {
+				level: 11,
+			},
 			threshold: 10240,
 			minRatio: 0.8,
 		}),

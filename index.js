@@ -51,7 +51,7 @@ app.use(
 	// Static assets
 	sirv(config.publicDir, {
 		dev: true, // HACK: dev mode to skip caching potentially incomplete webpack bundles, since for some reason they get regenerated at random times and it breaks the site
-		gzip: true,
+		brotli: true,
 	}),
 );
 
