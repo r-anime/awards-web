@@ -12,9 +12,22 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.AWARDS_WEB_SSH_KEY }}
     - run: |
-        ssh -o StrictHostKeyChecking=no awards-web@134.209.0.181 << EOF
-          cd /home/awards-web/awards-web
+        ssh -o StrictHostKeyChecking=no awards-web@134.209.0.181 /bin/bash << 'EOF'
+          # report failure if any command fails
+          set -e
+          
+          # manually source nvm since bashrc exits early unless session is interactive
+          source "$HOME/.nvm/nvm.sh"
+          
+          # checkout changes
+          cd "$HOME/awards-web"
           git fetch --all
           git reset --hard origin/master
+          
+          # update deps, rebuild
+          yarn
+          yarn build-prod
+          
+          # restart server
           sudo systemctl restart awards-web.service
         EOF
