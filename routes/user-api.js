@@ -32,7 +32,7 @@ apiApp.get('/me', async (request, response) => {
 			response.json({
 				reddit: {
 					name: redditorInfo.name,
-					avatar: redditorInfo.subreddit.icon_img,
+					avatar: redditorInfo.subreddit.icon_img.split('?')[0],
 					created: redditorInfo.created_utc,
 				},
 				level: user.level,
