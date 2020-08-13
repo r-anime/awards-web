@@ -27,9 +27,7 @@ const {yuuko} = require('./bot/index');
 
 // Define the main application
 const app = polka({
-	// The frontend uses history mode, so any route that isn't already defined
-	// gets the frontend index page and Vue handles it from there (including
-	// rendering a "not found" page when appropriate)
+	// Send results page for routes other than /host or /apps
 	onNoMatch: (request, response) => response.end(indexPage),
 });
 
