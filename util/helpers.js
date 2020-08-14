@@ -85,7 +85,11 @@ const requestHelpers = {
 		if (redditSession) {
 			redditInfo = redditSession;
 		} else {
-			redditInfo = (await this.reddit().get('/api/v1/me')).body;
+			try {
+				redditInfo = (await this.reddit().get('/api/v1/me')).body;
+			} catch (error) {
+				return false;
+			}
 		}
 		const userInfo = await sequelize.model('users').findOne({where: {reddit: redditInfo.name}});
 		if (lock) {

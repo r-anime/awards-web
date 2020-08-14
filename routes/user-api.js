@@ -44,10 +44,15 @@ apiApp.get('/me', async (request, response) => {
 	}
 });
 
-apiApp.get('/all', (request, response) => {
-	Users.findAll().then(users => {
-		response.json(users);
-	});
+apiApp.get('/all', async (request, response) => {
+	if (!await request.authenticate({level: 2})) {
+		return response.json(401, {error: 'You do not have permission to retrieve the user list'});
+	}
+	try {
+		response.json(await Users.findAll());
+	} catch (error) {
+		response.error(error);
+	}
 });
 
 apiApp.post('/', async (request, response) => {
