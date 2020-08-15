@@ -87,11 +87,6 @@ module.exports = {
 				test: /\.js$/,
 				use: {
 					loader: 'babel-loader',
-					options: {
-						plugins: [
-							'@babel/plugin-syntax-dynamic-import',
-						], // Need presets for safari, edge and IE but that's insanely hard for some reason
-					},
 				},
 				exclude: /node_modules/,
 			},
