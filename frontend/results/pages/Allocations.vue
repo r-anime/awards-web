@@ -31,13 +31,13 @@
                                         <div class="show-picker-search-bar">
                                             <div class="field has-addons">
                                                 <p class="control has-icons-left is-expanded">
-                                                    <input class="input is-small has-text-dark" type="text" :value="search" @input="handleInput($event)" placeholder="Search by title..." />
+                                                    <input class="input is-expanded has-text-dark" type="text" :value="search" @input="handleInput($event)" placeholder="Search by title..." />
                                                     <span class="icon is-small is-left">
                                                         <i class="fas fa-search" />
                                                     </span>
                                                 </p>
                                                 <div class="control">
-                                                    <span class="button is-small is-static" :class="{'is-loading': !fetched}">
+                                                    <span class="button is-static" :class="{'is-loading': !fetched}">
                                                         {{total}} show{{total === 1 ? '' : 's'}}
                                                     </span>
                                                 </div>
@@ -57,7 +57,7 @@
                             </div>
                         </div>
 						<section class="section has-text-centered">
-							<a @click="modalOpen = true" class="title is-3 has-text-platinum has-text-centered pb-20">Have any issues with the allocations? Click here to complain!</a>
+							<a @click="modalOpen = true" class="title is-3 has-text-platinum has-text-centered pb-20">Have any issues with the allocations? Click here to tell us!</a>
 						</section>
 						</div>
                         <section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
