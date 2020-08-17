@@ -7,6 +7,24 @@
                         <div class="column is-four-fifths-desktop is-three-quarters-tablet is-four-fifths-mobile has-background-black-bis">
                             <section class="section">
                                 <div class="container">
+                                    <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">2019</h2>
+                                    <div class="control has-text-centered">
+                                        <router-link to="/archive/2019" style="color:inherit">
+                                            <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
+                                        </router-link>
+                                        <a target="_blank" href="https://youtu.be/VYZ2fezPKUA" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
+                                        <router-link to="/acknowledgements19" style="color:inherit">
+                                            <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
+                                        </router-link>
+                                    </div>
+                                    <div class="control has-text-centered">
+                                        <router-link to="/extra19" style="color:inherit">
+                                            <button class="button is-large is-platinum is-outlined mb-10">Extra Awards</button>
+                                        </router-link>
+                                        <router-link to="/about19" style="color:inherit">
+                                            <button class="button is-large is-platinum is-outlined mb-10">About/Credits</button>
+                                        </router-link>
+                                    </div>
                                     <h2 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">2018</h2>
                                     <div class="control has-text-centered">
                                         <router-link to="/archive/2018" style="color:inherit">

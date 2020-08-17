@@ -425,6 +425,12 @@ export default {
 					this.fetchAnilist();
 				});
 				break;
+			case '2019':
+				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
 			case '2018':
 				import(/* webpackChunkName: "results18" */ '../../data/results2018.json').then(data => {
 					this.results = Object.assign({}, data);

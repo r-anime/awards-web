@@ -6,15 +6,14 @@ const resultsRoutes = [
 	{name: 'Test', path: '/results/test'},
 	{name: 'View All', path: '/results/all'},
 	{name: 'Extra', path: '/extra'},
-	{name: 'Archive', path: '/archive'},
+	{name: 'Past Results', path: '/archive'},
 	{name: 'Acknowledgements', path: '/acknowledgements'},
 	{name: 'About', path: '/about'},
 	{name: 'Feedback', path: '/feedback'},
 ];
 
 const ongoingRoutes = [
-	{name: 'Archive', path: '/archive'},
-	{name: 'Acknowledgements', path: '/acknowledgements'},
+	{name: 'Past Results', path: '/archive'},
 	{name: 'About', path: '/about'},
 	{name: 'Feedback', path: '/feedback'},
 ];

@@ -23,6 +23,11 @@ import Archive from './components/Archive';
 
 import NotFound from '../common/NotFound';
 
+// Archived pages
+import Acknowledgements19 from './archived-pages/Acknowledgements19';
+import ExtraAwards19 from './archived-pages/ExtraAwards19';
+import About19 from './archived-pages/About19';
+
 export default new VueRouter({
 	mode: 'history',
 	scrollBehavior(to, from, savedPosition) {
@@ -70,6 +75,11 @@ export default new VueRouter({
 						},
 					]
 				},
+				// Here we shall keep track of archived vue components that will be added to each year.
+				//2019
+				{path: '/acknowledgements19', component: Acknowledgements19},
+				{path: '/about19', component: About19},
+				{path: '/extra19', component: ExtraAwards19},
 			],
 		},
 
