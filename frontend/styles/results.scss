@@ -1,0 +1,446 @@
+// More customization below
+
+body {
+    --sfourthTest:"";
+    font-family: $family-sans-serif;
+		color: $dark;
+}
+
+// Navbar menus on mobile shouldn't interfere with page content
+@include touch {
+	.navbar-menu {
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+}
+
+// Don't need to default to overflow-y: scroll
+html {
+	overflow-y: auto;
+}
+
+// Some other utility classes
+
+// When you have a title inside a level, the title's margin is lost. Apply this
+// class to the level to get it back.
+.title-margin {
+	margin-bottom: 1.5rem;
+}
+
+html, body{
+    font-family: 'Open Sans';
+    overflow-x: hidden;
+}
+
+.sectionIcon, .categorySubHeadItemIcon{
+    width: 6rem;
+    flex-shrink: 0;
+    flex-basis: 6rem;
+    display: inline-block;
+}
+
+.awardSectionHeader, .categoryHeader{
+    text-shadow: 0 4px 6px #000000;
+}
+
+.awardsModal{
+    height: 35rem;
+    padding: 1.5rem;
+    overflow-y: auto;
+
+    strong {
+        color: $light;
+    }
+}
+
+.awardsModal::-webkit-scrollbar {
+    width: 8px;
+}
+
+.awardsModal::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+}
+
+.awardsModal::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+}
+
+.awardsStaffCredit p{
+    margin-bottom: 0.05rem !important;
+}
+
+.awardRanksContainer img.image {
+    width: 32px;
+    height: 24px;
+}
+
+.awardsImage{
+    height: 35rem;
+
+    @include until($tablet){
+        height: 10rem;
+    }
+}
+
+.categoryRank {
+    position: relative;
+
+
+    &:before {
+        content: '';
+        position: absolute;
+        right: 1.5rem;
+        top: 0.8rem;
+        height: 1px;
+        width: 1rem;
+        background-image: linear-gradient(to left, transparent, $platinum);
+    }
+    @include until($tablet){
+        &:before{
+            right: 5.5rem;
+            width: 3rem;
+        }
+    }
+    &:after {
+        content: '';
+        position: absolute;
+        left: 1.5rem;
+        top: 0.8rem;
+        height: 1px;
+        width: 1rem;
+        background-image: linear-gradient(to right, transparent, $platinum);
+    }
+    @include until($tablet){
+        &:after{
+            left: 5.5rem;
+            width: 3rem;
+        }
+    }
+}
+
+.homeIntroThingy {
+    .level-item {
+        transition: opacity 150ms;
+        opacity: 0.6;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.categoryWinnerContainer {
+    position: relative;
+    width: 100%;
+
+    &:after{
+        content: '';
+
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+
+        pointer-events: none;
+        outline: 0.5rem solid $llperiwinkle;
+        outline-offset: -1.5rem;
+        z-index: 1;
+    }
+}
+
+.categoryWinnerItem {
+    height: 32rem;
+    overflow: hidden;
+    @include until($tablet){
+        height: 15rem;
+    }
+}
+
+.categoryItemImage {
+    height: 100%;
+
+}
+
+.categoryNominationCards {
+    margin: 10px 10px;
+    padding: 2px;
+    text-align: center;
+}
+
+.categoryNominationItem {
+    margin: 2px;
+    height: 132px;
+    overflow: hidden;
+}
+
+.categoryNominationPreview{
+    position: relative;
+    font-size: 11px;
+    width: 100%;
+    height: 5rem;
+    overflow: hidden;
+    padding: 0.5rem;
+    cursor: pointer;
+
+    strong {
+        color: $llperiwinkle;
+    }
+
+    @include until($tablet){
+        display: none;
+        height: 0;
+    }
+
+    &:after{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background-image: linear-gradient(transparent, $black-bis);
+    }
+}
+
+.categoryItemImage {
+    content: "";
+    cursor: pointer;
+
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    background: transparent no-repeat center/cover;
+    margin: 0;
+    padding: 0;
+
+    transform-origin: center;
+    transition: all 150ms;
+
+    /* z-index: -3000;*/
+}
+
+.categoryNominationItem:hover .categoryItemImage,
+.categoryNominationItem:focus .categoryItemImage,
+.categoryWinnerItem:hover .categoryItemImage,
+.categoryWinnerItem:focus .categoryItemImage {
+    transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -o-transform: scale(1.1);
+}
+
+.categorySubHeadItemTextTitle {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.categorySubHeadContainer {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.has-periwinkle-underline{
+    border-bottom: 1px solid $llperiwinkle;
+}
+
+.has-flaired-underline{
+    border-width: 0 0 2px;
+    border-style: solid;
+    border-image:
+        radial-gradient(
+            circle at center,
+            $gold 0,
+            $gold 50%,
+            rgba(255,255,255, 0) 100%
+        ) 100% 1 1 1;
+}
+
+.has-flaired-underline-thin{
+    border-width: 0 0 1px;
+    border-style: solid;
+    border-image:
+        radial-gradient(
+            circle at center,
+            $white 0,
+            $white 50%,
+            rgba(255,255,255, 0) 100%
+        ) 100% 1 1 1;
+}
+
+.has-flaired-overunder {
+    border-width: 2px 0 2px;
+    border-style: solid;
+    border-image:
+        radial-gradient(
+            circle at center,
+            $gold 0,
+            $gold 50%,
+            rgba(255,255,255, 0) 100%
+        ) 100% 1 1 1;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+}
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    a {
+        text-decoration: underline;
+    }
+}
+
+// bulma override
+.tabs {
+    ul {
+        li {
+            padding-bottom: 1rem;
+            border-bottom: 2px solid $black;
+            transition: color 0.15s, border 0.15s;
+            cursor: pointer;
+
+            &:hover {
+                color: $grey;
+                border-bottom: 2px solid $grey;
+            }
+
+            &.is-active{
+                color: $light;
+
+                &.is-gold{
+                    border-bottom: 2px solid $gold;
+                }
+                &.is-periwinkle{
+                    border-bottom: 2px solid $periwinkle;
+                }
+            }
+        }
+    }
+}
+
+.button {
+    transition: background 0.15s;
+}
+
+.is-platinum .panel-block{
+    border-left: 0px solid $platinum;
+    transition: border-width 0.15s;
+}
+
+.is-platinum .panel-block.is-active {
+	border-left: 5px solid $platinum;
+}
+
+.is-platinum .panel-block:hover{
+    //border-left: 5px solid $platinum;
+}
+
+.show-cover {
+    width: 64px;
+    margin-right: 0.4rem;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.show-picker-overflow-wrap {
+	/* TODO hardcode bad */
+	height: calc(100vh - 141px - 46px);
+	overflow-y: auto;
+}
+
+
+.show-picker-overflow-wrap::-webkit-scrollbar {
+    width: 8px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+}
+
+.show-picker-overflow-wrap::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+}
+
+.show-picker-search-bar {
+	margin: 0 auto;
+	max-width: 500px;
+	padding: 0.75rem 0.75rem 0;
+}
+.show-picker-entries {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0.375rem;
+}
+.show-picker-entry {
+	flex: 0 0 calc(100% / 3);
+	padding: 0.375rem;
+
+	> div {
+		height: 100%;
+	}
+}
+.show-picker-text {
+	flex: 0 1 100%;
+	padding: 0.75rem;
+	text-align: center;
+}
+
+.loader {
+    &.is-loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.5;
+        &:after {
+            // @include loader;
+            position: absolute;
+            top: calc(50% - 2.5em);
+            left: calc(50% - 2.5em);
+            width: 5em;
+            height: 5em;
+            border-width: 0.25em;
+        }
+    }
+}
+
+//responsive tables
+@include until($tablet) {
+    .table-responsive {
+        thead{
+            display: none;
+        }
+
+        tr {
+            display:flex;
+            flex-wrap: wrap;
+
+
+            td {
+                flex: 100% 0 0;
+                border-width: 0 !important;
+
+                &:first-child{
+                    font-size: 1.5rem;
+                    padding-top: 1rem;
+                }
+            }
+        }
+    }
+}
+

@@ -46,4 +46,20 @@ $custom-colors: (
 // Now that we have all our customizations defined, we can import the rest of
 // the utilities including Bulma's variables. (This technically re-imports the
 // functions but they get compiled away and I'm lazy.)
+
 @import "~bulma/sass/utilities/all";
+
+$spaceamounts: (5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100); // Adjust this to include the pixel amounts you need.
+$sides: (top, bottom, left, right); // Leave this variable alone
+
+@each $space in $spaceamounts {
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
+    }
+
+    .p#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
+    }
+  }
+}
