@@ -64,6 +64,7 @@
                                     <ul>
                                         <li>/u/ABoredCompSciStudent</li>
                                         <li>/u/DrJWilson</li>
+                                        <li>/u/FAN_ROTOM_IS_SCARY</li>
                                         <li>/u/geo1088</li>
                                         <li>/u/I_FAP_TO_LOL_HENTAI</li>
                                         <li>/u/KiwiBennydudez</li>
