@@ -1,24 +1,29 @@
 <template>
 	<section class="section" v-if="loaded && !locked">
-		<div class="container">
+		<h1 class="title has-text-centered has-text-dark">2020 r/anime Awards Juror Application</h1>
+
+		<div class="container application-container pl-30 pr-30">
 			<div v-for="(qg, qg_index) in computedApplication.question_groups"
 					:key="qg_index">
-					<h2>Question Group {{qg.name}}</h2>
+					<h2 class="qg-header">{{qg.name}}</h2>
 					<div v-for="(q, q_index) in qg.questions"
 						:key="q_index">
 						<div v-if="q.type == 'essay'">
-							<h3>Question: {{q.question}}</h3>
+							<h3 class="question-header">{{q.question}}</h3>
 							<Editor :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
 						</div>
 						<div v-else-if="q.type == 'choice'">
-							<h3>Question: {{multipleChoiceQuestion(q.question)}}</h3>
-							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index">
-								<input type="radio" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
+							<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
+							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="">
+								<input type="radio" :name="`mc-${q.id}`" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
 								<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
 							</div>
 						</div>
 						<div v-else-if="q.type == 'preference'">
-							<h3>{{q.question}} Preferences</h3>
+							<h3 class="question-header">{{q.question}} Preferences</h3>
+							<small>
+								Please rate as 5 for strongly desired and 1 for least desired.
+							</small>
 							<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
 								<h4>{{category.name}}</h4>
 								<div v-for="index in 5" :key="index">
@@ -33,10 +38,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="level is-mobile">
+						<div class="level is-mobile mt-10">
 							<div class="level-left"></div>
-							<div class="level-right">
-								<p :ref="`save-text-${q.id}`" class="is-size-5 has-text-success">Saved!</p>
+							<div class="level-right notification is-light question-save" :class="{ 'question-saving': saving[q.id], 'is-success': !saving[q.id]}">
+								{{ saving[q.id] ? "Saving..." : "Saved!" }}
 							</div>
 						</div>
 						<br>
@@ -84,6 +89,7 @@ export default {
 	data () {
 		return {
 			submitting: false,
+			saving: [],
 			computedApplication: null,
 			loaded: false,
 			locked: null,
@@ -113,7 +119,7 @@ export default {
 			}
 			const md = this.$refs[`editor-${questionID}`][0].invoke('getMarkdown');
 			clearTimeout(this.typingTimeout[questionID]);
-			this.$refs[`save-text-${questionID}`][0].innerText = 'Saving...';
+			this.$set(this.saving, questionID, true);
 			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
 					method: 'POST',
@@ -123,7 +129,7 @@ export default {
 						applicant_id: this.applicant.id,
 					}),
 				});
-				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
+				this.$set(this.saving, questionID, false);
 			}, 2000);
 		},
 		handlePrefInput (questionID, categoryID, event) {
@@ -132,7 +138,7 @@ export default {
 			}
 			this.answers[questionID][categoryID] = event.target.value;
 			clearTimeout(this.typingTimeout[questionID]);
-			this.$refs[`save-text-${questionID}`][0].innerText = 'Saving...';
+			this.$set(this.saving, questionID, true);
 			console.log(this.answers[questionID]);
 			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
@@ -143,13 +149,13 @@ export default {
 						applicant_id: this.applicant.id,
 					}),
 				});
-				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
+				this.$set(this.saving, questionID, false);
 			}, 2000);
 		},
 		handleMCInput (questionID) {
 			const md = this.answers[questionID];
 			clearTimeout(this.typingTimeout[questionID]);
-			this.$refs[`save-text-${questionID}`][0].innerText = 'Saving...';
+			this.$set(this.saving, questionID, true);
 			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
 					method: 'POST',
@@ -159,7 +165,7 @@ export default {
 						applicant_id: this.applicant.id,
 					}),
 				});
-				this.$refs[`save-text-${questionID}`][0].innerText = 'Saved!';
+				this.$set(this.saving, questionID, false);
 			}, 2000);
 		},
 	},
@@ -198,6 +204,7 @@ export default {
 								this.answers[question.id] = '';
 							}
 						}
+						this.$set(this.saving, question.id, false);
 					}
 				}
 			}

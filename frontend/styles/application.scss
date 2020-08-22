@@ -1,0 +1,18 @@
+.application-container {
+    .qg-header{
+        font-size: 1.75rem;
+    }
+    .question-header{
+        text-transform: capitalize;
+        font-size: 1.25rem;
+    }
+    .question-save{
+        padding: 0.5rem 2rem;
+        opacity: 0;
+        transition: opacity 2000ms;
+        &.question-saving{
+            opacity: 1;
+            transition: opacity 500ms;
+        }
+    }
+}
