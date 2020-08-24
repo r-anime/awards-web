@@ -1,10 +1,14 @@
 .application-container {
     .qg-header{
-        font-size: 1.75rem;
+        font-size: 2.25rem;
     }
     .question-header{
         text-transform: capitalize;
-        font-size: 1.25rem;
+        font-size: 1.75rem;
+    }
+    .subquestion-header{
+        text-transform: capitalize;
+        font-size: 1.5rem;
     }
     .question-save{
         padding: 0.5rem 2rem;
@@ -13,6 +17,65 @@
         &.question-saving{
             opacity: 1;
             transition: opacity 500ms;
+        }
+    }
+    .app-radio{
+        font-size: 1.25rem;
+        margin: 0.5rem 1rem;
+
+        input[type="radio"]{
+            display: none;
+
+            &:checked ~ label:after{
+                height: 0.75rem;
+                width: 0.75rem;
+                top: 0.525rem;
+                left: 0.275rem;
+            }
+
+            &:checked ~ label:before{
+                // border: $platinum 2px solid;
+            }
+        }
+
+        label {
+            padding-left: 2rem;
+            position: relative;
+
+            &:before{
+                content: "";
+                position: absolute;
+                display: block;
+                border-radius: 100%;
+
+                height: 1.25rem;
+                width: 1.25rem;
+                top: 0.25rem;
+                left: 0rem;
+                background-color: #eee;
+                border: $periwinkle 0 solid;
+                transition: all 300ms;
+            }
+
+            &:hover:before{
+                background-color: #ccc;
+            }
+
+            &:after{
+                content: "";
+                position: absolute;
+                display: block;
+                border-radius: 100%;
+
+                height: 0;
+                width: 0;
+                top: 0.875rem;
+                left: 0.625rem;
+                background-color: $periwinkle;
+
+                transition: all 300ms cubic-bezier(0.25, 2, 0.75, 1);
+            }
+            
         }
     }
 }

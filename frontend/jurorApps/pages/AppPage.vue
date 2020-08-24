@@ -14,7 +14,7 @@
 						</div>
 						<div v-else-if="q.type == 'choice'">
 							<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
-							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="">
+							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="app-radio">
 								<input type="radio" :name="`mc-${q.id}`" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
 								<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
 							</div>
@@ -25,8 +25,8 @@
 								Please rate as 5 for strongly desired and 1 for least desired.
 							</small>
 							<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
-								<h4>{{category.name}}</h4>
-								<div v-for="index in 5" :key="index">
+								<h4 class="subquestion-header">{{category.name}}</h4>
+								<div v-for="index in 5" :key="index" class="app-radio">
 									<input type="radio"
 										:id="`category-${category.id}-${index}`"
 										:value="index"
