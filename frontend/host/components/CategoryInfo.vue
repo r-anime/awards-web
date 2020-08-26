@@ -44,7 +44,7 @@
 				<label class="label">Juror Count</label>
 				<div class="control">
 					<div class="select">
-						<input class="input" v-model="newEntryJurorCount"/>
+						<input class="input" v-model="newJurorCount"/>
 					</div>
 				</div>
 				<p class="help">Number of jurors in the category</p>
@@ -73,7 +73,7 @@ export default {
 			newCategoryName: this.category.name,
 			newEntryType: this.category.entryType,
 			newEntryGroup: this.category.awardsGroup,
-			newJurorCount: this.category.jurorCount,
+			newJurorCount: `${this.category.jurorCount}`,
 			submitting: false,
 		};
 	},
@@ -94,7 +94,7 @@ export default {
 							name: this.newCategoryName,
 							entryType: this.newEntryType,
 							awardsGroup: this.newEntryGroup,
-							jurorCount: this.newJurorCount,
+							jurorCount: parseInt(this.newJurorCount, 10),
 						},
 					});
 				} finally {
