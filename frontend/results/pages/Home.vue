@@ -94,7 +94,7 @@
 
 <script>
 import {mapState, mapGetters} from 'vuex';
-import logo from '../../../img/awards2019.png';
+import logo from '../../../img/awards2020.png';
 import snoo from '../../../img/bannerSnooJump.png';
 
 export default {

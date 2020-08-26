@@ -95,8 +95,8 @@
       "anime": "Amanchu!",
       "va": "Eri\r\n Suzuki"
      },
-     "35195": {
-      "name": "Nyanko-sensei",
+     "13784": {
+      "name": "Madara (Nyanko-sensei)",
       "anime": "Natsume Yuujinchou Go",
       "va": "Kazuhiko Inoue"
      },
@@ -1645,7 +1645,7 @@
          },
          {
           "id": 35195,
-          "altname": "Nyanko-sensei",
+          "altname": "Madara (Nyanko-sensei)",
           "altimg": "",
           "public": 106,
           "finished": 209,

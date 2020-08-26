@@ -9,6 +9,14 @@ module.exports = (sequelize, types) => {
 			type: types.STRING(2048),
 			defaultValue: '',
 		},
+		score: {
+			type: types.FLOAT,
+			defaultValue: 0,
+		},
+		preference: {
+			type: types.INTEGER,
+			defaultValue: 0,
+		},
 		active: {
 			type: types.BOOLEAN,
 			allowNull: false,

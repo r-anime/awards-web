@@ -108,13 +108,13 @@ export default {
 			}
 		},
 		async submitScore () {
-			if (parseFloat(this.score)) {
+			if (parseInt(this.score, 10) && parseInt(this.score, 10) > 0 && parseInt(this.score, 10) <= 4) {
 				this.submitting = true;
 				let score = await fetch('/api/juror-apps/score', {
 					method: 'POST',
 					body: JSON.stringify({
 						answer_id: this.currentAnswer.id,
-						score: parseFloat(this.score),
+						score: parseInt(this.score, 10),
 						host_name: this.me.reddit.name,
 					}),
 				});

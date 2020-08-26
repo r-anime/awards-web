@@ -6,7 +6,6 @@ const sequelize = require('../models').sequelize;
 const Answers = sequelize.model('answers');
 const Applicants = sequelize.model('applicants');
 const Applications = sequelize.model('applications');
-const QuestionAnswers = sequelize.model('question_answers');
 const QuestionGroups = sequelize.model('question_groups');
 const Questions = sequelize.model('questions');
 const Scores = sequelize.model('scores');

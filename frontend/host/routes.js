@@ -18,6 +18,7 @@ import AllCategories from './pages/AllCategories';
 import AdminPanel from './pages/AdminPanel';
 import Applications from './pages/Applications';
 import AllApplications from './pages/AllApplications';
+import Allocations from './pages/Allocations';
 
 import SingleCategory from './components/SingleCategory';
 import CategoryEntries from './components/CategoryEntries';
@@ -239,6 +240,13 @@ export default new VueRouter({
 					component: Results,
 					meta: {
 						title: 'Results Summary',
+					},
+				},
+				{
+					path: 'allocations',
+					component: Allocations,
+					meta: {
+						title: 'Allocations',
 					},
 				},
 			],

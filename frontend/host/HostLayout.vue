@@ -52,6 +52,7 @@ export default {
 				{name: 'Users', path: '/host/users'},
 				{name: 'Juror Applications', path: '/host/applications'},
 				{name: 'Results Summary', path: '/host/results'},
+				{name: 'Juror Allocations', path: '/host/allocations'},
 			].filter(s => s);
 		},
 	},

@@ -41,6 +41,15 @@
 				<p class="help">What Awards Group this category belongs to (Genre, Character, Production)</p>
 			</div>
 			<div class="field">
+				<label class="label">Juror Count</label>
+				<div class="control">
+					<div class="select">
+						<input class="input" v-model="newEntryJurorCount"/>
+					</div>
+				</div>
+				<p class="help">Number of jurors in the category</p>
+			</div>
+			<div class="field">
 				<div class="control">
 					<button
 						type="submit"
@@ -64,6 +73,7 @@ export default {
 			newCategoryName: this.category.name,
 			newEntryType: this.category.entryType,
 			newEntryGroup: this.category.awardsGroup,
+			newJurorCount: this.category.jurorCount,
 			submitting: false,
 		};
 	},
@@ -84,6 +94,7 @@ export default {
 							name: this.newCategoryName,
 							entryType: this.newEntryType,
 							awardsGroup: this.newEntryGroup,
+							jurorCount: this.newJurorCount,
 						},
 					});
 				} finally {

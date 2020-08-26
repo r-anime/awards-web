@@ -83,24 +83,17 @@ export default {
 			this.items.splice(index, 1);
 		},
 	},
-	mounted () {
-		const getPromise = new Promise(async (resolve, reject) => {
-			try {
-				await this.getJurors(this.category.id);
-				resolve();
-			} catch (err) {
-				reject(err);
-			}
-		});
-		getPromise.then(() => {
-			for (const juror of this.jurors) {
-				this.items.push({
-					categoryId: this.category.id,
-					name: juror.name,
-					link: juror.link,
-				});
-			}
-		});
+	async mounted () {
+		if (!this.jurors) {
+			await this.getJurors();
+		}
+		for (const juror of this.jurors.filter(aJuror => aJuror.categoryId === this.category.id)) {
+			this.items.push({
+				categoryId: this.category.id,
+				name: juror.name,
+				link: juror.link,
+			});
+		}
 		this.loaded = true;
 	},
 };

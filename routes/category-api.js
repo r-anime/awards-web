@@ -344,11 +344,10 @@ apiApp.get('/nominations/all', async (request, response) => {
 	}
 });
 
-apiApp.get('/:id/jurors', async (request, response) => {
+apiApp.get('/jurors', async (request, response) => {
 	try {
 		response.json(await Jurors.findAll({
 			where: {
-				categoryId: request.params.id,
 				active: true,
 			},
 		}));

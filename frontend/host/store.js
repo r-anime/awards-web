@@ -272,8 +272,8 @@ const store = new Vuex.Store({
 			const noms = await makeRequest('/api/category/nominations/all');
 			commit('GET_ALL_NOMINATIONS', noms);
 		},
-		async getJurors ({commit}, categoryId) {
-			const jurors = await makeRequest(`/api/category/${categoryId}/jurors`);
+		async getJurors ({commit}) {
+			const jurors = await makeRequest('/api/category/jurors');
 			commit('GET_JURORS', jurors);
 		},
 		async insertJurors ({commit}, {id, data}) {
