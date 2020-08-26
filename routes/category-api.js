@@ -8,6 +8,7 @@ const Noms = sequelize.model('nominations');
 const Jurors = sequelize.model('jurors');
 const HMs = sequelize.model('honorable_mentions');
 const Entries = sequelize.model('entries');
+const Themes = sequelize.model('themes');
 
 // eslint-disable-next-line no-unused-vars
 const log = require('another-logger');
@@ -167,7 +168,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	let promiseArr = [];
-	const ogEntries = await Entries.findAll({
+	let ogEntries = await Entries.findAll({
 		where: {
 			categoryId: request.params.id,
 		},
