@@ -222,6 +222,8 @@ export default {
 		async searchThemes () {
 			if (!this.search) {
 				this.themeData = [];
+				this.idArr = [];
+				this.shows = [];
 				this.total = 'No';
 				this.loaded = true;
 				return;
@@ -230,6 +232,7 @@ export default {
 			this.themeData = fuse.search(this.search);
 			this.themeData = this.themeData.map(td => td.item);
 			this.total = this.themeData.length;
+			this.idArr = [];
 			this.themeData.forEach(element => {
 				this.idArr.push(element.anilistID);
 			});
@@ -255,6 +258,7 @@ export default {
 		},
 		// I hate what I'm about to do here
 		squashObjects () {
+			this.shows = [];
 			this.themeData.forEach((element, index) => {
 				const fetchData = this.requiredShowData(index);
 				this.shows.push({...fetchData, ...element});
