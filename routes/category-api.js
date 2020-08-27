@@ -8,7 +8,6 @@ const Noms = sequelize.model('nominations');
 const Jurors = sequelize.model('jurors');
 const HMs = sequelize.model('honorable_mentions');
 const Entries = sequelize.model('entries');
-const Themes = sequelize.model('themes');
 
 // eslint-disable-next-line no-unused-vars
 const log = require('another-logger');
@@ -29,8 +28,10 @@ apiApp.delete('/wipeEverything', async (request, response) => {
 		return response.json(401, {error: 'You must be an admin to wipe everything.'});
 	}
 	const t = await sequelize.transaction();
+	// WHY DOES THIS NOT WORK JGAPGJAGJEAGAELGK:KEAJL:GJMEAKL
 	Promise.all([Entries.destroy({truncate: true, restartIdentity: true, transaction: t}), Noms.destroy({truncate: true, restartIdentity: true, transaction: t}), Jurors.destroy({truncate: true, restartIdentity: true, transaction: t}), HMs.destroy({truncate: true, restartIdentity: true, transaction: t})]).then(async () => {
 		await t.commit();
+		await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'entries'");
 		yuuko.createMessage(config.discord.auditChannel, {
 			embed: {
 				title: 'Full Category Data Wipe',
