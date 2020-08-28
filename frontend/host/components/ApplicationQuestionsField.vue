@@ -60,7 +60,7 @@
 						<div class="control">
 							<select class="input" v-model="question.type" @input="emitUpdate">
 								<option value="essay">Essay</option>
-								<option value="choice">Multiple Choice (kinda implemented?)</option>
+								<option value="choice">Multiple Choice</option>
 								<option value="preference">Preference</option>
 							</select>
 						</div>

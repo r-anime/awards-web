@@ -64,12 +64,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-.show-cover {
-    width: 64px;
-    margin-right: 0.4rem;
-    border-radius: 3px;
-    overflow: hidden;
-}
-</style>

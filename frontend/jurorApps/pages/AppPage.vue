@@ -1,8 +1,10 @@
 <template>
-	<section class="section" v-if="loaded && !locked">
-		<h1 class="title has-text-centered has-text-dark">2020 r/anime Awards Juror Application</h1>
-
-		<div class="container application-container pl-30 pr-30">
+	<section class="section has-background-dark pb-0 pt-0" v-if="loaded && !locked">
+		<div class="container has-background-white application-container pl-30 pr-30 pt-30 pb-30 mt-0 mb-0">
+			<h1 class="title has-text-dark has-text-centered">2020 r/anime Awards Juror Application</h1>
+			<div class="pl-5 pr-5">
+				<Viewer :initialValue="computedApplication.start_note"/>
+			</div>
 			<div v-for="(qg, qg_index) in computedApplication.question_groups"
 					:key="qg_index">
 					<h2 class="qg-header">{{qg.name}}</h2>
@@ -24,9 +26,10 @@
 							<small>
 								Please rate as 5 for strongly desired and 1 for least desired.
 							</small>
+							<br>
 							<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
 								<h4 class="subquestion-header">{{category.name}}</h4>
-								<div v-for="index in 5" :key="index" class="app-radio">
+								<div v-for="index in 5" :key="index" class="app-radio qpref_choice">
 									<input type="radio"
 										:id="`category-${category.id}-${index}`"
 										:value="index"
@@ -46,6 +49,9 @@
 						</div>
 						<br>
 					</div>
+			</div>
+			<div class="pl-5 pr-5">
+				<Viewer :initialValue="computedApplication.end_note"/>
 			</div>
 		</div>
 	</section>
@@ -68,13 +74,13 @@
 <script>
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
-
-import {Editor} from '@toast-ui/vue-editor';
+import {Viewer, Editor} from '@toast-ui/vue-editor';
 import {mapState, mapActions} from 'vuex';
 
 export default {
 	components: {
 		Editor,
+		Viewer,
 	},
 	computed: {
 		...mapState([
