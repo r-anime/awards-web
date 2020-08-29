@@ -116,7 +116,7 @@ export default {
 			'getAllNominations',
 			'getCategories',
 			'getThemes',
-			'getAllJurors',
+			'getJurors',
 			'getAllHMs',
 			'wipeEverything',
 			'getLocks',
@@ -218,7 +218,7 @@ export default {
 					if (!this.categories) {
 						await this.getCategories();
 					}
-					await this.getAllJurors();
+					await this.getJurors();
 					await this.getAllHMs();
 					resolve();
 				} catch (error) {

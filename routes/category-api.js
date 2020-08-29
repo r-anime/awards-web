@@ -346,18 +346,6 @@ apiApp.get('/nominations/all', async (request, response) => {
 	}
 });
 
-apiApp.get('/jurors', async (request, response) => {
-	try {
-		response.json(await Jurors.findAll({
-			where: {
-				active: true,
-			},
-		}));
-	} catch (error) {
-		response.error(error);
-	}
-});
-
 apiApp.post('/:id/jurors', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
