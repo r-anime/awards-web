@@ -1,6 +1,6 @@
 <template>
 	<section class="section has-background-dark pb-0 pt-0" v-if="loaded && !locked">
-		<div class="container has-background-white application-container pl-30 pr-30 pt-30 pb-30 mt-0 mb-0">
+		<div class="container has-background-white application-container pl-100 pr-100 pt-30 pb-30 mt-0 mb-0">
 			<h1 class="title has-text-dark has-text-centered">2020 r/anime Awards Juror Application</h1>
 			<div class="pl-5 pr-5">
 				<Viewer :initialValue="computedApplication.start_note"/>
