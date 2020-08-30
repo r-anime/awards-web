@@ -189,8 +189,10 @@ export default {
 				await this.getAnswers(this.applicant.id);
 				this.computedApplication = this.application;
 				this.computedApplication.question_groups = this.computedApplication.question_groups.filter(qg => qg.active);
+				this.computedApplication.question_groups = this.computedApplication.question_groups.sort((a, b) => a.order - b.order);
 				for (let i = 0; i < this.computedApplication.question_groups.length; i++) {
 					this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.filter(question => question.active);
+					this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.sort((a, b) => a.order - b.order);
 					for (const question of this.computedApplication.question_groups[i].questions) {
 						const found = this.myAnswers.find(answer => answer.question_id === question.id);
 						if (found) {

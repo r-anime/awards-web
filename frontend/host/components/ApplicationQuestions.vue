@@ -142,7 +142,10 @@ export default {
 		if (!this.questionGroups) {
 			await this.getQuestionGroups();
 		}
-		this.items = this.questionGroups.filter(qg => qg.application.id === this.application.id);
+		this.items = this.questionGroups.filter(qg => qg.application.id === this.application.id).sort((a, b) => a.order - b.order);
+		for (let i = 0; i < this.items.length; i++) {
+			this.items[i].questions = this.items[i].questions.sort((a, b) => a.order - b.order);
+		}
 		this.loaded = true;
 	},
 };
