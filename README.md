@@ -1,4 +1,4 @@
-# Anime awards backend Mk. II
+# [/r/anime Awards Website](https://animeawards.moe/) Mk. II
 
 [![dependency status](https://img.shields.io/david/Geo1088/awards-nomination-mkii.svg)](https://david-dm.org/geo1088/awards-nomination-mkii)
 [![devDependencies Status](https://david-dm.org/geo1088/awards-nomination-mkii/dev-status.svg)](https://david-dm.org/geo1088/awards-nomination-mkii?type=dev)
@@ -15,7 +15,7 @@ Requires Node 10+ and SQLite3.
 $ cp sample.config.js config.js && $EDITOR config.js
 # Install dependencies
 $ yarn
-# Build, run and get migrations
+# Build and run
 $ yarn start
 # Just build the frontend
 $ yarn build
@@ -27,23 +27,26 @@ $ yarn serve
 
 - Automate the behind-the-scenes processes used by jurors and hosts of the /r/anime awards, including:
 	- Juror applications and juror selection
-	- Genre allocation
+	- Category allocation
 	- Shortlist creation
 	- Internal ranking and voting
+	- Public voting
+	- Hosting results of every year
 - Host public-facing surveys for nominations, genre allocations, and final votes
 - Allow subreddit moderators and awards hosts to manage user roles and view the progression of the awards as appropriate
 - Mitigate the risk of human error and information leaks in the awards process
-- Generate data for use with the awards presentation site
+- Generate data for use with the awards presentation front-end.
 
 Stretches:
 
 - Integrate directly with Discord to automate channel access and role management
-- Fold the existing awards site into this repo to further automate results display and eliminate the need to generate JSON data
+- Create a juror dashboard to eliminate need for sheets and shortlists
+- Build our own internal voting systems rather than rely on Condorcet.
 
 ## Stack
 
 This project has two parts: a Vue frontend, and a Node.js API server.
 
-The frontend uses vuex for state management and vue-router for routing. Styling is done primarily with the Bulma framework, with some custom styles applied with Sass. The frontend is compiled with Webpack and served statically.
+The frontend uses vuex for state management and vue-router for routing. Styling is done primarily with the Bulma framework, with some custom styles applied with Sass. The frontend is compiled with Webpack and served statically via sirv.
 
-The backend uses Polka, a lightweight server framework, to serve the frontend, a JSON API, and some other routes used for OAuth authentication with Reddit. SQLite3 is used as a database.
+The backend uses Polka, a lightweight server framework, to serve the frontend, a JSON API, and some other routes used for OAuth authentication with Reddit. Sequelize is used as an ORM.
