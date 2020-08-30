@@ -27,7 +27,7 @@
 				<div class="level-right">
 					<div class="level-item">
 						<div class="buttons">
-							<button @click="initiateDraft" :disabled="allocated" class="button is-primary">Roll Allocations</button>
+							<button @click="initiateDraft()" :disabled="allocated" class="button is-primary">Roll Allocations</button>
 							<button :disabled="allocated" class="button is-danger">Lock Allocations</button>
 						</div>
 					</div>
@@ -50,7 +50,7 @@
 						<div class="card-content is-fixed-height-scrollable-300">
 							<div class="content">
 								<ul>
-									<li v-for="(juror, index) in allocatedJurors.filter(juror => juror.categoryId === category.id)" :key="index" class="mb-1 has-no-bullet">
+									<li v-for="(juror, index) in filteredAllocatedJurors(category)" :key="index" class="mb-1 has-no-bullet">
 										{{juror.name}}
 										<br>
 										<div class="tags">
@@ -97,6 +97,9 @@ export default {
 			'getJurors',
 			'getAnswers',
 		]),
+		filteredAllocatedJurors (category) {
+			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
+		},
 		// Helper methods for the drafts
 		// We specifically want to get answers within a question group. This method is for that. Also returns preferences.
 		filteredAnswers (category) {
@@ -138,12 +141,13 @@ export default {
 			const returnedApplicants = [];
 			for (const applicant of applicants) {
 				// Get the applicant's answers
-				const answers = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicant);
+				let answers = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicant);
+				answers = answers.filter(answer => answer.question.type === 'essay');
 				// I hate life
 				// Super complicated looking line that iterates over each of the applicant's answers, averages out the host score, then averages out the scores obtained from that. FML
-				const score = answers.reduce((answer1, answer2) => Math.round(answer1.scores.reduce((score1, score2) => score1 + score2, 0) / answer1.scores.length) + Math.round(answer2.scores.reduce((score1, score2) => score1 + score2, 0) / answer2.scores.length), 0) / answers.length;
+				const score = answers.reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / answers.length;
 				// If the score is greater than the requirement, they qualify for the draft
-				if (score > requiredScore) {
+				if (score >= requiredScore) {
 					returnedApplicants.push({
 						name: applicant,
 						score: Math.round(score * 10) / 10,
@@ -173,8 +177,9 @@ export default {
 		runDraft (category, score, preference) {
 			// Get all answers that fall within the question group the category belongs to
 			let answers = this.filteredAnswers(category);
+			answers = answers.filter(answer => answer.question.type === 'essay');
 			// Filter out jurors that have their desired categories, are done in this round, don't gave this category a high enough preference or don't have a high enough score to qualify for the draft
-			answers = answers.filter(answer => !this.done.find(done => done === answer.applicant.user.reddit) && !this.doneForNow.find(done => done === answer.applicant.user.reddit) && Math.round(answer.scores.reduce((a, b) => a + b, 0) / answer.scores.length) === score && this.getPreference(answer.applicant.user.reddit, category) >= preference);
+			answers = answers.filter(answer => !this.done.find(done => done === answer.applicant.user.reddit) && !this.doneForNow.find(done => done === answer.applicant.user.reddit) && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= score && this.getPreference(answer.applicant.user.reddit, category) >= preference);
 			// While the draft pool isn't empty and the category still needs jurors, keep picking jurors at random and shoving them in
 			while (answers.length > 0 && category.jurorCount > this.allocatedJurors.filter(juror => juror.categoryId === category.id).length) {
 				// Pick a random qualifying answer
@@ -183,14 +188,14 @@ export default {
 				this.allocatedJurors.push({
 					name: answers[randomAnswer].applicant.user.reddit,
 					link: '',
-					score: Math.round(answers[randomAnswer].scores.reduce((a, b) => a + b, 0) / answers[randomAnswer].scores.length),
+					score: Math.round(answers[randomAnswer].scores.reduce((a, b) => a + b.score, 0) / answers[randomAnswer].scores.length),
 					active: true,
 					preference: this.getPreference(answers[randomAnswer].applicant.user.reddit, category),
 					categoryId: category.id,
 				});
 				// Now they are done for this round
 				this.doneForNow.push(answers[randomAnswer].applicant.user.reddit);
-				let desiredCategories = this.allocationAnswers.find(answer => answer.applicant.user.reddit === answers[randomAnswer].applicant.user.reddit && answer.question_group.name === 'Desired Categories');
+				let desiredCategories = this.allocationAnswers.find(answer => answer.applicant.user.reddit === answers[randomAnswer].applicant.user.reddit && answer.question.question_group.name === 'Desired Categories');
 				desiredCategories = parseInt(desiredCategories.answer, 10);
 				const numberCategories = this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length;
 				// If they have their desired number of categories, they are done and will not be a part of future drafts
@@ -216,7 +221,7 @@ export default {
 					categoryId: category.id,
 				});
 				this.doneForMain.push(applicants[randomApplicant].name);
-				let desiredCategories = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicants[randomApplicant].name && answer.question_group.name === 'Desired Categories');
+				let desiredCategories = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicants[randomApplicant].name && answer.question.question_group.name === 'Desired Categories');
 				desiredCategories = parseInt(desiredCategories.answer, 10);
 				const numberCategories = this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length;
 				if (numberCategories >= desiredCategories) this.done.push(applicants[randomApplicant].name);
@@ -298,15 +303,18 @@ export default {
 			}
 		},
 		initiateDraft () {
+			this.loaded = false;
 			// Do a draft with only the toppest jurors who scored 4's or an average of 3.5+ in main categories
-			this.topJurorDraft();
+			setTimeout(this.topJurorDraft(), 0);
 			// Do a draft of qualifying answers where the applicants gave the category a preference of 5
-			this.highPreferenceDraft();
+			setTimeout(this.highPreferenceDraft(), 0);
 			// The normal draft which consists of every qualifying applicant being in the draft of categories they gave a high enough preference to
-			this.normalDraft();
+			setTimeout(this.normalDraft(), 0);
 			// Backup draft of people who scored 2's for categories that still need jurors
-			this.backupDraft();
+			setTimeout(this.backupDraft(), 0);
 			this.totalJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))].length;
+			console.log(this.allocatedJurors);
+			this.loaded = true;
 		},
 	},
 	async mounted () {
@@ -323,7 +331,7 @@ export default {
 		// Otherwise get answers because we're here to rolllll
 		} else if (!this.answers) {
 			await this.getAnswers();
-			this.allocationAnswers = this.answers.filter(answer => answer.question.question_group.application.year === '2020');
+			this.allocationAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020);
 		}
 		this.loaded = true;
 	},

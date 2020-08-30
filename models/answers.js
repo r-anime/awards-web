@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 				name: 'answer_id',
 				allowNull: true,
 			},
+			as: 'scores',
 		});
 	};
 	return answers;

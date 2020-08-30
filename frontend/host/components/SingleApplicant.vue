@@ -110,7 +110,16 @@ export default {
 			return `Applicant ${this.applicantID}'s Application`;
 		},
 		preferences (answer) {
-			const categories = this.categories.filter(category => category.awardsGroup === answer.question.question);
+			let categories;
+			if (answer.question.question === 'Visual Production') {
+				categories = this.categories.filter(cat => cat.awardsGroup === 'production' && !cat.name.match(/Sound Design|OST|Voice Actor|OP|ED/gm));
+			} else if (answer.question.question === 'Audio Production') {
+				categories = this.categories.filter(cat => cat.name.match(/Sound Design|OST|Voice Actor/gm));
+			} else if (answer.question.question === 'OP/ED') {
+				categories = this.categories.filter(cat => cat.name.match(/OP|ED/gm));
+			} else {
+				categories = this.categories.filter(category => category.awardsGroup === answer.question.question.toLowerCase());
+			}
 			const returnArr = [];
 			const answerObject = JSON.parse(answer.answer);
 			for (const category of categories) {
