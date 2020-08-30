@@ -25,11 +25,12 @@
 						<div class="select">
 							<select v-model="question.question" @input="emitUpdate">
 								<option value="" disabled>Select One</option>
-								<option value="genre">Genre Awards</option>
-								<option value="character">Character Awards</option>
-								<option value="production">Production Awards</option>
-								<option value="test">Test Category</option>
-								<option value="main">Main Awards</option>
+								<option value="Genre">Genre Awards</option>
+								<option value="Character">Character Awards</option>
+								<option value="Visual Production">Production Awards</option>
+								<option value="Audio Production">Audio Awards</option>
+								<option value="OP/ED">OP/ED</option>
+								<option value="Main">Main Awards</option>
 							</select>
 						</div>
 					</div>

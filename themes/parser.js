@@ -56,8 +56,8 @@ async function readThemes(file) {
             if (err) throw err;
             parser(fileData, {
                 skip_empty_lines: true,
-            }, function (err,output) {
-                if (err) throw err;
+            }, function (error,output) {
+                if (error) throw error;
                 idGetter(output);
                 objectOut = objectify(output);
                 resolve(objectOut);

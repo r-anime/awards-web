@@ -172,12 +172,17 @@ apiApp.post('/question-group', async (request, response) => {
 		questionGroup = await QuestionGroups.findOne({
 			where: {
 				id: questionGroup.id,
+				active: true,
 			},
 			raw: false,
 			include: [
 				{
 					model: Questions,
 					as: 'questions',
+				},
+				{
+					model: Applications,
+					as: 'application',
 				},
 			],
 		});
@@ -220,8 +225,8 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	try {
-		await QuestionGroups.update({order: questionGroup.order, weight: questionGroup.weight, name: questionGroup.name}, {where: {id: request.params.id}});
-		const ogQuestions = await Questions.findAll({where: {group_id: request.params.id}});
+		await QuestionGroups.update({order: questionGroup.order, weight: questionGroup.weight, name: questionGroup.name}, {where: {id: request.params.id, active: true}});
+		const ogQuestions = await Questions.findAll({where: {group_id: request.params.id, active: true}});
 		const promiseArr = [];
 		const t = await sequelize.transaction();
 		for (const question of questionGroup.questions) {
@@ -231,6 +236,7 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 					promiseArr.push(Questions.update(question, {
 						where: {
 							id: question.id,
+							active: true,
 						},
 						transaction: t,
 					}));

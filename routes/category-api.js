@@ -169,7 +169,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	let promiseArr = [];
-	let ogEntries = await Entries.findAll({
+	const ogEntries = await Entries.findAll({
 		where: {
 			categoryId: request.params.id,
 		},

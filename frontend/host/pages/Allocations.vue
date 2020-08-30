@@ -81,6 +81,7 @@ export default {
 			doneForMain: [],
 			totalJurors: 0,
 			meanScore: 0,
+			allocationAnswers: [],
 		};
 	},
 	computed: {
@@ -101,18 +102,18 @@ export default {
 		filteredAnswers (category) {
 			// If category is Sound Design, Voice Actor or OST, the group must be Sound. Get all answers in that group.
 			if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
-				return this.answers.filter(answer => answer.question.questionGroup.name === 'Audio Production');
+				return this.allocationAnswers.filter(answer => answer.question.question_group.name === 'Audio Production');
 			} else if (category.name.match(/OP|ED/gm)) {
-				return this.answers.filter(answer => answer.question.questionGroup.name === 'OP/ED');
+				return this.allocationAnswers.filter(answer => answer.question.question_group.name === 'OP/ED');
 			// For production categories, get all answers in visual production
 			} else if (category.awardsGroup === 'production') {
-				return this.answers.filter(answer => answer.question.questionGroup.name === 'Visual Production');
+				return this.allocationAnswers.filter(answer => answer.question.question_group.name === 'Visual Production');
 			// ALl answers in main group
 			} else if (category.awardsGroup === 'main') {
-				return this.answers;
+				return this.allocationAnswers;
 			}
-			// If it's a genre group, get answers for that
-			return this.answers.filter(answer => answer.question.questionGroup.name.toLowerCase() === category.awardsGroup);
+			// If it's a different group, get answers for that
+			return this.allocationAnswers.filter(answer => answer.question.question_group.name.toLowerCase() === category.awardsGroup);
 		},
 		// Method to return a preference value for a given applicant and category
 		getPreference (applicant, category) {
@@ -131,13 +132,13 @@ export default {
 		// Create a draft of applicants for main categories based on a required score
 		getMainCatApplicants (requiredScore) {
 			// All the goddamn applicants
-			let applicants = [...new Set(this.answers.map(answer => answer.applicant.user.reddit))];
+			let applicants = [...new Set(this.allocationAnswers.map(answer => answer.applicant.user.reddit))];
 			// Filter out applicants that have hit their desired categories or are done for this round
 			applicants = applicants.filter(applicant => !this.done.find(done => done === applicant) && !this.doneForMain.find(done => done === applicant.name));
 			const returnedApplicants = [];
 			for (const applicant of applicants) {
 				// Get the applicant's answers
-				const answers = this.answers.filter(answer => answer.applicant.user.reddit === applicant);
+				const answers = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicant);
 				// I hate life
 				// Super complicated looking line that iterates over each of the applicant's answers, averages out the host score, then averages out the scores obtained from that. FML
 				const score = answers.reduce((answer1, answer2) => Math.round(answer1.scores.reduce((score1, score2) => score1 + score2, 0) / answer1.scores.length) + Math.round(answer2.scores.reduce((score1, score2) => score1 + score2, 0) / answer2.scores.length), 0) / answers.length;
@@ -189,8 +190,8 @@ export default {
 				});
 				// Now they are done for this round
 				this.doneForNow.push(answers[randomAnswer].applicant.user.reddit);
-				let desiredCategories = this.answers.filter(answer => answer.applicant.user.reddit === answers[randomAnswer].applicant.user.reddit);
-				desiredCategories = parseInt(desiredCategories[0].answer, 10);
+				let desiredCategories = this.allocationAnswers.find(answer => answer.applicant.user.reddit === answers[randomAnswer].applicant.user.reddit && answer.question_group.name === 'Desired Categories');
+				desiredCategories = parseInt(desiredCategories.answer, 10);
 				const numberCategories = this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length;
 				// If they have their desired number of categories, they are done and will not be a part of future drafts
 				if (numberCategories >= desiredCategories) this.done.push(answers[randomAnswer].applicant.user.reddit);
@@ -215,8 +216,8 @@ export default {
 					categoryId: category.id,
 				});
 				this.doneForMain.push(applicants[randomApplicant].name);
-				let desiredCategories = this.answers.filter(answer => answer.applicant.user.reddit === applicants[randomApplicant].name);
-				desiredCategories = parseInt(desiredCategories[0].answer, 10);
+				let desiredCategories = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicants[randomApplicant].name && answer.question_group.name === 'Desired Categories');
+				desiredCategories = parseInt(desiredCategories.answer, 10);
 				const numberCategories = this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length;
 				if (numberCategories >= desiredCategories) this.done.push(applicants[randomApplicant].name);
 				this.allocatedJurors.splice(randomApplicant, 1);
@@ -322,6 +323,7 @@ export default {
 		// Otherwise get answers because we're here to rolllll
 		} else if (!this.answers) {
 			await this.getAnswers();
+			this.allocationAnswers = this.answers.filter(answer => answer.question.question_group.application.year === '2020');
 		}
 		this.loaded = true;
 	},
