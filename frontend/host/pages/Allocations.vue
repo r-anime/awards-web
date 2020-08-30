@@ -12,13 +12,13 @@
 							<div class="control">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Total Jurors</span>
-									<span class="tag is-primary"></span>
+									<span class="tag is-primary">{{totalJurors}}</span>
 								</div>
 							</div>
 							<div class="control">
 								<div class="tags has-addons are-medium">
-									<span class="tag is-dark">Average Categories Per Juror</span>
-									<span class="tag is-primary"></span>
+									<span class="tag is-dark">Mean Score of Qualifying Jurors</span>
+									<span class="tag is-primary">{{meanScore}}</span>
 								</div>
 							</div>
 						</div>
@@ -28,7 +28,7 @@
 					<div class="level-item">
 						<div class="buttons">
 							<button @click="initiateDraft" :disabled="allocated" class="button is-primary">Roll Allocations</button>
-							<button :disabled="allocated" class="button is-primary">Lock Allocations</button>
+							<button :disabled="allocated" class="button is-danger">Lock Allocations</button>
 						</div>
 					</div>
 				</div>
@@ -79,6 +79,8 @@ export default {
 			done: [],
 			doneForNow: [],
 			doneForMain: [],
+			totalJurors: 0,
+			meanScore: 0,
 		};
 	},
 	computed: {
@@ -97,9 +99,11 @@ export default {
 		// Helper methods for the drafts
 		// We specifically want to get answers within a question group. This method is for that. Also returns preferences.
 		filteredAnswers (category) {
-			// If category is Sound Design or OST, the group must be Sound. Get all answers in that group.
-			if (category.name.match(/Sound Design|OST/gm)) {
-				return this.answers.filter(answer => answer.question.questionGroup.name === 'Sound');
+			// If category is Sound Design, Voice Actor or OST, the group must be Sound. Get all answers in that group.
+			if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
+				return this.answers.filter(answer => answer.question.questionGroup.name === 'Audio Production');
+			} else if (category.name.match(/OP|ED/gm)) {
+				return this.answers.filter(answer => answer.question.questionGroup.name === 'OP/ED');
 			// For production categories, get all answers in visual production
 			} else if (category.awardsGroup === 'production') {
 				return this.answers.filter(answer => answer.question.questionGroup.name === 'Visual Production');
@@ -108,7 +112,7 @@ export default {
 				return this.answers;
 			}
 			// If it's a genre group, get answers for that
-			return this.answers.filter(answer => answer.question.questionGroup.name.toLowerCase() === category.awardsGroup.toLowerCase());
+			return this.answers.filter(answer => answer.question.questionGroup.name.toLowerCase() === category.awardsGroup);
 		},
 		// Method to return a preference value for a given applicant and category
 		getPreference (applicant, category) {
@@ -149,7 +153,7 @@ export default {
 		},
 		// Method where we eat the rich
 		prune (categoryLimit) {
-			// All the goddamn applicants
+			// All the goddamn allocated jurors
 			const applicants = [...new Set(this.allocatedJurors.map(juror => juror.name))];
 			for (const applicant of applicants) {
 				// Get a filtered array with all the categories this applicant was assigned
@@ -279,6 +283,19 @@ export default {
 				categoryLimit++;
 			}
 		},
+		backupDraft () {
+			for (let i = 0; i < 20; i++) {
+				for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
+					this.runDraft(category, 2, 3);
+				}
+				for (const category of this.categories.filter(aCategory => aCategory.awardsGroup === 'main')) {
+					this.runMainDraft(category, 2, 3);
+				}
+				this.prune(3);
+				this.doneForNow = [];
+				this.doneForMain = [];
+			}
+		},
 		initiateDraft () {
 			// Do a draft with only the toppest jurors who scored 4's or an average of 3.5+ in main categories
 			this.topJurorDraft();
@@ -286,6 +303,9 @@ export default {
 			this.highPreferenceDraft();
 			// The normal draft which consists of every qualifying applicant being in the draft of categories they gave a high enough preference to
 			this.normalDraft();
+			// Backup draft of people who scored 2's for categories that still need jurors
+			this.backupDraft();
+			this.totalJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))].length;
 		},
 	},
 	async mounted () {

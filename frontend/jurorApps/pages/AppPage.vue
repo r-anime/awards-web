@@ -108,8 +108,14 @@ export default {
 	methods: {
 		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks', 'getCategories']),
 		getCategoriesByGroup (group) {
-			const _output = this.categories.filter(cat => cat.awardsGroup === group.question);
-			return _output;
+			if (group.question === 'Audio Production') {
+				return this.categories.filter(cat => cat.name.match(/Sound Design|OST|Voice Actor/gm));
+			} else if (group.question === 'OP/ED') {
+				return this.categories.filter(cat => cat.name.match(/OP|ED/gm));
+			} else if (group.question === 'Visual Production') {
+				return this.categories.filter(cat => cat.awardsGroup === 'production' && !cat.name.match(/Sound Design|OST|Voice Actor|OP|ED/gm));
+			}
+			return this.categories.filter(cat => cat.awardsGroup === group.question.toLowerCase());
 		},
 		multipleChoiceQuestion (str) {
 			const _output = str.split('\n');
