@@ -10,11 +10,13 @@ const QuestionGroups = sequelize.model('question_groups');
 const Questions = sequelize.model('questions');
 const Scores = sequelize.model('scores');
 const Users = sequelize.model('users');
+const Categories = sequelize.model('categories');
 
 // eslint-disable-next-line no-unused-vars
 const log = require('another-logger');
 const {yuuko} = require('../bot/index');
 const config = require('../config');
+const Allocations = require('../util/allocations');
 
 apiApp.get('/applications', async (request, response) => {
 	try {
@@ -516,6 +518,62 @@ apiApp.get('/my-answers/:applicant_id', async (request, response) => {
 	} catch (error) {
 		response.error(error);
 	}
+});
+
+apiApp.get('/allocations', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to roll jurors.'});
+	}
+	Promise.all([
+		Categories.findAll({where: {active: 1}}),
+		Answers.findAll({
+			where: {
+				active: true,
+			},
+			include: [
+				{
+					model: Questions,
+					as: 'question',
+					include: [
+						{
+							model: QuestionGroups,
+							as: 'question_group',
+							include: [
+								{
+									model: Applications,
+									as: 'application',
+								},
+							],
+						},
+					],
+				},
+				{
+					model: Applicants,
+					as: 'applicant',
+					include: [
+						{
+							model: Users,
+							as: 'user',
+						},
+					],
+				},
+				{
+					model: Scores,
+					as: 'scores',
+				},
+			],
+		}),
+	]).then(promiseArr => {
+		try {
+			// Change this every year
+			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1].filter(answer => answer.question.question_group.application.year === 2020));
+			allocationInstance.initiateDraft();
+			response.json(allocationInstance.allocatedJurors);
+		} catch (error) {
+			response.error(error);
+		}
+	});
 });
 
 module.exports = apiApp;
