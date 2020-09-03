@@ -11,6 +11,7 @@ const Questions = sequelize.model('questions');
 const Scores = sequelize.model('scores');
 const Users = sequelize.model('users');
 const Categories = sequelize.model('categories');
+const Jurors = sequelize.model('jurors');
 
 // eslint-disable-next-line no-unused-vars
 const log = require('another-logger');
@@ -564,12 +565,37 @@ apiApp.get('/allocations', async (request, response) => {
 				},
 			],
 		}),
-	]).then(promiseArr => {
+	]).then(async promiseArr => {
 		try {
 			// Change this every year
 			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1].filter(answer => answer.question.question_group.application.year === 2020));
 			allocationInstance.initiateDraft();
-			response.json(allocationInstance.allocatedJurors);
+			const jurorPromiseArr = [];
+			await Jurors.destroy({truncate: true, restartIdentity: true});
+			await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'jurors'");
+			const t = await sequelize.transaction();
+			for (const juror of allocationInstance.allocatedJurors) {
+				jurorPromiseArr.push(Jurors.create({
+					name: juror.name,
+					link: `https://www.reddit.com/user/${juror.name}`,
+					score: juror.score,
+					preference: juror.preference,
+					categoryId: juror.categoryId,
+				}, {
+					transaction: t,
+				}));
+			}
+			Promise.all(jurorPromiseArr).then(async () => {
+				await t.commit();
+				yuuko.createMessage(config.discord.auditChannel, {
+					embed: {
+						title: 'Jurors rolled',
+						description: `Jurors were rolled by **${auth}**.`,
+						color: 8302335,
+					},
+				});
+				response.json(allocationInstance.allocatedJurors);
+			});
 		} catch (error) {
 			response.error(error);
 		}

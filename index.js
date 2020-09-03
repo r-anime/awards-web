@@ -44,6 +44,8 @@ app.use(
 		saveUninitialized: false,
 		store: new SequelizeStore({
 			db: sequelize,
+			checkExpirationInterval: 15 * 60 * 1000, // The interval at which to cleanup expired sessions in milliseconds.
+			expiration: 72 * 60 * 60 * 1000, // The maximum age (in milliseconds) of a valid session.
 		}),
 	}),
 	// Static assets

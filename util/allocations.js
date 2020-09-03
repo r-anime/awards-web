@@ -102,9 +102,7 @@ class Allocations {
 			this.allocatedJurors.push({
 				id: answers[randomAnswer].applicant.id,
 				name: answers[randomAnswer].applicant.user.reddit,
-				link: '',
 				score: Math.round(answers[randomAnswer].scores.reduce((a, b) => a + b.score, 0) / answers[randomAnswer].scores.length),
-				active: true,
 				preference: this.getPreference(answers[randomAnswer].applicant.user.reddit, category),
 				categoryId: category.id,
 			});
@@ -131,9 +129,7 @@ class Allocations {
 			this.allocatedJurors.push({
 				id: applicants[randomApplicant].id,
 				name: applicants[randomApplicant].name,
-				link: '',
 				score: applicants[randomApplicant].score,
-				active: true,
 				preference: this.getPreference(applicants[randomApplicant].name, category),
 				categoryId: category.id,
 			});

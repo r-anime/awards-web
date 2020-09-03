@@ -1,6 +1,6 @@
 <template>
     <div class="section">
-        <h2 class="title">Results</h2>
+        <h2 class="title">Juror Allocation</h2>
         <div v-if="!loaded" class="content">
             <p>Loading...</p>
         </div>
@@ -17,8 +17,14 @@
 							</div>
 							<div class="control">
 								<div class="tags has-addons are-medium">
-									<span class="tag is-dark">Mean Score of Qualifying Jurors</span>
+									<span class="tag is-dark">Mean Score</span>
 									<span class="tag is-primary">{{meanScore}}</span>
+								</div>
+							</div>
+							<div class="control">
+								<div class="tags has-addons are-medium">
+									<span class="tag is-dark">Average Categories</span>
+									<span class="tag is-primary">{{averageCategories}}</span>
 								</div>
 							</div>
 						</div>
@@ -27,8 +33,7 @@
 				<div class="level-right">
 					<div class="level-item">
 						<div class="buttons">
-							<button @click="initiateDraft()" :disabled="allocated" class="button is-primary">Roll Allocations</button>
-							<button :disabled="allocated" class="button is-danger">Lock Allocations</button>
+							<button @click="initiateDraft()" class="button is-danger">Roll Allocations</button>
 						</div>
 					</div>
 				</div>
@@ -75,12 +80,12 @@ export default {
 		return {
 			loaded: false,
 			allocatedJurors: [],
-			allocated: false,
 			done: [],
 			doneForNow: [],
 			doneForMain: [],
 			totalJurors: 0,
 			meanScore: 0,
+			averageCategories: 0,
 			allocationAnswers: [],
 			showNames: false,
 		};
@@ -111,9 +116,20 @@ export default {
 				method: 'GET',
 			});
 			this.allocatedJurors = await result.json();
-			this.totalJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))].length;
+			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
+			this.totalJurors = allJurors.length;
 			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
 			this.meanScore = Math.round(this.meanScore * 10) / 10;
+			const catDictionary = {};
+			for (const juror of allJurors) {
+				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
+			}
+			let categoryTotal = 0;
+			// eslint-disable-next-line no-unused-vars
+			for (const [key, value] of Object.entries(catDictionary)) {
+				categoryTotal += value;
+			}
+			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			this.loaded = true;
 		},
 	},
@@ -133,7 +149,20 @@ export default {
 		// Check if any jurors are allocated. If so, simply render them out.
 		if (this.jurors.length > 0) {
 			this.allocatedJurors = this.jurors;
-			this.allocated = true;
+			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
+			this.totalJurors = allJurors.length;
+			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
+			this.meanScore = Math.round(this.meanScore * 10) / 10;
+			const catDictionary = {};
+			for (const juror of allJurors) {
+				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
+			}
+			let categoryTotal = 0;
+			// eslint-disable-next-line no-unused-vars
+			for (const [key, value] of Object.entries(catDictionary)) {
+				categoryTotal += value;
+			}
+			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 		}
 		const namesLock = this.locks.find(lock => lock.name === 'app-names');
 		if (namesLock.flag || this.me.level > 3) {
