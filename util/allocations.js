@@ -209,6 +209,17 @@ class Allocations {
 	backupDraft () {
 		for (let i = 0; i < 20; i++) {
 			for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
+				this.runDraft(category, 2, 5);
+			}
+			for (const category of this.categories.filter(aCategory => aCategory.awardsGroup === 'main')) {
+				this.runMainDraft(category, 2, 5);
+			}
+			this.prune(3);
+			this.doneForNow = [];
+			this.doneForMain = [];
+		}
+		for (let i = 0; i < 20; i++) {
+			for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
 				this.runDraft(category, 2, 3);
 			}
 			for (const category of this.categories.filter(aCategory => aCategory.awardsGroup === 'main')) {
