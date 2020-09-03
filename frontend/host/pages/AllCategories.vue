@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div v-if="!categories">Loading categories...</div>
+    <div v-if="!loaded">Loading categories...</div>
     <div v-else-if="categories.length === 0">No categories!</div>
     <div v-else class="columns is-mobile is-multiline">
       <div
@@ -72,7 +72,7 @@
                 <button
                   class="button is-info"
                   v-bind:class="{'is-loading' : duplicating && category.id === selectedCategoryId}"
-                  @click="submitDuplicateCategory(category.id, category.name, category.entryType, category.entries, category.awardsGroup, category.jurorCount)"
+                  @click="submitDuplicateCategory(category.id, category.name, category.entryType, category.awardsGroup, category.jurorCount)"
                 >Copy</button>
               </div>
               <div class="level-item">
@@ -173,11 +173,15 @@ export default {
 			deleting: false,
 			duplicating: false,
 			selectedCategoryId: '',
+			loaded: false,
 		};
 	},
 	computed: {
 		// Pull in stuff from Vuex
-		...mapState(['categories']),
+		...mapState([
+			'categories',
+			'entries',
+		]),
 		...mapGetters(['isHost']),
 		filteredCategories () {
 			if (!this.categoryFilter) return this.categories;
@@ -185,12 +189,16 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['getCategories', 'createCategory', 'deleteCategory']),
+		...mapActions([
+			'getCategories',
+			'createCategory',
+			'deleteCategory',
+			'getEntries',
+		]),
 		categoryEntryCount (category) {
-			if (!category.entries) return 'No entries';
-			const entries = JSON.parse(category.entries);
-			if (!entries || !entries.length) return 'No entries';
-			return `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}`;
+			const categoryEntries = this.entries.filter(entry => entry.categoryId === category.id);
+			if (categoryEntries.length === 0) return 'No entries';
+			return `${categoryEntries.length} entr${categoryEntries.length === 1 ? 'y' : 'ies'}`;
 		},
 		categoryEntryType (category) {
 			switch (category.entryType) {
@@ -237,7 +245,6 @@ export default {
 			categoryID,
 			categoryName,
 			categoryType,
-			categoryEntries,
 			categoryGroup,
 			categoryJurorCount,
 		) {
@@ -250,7 +257,6 @@ export default {
 						data: {
 							name: newName,
 							entryType: categoryType,
-							entries: categoryEntries,
 							awardsGroup: categoryGroup,
 							jurorCount: categoryJurorCount,
 						},
@@ -269,7 +275,6 @@ export default {
 						data: {
 							name: this.categoryName,
 							entryType: this.newEntryType,
-							entries: '',
 							awardsGroup: this.newEntryGroup,
 							jurorCount: parseInt(this.newJurorCount, 10),
 						},
@@ -281,10 +286,14 @@ export default {
 			});
 		},
 	},
-	mounted () {
+	async mounted () {
 		if (!this.categories) {
-			this.getCategories();
+			await this.getCategories();
 		}
+		if (!this.entries) {
+			await this.getEntries();
+		}
+		this.loaded = true;
 	},
 };
 </script>

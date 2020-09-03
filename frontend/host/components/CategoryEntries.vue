@@ -55,8 +55,10 @@ export default {
 		]),
 	},
 	async mounted () {
-		await this.getEntries(this.category.id);
-		this.computedEntries = this.entries;
+		if (!this.entries) {
+			await this.getEntries();
+		}
+		this.computedEntries = this.entries.filter(entry => entry.categoryId === this.category.id);
 		this.loaded = true;
 	},
 };

@@ -304,8 +304,8 @@ const store = new Vuex.Store({
 			await makeRequest('/api/category/wipeEverything', 'DELETE');
 			commit('WIPE_EVERYTHING');
 		},
-		async getEntries ({commit}, id) {
-			const entries = await makeRequest(`/api/category/${id}/entries`);
+		async getEntries ({commit}) {
+			const entries = await makeRequest('/api/category/entries/all');
 			commit('UPDATE_ENTRIES', entries);
 		},
 		async updateEntries ({commit}, {id, entries}) {

@@ -149,14 +149,6 @@ apiApp.get('/entries/all', async (request, response) => {
 	}
 });
 
-apiApp.get('/:id/entries', async (request, response) => {
-	try {
-		response.json(await Entries.findAll({where: {categoryId: request.params.id}}));
-	} catch (error) {
-		response.error(error);
-	}
-});
-
 apiApp.post('/:id/entries', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
