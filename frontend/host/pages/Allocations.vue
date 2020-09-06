@@ -102,9 +102,6 @@ export default {
 		return {
 			loaded: false,
 			allocatedJurors: [],
-			done: [],
-			doneForNow: [],
-			doneForMain: [],
 			totalJurors: 0,
 			meanScore: 0,
 			averageCategories: 0,
@@ -137,6 +134,11 @@ export default {
 		},
 		async initiateDraft () {
 			this.loaded = false;
+			this.meanScore = 0;
+			this.averageCategories = 0;
+			this.threesUnallocated = 0;
+			this.twosUnallocated = 0;
+			this.categoriesUnfilled = 0;
 			const result = await fetch('/api/juror-apps/allocations', {
 				method: 'GET',
 			});

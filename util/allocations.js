@@ -229,6 +229,61 @@ class Allocations {
 		}
 	}
 
+	lowInterestDraft () {
+		let unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
+		let unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
+		for (const category of unfilledNonMainCategories) {
+			const answers = this.filteredAnswers(category).filter(answer => !this.allocatedJurors.find(aJ => aJ.name === answer.applicant.user.reddit && aJ.categoryId === category.id) && answer.question.type === 'essay' && this.getPreference(answer.applicant.user.reddit, category) >= 3 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2 && !this.done.find(done => done === answer.applicant.user.reddit));
+			while (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount && answers.length > 0) {
+				const randomAnswer = Math.floor(Math.random() * Math.floor(answers.length));
+				if (this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length >= 3) {
+					const categoryToPrune = this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).reduce((prev, curr) => prev.preference < curr.preference ? prev : curr);
+					const index = this.allocatedJurors.findIndex(juror => juror.name === categoryToPrune.name && juror.categoryId === categoryToPrune.categoryId);
+					this.allocatedJurors.splice(index, 1);
+					this.done.push(answers[randomAnswer].applicant.user.reddit);
+				}
+				this.allocatedJurors.push({
+					id: answers[randomAnswer].applicant.id,
+					name: answers[randomAnswer].applicant.user.reddit,
+					score: Math.round(answers[randomAnswer].scores.reduce((a, b) => a + b.score, 0) / answers[randomAnswer].scores.length),
+					preference: this.getPreference(answers[randomAnswer].applicant.user.reddit, category),
+					categoryId: category.id,
+				});
+				answers.splice(randomAnswer, 1);
+			}
+		}
+		for (const category of unfilledMainCategories) {
+			let applicants = this.getMainCatApplicants(2);
+			// Filter out applicants that gave a low preference to the category in question and also make sure they're not already in the category
+			applicants = applicants.filter(applicant => this.getPreference(applicant.name, category) >= 3 && !this.allocatedJurors.find(aJ => aJ.name === applicant.name && aJ.categoryId === category.id));
+			while (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount && applicants.length > 0) {
+				const randomApplicant = Math.floor(Math.random() * Math.floor(applicants.length));
+				if (this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length >= 3) {
+					const categoryToPrune = this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).reduce((prev, curr) => prev.preference < curr.preference ? prev : curr);
+					const index = this.allocatedJurors.findIndex(juror => juror.name === categoryToPrune.name && juror.categoryId === categoryToPrune.categoryId);
+					this.allocatedJurors.splice(index, 1);
+					this.done.push(applicants[randomApplicant].name);
+				}
+				this.allocatedJurors.push({
+					id: applicants[randomApplicant].id,
+					name: applicants[randomApplicant].name,
+					score: applicants[randomApplicant].score,
+					preference: this.getPreference(applicants[randomApplicant].name, category),
+					categoryId: category.id,
+				});
+				applicants.splice(randomApplicant, 1);
+			}
+		}
+		unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
+		unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
+		for (const category of unfilledNonMainCategories) {
+			this.runDraft(category, 2, 3);
+		}
+		for (const category of unfilledMainCategories) {
+			this.runMainDraft(category, 2, 3);
+		}
+	}
+
 	initiateDraft () {
 		// Do a draft with only the toppest jurors who scored 4's or an average of 3.5+ in main categories
 		this.topJurorDraft();
@@ -238,6 +293,7 @@ class Allocations {
 		this.normalDraft();
 		// Backup draft of people who scored 2's for categories that still need jurors
 		this.backupDraft();
+		this.lowInterestDraft();
 	}
 }
 
