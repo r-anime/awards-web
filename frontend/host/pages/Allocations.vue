@@ -8,23 +8,45 @@
 			<div class="level">
 				<div class="level-left">
 					<div class="level-item">
-						<div class="field is-grouped is-grouped-multiline">
-							<div class="control">
+						<div class="columns is-multiline is-mobile">
+							<div class="column is-narrow">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Total Jurors</span>
 									<span class="tag is-primary">{{totalJurors}}</span>
 								</div>
 							</div>
-							<div class="control">
+							<div class="column is-narrow">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Mean Score</span>
 									<span class="tag is-primary">{{meanScore}}</span>
 								</div>
 							</div>
-							<div class="control">
+							<div class="column is-narrow">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Average Categories</span>
 									<span class="tag is-primary">{{averageCategories}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="level-item">
+						<div class="columns is-multiline is-mobile">
+							<div class="column is-narrow">
+								<div class="tags has-addons are-medium">
+									<span class="tag is-dark">Categories Unfilled</span>
+									<span class="tag is-primary">{{categoriesUnfilled}}</span>
+								</div>
+							</div>
+							<div class="column is-narrow">
+								<div class="tags has-addons are-medium">
+									<span class="tag is-dark">Unpassed Applicants</span>
+									<span class="tag is-primary">{{threesUnallocated}}</span>
+								</div>
+							</div>
+							<div class="column is-narrow">
+								<div class="tags has-addons are-medium">
+									<span class="tag is-dark">Unpassed Backup Applicants</span>
+									<span class="tag is-primary">{{twosUnallocated}}</span>
 								</div>
 							</div>
 						</div>
@@ -88,6 +110,9 @@ export default {
 			averageCategories: 0,
 			allocationAnswers: [],
 			showNames: false,
+			threesUnallocated: 0,
+			twosUnallocated: 0,
+			categoriesUnfilled: 0,
 		};
 	},
 	computed: {
@@ -130,6 +155,26 @@ export default {
 				categoryTotal += value;
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
+			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
+			const threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
+			const twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
+			for (const applicant of threesApplicants) {
+				const found = allJurors.find(juror => juror === applicant);
+				if (!found) {
+					this.threesUnallocated++;
+				}
+			}
+			for (const applicant of twosApplicants) {
+				const found = allJurors.find(juror => juror === applicant);
+				if (!found) {
+					this.twosUnallocated++;
+				}
+			}
+			for (const category of this.categories) {
+				if (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount) {
+					this.categoriesUnfilled++;
+				}
+			}
 			this.loaded = true;
 		},
 	},
@@ -145,6 +190,9 @@ export default {
 		}
 		if (!this.locks) {
 			await this.getLocks();
+		}
+		if (!this.answers) {
+			await this.getAnswers();
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
 		if (this.jurors.length > 0) {
@@ -163,6 +211,26 @@ export default {
 				categoryTotal += value;
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
+			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
+			const threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
+			const twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			for (const applicant of threesApplicants) {
+				const found = allJurors.find(juror => juror === applicant);
+				if (!found) {
+					this.threesUnallocated++;
+				}
+			}
+			for (const applicant of twosApplicants) {
+				const found = allJurors.find(juror => juror === applicant);
+				if (!found) {
+					this.twosUnallocated++;
+				}
+			}
+			for (const category of this.categories) {
+				if (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount) {
+					this.categoriesUnfilled++;
+				}
+			}
 		}
 		const namesLock = this.locks.find(lock => lock.name === 'app-names');
 		if (namesLock.flag || this.me.level > 3) {

@@ -42,6 +42,9 @@ app.use(
 		secret: config.session.secret,
 		resave: false,
 		saveUninitialized: false,
+		cookie: {
+			maxAge: 72 * 60 * 60 * 1000,
+		},
 		store: new SequelizeStore({
 			db: sequelize,
 			checkExpirationInterval: 15 * 60 * 1000, // The interval at which to cleanup expired sessions in milliseconds.

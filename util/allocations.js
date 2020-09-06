@@ -1,5 +1,3 @@
-const log = require('another-logger');
-
 class Allocations {
 	constructor (categories, allocationAnswers) {
 		this.allocatedJurors = [];
