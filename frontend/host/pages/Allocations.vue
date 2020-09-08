@@ -105,7 +105,6 @@ export default {
 			totalJurors: 0,
 			meanScore: 0,
 			averageCategories: 0,
-			allocationAnswers: [],
 			showNames: false,
 			threesUnallocated: 0,
 			twosUnallocated: 0,
@@ -139,6 +138,7 @@ export default {
 			this.threesUnallocated = 0;
 			this.twosUnallocated = 0;
 			this.categoriesUnfilled = 0;
+			this.totalJurors = 0;
 			const result = await fetch('/api/juror-apps/allocations', {
 				method: 'GET',
 			});
@@ -159,7 +159,7 @@ export default {
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
 			const threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
-			const twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
+			const twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
 			for (const applicant of threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
