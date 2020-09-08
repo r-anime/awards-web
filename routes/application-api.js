@@ -446,9 +446,13 @@ apiApp.get('/applicant', async (request, response) => {
 				},
 			],
 		});
-		applicant = applicant[0].get();
-		applicant.user = applicant.user.get();
-		response.json(applicant);
+		if (applicant.length) {
+			applicant = applicant[0].get();
+			applicant.user = applicant.user.get();
+			response.json(applicant);
+		} else {
+			response.json(401, {error: 'Applicant not registered. Please log out from the navbar and log back in.'});
+		}
 	} catch (error) {
 		response.error(error);
 	}
@@ -521,6 +525,39 @@ apiApp.get('/my-answers/:applicant_id', async (request, response) => {
 	}
 });
 
+apiApp.get('/clean', async (request, response) => {
+	const auth = await request.authenticate({level: 4});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an admin to clean jury applications.'});
+	}
+	try {
+		const answers = await Answers.findAll({
+			where: {
+				active: true,
+			},
+		});
+		const applicants = await Applicants.findAll({
+			where: {
+				active: true,
+			},
+			include: [{
+				model: Applications,
+				as: 'application',
+			}],
+		});
+		for (const applicant of applicants) {
+			if (answers.filter(answer => answer.applicant_id === applicant.id).length === 0) {
+				await Applicants.destroy({where: {
+					id: applicant.id,
+				}});
+			}
+		}
+		response.empty();
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.get('/allocations', async (request, response) => {
 	const auth = await request.authenticate({level: 4});
 	if (!auth) {
@@ -565,10 +602,23 @@ apiApp.get('/allocations', async (request, response) => {
 				},
 			],
 		}),
+		Questions.findAll({
+			where: {
+				active: true,
+			},
+			include: [{
+				model: QuestionGroups,
+				as: 'question_group',
+				include: [{
+					model: Applications,
+					as: 'application',
+				}],
+			}],
+		}),
 	]).then(async promiseArr => {
 		try {
 			// Change this every year
-			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1].filter(answer => answer.question.question_group.application.year === 2020));
+			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1].filter(answer => answer.question.question_group.application.year === 2020), promiseArr[2].filter(question => question.question_group.application.year === 2020 && question.type === 'essay'));
 			allocationInstance.initiateDraft();
 			const jurorPromiseArr = [];
 			await Jurors.destroy({truncate: true, restartIdentity: true});

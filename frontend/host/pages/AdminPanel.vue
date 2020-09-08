@@ -19,7 +19,12 @@
 
 	<h2 class="title is-4">Wipe and reset all category data</h2>
 	<div class="buttons">
-		<button class="button is-success" :class="{'is-loading' : wiping}" @click="wipeTables">Wipe results tables</button>
+		<button class="button is-danger" :class="{'is-loading' : wiping}" @click="wipeTables">Wipe results tables</button>
+	</div>
+
+	<h2 class="title is-4">Remove all hit-and-run jury applicants</h2>
+	<div class="buttons">
+		<button class="button is-success" :class="{'is-loading' : cleaning}" @click="cleanApps">Clean jury apps</button>
 	</div>
 
 	<h2 class="title is-3">Change locks</h2>
@@ -97,6 +102,7 @@ export default {
 			loaded: false,
 			computedLocks: null,
 			locking: false,
+			cleaning: false,
 		};
 	},
 	computed: {
@@ -126,6 +132,13 @@ export default {
 			this.wiping = true;
 			await this.wipeEverything();
 			this.wiping = false;
+		},
+		async cleanApps () {
+			this.cleaning = true;
+			await fetch('/api/juror-apps/clean', {
+				method: 'GET',
+			});
+			this.cleaning = false;
 		},
 		computedLock (lock) {
 			if (lock.flag) return 'Unlocked';

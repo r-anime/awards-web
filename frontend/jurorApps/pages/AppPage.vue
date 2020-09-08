@@ -226,7 +226,7 @@ export default {
 	mounted () {
 		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
-			if (appLock.flag) {
+			if (appLock.flag && this.applicant) {
 				await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
 					this.samples = Object.assign({}, data).writeups;
 				});

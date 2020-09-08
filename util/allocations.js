@@ -1,11 +1,12 @@
 class Allocations {
-	constructor (categories, allocationAnswers) {
+	constructor (categories, allocationAnswers, questions) {
 		this.allocatedJurors = [];
 		this.done = [];
 		this.doneForNow = [];
 		this.doneForMain = [];
 		this.categories = categories;
 		this.allocationAnswers = allocationAnswers;
+		this.questions = questions;
 	}
 
 	// Helper methods for the drafts
@@ -54,7 +55,7 @@ class Allocations {
 			const answers = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicant && answer.question.type === 'essay');
 			// I hate life
 			// Super complicated looking line that iterates over each of the applicant's answers, averages out the host score, then averages out the scores obtained from that. FML
-			const score = answers.reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / answers.length;
+			const score = answers.reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / this.questions.length;
 			// If the score is greater than the requirement, they qualify for the draft
 			if (score >= requiredScore) {
 				returnedApplicants.push({
