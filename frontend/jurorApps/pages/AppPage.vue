@@ -5,6 +5,9 @@
 			<div class="pl-5 pr-5">
 				<Viewer :initialValue="computedApplication.start_note"/>
 			</div>
+			<div class="has-text-centered">
+				<button class="button is-primary" @click="showModal">View Samples</button>
+			</div>
 			<div v-for="(qg, qg_index) in computedApplication.question_groups"
 					:key="qg_index">
 					<h2 class="qg-header">{{qg.name}}</h2>
@@ -54,6 +57,26 @@
 				<Viewer :initialValue="computedApplication.end_note"/>
 			</div>
 		</div>
+		<div class="modal animated fast fadeIn" :class="{'is-active': showSamples}">
+			<div class="modal-background" @click="closeModal"></div>
+			<div class="modal-card has-text-dark">
+				<header class="modal-card-head">
+					<p class="modal-card-title has-text-dark">Sample Writeups</p>
+				</header>
+				<section class="modal-card-body">
+					<h3 class="has-text-dark mb-10">
+						{{samples[sampleIndex].question}}
+					</h3>
+					<div class="has-text-dark awardsModalBody" v-html="markdownit(samples[sampleIndex].answer)">
+					</div>
+				</section>
+				<footer class="modal-card-foot">
+					<button class="button is-info" @click="prevSample" >Previous Sample</button>
+					<button class="button is-primary" @click="nextSample" >Next Sample</button>
+				</footer>
+			</div>
+			<button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+		</div>
 	</section>
 	<div class="section" v-else-if="loaded && locked">
 		Jury Apps are not open yet.
@@ -75,6 +98,7 @@
 import 'codemirror/lib/codemirror.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import {Viewer, Editor} from '@toast-ui/vue-editor';
+import marked from 'marked';
 import {mapState, mapActions} from 'vuex';
 
 export default {
@@ -103,10 +127,16 @@ export default {
 			answers: {},
 			mc_answers: {}, // temp variable to model pref questions
 			changed: false,
+			samples: {},
+			showSamples: false,
+			sampleIndex: 0,
 		};
 	},
 	methods: {
 		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks', 'getCategories']),
+		markdownit (it) {
+			return marked(it);
+		},
 		getCategoriesByGroup (group) {
 			if (group.question === 'Audio Production') {
 				return this.categories.filter(cat => cat.name.match(/Sound Design|OST|Voice Actor/gm));
@@ -180,11 +210,28 @@ export default {
 				this.$set(this.saving, questionID, false);
 			}, 2000);
 		},
+		showModal () {
+			this.showSamples = true;
+		},
+		closeModal () {
+			this.showSamples = false;
+		},
+		prevSample () {
+			this.sampleIndex = (this.sampleIndex + this.samples.length - 1) % this.samples.length;
+		},
+		nextSample () {
+			this.sampleIndex = (this.sampleIndex + 1) % this.samples.length;
+		},
 	},
 	mounted () {
 		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
 			if (appLock.flag) {
+				await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
+					this.samples = Object.assign({}, data).writeups;
+				});
+				console.log(this.samples);
+
 				this.locked = false;
 				await this.getAnswers(this.applicant.id);
 				this.computedApplication = this.application;
