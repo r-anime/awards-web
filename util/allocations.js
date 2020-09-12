@@ -234,7 +234,7 @@ class Allocations {
 		let unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		let unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		for (const category of unfilledNonMainCategories) {
-			const answers = this.filteredAnswers(category).filter(answer => !this.allocatedJurors.find(aJ => aJ.name === answer.applicant.user.reddit && aJ.categoryId === category.id) && answer.question.type === 'essay' && this.getPreference(answer.applicant.user.reddit, category) >= 3 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2 && !this.done.find(done => done === answer.applicant.user.reddit));
+			const answers = this.filteredAnswers(category).filter(answer => !this.allocatedJurors.find(aJ => aJ.name === answer.applicant.user.reddit && aJ.categoryId === category.id) && answer.question.type === 'essay' && this.getPreference(answer.applicant.user.reddit, category) >= 2 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2 && !this.done.find(done => done === answer.applicant.user.reddit));
 			while (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount && answers.length > 0) {
 				const randomAnswer = Math.floor(Math.random() * Math.floor(answers.length));
 				if (this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length >= 3) {
@@ -256,7 +256,7 @@ class Allocations {
 		for (const category of unfilledMainCategories) {
 			let applicants = this.getMainCatApplicants(2);
 			// Filter out applicants that gave a low preference to the category in question and also make sure they're not already in the category
-			applicants = applicants.filter(applicant => this.getPreference(applicant.name, category) >= 3 && !this.allocatedJurors.find(aJ => aJ.name === applicant.name && aJ.categoryId === category.id));
+			applicants = applicants.filter(applicant => this.getPreference(applicant.name, category) >= 2 && !this.allocatedJurors.find(aJ => aJ.name === applicant.name && aJ.categoryId === category.id));
 			while (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount && applicants.length > 0) {
 				const randomApplicant = Math.floor(Math.random() * Math.floor(applicants.length));
 				if (this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length >= 3) {
@@ -278,10 +278,10 @@ class Allocations {
 		unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		for (const category of unfilledNonMainCategories) {
-			this.runDraft(category, 2, 3);
+			this.runDraft(category, 2, 2);
 		}
 		for (const category of unfilledMainCategories) {
-			this.runMainDraft(category, 2, 3);
+			this.runMainDraft(category, 2, 2);
 		}
 	}
 

@@ -143,7 +143,11 @@ apiApp.delete('/:id', async (request, response) => {
 
 apiApp.get('/entries/all', async (request, response) => {
 	try {
-		response.json(await Entries.findAll());
+		response.json(await Entries.findAll({
+			where: {
+				active: true,
+			},
+		}));
 	} catch (error) {
 		response.error(error);
 	}

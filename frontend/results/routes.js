@@ -30,7 +30,7 @@ import About19 from './archived-pages/About19';
 
 export default new VueRouter({
 	mode: 'history',
-	scrollBehavior(to, from, savedPosition) {
+	scrollBehavior (to, from, savedPosition) {
 		document.body.scrollTop = 0; // For Safari
     	document.documentElement.scrollTop = 0;
 	},
