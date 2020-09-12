@@ -27,11 +27,11 @@
                                         <li>/u/KitKat1721</li>
                                         <li>/u/Miidas-92</li>
                                         <li>/u/PandavengerX</li>
-                                        <li>/u/Raging_SEAn</li>
                                         <li>/u/Ralon17</li>
                                         <li>/u/reyae</li>
                                         <li>/u/rusticks</li>
                                         <li>/u/RX-Nota-II</li>
+                                        <li>/u/TigerK3</li>
                                         <li>/u/Vaxivop</li>
                                    </ul>
                                 </div>
