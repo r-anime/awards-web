@@ -15,7 +15,7 @@
 						>{{linkText(applicant)}}</router-link>
 					</h3>
 					<br/>
-					<button :disabled="!isAdmin" class="button is-danger">Delete Applicant</button>
+					<button @click="submitDeleteApplicant(applicant.id)" :disabled="!isAdmin" class="button is-danger">Delete Applicant</button>
 				</div>
 			</div>
 		</div>
@@ -43,12 +43,17 @@ export default {
 		...mapGetters(['isAdmin']),
 	},
 	methods: {
-		...mapActions(['getApplicants', 'getLocks', 'getMe']),
+		...mapActions(['getApplicants', 'getLocks', 'getMe', 'deleteApplicant']),
 		linkText (applicant) {
 			if (this.lock.flag || this.me.level > this.lock.level) {
 				return applicant.user.reddit;
 			}
 			return `Applicant ${applicant.id}`;
+		},
+		async submitDeleteApplicant (id) {
+			await this.deleteApplicant(id);
+			const index = this.filteredApplicants.findIndex(applicant => applicant.id === id);
+			this.filteredApplicants.splice(index, 1);
 		},
 	},
 	async mounted () {

@@ -277,11 +277,14 @@ class Allocations {
 		}
 		unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
-		for (const category of unfilledNonMainCategories) {
-			this.runDraft(category, 2, 2);
-		}
-		for (const category of unfilledMainCategories) {
-			this.runMainDraft(category, 2, 2);
+		for (let i = 0; i < 10; i++) {
+			for (const category of unfilledNonMainCategories) {
+				this.runDraft(category, 2, 2);
+			}
+			for (const category of unfilledMainCategories) {
+				this.runMainDraft(category, 2, 2);
+			}
+			this.prune(3);
 		}
 	}
 

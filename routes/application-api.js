@@ -409,6 +409,14 @@ apiApp.delete('/applicant/:id', async (request, response) => {
 	}
 	try {
 		await Applicants.update({active: false}, {where: {id: request.params.id}});
+		await Answers.update({
+			active: false,
+		},
+		{
+			where: {
+				applicant_id: request.params.id,
+			},
+		});
 		yuuko.createMessage(config.discord.auditChannel, {
 			embed: {
 				title: 'Applicant Deleted',
