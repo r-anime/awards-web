@@ -185,7 +185,7 @@ export default {
 		...mapGetters(['isHost']),
 		filteredCategories () {
 			if (!this.categoryFilter) return this.categories;
-			return this.categories.filter(cat => cat.id.toLowerCase().includes(this.categoryFilter.toLowerCase()));
+			return this.categories.filter(cat => cat.name.toLowerCase().includes(this.categoryFilter.toLowerCase()));
 		},
 	},
 	methods: {
@@ -197,6 +197,10 @@ export default {
 		]),
 		categoryEntryCount (category) {
 			const categoryEntries = this.entries.filter(entry => entry.categoryId === category.id);
+			if (category.entryType === 'characters') {
+				console.log(category);
+				console.log(categoryEntries);
+			}
 			if (categoryEntries.length === 0) return 'No entries';
 			return `${categoryEntries.length} entr${categoryEntries.length === 1 ? 'y' : 'ies'}`;
 		},
