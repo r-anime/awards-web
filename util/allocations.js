@@ -141,7 +141,23 @@ class Allocations {
 		}
 	}
 
-	// The method that runs first in the algorithm by only creating a draft of answers/jurors that scored a 4 in non-main cats and a 3.5+ in genre cats
+	// Method that runs first in the algorithm and creates a draft of jurors with high scores in categories which they gave a preference of 5 to
+	topJurorHighPreferenceDraft () {
+		// Run draft for categories that aren't main
+		for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
+			// Only choose from applicants that scored a 4 and gave category a preference of 5
+			this.runDraft(category, 4, 5);
+		}
+		// Run draft for main categories
+		for (const category of this.categories.filter(aCategory => aCategory.awardsGroup === 'main')) {
+			// Only choose from applicants that scored an average of 3.5+ on the app as a whole and gave the category a preference of 5
+			this.runMainDraft(category, 3.5, 5);
+		}
+		// Prune allocated jurors that have more than one cat
+		this.prune(1);
+	}
+
+	// The follow-up method that only chooses from applicants who scored 4 but places them into categories they gave 3+ to.
 	topJurorDraft () {
 		// Run draft for categories that aren't main
 		for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
@@ -205,6 +221,7 @@ class Allocations {
 		}
 	}
 
+	// Backup draft of jurors that scored 2's
 	backupDraft () {
 		for (let i = 0; i < 20; i++) {
 			for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
@@ -230,6 +247,7 @@ class Allocations {
 		}
 	}
 
+	// Final low interest draft that just flips people around based on filling categories that haven't been filled yet
 	lowInterestDraft () {
 		let unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		let unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
@@ -289,6 +307,8 @@ class Allocations {
 	}
 
 	initiateDraft () {
+		// First draft of top jurors with highest scores only in categories they gave a preference of 5 to
+		this.topJurorHighPreferenceDraft();
 		// Do a draft with only the toppest jurors who scored 4's or an average of 3.5+ in main categories
 		this.topJurorDraft();
 		// Do a draft of qualifying answers where the applicants gave the category a preference of 5
@@ -297,6 +317,7 @@ class Allocations {
 		this.normalDraft();
 		// Backup draft of people who scored 2's for categories that still need jurors
 		this.backupDraft();
+		// Final draft to fill up categories that had lower interest and couldn't be filled
 		this.lowInterestDraft();
 	}
 }
