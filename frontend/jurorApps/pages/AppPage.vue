@@ -45,6 +45,11 @@
 							</div>
 						</div>
 						<div class="level is-mobile mt-10">
+							<p class="has-text-danger" v-if="q.type === 'essay'">
+								{{essayText[q.id]}}
+							</p>
+						</div>
+						<div class="level is-mobile mt-10">
 							<div class="level-left"></div>
 							<div class="level-right notification is-light question-save" :class="{ 'question-saving': saving[q.id], 'is-success': !saving[q.id]}">
 								{{ saving[q.id] ? "Saving..." : "Saved!" }}
@@ -130,10 +135,11 @@ export default {
 			samples: {},
 			showSamples: false,
 			sampleIndex: 0,
+			essayText: {},
 		};
 	},
 	methods: {
-		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks', 'getCategories']),
+		...mapActions(['getApplication', 'getApplicant', 'getAnswers', 'getLocks', 'getCategories', 'getMe']),
 		markdownit (it) {
 			return marked(it);
 		},
@@ -161,6 +167,15 @@ export default {
 			}
 			const md = this.$refs[`editor-${questionID}`][0].invoke('getMarkdown');
 			clearTimeout(this.typingTimeout[questionID]);
+			if (md.length > 300 && md.length < 50000) {
+				this.$set(this.essayText, questionID, `${md.length}/50000`);
+			} else if (md.length > 50000) {
+				this.$set(this.essayText, questionID, 'You are over the character limit');
+				return;
+			} else if (md.length < 300) {
+				this.$set(this.essayText, questionID, 'Please write more to submit your answer');
+				return;
+			}
 			this.$set(this.saving, questionID, true);
 			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
@@ -224,14 +239,12 @@ export default {
 		},
 	},
 	mounted () {
-		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
+		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.categories ? Promise.resolve() : this.getCategories(), this.me ? Promise.resolve() : this.getMe()]).then(async () => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
-			if (appLock.flag && this.applicant) {
+			if ((appLock.flag || this.me.level > appLock.level) && this.applicant) {
 				await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
 					this.samples = Object.assign({}, data).writeups;
 				});
-				console.log(this.samples);
-
 				this.locked = false;
 				await this.getAnswers(this.applicant.id);
 				this.computedApplication = this.application;
@@ -251,6 +264,7 @@ export default {
 								}
 							} else {
 								this.answers[question.id] = found.answer;
+								this.essayText[question.id] = `${this.answers[question.id].length}/50000`;
 							}
 						} else {
 							// eslint-disable-next-line no-lonely-if
@@ -263,6 +277,7 @@ export default {
 								}
 							} else {
 								this.answers[question.id] = '';
+								this.essayText[question.id] = 'Please write more to submit your answer';
 							}
 						}
 						this.$set(this.saving, question.id, false);

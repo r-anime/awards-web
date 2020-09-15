@@ -14,6 +14,7 @@
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@geo1088/eslint-config": "^3.0.10",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.5",
     "bundle-loader": "^0.5.6",
     "compression-webpack-plugin": "^5.0.1",

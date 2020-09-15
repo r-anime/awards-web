@@ -151,7 +151,7 @@ sequelize.sync().then(async () => {
 						name: 'apps-open',
 					},
 					defaults: {
-						level: 0,
+						level: 3,
 						flag: false,
 					},
 					transaction: t,

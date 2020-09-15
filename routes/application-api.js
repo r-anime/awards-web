@@ -483,6 +483,10 @@ apiApp.post('/submit', async (request, response) => {
 		return response.json(400, {error: 'Invalid JSON'});
 	}
 	try {
+		if (req.answer.length > 50000) {
+			response.json(401, {error: 'You are over the character limit for answers.'});
+			return;
+		}
 		// eslint-disable-next-line no-unused-vars
 		const [answer, created] = await Answers.findOrCreate({
 			where: {
