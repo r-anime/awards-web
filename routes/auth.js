@@ -53,7 +53,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 				name: 'apps-open',
 			},
 		});
-		if (lock.flag) {
+		if (lock.flag || user.level > lock.level) {
 			const apps = await sequelize.model('applications').findAll({
 				limit: 1,
 				where: {active: true},
