@@ -409,14 +409,16 @@ apiApp.delete('/applicant/:id', async (request, response) => {
 	}
 	try {
 		await Applicants.update({active: false}, {where: {id: request.params.id}});
-		await Answers.update({
-			active: false,
-		},
-		{
-			where: {
-				applicant_id: request.params.id,
+		await Answers.update(
+			{
+				active: false,
 			},
-		});
+			{
+				where: {
+					applicant_id: request.params.id,
+				},
+			},
+		);
 		yuuko.createMessage(config.discord.auditChannel, {
 			embed: {
 				title: 'Applicant Deleted',
@@ -558,7 +560,7 @@ apiApp.get('/clean', async (request, response) => {
 			}],
 		});
 		for (const applicant of applicants) {
-			if (answers.filter(answer => answer.applicant_id === applicant.id).length === 0) {
+			if (answers.filter(answer => answer.applicant_id === applicant.id && answer.question.type === 'essay').length === 0) {
 				await Applicants.destroy({where: {
 					id: applicant.id,
 				}});

@@ -40,7 +40,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@geo1088/express-session-rethinkdb": "^0.4.2",
     "@polka/send-type": "^0.5.2",
-    "@toast-ui/vue-editor": "^2.3.1",
+    "@toast-ui/vue-editor": "^2.4.0",
     "another-logger": "^2.0.0",
     "bulma": "^0.8.0",
     "connect-session-sequelize": "^7.0.1",

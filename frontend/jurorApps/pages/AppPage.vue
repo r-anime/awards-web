@@ -15,7 +15,7 @@
 						:key="q_index">
 						<div v-if="q.type == 'essay'">
 							<h3 class="question-header">{{q.question}}</h3>
-							<Editor :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
+							<Editor initialEditType="wysiwyg" :options="editorOptions" :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
 						</div>
 						<div v-else-if="q.type == 'choice'">
 							<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
@@ -136,6 +136,11 @@ export default {
 			showSamples: false,
 			sampleIndex: 0,
 			essayText: {},
+			editorOptions: {
+				usageStatistics: false,
+				minHeight: '700px',
+				height: '700px',
+			},
 		};
 	},
 	methods: {
