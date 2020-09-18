@@ -12,21 +12,26 @@
 				<div class="level-right">
 					<div class="level-item">
 						<div class="control">
-							<select class="input" v-model="selectedQuestionID">
+							<select class="input is-small" v-model="selectedQuestionID">
 								<option value="-1">Please select a question...</option>
 								<option :value="question.id" v-for="(question, index) in questions" :key="index">{{question.question}}</option>
 							</select>
 						</div>
 					</div>
+				</div>
+			</div>
+			<div class="level title-margin">
+				<div class="level-left"></div>
+				<div class="level-right">
 					<div v-if="selectedQuestionID !== '-1'" class="level-item">
 						<div class="control">
-							<button @click="randomAnswer" class="button is-primary">Get new answer</button>
+							<button @click="randomAnswer()" class="button is-primary">Get new answer</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="section">
+		<div :key="currentAnswer ? `${selectedQuestionID}-${currentAnswer.id}` : `${selectedQuestionID}`" class="section">
 			<div v-if="selectedQuestionID === '-1'">
 				Please select a question to grade first.
 			</div>
@@ -35,7 +40,7 @@
 			</div>
 			<div v-else>
 				<div class="field">
-					<h2 class="title is-4">Application</h2>
+					<h2 class="title is-4">Answer</h2>
 					<div class="control">
 						<Viewer :initialValue="currentAnswer.answer"/>
 					</div>
@@ -43,7 +48,7 @@
 				<div class="field">
 					<h2 class="title is-4">Grade this application</h2>
 					<div class="control">
-						<input type="text" class="input" v-model="score" placeholder="Value between 0 and 5"/>
+						<input type="text" class="input" v-model="score" placeholder="Value between 0 and 4"/>
 					</div>
 				</div>
 				<div class="field">
