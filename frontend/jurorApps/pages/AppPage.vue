@@ -1,65 +1,84 @@
 <template>
 	<section class="section has-background-dark pb-0 pt-0" v-if="loaded && !locked">
-		<div class="container has-background-white application-container pl-100 pr-100 pt-30 pb-30 mt-0 mb-0">
-			<h1 class="title has-text-dark has-text-centered">2020 r/anime Awards Juror Application</h1>
-			<div class="pl-5 pr-5">
-				<Viewer :initialValue="computedApplication.start_note"/>
+		<div class="container application-container pt-30 pb-30 mt-0 mb-0">
+			<div class="is-centered">
+				<img :src="logo" class="image" style="height: 96px; margin: 0 auto;"/>
 			</div>
-			<div class="has-text-centered">
-				<button class="button is-primary" @click="showModal">View Samples</button>
+			<h1 class="title is-3 has-text-light has-text-centered mb-50">Juror Application</h1>
+			<div class="message is-primary">
+				<div class="message-body">
+					<div class="pl-5 pr-5">
+						<Viewer :initialValue="computedApplication.start_note"/>
+					</div>
+					<div class="has-text-centered">
+						<button class="button is-primary" @click="showModal">View Samples</button>
+					</div>
+				</div>
 			</div>
-			<div v-for="(qg, qg_index) in computedApplication.question_groups"
-					:key="qg_index">
-					<h2 class="qg-header">{{qg.name}}</h2>
-					<div v-for="(q, q_index) in qg.questions"
-						:key="q_index">
-						<div v-if="q.type == 'essay'">
-							<h3 class="question-header">{{q.question}}</h3>
-							<Editor initialEditType="wysiwyg" :options="editorOptions" :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
-						</div>
-						<div v-else-if="q.type == 'choice'">
-							<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
-							<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="app-radio">
-								<input type="radio" :name="`mc-${q.id}`" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
-								<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
+			<div class="message is-lperiwinkle"
+				v-for="(qg, qg_index) in computedApplication.question_groups"
+				:key="qg_index">
+					<div class="message-header">
+						{{qg.name}}
+					</div>
+					<div class="message-body">
+						<div v-for="(q, q_index) in qg.questions"
+							:key="q_index">
+							<div v-if="q.type == 'essay'">
+								<h3 class="question-header">{{q.question}}</h3>
+								<Editor initialEditType="wysiwyg" :options="editorOptions" :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
 							</div>
-						</div>
-						<div v-else-if="q.type == 'preference'">
-							<h3 class="question-header">{{q.question}} Preferences</h3>
-							<small>
-								Please rate as 5 for strongly desired and 1 for least desired.
-							</small>
-							<br>
-							<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
-								<h4 class="subquestion-header">{{category.name}}</h4>
-								<div v-for="index in 5" :key="index" class="app-radio qpref_choice">
-									<input type="radio"
-										:id="`category-${category.id}-${index}`"
-										:value="index"
-										:name="`pref-${q.id}-${category.id}`"
-										v-model="mc_answers[`${q.id}-${category.id}`]"
-										@change="handlePrefInput(q.id, category.id, $event)"
-									>
-									<label :for="`category-${category.id}-${index}`"> {{index}} </label>
+							<div v-else-if="q.type == 'choice'">
+								<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
+								<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="app-radio">
+									<input type="radio" :name="`mc-${q.id}`" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
+									<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
 								</div>
 							</div>
-						</div>
-						<div class="level is-mobile mt-10">
-							<p class="has-text-danger" v-if="q.type === 'essay'">
-								{{essayText[q.id]}}
-							</p>
-						</div>
-						<div class="level is-mobile mt-10">
-							<div class="level-left"></div>
-							<div class="level-right notification is-light question-save" :class="{ 'question-saving': saving[q.id], 'is-success': !saving[q.id]}">
-								{{ saving[q.id] ? "Saving..." : "Saved!" }}
+							<div v-else-if="q.type == 'preference'">
+								<h3 class="question-header">{{q.question}} Preferences</h3>
+								<small>
+									Please rate as 5 for strongly desired and 1 for least desired.
+								</small>
+								<br>
+								<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
+									<h4 class="subquestion-header">{{category.name}}</h4>
+									<div v-for="index in 5" :key="index" class="app-radio qpref_choice">
+										<input type="radio"
+											:id="`category-${category.id}-${index}`"
+											:value="index"
+											:name="`pref-${q.id}-${category.id}`"
+											v-model="mc_answers[`${q.id}-${category.id}`]"
+											@change="handlePrefInput(q.id, category.id, $event)"
+										>
+										<label :for="`category-${category.id}-${index}`"> {{index}} </label>
+									</div>
+								</div>
 							</div>
+							<div class="level is-mobile mt-10">
+								<p class="has-text-danger" v-if="q.type === 'essay'">
+									{{essayText[q.id]}}
+								</p>
+							</div>
+							<div class="level is-mobile mt-10">
+								<div class="level-left"></div>
+								<div class="level-right notification is-light question-save" :class="{ 'question-saving': saving[q.id], 'is-success': !saving[q.id]}">
+									{{ saving[q.id] ? "Saving..." : "Saved!" }}
+								</div>
+							</div>
+							<br>
 						</div>
-						<br>
 					</div>
 			</div>
-			<div class="pl-5 pr-5">
-				<Viewer :initialValue="computedApplication.end_note"/>
+			<div class="message is-primary">
+				<div class="message-body">
+					<div class="pl-5 pr-5">
+						<Viewer :initialValue="computedApplication.end_note"/>
+					</div>
+					<div class="has-text-centered">
+						<a class="button is-primary">Submit Application</a>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="modal animated fast fadeIn" :class="{'is-active': showSamples}">
@@ -105,6 +124,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import {Viewer, Editor} from '@toast-ui/vue-editor';
 import marked from 'marked';
 import {mapState, mapActions} from 'vuex';
+import logo2020 from '../../../img/awards2020.png';
 
 export default {
 	components: {
@@ -141,6 +161,7 @@ export default {
 				minHeight: '700px',
 				height: '700px',
 			},
+			logo: logo2020,
 		};
 	},
 	methods: {
