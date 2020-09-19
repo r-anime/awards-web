@@ -9,6 +9,7 @@ import AppsLayout from './AppsLayout';
 
 import Profile from '../common/Profile';
 import AppPage from './pages/AppPage';
+import AppEnd from './pages/AppEnd';
 
 import NotFound from '../common/NotFound';
 
@@ -26,6 +27,7 @@ export default new VueRouter({
 			children: [
 				{path: '', component: AppPage},
 				{path: 'profile', component: Profile},
+				{path: 'submit', component: AppEnd},
 			],
 		},
 		// 404 route - keep last

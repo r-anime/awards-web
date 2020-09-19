@@ -76,7 +76,8 @@
 						<Viewer :initialValue="computedApplication.end_note"/>
 					</div>
 					<div class="has-text-centered">
-						<a class="button is-primary">Submit Application</a>
+						<button v-if="isSaving" class="button is-primary is-loading" disabled>Saving Application</button>
+						<a href="/apps/submit/" v-else class="button is-primary">Submit Application</a>
 					</div>
 				</div>
 			</div>
@@ -140,6 +141,9 @@ export default {
 			'locks',
 			'categories',
 		]),
+		isSaving () {
+			return this.saving.includes(true);
+		},
 	},
 	data () {
 		return {
