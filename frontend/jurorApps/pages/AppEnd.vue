@@ -64,7 +64,7 @@ export default {
 	mounted () {
 		Promise.all([this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.me ? Promise.resolve() : this.getMe()]).then(async () => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
-			if ((appLock.flag || this.me.level > appLock.level) && this.applicant) {
+			if (appLock.flag && this.applicant) {
 				this.locked = false;
 			}
 			this.loaded = true;
