@@ -549,15 +549,15 @@ apiApp.get('/clean', async (request, response) => {
 			where: {
 				active: true,
 			},
+			include: [{
+				model: Questions,
+				as: 'question',
+			}],
 		});
 		const applicants = await Applicants.findAll({
 			where: {
 				active: true,
 			},
-			include: [{
-				model: Applications,
-				as: 'application',
-			}],
 		});
 		for (const applicant of applicants) {
 			if (answers.filter(answer => answer.applicant_id === applicant.id && answer.question.type === 'essay').length === 0) {
