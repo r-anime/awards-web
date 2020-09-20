@@ -561,6 +561,11 @@ apiApp.get('/clean', async (request, response) => {
 		});
 		for (const applicant of applicants) {
 			if (answers.filter(answer => answer.applicant_id === applicant.id && answer.question.type === 'essay').length === 0) {
+				await Answers.destroy({
+					where: {
+						applicant_id: applicant.id,
+					},
+				});
 				await Applicants.destroy({where: {
 					id: applicant.id,
 				}});
