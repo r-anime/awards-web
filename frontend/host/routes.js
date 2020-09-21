@@ -210,21 +210,21 @@ export default new VueRouter({
 										title: 'Applicants',
 									},
 									component: Applicants,
-									children: [{
-										name: 'applicant',
-										path: ':applicantID',
-										props: true,
-										component: SingleApplicant,
-										meta: {
-											title ({$store, $route}) {
-												if (!$store.state.applicants) return '...';
-												// eslint-disable-next-line eqeqeq
-												const applicant = $store.state.applicants.find(applicant => `${applicant.id}` == $route.params.applicantID);
-												return applicant ? applicant.id : '(Unknown applicant)';
-											}
-										},
-									}],
 								},
+								{
+									name: 'applicant',
+									path: 'applicant/:applicantID',
+									props: true,
+									component: SingleApplicant,
+									meta: {
+										title ({$store, $route}) {
+											if (!$store.state.applicants) return '...';
+											// eslint-disable-next-line eqeqeq
+											const applicant = $store.state.applicants.find(applicant => `${applicant.id}` == $route.params.applicantID);
+											return applicant ? applicant.id : '(Unknown applicant)';
+										}
+									},
+								}
 							],
 						},
 					],
