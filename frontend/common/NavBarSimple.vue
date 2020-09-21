@@ -1,8 +1,8 @@
 <template>
 	<nav :class="['navbar', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
-			<div class="navbar-brand">
-				<a href="/"><img :src="logo" class="image is-64x64"/></a>
+			<div class="navbar-brand mr-20">
+				<a href="/"><img :src="logo" class="image pt-10 pb-10 pl-10 pr-10" style="height: 64px;"/></a>
 				<a
 					@click="expanded = !expanded"
 					role="button"
@@ -17,6 +17,7 @@
 			</div>
 			<div :class="['navbar-menu', {'is-active': expanded}]">
 				<div class="navbar-start">
+					<a href="/" class="navbar-item" v-if="apps">Home</a>
 					<nav-bar-link
 						v-for="route in namedRoutes"
 						:key="route.path"
@@ -30,13 +31,25 @@
 
 						<template slot="dropdown">
 							<router-link
+							v-if="apps"
+								class="navbar-item"
+								active-class="is-active"
+								to="/apps/profile"
+							>
+								Profile settings
+							</router-link>
+							<router-link
+							v-else
 								class="navbar-item"
 								active-class="is-active"
 								to="/profile"
 							>
 								Profile settings
 							</router-link>
-							<a class="navbar-item" href="/auth/logout/login">
+							<a v-if="apps" class="navbar-item" href="/auth/logout/apps">
+								Log out
+							</a>
+							<a v-else class="navbar-item" href="/auth/logout/login">
 								Log out
 							</a>
 						</template>
@@ -55,7 +68,7 @@
 <script>
 import {mapState} from 'vuex';
 import NavBarLink from './NavBarLink';
-import logo from '../../img/snoo.png';
+import logo from '../../img/awards2020.png';
 
 export default {
 	components: {
@@ -65,6 +78,7 @@ export default {
 		routes: Array,
 		fullwidth: Boolean,
 		vertical: Boolean,
+		apps: Boolean,
 	},
 	data () {
 		return {

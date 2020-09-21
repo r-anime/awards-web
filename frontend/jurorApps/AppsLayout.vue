@@ -3,7 +3,8 @@
 		<div v-if="loaded">
 			<nav-bar
 				:routes="routes"
-				:logout="this.me ? true : false"
+				:fullwidth="true"
+				:apps="true"
 				class="is-dperiwinkle has-periwinkle-underline"
 			>
 				<template v-slot:title>
@@ -33,9 +34,8 @@
 </template>
 
 <script>
-import NavBar from '../common/NavBar.vue';
+import NavBar from '../common/NavBarSimple';
 import {mapState, mapActions} from 'vuex';
-const navbarRoutes = require('../common/navbar-routes');
 
 export default {
 	components: {
@@ -43,7 +43,7 @@ export default {
 	},
 	data () {
 		return {
-			routes: null,
+			routes: [{name: 'Jury Applications', path: '/apps'}],
 			loaded: false,
 		};
 	},
@@ -60,25 +60,6 @@ export default {
 		if (!this.me) {
 			await this.getMe();
 		}
-		const allocLock = this.locks.find(lock => lock.name === 'allocations');
-		const guideLock = this.locks.find(lock => lock.name === 'juryGuide');
-		const ongoingLock = this.locks.find(lock => lock.name === 'awards-ongoing');
-		const appsOpen = this.locks.find(lock => lock.name === 'apps-open');
-		if (ongoingLock.flag) {
-			this.routes = navbarRoutes.ongoingRoutes;
-		} else {
-			this.routes = navbarRoutes.resultsRoutes;
-		}
-		if (appsOpen.flag) {
-			this.routes.unshift({name: 'Jury Applications', path: '/apps'});
-		}
-		if (guideLock.flag) {
-			this.routes.unshift({name: 'Jury Guide', path: '/juryguide'});
-		}
-		if (allocLock.flag) {
-			this.routes.unshift({name: 'Allocations', path: '/allocations'});
-		}
-		if (this.me) this.routes.push({name: 'Profile', path: '/apps/profile'});
 		this.loaded = true;
 	},
 };
