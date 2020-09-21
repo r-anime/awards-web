@@ -13,14 +13,14 @@
 			<div class="field">
 				<label class="label">Start Note</label>
 				<div class="control">
-					<input class="input" v-model="newStartNote"/>
+					<textarea class="textarea" v-model="newStartNote"/>
 				</div>
 				<p class="help">A note to display at the start of the application</p>
 			</div>
 			<div class="field">
 				<label class="label">End Note</label>
 				<div class="control">
-					<input class="input" v-model="newEndNote"/>
+					<textarea class="textarea" v-model="newEndNote"/>
 				</div>
 				<p class="help">A note to display at the end of the application</p>
 			</div>

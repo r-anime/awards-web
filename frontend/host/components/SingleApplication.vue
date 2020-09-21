@@ -30,6 +30,14 @@
 					</li>
 					<li>
 						<router-link
+							:to="applicationPageLink('grading-table')"
+							active-class="is-active"
+						>
+							Grading Table
+						</router-link>
+					</li>
+					<li>
+						<router-link
 							:to="applicationPageLink('applicants')"
 							active-class="is-active"
 						>
