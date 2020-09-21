@@ -48,7 +48,7 @@
 				<div class="field">
 					<h2 class="title is-4">Grade this application</h2>
 					<div class="control">
-						<input type="text" class="input" v-model="score" placeholder="Value between 0 and 4"/>
+						<input type="text" class="input" v-model="score" placeholder="Value between 1 and 4"/>
 					</div>
 				</div>
 				<div class="field">
@@ -130,6 +130,7 @@ export default {
 				score = await score.json();
 				this.pushScore(score);
 				this.submitting = false;
+				this.score = '';
 				this.randomAnswer();
 			} else {
 				// eslint-disable-next-line no-alert

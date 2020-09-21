@@ -18,7 +18,7 @@
 					<br>
 					<br>
 					<div class="has-text-centered">
-						<a href="/apps/" class="button is-primary">Back to Application</a>
+						<router-link to="/apps" class="button is-primary">Back to Application</router-link>
 					</div>
 				</div>
 			</div>
@@ -62,7 +62,7 @@ export default {
 		...mapActions(['getApplicant', 'getLocks', 'getMe']),
 	},
 	mounted () {
-		Promise.all([this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.me ? Promise.resolve() : this.getMe()]).then(async () => {
+		Promise.all([this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.me ? Promise.resolve() : this.getMe()]).then(() => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
 			if (appLock.flag && this.applicant) {
 				this.locked = false;

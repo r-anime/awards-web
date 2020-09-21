@@ -77,7 +77,7 @@
 					</div>
 					<div class="has-text-centered">
 						<button v-if="isSaving" class="button is-primary is-loading" disabled>Saving Application</button>
-						<a href="/apps/submit/" v-else class="button is-primary">Submit Application</a>
+						<router-link to="/apps/submit" v-else class="button is-primary">Submit Application</router-link>
 					</div>
 				</div>
 			</div>
