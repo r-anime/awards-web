@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			defaultValue: 1,
 		},
+		description: {
+			type: DataTypes.STRING,
+			allowNull: true,
+		},
 	});
 
 	categories.associate = models => {
