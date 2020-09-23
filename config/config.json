@@ -1,0 +1,14 @@
+{
+  "development": {
+    "dialect": "sqlite",
+    "storage": "./awards.db"
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": "./awards.db"
+  },
+  "production": {
+    "dialect": "sqlite",
+    "storage": "./awards.db"
+  }
+}

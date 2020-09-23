@@ -8,6 +8,7 @@
     "watch:serve": "node index.js --watch",
     "build": "webpack",
     "build-prod": "webpack -p",
+    "migrate": "sequelize-cli db:migrate",
     "serve": "node index.js"
   },
   "license": "MIT",
@@ -26,6 +27,7 @@
     "node-sass": "^4.13.1",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.1",
+    "sequelize-cli": "^6.2.0",
     "sirv": "1.0.6",
     "vue": "^2.6.11",
     "vue-loader": "^15.9.3",
