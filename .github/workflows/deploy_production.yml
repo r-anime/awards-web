@@ -27,7 +27,6 @@ jobs:
           # update deps, rebuild
           yarn
           yarn migrate
-          yarn patch
           yarn build-prod
           
           # restart server
