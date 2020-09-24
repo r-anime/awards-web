@@ -9,7 +9,7 @@
     "build": "webpack",
     "build-prod": "webpack -p",
     "migrate": "sequelize-cli db:migrate",
-    "patch": "patch-package",
+    "postinstall": "patch-package",
     "serve": "node index.js"
   },
   "license": "MIT",
