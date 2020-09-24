@@ -9,6 +9,7 @@
     "build": "webpack",
     "build-prod": "webpack -p",
     "migrate": "sequelize-cli db:migrate",
+    "patch": "patch-package",
     "serve": "node index.js"
   },
   "license": "MIT",
@@ -25,6 +26,8 @@
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "node-sass": "^4.13.1",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.1",
     "sequelize-cli": "^6.2.0",

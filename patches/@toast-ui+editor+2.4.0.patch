@@ -1,0 +1,25 @@
+diff --git a/node_modules/@toast-ui/editor/dist/toastui-editor.js b/node_modules/@toast-ui/editor/dist/toastui-editor.js
+index 894372d..c9338c7 100644
+--- a/node_modules/@toast-ui/editor/dist/toastui-editor.js
++++ b/node_modules/@toast-ui/editor/dist/toastui-editor.js
+@@ -19640,7 +19640,8 @@ var TOOLTIP_TOP_INDENT = 7;
+ var tooltip_Tooltip = /*#__PURE__*/function () {
+   function Tooltip() {
+     this.el = dom["a" /* default */].createElementWith("<div class=\"tui-tooltip\">" + TOOLTIP_CONTENT + "</div>");
+-    document.body.appendChild(this.el);
++    // console.log("hi");
++    document.querySelector('body').appendChild(this.el);
+     this.hide();
+   }
+   /**
+@@ -19811,7 +19812,9 @@ var toolbarButton_ToolbarButton = /*#__PURE__*/function (_ToolbarItem) {
+     if (!this.isEnabled()) {
+       return;
+     }
+-
++    if (document.querySelector('.tui-tooltip') == null){
++      document.querySelector('body').appendChild(tooltip.el);
++    }
+     tooltip.show(this.el, this._tooltip);
+   };
+ 
