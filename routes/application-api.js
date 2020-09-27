@@ -485,7 +485,7 @@ apiApp.post('/submit', async (request, response) => {
 		return response.json(400, {error: 'Invalid JSON'});
 	}
 	try {
-		if (req.answer.length > 50000) {
+		if (req.answer.length > 5000) {
 			response.json(401, {error: 'You are over the character limit for answers.'});
 			return;
 		}

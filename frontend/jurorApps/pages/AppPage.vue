@@ -201,12 +201,12 @@ export default {
 			}
 			const md = this.$refs[`editor-${questionID}`][0].invoke('getMarkdown');
 			clearTimeout(this.typingTimeout[questionID]);
-			if (md.length > 300 && md.length < 50000) {
-				this.$set(this.essayText, questionID, `${md.length}/50000`);
-			} else if (md.length > 50000) {
+			if (md.length > 500 && md.length < 5000) {
+				this.$set(this.essayText, questionID, `${md.length}/5000`);
+			} else if (md.length > 5000) {
 				this.$set(this.essayText, questionID, 'You are over the character limit');
 				return;
-			} else if (md.length < 300) {
+			} else if (md.length < 500) {
 				this.$set(this.essayText, questionID, 'Please write more to submit your answer');
 				return;
 			}
@@ -298,7 +298,7 @@ export default {
 								}
 							} else {
 								this.answers[question.id] = found.answer;
-								this.essayText[question.id] = `${this.answers[question.id].length}/50000`;
+								this.essayText[question.id] = `${this.answers[question.id].length}/5000`;
 							}
 						} else {
 							// eslint-disable-next-line no-lonely-if
