@@ -46,9 +46,23 @@
 					</div>
 				</div>
 				<div class="field">
-					<h2 class="title is-4">Grade this application</h2>
+					<h2 class="title is-4">Notes From Other Hosts</h2>
+					<div class="control">
+						<li v-for="score in answer.scores" :key="score.id">
+							{{score.host_name}}: <b>{{score.score}}</b>{{score.note ? ` (${score.note})` : ''}}
+						</li>
+					</div>
+				</div>
+				<div class="field">
+					<h2 class="title is-4">Your Score</h2>
 					<div class="control">
 						<input type="text" class="input" v-model="score" placeholder="Value between 1 and 4"/>
+					</div>
+				</div>
+				<div class="field">
+					<h2 class="title is-4">Your Notes</h2>
+					<div class="control">
+						<input type="text" class="input" v-model="note" placeholder="Notes for other hosts"/>
 					</div>
 				</div>
 				<div class="field">
@@ -86,6 +100,7 @@ export default {
 			selectedQuestionID: '-1',
 			currentAnswer: null,
 			score: '',
+			note: '',
 			filteredQuestionGroups: null,
 			submitting: false,
 		};
@@ -113,13 +128,14 @@ export default {
 			}
 		},
 		async submitScore () {
-			if (parseInt(this.score, 10) && parseInt(this.score, 10) > 0 && parseInt(this.score, 10) <= 4) {
+			if (parseInt(this.score, 10) && parseInt(this.score, 10) > 0 && parseInt(this.score, 10) <= 4 && this.note.length) {
 				this.submitting = true;
 				let score = await fetch('/api/juror-apps/score', {
 					method: 'POST',
 					body: JSON.stringify({
 						answer_id: this.currentAnswer.id,
 						score: parseInt(this.score, 10),
+						note: this.note,
 						host_name: this.me.reddit.name,
 					}),
 				});
@@ -131,10 +147,11 @@ export default {
 				this.pushScore(score);
 				this.submitting = false;
 				this.score = '';
+				this.note = '';
 				this.randomAnswer();
 			} else {
 				// eslint-disable-next-line no-alert
-				alert('Please enter a valid score');
+				alert('Please enter a valid score and a note.');
 			}
 		},
 	},

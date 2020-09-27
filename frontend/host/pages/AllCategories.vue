@@ -72,7 +72,7 @@
                 <button
                   class="button is-info"
                   v-bind:class="{'is-loading' : duplicating && category.id === selectedCategoryId}"
-                  @click="submitDuplicateCategory(category.id, category.name, category.entryType, category.awardsGroup, category.jurorCount)"
+                  @click="submitDuplicateCategory(category.id, category.name, category.entryType, category.awardsGroup, category.jurorCount, category.description)"
                 >Copy</button>
               </div>
               <div class="level-item">
@@ -131,6 +131,17 @@
           </div>
         </div>
 		<div class="field">
+          <label class="label">Description</label>
+          <div class="control">
+				<input
+				class="input"
+				type="text"
+				v-model="newDescription"
+				placeholder="A description of what the category entails"
+				/>
+          </div>
+        </div>
+		<div class="field">
           <label class="label">Juror Count</label>
           <div class="control">
 				<input
@@ -169,6 +180,7 @@ export default {
 			newEntryType: 'shows',
 			newEntryGroup: 'genre',
 			newJurorCount: '',
+			newDescription: '',
 			submitting: false,
 			deleting: false,
 			duplicating: false,
@@ -247,6 +259,7 @@ export default {
 			categoryType,
 			categoryGroup,
 			categoryJurorCount,
+			categoryDescription,
 		) {
 			this.duplicating = true;
 			this.selectedCategoryId = categoryID;
@@ -258,6 +271,7 @@ export default {
 							name: newName,
 							entryType: categoryType,
 							awardsGroup: categoryGroup,
+							description: categoryDescription,
 							jurorCount: categoryJurorCount,
 						},
 					});
@@ -276,6 +290,7 @@ export default {
 							name: this.categoryName,
 							entryType: this.newEntryType,
 							awardsGroup: this.newEntryGroup,
+							description: this.newDescription,
 							jurorCount: parseInt(this.newJurorCount, 10),
 						},
 					});

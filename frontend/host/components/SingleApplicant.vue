@@ -49,7 +49,7 @@
 						<div v-if="answer.scores.length">
 							<ul>
 								<li v-for="score in answer.scores" :key="score.id">
-								{{score.host_name}}: <b>{{score.score}}</b>
+								{{score.host_name}}: <b>{{score.score}}</b>{{score.note ? ` (${score.note})` : ''}}
 								<a v-if="isAdmin" @click="submitDeleteScore(score)" class="tag is-danger">Delete</a>
 								</li>
 							</ul>

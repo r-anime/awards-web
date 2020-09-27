@@ -43,11 +43,16 @@
 			<div class="field">
 				<label class="label">Juror Count</label>
 				<div class="control">
-					<div class="select">
-						<input class="input" v-model="newJurorCount"/>
-					</div>
+					<input class="input" v-model="newJurorCount"/>
 				</div>
 				<p class="help">Number of jurors in the category</p>
+			</div>
+			<div class="field">
+				<label class="label">Category Description</label>
+				<div class="control">
+					<input class="input" v-model="newDescription"/>
+				</div>
+				<p class="help">A description of what the category entails</p>
 			</div>
 			<div class="field">
 				<div class="control">
@@ -74,6 +79,7 @@ export default {
 			newEntryType: this.category.entryType,
 			newEntryGroup: this.category.awardsGroup,
 			newJurorCount: `${this.category.jurorCount}`,
+			newDescription: this.category.description ? this.category.description : '',
 			submitting: false,
 		};
 	},
@@ -82,9 +88,6 @@ export default {
 			'updateCategory',
 		]),
 		submitEditCategory () {
-			// When this gets implemented, make sure there's a warning when
-			// changing the entry type, as that will also erase all current
-			// entries.
 			this.submitting = true;
 			setTimeout(async () => {
 				try {
@@ -95,6 +98,7 @@ export default {
 							entryType: this.newEntryType,
 							awardsGroup: this.newEntryGroup,
 							jurorCount: parseInt(this.newJurorCount, 10),
+							description: this.newDescription,
 						},
 					});
 				} finally {

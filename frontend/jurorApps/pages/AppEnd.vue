@@ -11,7 +11,7 @@
 				</div>
 				<div class="message-body">
 					<div class="pl-5 pr-5">
-						Thank you for applying for the r/anime awards! We will begin reviewing applications after the application period has ended. You may review and change your application any time until then by navigating back to the application page.
+						Thank you for applying for the r/anime awards! You may review and change your application any time until the <b>18th of October</b> by navigating back to the application page. You will be contacted on Reddit the <b>1st of November</b> about the outcome.
 						<br><br>
 						Once again, thank you for applying and we hope to see you soon!
 					</div>
