@@ -42,11 +42,12 @@
 								</small>
 								<br>
 								<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
-									<div class="tooltip">
+									<div v-if="category.description" class="tooltip">
 										<h4 class="subquestion-header">{{category.name}}</h4>
 										<span class="tooltiptext">{{category.description ? category.description : 'No description'}}</span>
 									</div>
-									</br>
+									<h4 v-else class="subquestion-header">{{category.name}}</h4>
+									<br v-if="category.description">
 									<div v-for="index in 5" :key="index" class="app-radio qpref_choice">
 										<input type="radio"
 											:id="`category-${category.id}-${index}`"

@@ -115,12 +115,14 @@
 /* Tooltip text */
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
-    background-color: black;
+
+    white-space: nowrap;
+    max-width: 480px;
+    background-color: rgba($dark, .8 );
     color: #fff;
     text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
+    padding: 0.25rem 1rem;
+    border-radius: 0.25rem;
    
     /* Position the tooltip text - see examples below! */
     position: absolute;
@@ -133,17 +135,17 @@
 }
 
 .tooltip .tooltiptext {
-    top: -5px;
-    left: 105%;
+    top: 0.25rem;
+    left: calc(100% + 0.5rem);
 }
 
 .tooltip .tooltiptext::after {
     content: " ";
     position: absolute;
-    top: 50%;
+    top: 1rem;
     right: 100%; /* To the left of the tooltip */
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent black transparent transparent;
+    border-color: transparent rgba($dark, .8 ) transparent transparent;
   }
