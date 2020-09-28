@@ -14,13 +14,20 @@
 								{{name}}
 							</em>
 							<br/>
-							{{year}} {{format}} &bull;
+							{{format}} &bull;
 							<a
 								@click.stop
 								target="_blank"
 								:href="anilistLink"
 							>
 								AniList
+							</a> &bull;
+							<a
+								@click.stop
+								target="_blank"
+								:href="malLink"
+							>
+								MAL
 							</a>
 						</p>
 					</div>
@@ -60,6 +67,9 @@ export default {
 		},
 		anilistLink () {
 			return this.show.siteUrl;
+		},
+		malLink () {
+			return `https://myanimelist.net/anime/${this.show.idMal}`;
 		},
 	},
 };

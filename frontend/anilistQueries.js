@@ -332,6 +332,7 @@ const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 		  extraLarge
 		}
 		siteUrl
+		idMal
 	  }
 	}
   }`;
