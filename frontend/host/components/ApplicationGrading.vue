@@ -35,7 +35,7 @@
 			<div v-if="selectedQuestionID === '-1'">
 				Please select a question to grade first.
 			</div>
-			<div v-else-if="!currentAnswer">
+			<div v-else-if="!currentAnswer && selectedQuestionID !== '-1'">
 				There are no answers left to grade for this question.
 			</div>
 			<div v-else>
@@ -45,7 +45,7 @@
 						<Viewer :initialValue="currentAnswer.answer"/>
 					</div>
 				</div>
-				<div class="field">
+				<div v-if="answer.scores.length" class="field">
 					<h2 class="title is-4">Notes From Other Hosts</h2>
 					<div class="control">
 						<li v-for="score in answer.scores" :key="score.id">
