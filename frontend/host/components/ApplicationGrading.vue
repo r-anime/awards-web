@@ -45,7 +45,7 @@
 						<Viewer :initialValue="currentAnswer.answer"/>
 					</div>
 				</div>
-				<div v-if="answer.scores.length" class="field">
+				<div v-if="answer.scores" class="field">
 					<h2 class="title is-4">Notes From Other Hosts</h2>
 					<div class="control">
 						<li v-for="score in answer.scores" :key="score.id">
