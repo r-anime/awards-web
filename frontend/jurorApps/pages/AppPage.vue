@@ -11,6 +11,7 @@
 						<Viewer :initialValue="computedApplication.start_note"/>
 					</div>
 					<div class="has-text-centered">
+						<button class="button is-link" @click="showTipsModal">View Tips</button>
 						<button class="button is-primary" @click="showModal">View Samples</button>
 					</div>
 				</div>
@@ -87,20 +88,25 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal animated fast fadeIn" :class="{'is-active': showSamples}">
+		<div class="modal animated fast fadeIn" :class="{'is-active': (showSamples || showTips)}">
 			<div class="modal-background" @click="closeModal"></div>
 			<div class="modal-card has-text-dark">
 				<header class="modal-card-head">
-					<p class="modal-card-title has-text-dark">Sample Writeups</p>
+					<p v-if="showSamples" class="modal-card-title has-text-dark">Sample Writeups</p>
+					<p v-else class="modal-card-title has-text-dark">Tips</p>
 				</header>
-				<section class="modal-card-body">
+				<section v-if="showSamples" class="modal-card-body">
 					<h3 class="has-text-dark mb-10">
 						{{samples[sampleIndex].question}}
 					</h3>
 					<div class="has-text-dark awardsModalBody" v-html="markdownit(samples[sampleIndex].answer)">
 					</div>
 				</section>
-				<footer class="modal-card-foot">
+				<section v-else class="modal-card-body">
+					<div class="has-text-dark awardsModalBody" v-html="markdownit(tips)">
+					</div>
+				</section>
+				<footer v-if="showSamples" class="modal-card-foot">
 					<button class="button is-info" @click="prevSample" >Previous Sample</button>
 					<button class="button is-primary" @click="nextSample" >Next Sample</button>
 				</footer>
@@ -162,7 +168,9 @@ export default {
 			mc_answers: {}, // temp variable to model pref questions
 			changed: false,
 			samples: {},
+			tips: '',
 			showSamples: false,
+			showTips: false,
 			sampleIndex: 0,
 			essayText: {},
 			editorOptions: {
@@ -263,8 +271,12 @@ export default {
 		showModal () {
 			this.showSamples = true;
 		},
+		showTipsModal () {
+			this.showTips = true;
+		},
 		closeModal () {
 			this.showSamples = false;
+			this.showTips = false;
 		},
 		prevSample () {
 			this.sampleIndex = (this.sampleIndex + this.samples.length - 1) % this.samples.length;
@@ -279,6 +291,7 @@ export default {
 			if ((appLock.flag || this.me.level > appLock.level) && this.applicant) {
 				await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
 					this.samples = Object.assign({}, data).writeups;
+					this.tips = Object.assign({}, data).tips;
 				});
 				this.locked = false;
 				await this.getAnswers(this.applicant.id);
