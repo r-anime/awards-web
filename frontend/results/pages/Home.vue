@@ -15,11 +15,11 @@
 						<div v-if="ongoing">
 							<p>
 							Welcome, one and all, to the 2020 /r/Anime Awards!
-							Much like previous years, the Awards are looking for new jurors to blah blah blah
-							Get in here and judge some anime or whatever.
-							Click the big button right the fuck now.
+							Much like previous years, the /r/anime Awards are looking for new jurors to discuss and select nominees from this year's anime. Ultimately, their job is to highlight the anime that stood out the most in 2020.
+							Jurors in the /r/anime Awards are expected to watch all nominated shows in their category and vote on a ranking that is displayed alongside the results of the public vote. <router-link to="/archive" >You can find past Awards results here</router-link>.
+							If this sounds like something you'd be interested in, click the button below to fill out the application!
 							</p>
-							<a href="/apps" class="button is-success">Jury Applications</a>
+							<a href="/apps" class="button is-large is-success">Apply to be an /r/anime Awards Juror</a>
 						</div>
 						<div v-else>
 							<nav class="homeIntroThingy level mt-40">
