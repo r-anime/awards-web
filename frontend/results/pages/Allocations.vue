@@ -12,6 +12,10 @@
                             </section>
                         </div>
 						<div v-else-if="loaded">
+						<div class="has-text-light has-text-centered">
+							Allocations are subject to change based on feedback. To provide feedback, please <a @click="modalOpen = true">click here</a>.
+						</div>
+						<br/><br/>
                         <div class="columns is-centered">
                             <div class="column is-2">
                                 <nav class="panel is-platinum has-background-white">
