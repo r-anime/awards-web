@@ -59,14 +59,10 @@ export default {
 		const allocLock = this.locks.find(lock => lock.name === 'allocations');
 		const guideLock = this.locks.find(lock => lock.name === 'juryGuide');
 		const ongoingLock = this.locks.find(lock => lock.name === 'awards-ongoing');
-		const appsOpen = this.locks.find(lock => lock.name === 'apps-open');
 		if (ongoingLock.flag) {
 			this.routes = navbarRoutes.ongoingRoutes;
 		} else {
 			this.routes = navbarRoutes.resultsRoutes;
-		}
-		if (appsOpen.flag) {
-			this.routes.unshift({name: 'Jury Applications', path: '/apps'});
 		}
 		if (guideLock.flag) {
 			this.routes.unshift({name: 'Jury Guide', path: '/juryguide'});

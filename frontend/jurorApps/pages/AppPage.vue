@@ -12,7 +12,7 @@
 					</div>
 					<div class="has-text-centered">
 						<button class="button is-link" @click="showTipsModal">View Tips</button>
-						<button class="button is-primary" @click="showModal">View Samples</button>
+						<button class="button is-primary" @click="showModal">View Sample Answers</button>
 					</div>
 				</div>
 			</div>
@@ -96,10 +96,10 @@
 					<p v-else class="modal-card-title has-text-dark">Tips</p>
 				</header>
 				<section v-if="showSamples" class="modal-card-body">
-					<h3 class="has-text-dark mb-10">
+					<h3 class="title is-5 has-text-dark mb-10">
 						{{samples[sampleIndex].question}}
 					</h3>
-					<div class="has-text-dark awardsModalBody" v-html="markdownit(samples[sampleIndex].answer)">
+					<div class="has-text-dark awardsModalBody" v-html="markdownit(`${samples[sampleIndex].answer}\r\n\r\n***\r\n\r\n${disclaimer}`)">
 					</div>
 				</section>
 				<section v-else class="modal-card-body">
@@ -168,6 +168,7 @@ export default {
 			mc_answers: {}, // temp variable to model pref questions
 			changed: false,
 			samples: {},
+			disclaimer: null,
 			tips: '',
 			showSamples: false,
 			showTips: false,
@@ -290,6 +291,7 @@ export default {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
 			if ((appLock.flag || this.me.level > appLock.level) && this.applicant) {
 				await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
+					this.disclaimer = data.disclaimer;
 					this.samples = Object.assign({}, data).writeups;
 					this.tips = Object.assign({}, data).tips;
 				});

@@ -19,6 +19,7 @@
 							Jurors in the /r/anime Awards are expected to watch all nominated shows in their category and vote on a ranking that is displayed alongside the results of the public vote. <router-link to="/archive" >You can find past Awards results here</router-link>.
 							If this sounds like something you'd be interested in, click the button below to fill out the application!
 							</p>
+							<br/><br/>
 							<a href="/apps" class="button is-large is-success">Apply to be an /r/anime Awards Juror</a>
 						</div>
 						<div v-else>

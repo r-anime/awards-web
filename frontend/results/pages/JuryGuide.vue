@@ -11,7 +11,7 @@
                             </section>
                         </div>
 						<section v-else-if="locked === false" class="hero is-fullheight-with-navbar section has-background-dark">
-							<iframe style="height: 100vh" src="https://docs.google.com/document/d/e/2PACX-1vQ-kzjDnVO8pdmjyVIVeBwlSLggHgiE0mPCAqyTxeIuwFJJBinRiLSbwMxbebNYAwIIw6w3VrPLRocF/pub?embedded=true"></iframe>
+							<iframe style="height: 100vh" src="https://docs.google.com/document/d/e/2PACX-1vRYd9IXtpxWBPeHFVQA1-h4vqGJKg4DiiVrvIO9fmKe2mcPbOmc0tNpqbs2EMG-6c438GOh67znwme6/pub?embedded=true"></iframe>
 						</section>
 						<section v-else class="hero is-fullheight-with-navbar section has-background-dark">
                             <div class="container">

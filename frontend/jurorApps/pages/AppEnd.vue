@@ -1,5 +1,5 @@
 <template>
-	<section class="section has-background-dark pb-100 pt-100" v-if="loaded && !locked">
+	<section class="section has-background-dark pb-100 pt-100">
 		<div class="container application-container pt-30 pb-30 mt-0 mb-0">
 			<div class="is-centered">
 				<img :src="logo" class="image" style="height: 96px; margin: 0 auto;"/>
@@ -11,7 +11,7 @@
 				</div>
 				<div class="message-body">
 					<div class="pl-5 pr-5">
-						Thank you for applying for the r/anime awards! You may review and change your application any time until the <b>18th of October</b> by navigating back to the application page. You will be contacted on Reddit the <b>1st of November</b> about the outcome.
+						Thank you for applying for the r/anime awards! You may review and change your application any time until the <b>19th of October</b> by navigating back to the application page. You will be contacted on Reddit the <b>1st of November</b> about the outcome.
 						<br><br>
 						Once again, thank you for applying and we hope to see you soon!
 					</div>
@@ -24,20 +24,6 @@
 			</div>
 		</div>
 	</section>
-	<div class="section pb-100 pt-100" v-else-if="loaded && locked">
-		Jury Apps are not open yet.
-	</div>
-	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else-if="!loaded">
-        <div class="container">
-            <div class="columns is-desktop is-vcentered">
-                <div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
-                    <div class="section">
-                        <div class="loader is-loading"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 </template>
 
 <script>
@@ -53,22 +39,11 @@ export default {
 	},
 	data () {
 		return {
-			loaded: false,
-			locked: null,
 			logo: logo2020,
 		};
 	},
 	methods: {
 		...mapActions(['getApplicant', 'getLocks', 'getMe']),
-	},
-	mounted () {
-		Promise.all([this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.me ? Promise.resolve() : this.getMe()]).then(() => {
-			const appLock = this.locks.find(lock => lock.name === 'apps-open');
-			if (appLock.flag && this.applicant) {
-				this.locked = false;
-			}
-			this.loaded = true;
-		});
 	},
 };
 </script>
