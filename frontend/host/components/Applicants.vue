@@ -45,7 +45,8 @@ export default {
 	methods: {
 		...mapActions(['getApplicants', 'getLocks', 'getMe', 'deleteApplicant']),
 		linkText (applicant) {
-			if (this.lock.flag || this.me.level > this.lock.level) {
+			if (!applicant.user) console.log(applicant);
+			if (this.lock.flag || this.me.level > this.lock.level && applicant.user) {
 				return applicant.user.reddit;
 			}
 			return `Applicant ${applicant.id}`;
