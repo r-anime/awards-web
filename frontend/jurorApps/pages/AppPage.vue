@@ -217,7 +217,7 @@ export default {
 				this.$set(this.essayText, questionID, 'You are over the character limit');
 				return;
 			} else if (md.length < 500) {
-				this.$set(this.essayText, questionID, `Please write ${500 - md.length} more characters to submit your answer`);
+				this.$set(this.essayText, questionID, `Please write ${500 - md.length} characters to submit your answer`);
 				return;
 			}
 			this.$set(this.saving, questionID, true);
@@ -327,7 +327,7 @@ export default {
 								}
 							} else {
 								this.answers[question.id] = '';
-								this.essayText[question.id] = 'Please write 500 more characters to submit your answer';
+								this.essayText[question.id] = 'Please write 500 characters to submit your answer';
 							}
 						}
 						this.$set(this.saving, question.id, false);
