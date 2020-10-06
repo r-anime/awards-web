@@ -314,7 +314,7 @@ export default {
 								}
 							} else {
 								this.answers[question.id] = found.answer;
-								this.essayText[question.id] = `${this.answers[question.id].length}/5000`;
+								this.$set(this.essayText, question.id, `${this.answers[question.id].length}/5000`);
 							}
 						} else {
 							// eslint-disable-next-line no-lonely-if
@@ -327,7 +327,7 @@ export default {
 								}
 							} else {
 								this.answers[question.id] = '';
-								this.essayText[question.id] = 'Please write 500 characters to submit your answer';
+								this.$set(this.essayText, question.id, `Please write ${500 - this.answers[question.id].length} characters to submit your answer`);
 							}
 						}
 						this.$set(this.saving, question.id, false);

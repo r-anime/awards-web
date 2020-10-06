@@ -45,6 +45,7 @@ const store = new Vuex.Store({
 		applications: null,
 		questionGroups: null,
 		answers: null,
+		answerCount: null,
 		applicants: null,
 	},
 	getters: {
@@ -173,6 +174,9 @@ const store = new Vuex.Store({
 		},
 		GET_ANSWERS (state, answers) {
 			state.answers = answers;
+		},
+		GET_ANSWER_COUNTS (state, answerCount) {
+			state.answerCount = answerCount;
 		},
 		PUSH_SCORE (state, score) {
 			const index = state.answers.findIndex(answer => answer.id === score.answer_id);
@@ -355,6 +359,10 @@ const store = new Vuex.Store({
 		async getAnswers ({commit}) {
 			const answers = await makeRequest('/api/juror-apps/answers');
 			commit('GET_ANSWERS', answers);
+		},
+		async getAnswerCount ({commit}) {
+			const answerCount = await makeRequest('/api/juror-apps/answers/grouped');
+			commit('GET_ANSWER_COUNTS', answerCount);
 		},
 		pushScore ({commit}, score) {
 			commit('PUSH_SCORE', score);

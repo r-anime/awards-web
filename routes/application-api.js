@@ -323,6 +323,28 @@ apiApp.get('/answers', async (request, response) => {
 	}
 });
 
+apiApp.get('/answers/grouped', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
+	}
+	try {
+		response.json(await Answers.findAll({
+			where: {
+				active: true,
+			},
+			attributes: [
+				'applicant_id',
+				sequelize.fn('count', sequelize.col('applicant_id')),
+			],
+			group: ['Answers.applicant_id'],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+
 apiApp.post('/score', async (request, response) => {
 	const auth = await request.authenticate({level: 2, lock: 'grading-open'});
 	if (!auth) {

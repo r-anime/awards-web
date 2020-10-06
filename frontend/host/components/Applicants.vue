@@ -1,6 +1,7 @@
 <template>
 	<div class="section" v-if="loaded">
 		<h2 class="title">Applicants</h2>
+		<h3 class="subtitle">Valid Applications: {{answerCount.length}}</h3>
 		<div class="columns is-mobile is-multiline">
 			<div
 				class="column is-one-third-tablet is-one-quarter-desktop"
@@ -39,11 +40,11 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['applicants', 'locks', 'me']),
+		...mapState(['applicants', 'locks', 'me', 'answerCount']),
 		...mapGetters(['isAdmin']),
 	},
 	methods: {
-		...mapActions(['getApplicants', 'getLocks', 'getMe', 'deleteApplicant']),
+		...mapActions(['getApplicants', 'getLocks', 'getMe', 'deleteApplicant', 'getAnswerCount']),
 		linkText (applicant) {
 			if (!applicant.user) console.log(applicant);
 			if (this.lock.flag || this.me.level > this.lock.level && applicant.user) {
@@ -60,6 +61,9 @@ export default {
 	async mounted () {
 		if (!this.applicants) {
 			await this.getApplicants();
+		}
+		if (!this.answerCount) {
+			await this.getAnswerCount();
 		}
 		if (!this.locks) {
 			await this.getLocks();

@@ -4,9 +4,18 @@ class Allocations {
 		this.done = [];
 		this.doneForNow = [];
 		this.doneForMain = [];
-		this.categories = categories;
+		// randomizing the categories so putting the same score for a genre and a production doesn't favour one over the other
+		this.categories = this.shuffle(categories);
 		this.allocationAnswers = allocationAnswers;
 		this.questions = questions;
+	}
+
+	// eslint-disable-next-line class-methods-use-this
+	shuffle (array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
 	}
 
 	// Helper methods for the drafts
