@@ -12,10 +12,21 @@ class Allocations {
 
 	// eslint-disable-next-line class-methods-use-this
 	shuffle (array) {
-		for (let i = array.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[array[i], array[j]] = [array[j], array[i]];
+		let currentIndex = array.length; let temporaryValue; let randomIndex;
+
+		// While there remain elements to shuffle...
+		while (0 !== currentIndex) {
+			// Pick a remaining element...
+			randomIndex = Math.floor(Math.random() * currentIndex);
+			currentIndex -= 1;
+
+			// And swap it with the current element.
+			temporaryValue = array[currentIndex];
+			array[currentIndex] = array[randomIndex];
+			array[randomIndex] = temporaryValue;
 		}
+
+		return array;
 	}
 
 	// Helper methods for the drafts
@@ -256,7 +267,7 @@ class Allocations {
 		}
 	}
 
-	// Final low interest draft that just flips people around based on filling categories that haven't been filled yet
+	// Final low interest draft that gives people an extra category if something still needs filling
 	lowInterestDraft () {
 		let unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		let unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
@@ -264,7 +275,7 @@ class Allocations {
 			const answers = this.filteredAnswers(category).filter(answer => !this.allocatedJurors.find(aJ => aJ.name === answer.applicant.user.reddit && aJ.categoryId === category.id) && answer.question.type === 'essay' && this.getPreference(answer.applicant.user.reddit, category) >= 2 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2 && !this.done.find(done => done === answer.applicant.user.reddit));
 			while (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount && answers.length > 0) {
 				const randomAnswer = Math.floor(Math.random() * Math.floor(answers.length));
-				if (this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length >= 3) {
+				if (this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length >= 4) {
 					const categoryToPrune = this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).reduce((prev, curr) => prev.preference < curr.preference ? prev : curr);
 					const index = this.allocatedJurors.findIndex(juror => juror.name === categoryToPrune.name && juror.categoryId === categoryToPrune.categoryId);
 					this.allocatedJurors.splice(index, 1);
@@ -286,7 +297,7 @@ class Allocations {
 			applicants = applicants.filter(applicant => this.getPreference(applicant.name, category) >= 2 && !this.allocatedJurors.find(aJ => aJ.name === applicant.name && aJ.categoryId === category.id));
 			while (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount && applicants.length > 0) {
 				const randomApplicant = Math.floor(Math.random() * Math.floor(applicants.length));
-				if (this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length >= 3) {
+				if (this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length >= 4) {
 					const categoryToPrune = this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).reduce((prev, curr) => prev.preference < curr.preference ? prev : curr);
 					const index = this.allocatedJurors.findIndex(juror => juror.name === categoryToPrune.name && juror.categoryId === categoryToPrune.categoryId);
 					this.allocatedJurors.splice(index, 1);
@@ -311,7 +322,7 @@ class Allocations {
 			for (const category of unfilledMainCategories) {
 				this.runMainDraft(category, 2, 2);
 			}
-			this.prune(3);
+			this.prune(4);
 		}
 	}
 
