@@ -6,6 +6,7 @@ const sequelize = require('../models').sequelize;
 // Sequelize models to avoid redundancy
 const Users = sequelize.model('users');
 const Votes = sequelize.model('votes');
+const Applicants = sequelize.model('applicants');
 
 const {yuuko} = require('../bot/index');
 const config = require('../config');
@@ -142,6 +143,16 @@ apiApp.delete('/:reddit', async (request, response) => {
 apiApp.post('/deleteaccount', async (request, response) => {
 	const name = (await request.reddit().get('/api/v1/me')).body.name;
 	try {
+		const user = await Users.findOne({
+			where: {
+				reddit: name,
+			},
+		});
+		await Applicants.destroy({
+			where: {
+				user_id: user.id,
+			},
+		});
 		Users.destroy({where: {reddit: name}});
 		Votes.destroy({where: {reddit_user: name}});
 		request.session.destroy(() => {

@@ -33,7 +33,7 @@
 					</button>
 				</div>
 				<p class="help">
-					This will delete your responses and all other information associated with your Reddit account. It will not delete your Reddit account itself. <b>There is no further confirmation</b>; only click this button if you mean it.
+					This will delete your responses, votes and all other information associated with your Reddit account. It will not delete your Reddit account itself. <b>There is no further confirmation</b>; only click this button if you mean it.
 				</p>
 			</div>
 		</div>

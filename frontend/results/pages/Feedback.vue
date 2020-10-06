@@ -28,10 +28,17 @@
 								</div>
 								<p class="help is-platinum">{{message.length}}/1950</p>
 							</div>
+							<div v-if="sent" class="field">
+								<div class="control">
+									<div class="has-text-centered has-text-platinum">
+										Your feedback has been recorded!
+									</div>
+								</div>
+							</div>
 							<div class="field">
 								<div class="control">
 									<div class="has-text-centered">
-										<button :disabled="sent" @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">{{text}}</button>
+										<button @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">{{text}}</button>
 									</div>
 								</div>
 							</div>
@@ -66,13 +73,15 @@ export default {
 					}),
 				});
 				if (response.ok) {
-					this.text = 'Sent!';
-					this.sent = true;
+					setTimeout(() => {
+						this.sent = true;
+						this.submitting = false;
+					}, 3000);
 				} else {
 					// eslint-disable-next-line no-alert
-					alert('You are submitting too many times. Please slow down.');
+					alert('You are submitting too many times. Please come back in 24 hours to submit more feedback.');
+					this.submitting = false;
 				}
-				this.submitting = false;
 			}
 		},
 	},
