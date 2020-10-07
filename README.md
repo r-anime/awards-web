@@ -6,6 +6,8 @@
 
 Uses [this project](https://github.com/JoseiToAoiTori/animethemes-scraper) to grab themes from /r/AnimeThemes.
 
+[A step by step description of the algorithm used to allocate jurors in the /r/anime Awards](https://gist.github.com/JoseiToAoiTori/56bd10081e5022d51243f2e7a285dfec).
+
 ## Usage
 
 Requires Node 10+ and SQLite3.
