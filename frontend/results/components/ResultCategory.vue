@@ -72,7 +72,7 @@
 						<div>{{hm.name}}</div>
 						<button v-if="hm.writeup !== ''" class="button is-small is-llperiwinkle is-outlined mt-10">
 							<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
-							More Information
+							Read Write-up
 						</button>
 					</div>
                 </li>
