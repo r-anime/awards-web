@@ -1,7 +1,8 @@
 <template>
 	<div class="section" v-if="loaded">
 		<h2 class="title">Applicants</h2>
-		<h3 class="subtitle">Valid Applications: {{answerCount.length}}</h3>
+		<h3 class="subtitle">Valid Applications: {{answerCount.prefNumber.length}}</h3>
+		<h3 class="subtitle">Valid Essays: {{answerCount.answerNumber.length}}</h3>
 		<div class="columns is-mobile is-multiline">
 			<div
 				class="column is-one-third-tablet is-one-quarter-desktop"

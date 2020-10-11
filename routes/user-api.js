@@ -7,6 +7,7 @@ const sequelize = require('../models').sequelize;
 const Users = sequelize.model('users');
 const Votes = sequelize.model('votes');
 const Applicants = sequelize.model('applicants');
+const Answers = sequelize.model('answers');
 
 const {yuuko} = require('../bot/index');
 const config = require('../config');
@@ -148,13 +149,23 @@ apiApp.post('/deleteaccount', async (request, response) => {
 				reddit: name,
 			},
 		});
-		await Applicants.destroy({
+		const applicant = await Applicants.findOne({
 			where: {
 				user_id: user.id,
 			},
 		});
-		Users.destroy({where: {reddit: name}});
-		Votes.destroy({where: {reddit_user: name}});
+		await Answers.destroy({
+			where: {
+				applicant_id: applicant.id,
+			},
+		});
+		await Applicants.destroy({
+			where: {
+				id: applicant.id,
+			},
+		});
+		await Users.destroy({where: {reddit: name}});
+		await Votes.destroy({where: {reddit_user: name}});
 		request.session.destroy(() => {
 			response.empty();
 		});

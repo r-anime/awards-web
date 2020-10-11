@@ -329,7 +329,7 @@ apiApp.get('/answers/grouped', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
 	}
 	try {
-		response.json(await Answers.findAll({
+		const prefNumber = await Answers.findAll({
 			where: {
 				active: true,
 			},
@@ -338,7 +338,28 @@ apiApp.get('/answers/grouped', async (request, response) => {
 				sequelize.fn('count', sequelize.col('applicant_id')),
 			],
 			group: ['Answers.applicant_id'],
-		}));
+		});
+		const answerNumber = await Answers.findAll({
+			where: {
+				active: true,
+			},
+			include: [{
+				model: Questions,
+				as: 'question',
+				where: {
+					type: 'essay',
+				},
+			}],
+			attributes: [
+				'applicant_id',
+				sequelize.fn('count', sequelize.col('applicant_id')),
+			],
+			group: ['Answers.applicant_id'],
+		});
+		response.json({
+			prefNumber,
+			answerNumber,
+		});
 	} catch (error) {
 		response.error(error);
 	}
