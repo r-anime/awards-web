@@ -349,6 +349,7 @@ apiApp.get('/answers/grouped', async (request, response) => {
 				where: {
 					type: 'essay',
 				},
+				attributes: ['id'],
 			}],
 			attributes: [
 				'applicant_id',

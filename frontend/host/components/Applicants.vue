@@ -1,8 +1,20 @@
 <template>
 	<div class="section" v-if="loaded">
 		<h2 class="title">Applicants</h2>
-		<h3 class="subtitle">Valid Applications: {{answerCount.prefNumber.length}}</h3>
-		<h3 class="subtitle">Valid Essays: {{answerCount.answerNumber.length}}</h3>
+		<div class="level">
+			<div class="level-left"></div>
+			<div class="level-right">
+				<div class="select">
+					<select v-model="filter">
+						<option value="-1">No Filter</option>
+						<option value="0">Valid Applicants</option>
+						<option value="1">Valid Essay Applicants</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<h3 class="subtitle">Valid Applicants: {{answerCount.prefNumber.length}}</h3>
+		<h3 class="subtitle">Valid Essay Applicants: {{answerCount.answerNumber.length}}</h3>
 		<div class="columns is-mobile is-multiline">
 			<div
 				class="column is-one-third-tablet is-one-quarter-desktop"
@@ -35,14 +47,22 @@ export default {
 	},
 	data () {
 		return {
-			filteredApplicants: null,
 			loaded: false,
 			lock: null,
+			filter: '-1',
 		};
 	},
 	computed: {
 		...mapState(['applicants', 'locks', 'me', 'answerCount']),
 		...mapGetters(['isAdmin']),
+		filteredApplicants () {
+			if (this.filter === '0') {
+				return this.applicants.filter(applicant => applicant.app_id === this.application.id && this.answerCount.prefNumber.find(answer => answer.applicant_id === applicant.id));
+			} else if (this.filter === '1') {
+				return this.applicants.filter(applicant => applicant.app_id === this.application.id && this.answerCount.answerNumber.find(answer => answer.applicant_id === applicant.id));
+			}
+			return this.applicants.filter(applicant => applicant.app_id === this.application.id);
+		},
 	},
 	methods: {
 		...mapActions(['getApplicants', 'getLocks', 'getMe', 'deleteApplicant', 'getAnswerCount']),
@@ -55,8 +75,6 @@ export default {
 		},
 		async submitDeleteApplicant (id) {
 			await this.deleteApplicant(id);
-			const index = this.filteredApplicants.findIndex(applicant => applicant.id === id);
-			this.filteredApplicants.splice(index, 1);
 		},
 	},
 	async mounted () {
@@ -73,7 +91,6 @@ export default {
 			await this.getMe();
 		}
 		this.lock = this.locks.find(lock => lock.name === 'app-names');
-		this.filteredApplicants = this.applicants.filter(applicant => applicant.app_id === this.application.id);
 		this.loaded = true;
 	},
 };
