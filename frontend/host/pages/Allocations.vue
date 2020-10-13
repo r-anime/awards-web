@@ -88,6 +88,7 @@
 							</div>
 						</div>
 					</div>
+					<p class="subtitle">High preference applicants: {{categoryDemand(category)}}</p>
 				</div>
 			</div>
         </div>
@@ -109,6 +110,8 @@ export default {
 			threesUnallocated: 0,
 			twosUnallocated: 0,
 			categoriesUnfilled: 0,
+			threesApplicants: null,
+			twosApplicants: null,
 		};
 	},
 	computed: {
@@ -130,6 +133,9 @@ export default {
 		]),
 		filteredAllocatedJurors (category) {
 			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
+		},
+		categoryDemand (category) {
+			return [...new Set(this.answers.filter(answer => answer.question.type === 'preference' && this.threesApplicants.find(applicant => applicant === answer.applicant.user.reddit) && JSON.parse(answer.answer)[category.id]).filter(answer => parseInt(JSON.parse(answer.answer)[category.id], 10) >= 4).map(answer => answer.applicant.user.reddit))].length;
 		},
 		async initiateDraft () {
 			this.loaded = false;
@@ -158,16 +164,16 @@ export default {
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
-			const threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
-			const twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
-			for (const applicant of threesApplicants) {
+			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
+			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
 					console.log(applicant);
 					this.threesUnallocated++;
 				}
 			}
-			for (const applicant of twosApplicants) {
+			for (const applicant of this.twosApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
 					this.twosUnallocated++;
@@ -215,16 +221,16 @@ export default {
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
-			const threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
-			const twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
-			for (const applicant of threesApplicants) {
+			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
+			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
 					console.log(applicant);
 					this.threesUnallocated++;
 				}
 			}
-			for (const applicant of twosApplicants) {
+			for (const applicant of this.twosApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
 					this.twosUnallocated++;
