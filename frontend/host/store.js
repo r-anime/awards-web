@@ -178,15 +178,6 @@ const store = new Vuex.Store({
 		GET_ANSWER_COUNTS (state, answerCount) {
 			state.answerCount = answerCount;
 		},
-		PUSH_SCORE (state, score) {
-			const index = state.answers.findIndex(answer => answer.id === score.answer_id);
-			state.answers[index].scores.push(score);
-		},
-		DELETE_SCORE (state, score) {
-			const index = state.answers.findIndex(answer => answer.id === score.answer_id);
-			const index2 = state.answers[index].scores.findIndex(item => item.id === score.id);
-			state.answers[index].scores.splice(index2, 1);
-		},
 		GET_APPLICANTS (state, applicants) {
 			state.applicants = applicants;
 		},
@@ -357,19 +348,12 @@ const store = new Vuex.Store({
 			commit('UPDATE_QUESTION_GROUP', questionGroup);
 		},
 		async getAnswers ({commit}) {
-			const answers = await makeRequest('/api/juror-apps/answers');
+			const answers = await makeRequest('/api/juror-apps/all-answers');
 			commit('GET_ANSWERS', answers);
 		},
 		async getAnswerCount ({commit}) {
-			const answerCount = await makeRequest('/api/juror-apps/answers/grouped');
+			const answerCount = await makeRequest('/api/juror-apps/grouped-answers');
 			commit('GET_ANSWER_COUNTS', answerCount);
-		},
-		pushScore ({commit}, score) {
-			commit('PUSH_SCORE', score);
-		},
-		async deleteScore ({commit}, score) {
-			await makeRequest(`/api/juror-apps/score/${score.id}`, 'DELETE');
-			commit('DELETE_SCORE', score);
 		},
 		async getApplicants ({commit}) {
 			const applicants = await makeRequest('/api/juror-apps/applicants');

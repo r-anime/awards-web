@@ -35,8 +35,11 @@
 			<div v-if="selectedQuestionID === '-1'">
 				Please select a question to grade first.
 			</div>
+			<div v-else-if="fetching">
+				Checking answers. Please wait...
+			</div>
 			<div v-else-if="!currentAnswer && selectedQuestionID !== '-1'">
-				There are no answers left to grade for this question.
+				You have graded all answers for this question.
 			</div>
 			<div v-else>
 				<div class="field">
@@ -103,10 +106,11 @@ export default {
 			note: '',
 			filteredQuestionGroups: null,
 			submitting: false,
+			fetching: false,
 		};
 	},
 	computed: {
-		...mapState(['me', 'answers', 'questionGroups', 'locks']),
+		...mapState(['me', 'questionGroups', 'locks']),
 		questions () {
 			const arr = [];
 			for (const questionGroup of this.filteredQuestionGroups) {
@@ -118,14 +122,22 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['getMe', 'getAnswers', 'getQuestionGroups', 'pushScore', 'getLocks']),
-		randomAnswer () {
-			const filteredAnswers = this.answers.filter(answer => answer.scores.length < 3 && !answer.scores.some(score => score.host_name === this.me.reddit.name) && answer.question.id === parseInt(this.selectedQuestionID, 10) && answer.question.type === 'essay');
-			if (filteredAnswers.length > 0) {
-				this.currentAnswer = filteredAnswers[Math.floor(Math.random() * filteredAnswers.length)];
-			} else {
+		...mapActions(['getMe', 'getQuestionGroups', 'getLocks']),
+		async randomAnswer () {
+			this.fetching = true;
+			if (this.selectedQuestionID === '-1') {
 				this.currentAnswer = null;
+			} else {
+				const response = await fetch(`/api/juror-apps/random-answer/${this.selectedQuestionID}`, {
+					method: 'GET',
+				});
+				if (response.status === 204) {
+					this.currentAnswer = null;
+				} else {
+					this.currentAnswer = await response.json();
+				}
 			}
+			this.fetching = false;
 		},
 		async submitScore () {
 			if (parseInt(this.score, 10) && parseInt(this.score, 10) > 0 && parseInt(this.score, 10) <= 4 && this.note.length) {
@@ -143,8 +155,6 @@ export default {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting the score.');
 				}
-				score = await score.json();
-				this.pushScore(score);
 				this.submitting = false;
 				this.score = '';
 				this.note = '';
@@ -163,9 +173,6 @@ export default {
 	async mounted () {
 		if (!this.me) {
 			await this.getMe();
-		}
-		if (!this.answers) {
-			await this.getAnswers();
 		}
 		if (!this.questionGroups) {
 			await this.getQuestionGroups();

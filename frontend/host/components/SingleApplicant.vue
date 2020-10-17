@@ -97,11 +97,11 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['answers', 'locks', 'me', 'applicants', 'categories']),
+		...mapState(['locks', 'me', 'applicants', 'categories']),
 		...mapGetters(['isAdmin']),
 	},
 	methods: {
-		...mapActions(['getAnswers', 'getLocks', 'getMe', 'getApplicants', 'getCategories', 'deleteScore']),
+		...mapActions(['getLocks', 'getMe', 'getApplicants', 'getCategories', 'deleteScore']),
 		header () {
 			if (this.lock.flag || this.me.level > this.lock.level) {
 				const found = this.applicants.find(applicant => applicant.id === parseInt(this.applicantID, 10));
@@ -132,13 +132,13 @@ export default {
 			return returnArr;
 		},
 		async submitDeleteScore (score) {
-			await this.deleteScore(score);
+			await fetch(`/api/juror-apps/score/${score.id}`, {method: 'DELETE'});
+			const answerIndex = this.filteredAnswers.findIndex(answer => answer.id === score.answer_id);
+			const scoreIndex = this.filteredAnswers[answerIndex].scores.findIndex(aScore => aScore.id === score.id);
+			this.filteredAnswers[answerIndex].scores.splice(scoreIndex, 1);
 		},
 	},
 	async mounted () {
-		if (!this.answers) {
-			await this.getAnswers();
-		}
 		if (!this.locks) {
 			await this.getLocks();
 		}
@@ -155,7 +155,12 @@ export default {
 		const gradingLock = this.locks.find(lock => lock.name === 'grading-open');
 		if (gradingLock.flag || this.me.level > gradingLock.level) {
 			this.locked = false;
-			this.filteredAnswers = this.answers.filter(answer => answer.applicant.id === parseInt(this.applicantID, 10));
+			const response = await fetch(`/api/juror-apps/answers/${this.applicantID}`, {method: 'GET'});
+			if (response.ok) {
+				this.filteredAnswers = await response.json();
+			} else {
+				alert('Application could not be loaded.');
+			}
 		} else {
 			this.locked = true;
 			this.filteredAnswers = [];

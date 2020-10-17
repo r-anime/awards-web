@@ -275,7 +275,7 @@ apiApp.patch('/question-group/:id', async (request, response) => {
 	}
 });
 
-apiApp.get('/answers', async (request, response) => {
+apiApp.get('/all-answers', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
@@ -284,6 +284,56 @@ apiApp.get('/answers', async (request, response) => {
 		response.json(await Answers.findAll({
 			where: {
 				active: true,
+			},
+			attributes: ['id', 'question_id', 'applicant_id'],
+			include: [
+				{
+					model: Questions,
+					as: 'question',
+					include: [
+						{
+							model: QuestionGroups,
+							as: 'question_group',
+							include: [
+								{
+									model: Applications,
+									as: 'application',
+								},
+							],
+						},
+					],
+				},
+				{
+					model: Applicants,
+					as: 'applicant',
+					include: [
+						{
+							model: Users,
+							as: 'user',
+						},
+					],
+				},
+				{
+					model: Scores,
+					as: 'scores',
+				},
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/answers/:applicantID', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
+	}
+	try {
+		response.json(await Answers.findAll({
+			where: {
+				active: true,
+				applicant_id: request.params.applicantID,
 			},
 			include: [
 				{
@@ -323,7 +373,62 @@ apiApp.get('/answers', async (request, response) => {
 	}
 });
 
-apiApp.get('/answers/grouped', async (request, response) => {
+apiApp.get('/random-answer/:questionID', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
+	}
+	try {
+		let answers = await Answers.findAll({
+			where: {
+				active: true,
+				question_id: request.params.questionID,
+			},
+			include: [
+				{
+					model: Questions,
+					as: 'question',
+					include: [
+						{
+							model: QuestionGroups,
+							as: 'question_group',
+							include: [
+								{
+									model: Applications,
+									as: 'application',
+								},
+							],
+						},
+					],
+				},
+				{
+					model: Applicants,
+					as: 'applicant',
+					include: [
+						{
+							model: Users,
+							as: 'user',
+						},
+					],
+				},
+				{
+					model: Scores,
+					as: 'scores',
+				},
+			],
+		});
+		answers = answers.filter(answer => answer.scores.length < 3 && !answer.scores.find(score => score.host_name === auth));
+		if (answers.length) {
+			response.json(answers[Math.floor(Math.random() * answers.length)]);
+		} else {
+			response.empty();
+		}
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/grouped-answers', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
