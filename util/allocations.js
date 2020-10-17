@@ -131,7 +131,7 @@ class Allocations {
 			desiredCategories = parseInt(desiredCategories.answer, 10);
 			const numberCategories = this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length;
 			// If they have their desired number of categories, they are done and will not be a part of future drafts
-			if (numberCategories >= desiredCategories) this.done.push(answers[randomAnswer].applicant.user.reddit);
+			if (numberCategories >= desiredCategories && desiredCategories !== 3) this.done.push(answers[randomAnswer].applicant.user.reddit);
 			answers.splice(randomAnswer, 1);
 		}
 	}
@@ -156,7 +156,7 @@ class Allocations {
 			let desiredCategories = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicants[randomApplicant].name && answer.question.question_group.name === 'Desired Categories');
 			desiredCategories = parseInt(desiredCategories.answer, 10);
 			const numberCategories = this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length;
-			if (numberCategories >= desiredCategories) this.done.push(applicants[randomApplicant].name);
+			if (numberCategories >= desiredCategories && desiredCategories !== 3) this.done.push(applicants[randomApplicant].name);
 			applicants.splice(randomApplicant, 1);
 		}
 	}

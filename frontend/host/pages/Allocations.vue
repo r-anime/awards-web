@@ -88,7 +88,6 @@
 							</div>
 						</div>
 					</div>
-					<p class="subtitle">High preference applicants: {{categoryDemand(category)}}</p>
 				</div>
 			</div>
         </div>
@@ -133,9 +132,6 @@ export default {
 		]),
 		filteredAllocatedJurors (category) {
 			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
-		},
-		categoryDemand (category) {
-			return [...new Set(this.answers.filter(answer => answer.question.type === 'preference' && this.threesApplicants.find(applicant => applicant === answer.applicant.user.reddit) && JSON.parse(answer.answer)[category.id]).filter(answer => parseInt(JSON.parse(answer.answer)[category.id], 10) >= 4).map(answer => answer.applicant.user.reddit))].length;
 		},
 		async initiateDraft () {
 			this.loaded = false;
