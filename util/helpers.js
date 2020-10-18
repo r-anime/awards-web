@@ -4,6 +4,7 @@ const config = require('../config');
 const constants = require('../constants');
 const sequelize = require('../models').sequelize;
 const {yuuko} = require('../bot/index');
+const util = require('util');
 
 const requestHelpers = {
 	reddit () {
@@ -135,8 +136,8 @@ const responseHelpers = {
 			message = status;
 			status = 500;
 		}
-		if (message instanceof Error) {
-			message = message.toString();
+		if (typeof message !== 'string') {
+			message = util.inspect(message);
 		}
 		yuuko.createMessage(config.discord.auditChannel, {
 			embed: {
