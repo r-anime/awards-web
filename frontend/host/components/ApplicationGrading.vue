@@ -51,7 +51,7 @@
 				<div v-if="currentAnswer.scores.length" class="field">
 					<h2 class="title is-4">Notes From Other Hosts</h2>
 					<div class="control">
-						<li v-for="score in answer.scores" :key="score.id">
+						<li v-for="score in currentAnswer.scores" :key="score.id">
 							{{score.host_name}}: <b>{{score.score}}</b>{{score.note ? ` (${score.note})` : ''}}
 						</li>
 					</div>
@@ -142,7 +142,7 @@ export default {
 		async submitScore () {
 			if (parseInt(this.score, 10) && parseInt(this.score, 10) > 0 && parseInt(this.score, 10) <= 4 && this.note.length) {
 				this.submitting = true;
-				let score = await fetch('/api/juror-apps/score', {
+				const score = await fetch('/api/juror-apps/score', {
 					method: 'POST',
 					body: JSON.stringify({
 						answer_id: this.currentAnswer.id,
