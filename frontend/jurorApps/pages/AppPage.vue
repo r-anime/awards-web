@@ -287,56 +287,64 @@ export default {
 		},
 	},
 	mounted () {
-		Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.locks ? Promise.resolve() : this.getLocks(), this.categories ? Promise.resolve() : this.getCategories(), this.me ? Promise.resolve() : this.getMe()]).then(async () => {
+		Promise.all([this.locks ? Promise.resolve() : this.getLocks(), this.me ? Promise.resolve() : this.getMe()]).then(() => {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
-			if ((appLock.flag || this.me.level > appLock.level) && this.applicant) {
-				await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
-					this.disclaimer = data.disclaimer;
-					this.samples = Object.assign({}, data).writeups;
-					this.tips = Object.assign({}, data).tips;
-				});
-				this.locked = false;
-				await this.getAnswers(this.applicant.id);
-				this.computedApplication = this.application;
-				this.computedApplication.question_groups = this.computedApplication.question_groups.filter(qg => qg.active);
-				this.computedApplication.question_groups = this.computedApplication.question_groups.sort((a, b) => a.order - b.order);
-				for (let i = 0; i < this.computedApplication.question_groups.length; i++) {
-					this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.filter(question => question.active);
-					this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.sort((a, b) => a.order - b.order);
-					for (const question of this.computedApplication.question_groups[i].questions) {
-						const found = this.myAnswers.find(answer => answer.question_id === question.id);
-						if (found) {
-							if (question.type === 'preference') {
-								this.answers[question.id] = JSON.parse(found.answer);
-								for (const [key, value] of Object.entries(this.answers[question.id])) {
-									const index = `${question.id}-${key}`;
-									this.mc_answers[index] = value;
+			if (appLock.flag || this.me.level > appLock.level) {
+				Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
+					if (this.applicant) {
+						await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
+							this.disclaimer = data.disclaimer;
+							this.samples = Object.assign({}, data).writeups;
+							this.tips = Object.assign({}, data).tips;
+						});
+						this.locked = false;
+						await this.getAnswers(this.applicant.id);
+						this.computedApplication = this.application;
+						this.computedApplication.question_groups = this.computedApplication.question_groups.filter(qg => qg.active);
+						this.computedApplication.question_groups = this.computedApplication.question_groups.sort((a, b) => a.order - b.order);
+						for (let i = 0; i < this.computedApplication.question_groups.length; i++) {
+							this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.filter(question => question.active);
+							this.computedApplication.question_groups[i].questions = this.computedApplication.question_groups[i].questions.sort((a, b) => a.order - b.order);
+							for (const question of this.computedApplication.question_groups[i].questions) {
+								const found = this.myAnswers.find(answer => answer.question_id === question.id);
+								if (found) {
+									if (question.type === 'preference') {
+										this.answers[question.id] = JSON.parse(found.answer);
+										for (const [key, value] of Object.entries(this.answers[question.id])) {
+											const index = `${question.id}-${key}`;
+											this.mc_answers[index] = value;
+										}
+									} else {
+										this.answers[question.id] = found.answer;
+										this.$set(this.essayText, question.id, `${this.answers[question.id].length}/5000`);
+									}
+								} else {
+									// eslint-disable-next-line no-lonely-if
+									if (question.type === 'preference') {
+										const categories = this.categories.filter(category => category.awardsGroup === question.question);
+										this.answers[question.id] = {};
+										for (const category of categories) {
+											this.answers[question.id][category.id] = '3';
+											this.mc_answers[`${question.id}-${category.id}`] = '3';
+										}
+									} else {
+										this.answers[question.id] = '';
+										this.$set(this.essayText, question.id, `Please write ${500 - this.answers[question.id].length} characters to submit your answer`);
+									}
 								}
-							} else {
-								this.answers[question.id] = found.answer;
-								this.$set(this.essayText, question.id, `${this.answers[question.id].length}/5000`);
-							}
-						} else {
-							// eslint-disable-next-line no-lonely-if
-							if (question.type === 'preference') {
-								const categories = this.categories.filter(category => category.awardsGroup === question.question);
-								this.answers[question.id] = {};
-								for (const category of categories) {
-									this.answers[question.id][category.id] = '3';
-									this.mc_answers[`${question.id}-${category.id}`] = '3';
-								}
-							} else {
-								this.answers[question.id] = '';
-								this.$set(this.essayText, question.id, `Please write ${500 - this.answers[question.id].length} characters to submit your answer`);
+								this.$set(this.saving, question.id, false);
 							}
 						}
-						this.$set(this.saving, question.id, false);
+						this.loaded = true;
+					} else {
+						this.locked = true;
+						this.loaded = true;
 					}
-				}
+				});
 			} else {
 				this.locked = true;
+				this.loaded = true;
 			}
-			this.loaded = true;
 		});
 	},
 };
