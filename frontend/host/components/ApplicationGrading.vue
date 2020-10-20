@@ -43,7 +43,7 @@
 			</div>
 			<div v-else>
 				<div class="field">
-					<h2 class="title is-4">Answer</h2>
+					<h2 class="title is-4">{{currentAnswer.applicant.id}}'s Answer</h2>
 					<div class="control">
 						<Viewer :initialValue="currentAnswer.answer"/>
 					</div>

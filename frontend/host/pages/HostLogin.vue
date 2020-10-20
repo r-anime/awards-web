@@ -34,9 +34,7 @@
 		</div>
 		<footer class="hero-foot footer has-background-dperiwinkle has-text-light">
 			<div class="content has-text-centered">
-				<router-link to="/about" style="color:inherit">
-					<a class="has-text-light">About/Credits</a>
-				</router-link>
+				<a href="/about" class="has-text-light">About/Credits</a>
 			</div>
 		</footer>
 	</section>

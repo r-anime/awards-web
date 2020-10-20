@@ -14,7 +14,7 @@
 						<th v-for="(host, index) in hosts" :key="index">{{host}}</th>
 					</tr>
 					<tr v-for="answer in filteredAnswers" :key="answer.id">
-						<td>{{showNames ? answer.applicant.user.reddit : answer.applicant.id}}</td>
+						<router-link :to="`/host/applications/${application.id}/applicant/${answer.applicant.id}`"><td>{{showNames ? answer.applicant.user.reddit : answer.applicant.id}}</td></router-link>
 						<td v-for="(host, index) in hosts" :key="index">
 							{{answer.scores.find(score => score.host_name === host) ? answer.scores.find(score => score.host_name === host).score : 'N/A'}}
 						</td>
