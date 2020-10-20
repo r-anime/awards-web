@@ -115,7 +115,7 @@
 		</div>
 	</section>
 	<div class="section" v-else-if="loaded && locked">
-		Jury Apps are not open yet.
+		Jury Apps are not open yet. If you think this is a mistake, try logging out and then back in.
 	</div>
 	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else-if="!loaded">
         <div class="container">
@@ -333,6 +333,8 @@ export default {
 						this.$set(this.saving, question.id, false);
 					}
 				}
+			} else {
+				this.locked = true;
 			}
 			this.loaded = true;
 		});

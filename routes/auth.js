@@ -32,43 +32,47 @@ authApp.get('/reddit/callback', async (request, response) => {
 	try {
 		name = (await request.reddit().get('/api/v1/me')).body.name;
 		request.session.reddit_name = name;
-		log.info(name);
 	} catch (res) {
-		log.error('Error getting reddit user info:', res.status, res.body);
+		response.error(error);
+		return;
 	}
 
-	const [user] = await sequelize.model('users').findOrCreate({
-		where: {
-			reddit: name,
-		},
-		defaults: {
-			level: 0,
-			flags: 0,
-		},
-	});
-	const {next} = JSON.parse(state);
-	if (next === 'apps') {
-		const lock = await sequelize.model('locks').findOne({
+	try {
+		const [user] = await sequelize.model('users').findOrCreate({
 			where: {
-				name: 'apps-open',
+				reddit: name,
+			},
+			defaults: {
+				level: 0,
+				flags: 0,
 			},
 		});
-		if (lock.flag || user.level > lock.level) {
-			const apps = await sequelize.model('applications').findAll({
-				limit: 1,
-				where: {active: true},
-				order: [['year', 'DESC']],
-			});
-			await sequelize.model('applicants').findOrCreate({
+		const {next} = JSON.parse(state);
+		if (next === 'apps') {
+			const lock = await sequelize.model('locks').findOne({
 				where: {
-					user_id: user.id,
-					active: true,
-					app_id: apps[0].id,
+					name: 'apps-open',
 				},
 			});
+			if (lock.flag || user.level > lock.level) {
+				const apps = await sequelize.model('applications').findAll({
+					limit: 1,
+					where: {active: true},
+					order: [['year', 'DESC']],
+				});
+				await sequelize.model('applicants').findOrCreate({
+					where: {
+						user_id: user.id,
+						active: true,
+						app_id: apps[0].id,
+					},
+				});
+			}
 		}
+		response.redirect(`/${next}`);
+	} catch (responseError) {
+		response.error(responseError);
 	}
-	response.redirect(`/${next}`);
 });
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
