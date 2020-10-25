@@ -21,7 +21,7 @@
 							You can view past results of both public and jury in the /r/anime Awards by clicking the button below:
 							</p>
 							<br/><br/>
-							<a href="/archive" class="button is-large is-success">Past Results Archive</a>
+							<router-link to="/archive" class="button is-large is-success">Past Results Archive</router-link>
 						</div>
 						<div v-else>
 							<nav class="homeIntroThingy level mt-40">
