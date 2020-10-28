@@ -76,10 +76,14 @@ export default {
 					setTimeout(() => {
 						this.sent = true;
 						this.submitting = false;
-					}, 3000);
-				} else {
+					}, 2000);
+				} else if (response.status === 500) {
 					// eslint-disable-next-line no-alert
-					alert('You are submitting too many times. Please come back in 24 hours to submit more feedback.');
+					alert('Your feedback could not be sent.');
+					this.submitting = false;
+				} else if (response.status === 401) {
+					// eslint-disable-next-line no-alert
+					alert('You are submitting too many times. Please come back later.');
 					this.submitting = false;
 				}
 			}

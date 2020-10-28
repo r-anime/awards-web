@@ -88,9 +88,16 @@
 			</div>
 			<p class="help is-platinum">{{message.length}}/1985</p>
 		</div>
+		<div v-if="sent" class="field">
+			<div class="control">
+				<div class="has-text-centered has-text-platinum">
+					Your feedback has been recorded!
+				</div>
+			</div>
+		</div>
 		<div class="field">
 			<div class="control">
-				<button :disabled="sent" @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">{{text}}</button>
+				<button @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">Submit</button>
 			</div>
 		</div>
 		</modal-generic>
@@ -142,7 +149,6 @@ export default {
 			modalOpen: false,
 			submitting: false,
 			sent: false,
-			text: 'Submit',
 		};
 	},
 	computed: {
@@ -220,13 +226,24 @@ export default {
 		},
 		async sendMessage () {
 			this.submitting = true;
-			await fetch('/api/complain/allocations', {
+			const response = await fetch('/api/complain/allocations', {
 				method: 'POST',
 				body: JSON.stringify(this.message),
 			});
-			this.submitting = false;
-			this.text = 'Sent!';
-			this.sent = true;
+			if (response.ok) {
+				setTimeout(() => {
+					this.sent = true;
+					this.submitting = false;
+				}, 2000);
+			} else if (response.status === 500) {
+				// eslint-disable-next-line no-alert
+				alert('Your feedback could not be sent.');
+				this.submitting = false;
+			} else if (response.status === 401) {
+				// eslint-disable-next-line no-alert
+				alert('You are submitting too many times. Please come back later.');
+				this.submitting = false;
+			}
 		},
 	},
 	mounted () {
