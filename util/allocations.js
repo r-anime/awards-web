@@ -128,7 +128,11 @@ class Allocations {
 			// Now they are done for this round
 			this.doneForNow.push(answers[randomAnswer].applicant.user.reddit);
 			let desiredCategories = this.allocationAnswers.find(answer => answer.applicant.user.reddit === answers[randomAnswer].applicant.user.reddit && answer.question.question_group.name === 'Desired Categories');
-			desiredCategories = parseInt(desiredCategories.answer, 10);
+			if (desiredCategories) {
+				desiredCategories = parseInt(desiredCategories.answer, 10);
+			} else {
+				desiredCategories = 3;
+			}
 			const numberCategories = this.allocatedJurors.filter(juror => juror.name === answers[randomAnswer].applicant.user.reddit).length;
 			// If they have their desired number of categories, they are done and will not be a part of future drafts
 			if (numberCategories >= desiredCategories && desiredCategories !== 3) this.done.push(answers[randomAnswer].applicant.user.reddit);
@@ -154,7 +158,11 @@ class Allocations {
 			});
 			this.doneForMain.push(applicants[randomApplicant].name);
 			let desiredCategories = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicants[randomApplicant].name && answer.question.question_group.name === 'Desired Categories');
-			desiredCategories = parseInt(desiredCategories.answer, 10);
+			if (desiredCategories) {
+				desiredCategories = parseInt(desiredCategories.answer, 10);
+			} else {
+				desiredCategories = 3;
+			}
 			const numberCategories = this.allocatedJurors.filter(juror => juror.name === applicants[randomApplicant].name).length;
 			if (numberCategories >= desiredCategories && desiredCategories !== 3) this.done.push(applicants[randomApplicant].name);
 			applicants.splice(randomApplicant, 1);
