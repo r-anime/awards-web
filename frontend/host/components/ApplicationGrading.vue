@@ -12,10 +12,12 @@
 				<div class="level-right">
 					<div class="level-item">
 						<div class="control">
-							<select class="input is-small" v-model="selectedQuestionID">
-								<option value="-1">Please select a question...</option>
-								<option :value="question.id" v-for="(question, index) in questions" :key="index">{{question.question}}</option>
-							</select>
+							<div class="select is-small">
+								<select v-model="selectedQuestionID">
+									<option value="-1">Please select a question...</option>
+									<option :value="question.id" v-for="(question, index) in questions" :key="index">{{question.question}}</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>

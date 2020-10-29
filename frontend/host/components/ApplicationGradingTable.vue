@@ -1,11 +1,20 @@
 <template>
 	<div v-if="loaded">
 		<div class="section">
-			<div class="control">
-				<select class="input is-medium" v-model="selectedQuestionID">
-					<option value="-1">Please select a question...</option>
-					<option :value="question.id" v-for="(question, index) in questions" :key="index">{{question.question}}</option>
-				</select>
+			<div class="field">
+				<div class="control">
+					<div class="select is-medium">
+						<select v-model="selectedQuestionID">
+							<option value="-1">Please select a question...</option>
+							<option :value="question.id" v-for="(question, index) in questions" :key="index">{{question.question}}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div v-if="filteredAnswers.some(answer => answer.scores.length)" class="field">
+				<div class="control">
+					<h2 class="title is-6">Average Score For This Question: {{filteredAnswers.filter(answer => answer.scores.length).reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / filteredAnswers.length}}</h2>
+				</div>
 			</div>
 			<table v-if="selectedQuestionID !== '-1'" class="table is-hoverable is-fullwidth">
 				<tbody>
