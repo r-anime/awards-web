@@ -290,6 +290,7 @@ apiApp.get('/all-answers', async (request, response) => {
 				{
 					model: Questions,
 					as: 'question',
+					attributes: ['id', 'type'],
 					include: [
 						{
 							model: QuestionGroups,
@@ -297,6 +298,7 @@ apiApp.get('/all-answers', async (request, response) => {
 							include: [
 								{
 									model: Applications,
+									attributes: ['id', 'year'],
 									as: 'application',
 								},
 							],
