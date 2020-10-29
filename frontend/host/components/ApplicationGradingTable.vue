@@ -14,6 +14,7 @@
 			<div v-if="filteredAnswers.some(answer => answer.scores.length)" class="field">
 				<div class="control">
 					<h2 class="title is-6">Average Score For This Question: {{filteredAnswers.filter(answer => answer.scores.length).reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / filteredAnswers.length}}</h2>
+					<h2 class="title is-6">Number of Answers For This Question: {{filteredAnswers.length}}</h2>
 				</div>
 			</div>
 			<table v-if="selectedQuestionID !== '-1'" class="table is-hoverable is-fullwidth">
