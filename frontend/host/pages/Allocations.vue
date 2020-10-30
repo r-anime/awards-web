@@ -240,7 +240,7 @@ export default {
 			}
 		}
 		const namesLock = this.locks.find(lock => lock.name === 'app-names');
-		if (namesLock.flag || this.me.level > 3) {
+		if (namesLock.flag || this.me.level > namesLock.level) {
 			this.showNames = true;
 		}
 		this.loaded = true;
