@@ -27,16 +27,27 @@
 									<span class="tag is-primary">{{averageCategories}}</span>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="level-item">
-						<div class="columns is-multiline is-mobile">
 							<div class="column is-narrow">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Categories Unfilled</span>
 									<span class="tag is-primary">{{categoriesUnfilled}}</span>
 								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+				<div class="level-right">
+					<div class="level-item">
+						<div class="buttons">
+							<button @click="initiateDraft()" class="button is-danger">Roll Allocations</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="level">
+				<div class="level-left">
+					<div class="level-item">
+						<div class="columns is-multiline is-mobile">
 							<div class="column is-narrow">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Unpassed Applicants</span>
@@ -49,13 +60,12 @@
 									<span class="tag is-primary">{{twosUnallocated}}</span>
 								</div>
 							</div>
-						</div>
-					</div>
-				</div>
-				<div class="level-right">
-					<div class="level-item">
-						<div class="buttons">
-							<button @click="initiateDraft()" class="button is-danger">Roll Allocations</button>
+							<div class="column is-narrow">
+								<div class="tags has-addons are-medium">
+									<span class="tag is-dark">4 Category Jurors</span>
+									<span class="tag is-primary">{{twosUnallocated}}</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -112,6 +122,7 @@ export default {
 			categoriesUnfilled: 0,
 			threesApplicants: null,
 			twosApplicants: null,
+			fourJurors: null,
 		};
 	},
 	computed: {
@@ -141,6 +152,7 @@ export default {
 			this.threesUnallocated = 0;
 			this.twosUnallocated = 0;
 			this.categoriesUnfilled = 0;
+			this.fourJurors = 0;
 			this.totalJurors = 0;
 			const result = await fetch('/api/juror-apps/allocations', {
 				method: 'GET',
@@ -163,6 +175,7 @@ export default {
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
 			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
 			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
 			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
@@ -220,6 +233,7 @@ export default {
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
 			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
 			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
 			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
