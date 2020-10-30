@@ -95,6 +95,15 @@ sequelize.sync().then(async () => {
 					},
 					transaction: t,
 				}),
+				sequelize.model('users').findOrCreate({
+					where: {
+						reddit: 'PandavengerX',
+					},
+					defaults: {
+						level: 4,
+					},
+					transaction: t,
+				}),
 				// Initialize the locks table if it hasn't already
 				sequelize.model('locks').findOrCreate({
 					where: {
