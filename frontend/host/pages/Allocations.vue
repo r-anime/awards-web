@@ -88,6 +88,7 @@
 							</div>
 						</div>
 					</div>
+					<h2 class="title is-6">{{filteredAllocatedJurors(category).length}}/{{category.jurorCount}}</h2>
 				</div>
 			</div>
         </div>
