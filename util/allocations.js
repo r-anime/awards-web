@@ -64,8 +64,8 @@ class Allocations {
 			// Even if they did, we don't know if they chose a preference for that category. Check that and return it if they did.
 			if (preferences[category.id]) return parseInt(preferences[category.id], 10);
 		}
-		// If they didn't, consider them a 3
-		return 3;
+		// If they didn't, consider them a 2
+		return 2;
 	}
 
 	// Create a draft of applicants for main categories based on a required score
