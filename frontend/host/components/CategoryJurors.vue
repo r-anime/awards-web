@@ -1,5 +1,5 @@
 <template>
-	<div v-if="loaded">
+	<div v-if="loaded && !locked">
 		<form @submit.prevent="saveJurors">
 			<div class="section columns is-multiline">
 				<jurors-field v-for="(juror,index) in items" :key="index"
@@ -13,6 +13,9 @@
 					:class="{'is-loading': submitting}">Save Jurors</button>
 			</div>
 		</form>
+	</div>
+	<div v-else-if="locked">
+		You cannot see jurors at this time.
 	</div>
 	<div v-else>
 		Loading ...
@@ -35,11 +38,14 @@ export default {
 			items: [],
 			submitting: false,
 			loaded: false,
+			locked: true,
 		};
 	},
 	computed: {
 		...mapState([
 			'jurors',
+			'locks',
+			'me',
 		]),
 	},
 	methods: {
@@ -47,6 +53,8 @@ export default {
 			'insertJurors',
 			'deleteJurors',
 			'getJurors',
+			'getLocks',
+			'getMe',
 		]),
 		insertField () {
 			this.items.push({
@@ -84,15 +92,25 @@ export default {
 		},
 	},
 	async mounted () {
+		if (!this.me) {
+			await this.getMe();
+		}
 		if (!this.jurors) {
 			await this.getJurors();
 		}
-		for (const juror of this.jurors.filter(aJuror => aJuror.categoryId === this.category.id)) {
-			this.items.push({
-				categoryId: this.category.id,
-				name: juror.name,
-				link: juror.link,
-			});
+		if (!this.locks) {
+			await this.getLocks();
+		}
+		const nameLock = this.locks.find(lock => lock.name === 'app-names');
+		if (nameLock.flag || this.me.level > nameLock.level) {
+			this.locked = false;
+			for (const juror of this.jurors.filter(aJuror => aJuror.categoryId === this.category.id)) {
+				this.items.push({
+					categoryId: this.category.id,
+					name: juror.name,
+					link: juror.link,
+				});
+			}
 		}
 		this.loaded = true;
 	},

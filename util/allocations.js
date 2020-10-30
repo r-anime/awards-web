@@ -72,7 +72,7 @@ class Allocations {
 		const returnedApplicants = [];
 		for (const applicant of applicants) {
 			// Get the applicant's answers
-			const answers = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicant && answer.question.type === 'essay');
+			const answers = this.allocationAnswers.filter(answer => answer.applicant.user.reddit === applicant && answer.question.type === 'essay' && answer.question.question_group.name !== 'OP/ED');
 			// I hate life
 			// Super complicated looking line that iterates over each of the applicant's answers, averages out the host score, then averages out the scores obtained from that. FML
 			const score = answers.reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / (this.questions.length - 1);
