@@ -53,7 +53,12 @@ class Allocations {
 		// Get all answers within the question group
 		const answers = this.filteredAnswers(category);
 		// Get the preference answer if the user even bothered filling out preferences
-		let preferences = answers.find(answer => answer.question.type === 'preference' && answer.applicant.user.reddit === applicant);
+		let preferences;
+		if (category.awardsGroup === 'main') {
+			preferences = answers.find(answer => answer.question.type === 'preference' && answer.applicant.user.reddit === applicant && answer.question.question_group.name === 'Main');
+		} else {
+			preferences = answers.find(answer => answer.question.type === 'preference' && answer.applicant.user.reddit === applicant);
+		}
 		if (preferences) {
 			preferences = JSON.parse(preferences.answer);
 			// Even if they did, we don't know if they chose a preference for that category. Check that and return it if they did.
