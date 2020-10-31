@@ -1,7 +1,8 @@
 <template>
 	<div v-if="loaded">
-		<h2 class="title is-2">Applicant Ranking</h2>
 		<div class="section">
+			<h2 class="title is-2">Applicant Ranking</h2>
+			<br/><br/>
 			<table class="table is-hoverable is-fullwidth">
 				<tbody>
 					<tr>
