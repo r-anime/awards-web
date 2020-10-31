@@ -90,7 +90,7 @@ export default {
 						id: answers[0].applicant.user.reddit,
 						name: applicant,
 						avgScore: answers.filter(answer => answer.scores.length).reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / this.questions.length,
-						avgScoreNoTheme: answers.filter(answer => answer.scores.length && answer.question.question_group !== 'OP/ED').reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / (this.questions.length - 1),
+						avgScoreNoTheme: answers.filter(answer => answer.scores.length && answer.question.question_group.name !== 'OP/ED').reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / (this.questions.length - 1),
 						noOfCats: this.jurors.filter(juror => juror.name === applicant).length,
 						categories: this.jurors.filter(juror => juror.name === applicant).map(juror => juror.category.name),
 					});
