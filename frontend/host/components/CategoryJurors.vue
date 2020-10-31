@@ -38,7 +38,7 @@ export default {
 			items: [],
 			submitting: false,
 			loaded: false,
-			locked: true,
+			locked: null,
 		};
 	},
 	computed: {
@@ -111,6 +111,8 @@ export default {
 					link: juror.link,
 				});
 			}
+		} else {
+			this.locked = true;
 		}
 		this.loaded = true;
 	},
