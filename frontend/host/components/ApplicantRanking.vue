@@ -95,6 +95,7 @@ export default {
 						categories: this.jurors.filter(juror => juror.name === applicant).map(juror => juror.category.name),
 					});
 				}
+				this.rankedList.sort((a, b) => b.avgScore - a.avgScore);
 			} else {
 				this.locked = true;
 			}
