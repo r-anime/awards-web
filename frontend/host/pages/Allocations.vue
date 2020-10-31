@@ -185,6 +185,7 @@ export default {
 			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
+					console.log(applicant);
 					this.threesUnallocated++;
 				}
 			}
@@ -243,6 +244,7 @@ export default {
 			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
+					console.log(applicant);
 					this.threesUnallocated++;
 				}
 			}
