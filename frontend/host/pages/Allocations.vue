@@ -63,7 +63,7 @@
 							<div class="column is-narrow">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">4 Category Jurors</span>
-									<span class="tag is-primary">{{twosUnallocated}}</span>
+									<span class="tag is-primary">{{fourJurors.length}}</span>
 								</div>
 							</div>
 						</div>
@@ -181,6 +181,7 @@ export default {
 			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
 			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
 			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
+			console.log(this.fourJurors);
 			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
@@ -239,6 +240,7 @@ export default {
 			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
 			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
 			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
+			console.log(this.fourJurors);
 			for (const applicant of this.threesApplicants) {
 				const found = allJurors.find(juror => juror === applicant);
 				if (!found) {
