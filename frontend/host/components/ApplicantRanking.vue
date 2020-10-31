@@ -12,7 +12,7 @@
 						<th>Categories</th>
 					</tr>
 					<tr v-for="person in rankedList" :key="person.id">
-						<td><router-link :to="`/host/applications/${person.id}/applicant/${person.id}`">{{person.name}}</router-link></td>
+						<td><router-link :to="`/host/applications/${application.id}/applicant/${person.id}`">{{person.name}}</router-link></td>
 						<td>{{person.avgScore}}</td>
 						<td>{{person.avgScoreNoTheme}}</td>
 						<td>{{person.noOfCats}}</td>
@@ -87,7 +87,7 @@ export default {
 				for (const applicant of allApplicants) {
 					const answers = this.answers.filter(answer => answer.applicant.user.reddit === applicant && answer.question.type === 'essay');
 					this.rankedList.push({
-						id: answers[0].applicant.user.reddit,
+						id: answers[0].applicant.id,
 						name: applicant,
 						avgScore: answers.filter(answer => answer.scores.length).reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / this.questions.length,
 						avgScoreNoTheme: answers.filter(answer => answer.scores.length && answer.question.question_group.name !== 'OP/ED').reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / (this.questions.length - 1),
