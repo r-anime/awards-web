@@ -88,7 +88,12 @@
 							<div class="content">
 								<ul>
 									<li v-for="(juror, index) in filteredAllocatedJurors(category)" :key="index" class="mb-1 has-no-bullet">
-										{{showNames ? juror.name : juror.id}}
+										<span v-if="showNames">
+											<a href="https://www.reddit.com/user/{{juror.name}}">/u/{{juror.name}}</a>
+										</span>
+										<span v-else>
+											juror.id
+										</span>
 										<br>
 										<div class="tags">
 											<small class="tag is-small">Score: {{juror.score}} Pref: {{juror.preference}}</small>
