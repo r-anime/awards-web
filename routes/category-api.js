@@ -401,7 +401,13 @@ apiApp.delete('/:id/jurors', async (request, response) => {
 
 apiApp.get('/jurors/all', async (request, response) => {
 	try {
-		response.json(await Jurors.findAll({where: {active: true}}));
+		response.json(await Jurors.findAll({
+			where: {active: true},
+			include: [{
+				model: Categories,
+				as: 'category',
+			}],
+		}));
 	} catch (error) {
 		response.error(error);
 	}

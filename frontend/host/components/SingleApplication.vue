@@ -38,6 +38,14 @@
 					</li>
 					<li>
 						<router-link
+							:to="applicationPageLink('juror-ranks')"
+							active-class="is-active"
+						>
+							Juror Ranking
+						</router-link>
+					</li>
+					<li>
+						<router-link
 							:to="applicationPageLink('applicants')"
 							active-class="is-active"
 						>

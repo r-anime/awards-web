@@ -34,6 +34,7 @@ import ApplicationInfo from './components/ApplicationInfo';
 import Applicants from './components/Applicants';
 import SingleApplicant from './components/SingleApplicant';
 import ApplicationGradingTable from './components/ApplicationGradingTable';
+import ApplicantRanking from './components/ApplicantRanking';
 
 import NotFound from '../common/NotFound';
 
@@ -203,6 +204,13 @@ export default new VueRouter({
 										title: 'Grading Table',
 									},
 									component: ApplicationGradingTable,
+								},
+								{
+									path: 'juror-ranks',
+									meta: {
+										title: 'Juror Ranking',
+									},
+									component: ApplicantRanking,
 								},
 								{
 									path: 'applicants',
