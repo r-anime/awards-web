@@ -92,7 +92,7 @@
 											<a href="https://www.reddit.com/user/{{juror.name}}">/u/{{juror.name}}</a>
 										</span>
 										<span v-else>
-											juror.id
+											{{juror.id}}
 										</span>
 										<br>
 										<div class="tags">
