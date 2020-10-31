@@ -89,7 +89,7 @@
 								<ul>
 									<li v-for="(juror, index) in filteredAllocatedJurors(category)" :key="index" class="mb-1 has-no-bullet">
 										<span v-if="showNames">
-											<a href="https://www.reddit.com/user/{{juror.name}}">/u/{{juror.name}}</a>
+											<a :href="'https://www.reddit.com/user/' + juror.name">/u/{{juror.name}}</a>
 										</span>
 										<span v-else>
 											{{juror.id}}
