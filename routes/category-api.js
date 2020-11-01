@@ -358,6 +358,8 @@ apiApp.post('/:id/jurors', async (request, response) => {
 						categoryId: request.params.id,
 						name: juror.name,
 						link: juror.link,
+						score: parseFloat(juror.score),
+						preference: juror.preference,
 					});
 				}
 				resolve();

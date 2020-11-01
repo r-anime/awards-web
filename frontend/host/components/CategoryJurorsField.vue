@@ -16,6 +16,20 @@
                     </div>
                     <p class="help">Link to juror's Reddit profile (or other if requested)</p>
                 </div>
+                <div class="column is-narrow field">
+                    <label class="label">Score</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="" v-model="juror.score" @input="emitUpdate">
+                    </div>
+                    <p class="help">The juror's application score</p>
+                </div>
+                <div class="column is-narrow field">
+                    <label class="label">Preference</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="" v-model="juror.preference" @input="emitUpdate">
+                    </div>
+                    <p class="help">The juror's preference for this category</p>
+                </div>
             </div>
         </div>
     </div>

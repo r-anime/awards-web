@@ -61,6 +61,8 @@ export default {
 				categoryId: this.category.id,
 				name: '/u/topjuror',
 				link: '',
+				preference: '',
+				score: '',
 			});
 		},
 		saveJurors () {
@@ -109,6 +111,8 @@ export default {
 					categoryId: this.category.id,
 					name: juror.name,
 					link: juror.link,
+					preference: juror.preference,
+					score: juror.score,
 				});
 			}
 		} else {
