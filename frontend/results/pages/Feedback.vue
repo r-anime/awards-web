@@ -38,11 +38,50 @@
 							<div class="field">
 								<div class="control">
 									<div class="has-text-centered">
-										<button @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">{{text}}</button>
+										<button @click="sendMessage" class="button is-primary" :class="{'is-loading': submitting}">Submit</button>
 									</div>
 								</div>
 							</div>
                         </div>
+						<br/><br/>
+						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Jury Suggestions</h1>
+						<div v-if="categories" class="has-text-light has-text-centered">
+							<section class="section has-background-dark">
+								<p>This is a form where you can suggest shows for juries in the /r/anime Awards to check out. It will only be active for a short period before public nominations. Please only mention the name(s) of entries you are suggesting below.</p>
+								<div class="field">
+									<label class="label has-text-light">Category</label>
+									<div class="control">
+										<div class="select has-text-dark">
+											<select class="has-text-dark" v-model="selectedCategory">
+												<option class="has-text-dark" value="-1">Please select a category...</option>
+												<option class="has-text-dark" v-for="category in categories" :value="category.name" :key="category.id">{{category.name}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="field">
+									<label class="label has-text-light">Your Suggestion</label>
+									<div class="control">
+										<input v-model="suggestion" class="input has-text-dark" maxlength="50" placeholder="Optional"/>
+									</div>
+									<p class="help is-platinum">{{suggestion.length}}/50</p>
+								</div>
+								<div v-if="suggested" class="field">
+								<div class="control">
+									<div class="has-text-centered has-text-platinum">
+										Your suggestion has been recorded and will be relayed to the respective jury!
+									</div>
+								</div>
+							</div>
+								<div class="field">
+								<div class="control">
+									<div class="has-text-centered">
+										<button :disabled="selectedCategory === '-1' || !suggestion.length" @click="sendSuggestion" class="button is-primary" :class="{'is-loading': suggesting}">Submit</button>
+									</div>
+								</div>
+							</div>
+							</section>
+						</div>
 					</section>
 				</div>
 			</div>
@@ -51,17 +90,25 @@
 </template>
 
 <script>
+import {mapActions, mapState} from 'vuex';
 export default {
 	data () {
 		return {
 			message: '',
 			submitting: false,
 			username: '',
-			text: 'Submit',
 			sent: false,
+			selectedCategory: '-1',
+			suggestion: '',
+			suggesting: false,
+			suggested: false,
 		};
 	},
+	computed: {
+		...mapState(['categories']),
+	},
 	methods: {
+		...mapActions(['getCategories']),
 		async sendMessage () {
 			if (this.message) {
 				this.submitting = true;
@@ -88,6 +135,33 @@ export default {
 				}
 			}
 		},
+		async sendSuggestion () {
+			this.suggesting = true;
+			const response = await fetch('/api/complain/suggest', {
+				method: 'POST',
+				body: JSON.stringify({
+					category: this.selectedCategory,
+					suggestion: this.suggestion,
+				}),
+			});
+			if (response.ok) {
+				setTimeout(() => {
+					this.suggested = true;
+					this.suggesting = false;
+				}, 2000);
+			} else if (response.status === 500) {
+				// eslint-disable-next-line no-alert
+				alert('Your feedback could not be sent.');
+				this.submitting = false;
+			} else if (response.status === 401) {
+				// eslint-disable-next-line no-alert
+				alert('You have made too many suggestions. Please come back later.');
+				this.submitting = false;
+			}
+		},
+	},
+	mounted () {
+		this.getCategories();
 	},
 };
 </script>

@@ -9,13 +9,13 @@ const resultsRoutes = [
 	{name: 'Past Results', path: '/archive'},
 	{name: 'Acknowledgements', path: '/acknowledgements'},
 	{name: 'About', path: '/about'},
-	{name: 'Feedback', path: '/feedback'},
+	{name: 'Feedback/Jury Suggestions', path: '/feedback'},
 ];
 
 const ongoingRoutes = [
 	{name: 'Past Results', path: '/archive'},
 	{name: 'About', path: '/about'},
-	{name: 'Feedback', path: '/feedback'},
+	{name: 'Feedback/Jury Suggestions', path: '/feedback'},
 ];
 
 module.exports = {
