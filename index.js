@@ -21,6 +21,7 @@ const auth = require('./routes/auth');
 const indexPage = fs.readFileSync(path.join(config.publicDir, 'index.html'));
 const hostPage = fs.readFileSync(path.join(config.publicDir, 'host.html'));
 const appsPage = fs.readFileSync(path.join(config.publicDir, 'jurorApps.html'));
+const votePage = fs.readFileSync(path.join(config.publicDir, 'vote.html'));
 
 // Discord stuff
 const {yuuko} = require('./bot/index');
@@ -66,7 +67,7 @@ app.use('/auth', auth);
 app.use('/host', (request, response) => response.end(hostPage));
 // Login is a stupid route that needs to be handled better and hosted at /host instead of /login
 app.use('/login', (request, response) => response.end(hostPage));
-
+app.use('/vote', (request, response) => response.end(votePage));
 app.use('/apps', (request, response) => response.end(appsPage));
 
 // Synchronize sequelize models

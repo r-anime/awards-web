@@ -78,7 +78,6 @@
 		<div v-else class="char-picker-text">
 			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
-		<a href="https://forms.gle/GzkoRQmuF6G8bLE78" style="display: block; text-align: center; margin-bottom: 2px;">Are we missing something?</a>
 	</div>
 </template>
 
@@ -148,7 +147,7 @@ export default {
 		sendQuery () {
 			if (!this.search || this.search.length <= 2) {
 				this.chars = this.charData;
-				this.total = this.chars.length;
+				this.total = 0;
 				this.loaded = true;
 				return;
 			}
