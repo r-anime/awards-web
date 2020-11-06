@@ -227,11 +227,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 						color: 8302335,
 					},
 				});
-				response.json(await Entries.findAll({
-					where: {
-						categoryId: request.params.id,
-					},
-				}));
+				response.json(await Entries.findAll());
 			}, error => response.error(error));
 		});
 	} catch (error) {
