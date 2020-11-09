@@ -1,16 +1,23 @@
 <template>
 	<body>
 		<div v-if="loaded">
-			<category-group-header :title="groupName">
-				<template v-slot:tab-bar>
-					<category-group-tab-bar v-model="selectedTab" :tabs="votingCats"/>
-				</template>
-			</category-group-header>
-
-			<div class="container">
-				<div class="intro">
-					<h2 class="is-size-2 is-size-3-mobile">{{selectedCategory.name}}</h2>
+			<div class="hero is-dark">
+				<div class="hero-body">
+					<div class="container">
+						<h1 class="title is-size-1 is-size-2-mobile">{{selectedCategory.name}}</h1>
+						<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle">{{selectedCategory.description}}</h2>
+					</div>
+					<br/>
+					<progress class="progress is-success" :value="Math.round(progress / categories.length * 100)" max="100"></progress>
+					<p class="text is-light has-text-centered">{{progress}}/{{categories.length}} Categories Voted In</p>
 				</div>
+				<div class="hero-foot">
+					<div class="container">
+						<CategoryGroupTabBar v-model="selectedTab" :tabs="votingCats"/>
+					</div>
+				</div>
+			</div>
+			<div class="container">
 				<div class="is-full-height">
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 					is better solved by v-if's so here's yet another hack-->
@@ -48,8 +55,7 @@
 
 <script>
 import {mapActions, mapState} from 'vuex';
-import categoryGroupHeader from './CategoryGroupHeader';
-import categoryGroupTabBar from './CategoryGroupTabBar';
+import CategoryGroupTabBar from './CategoryGroupTabBar';
 
 // Import all the entry components here, there's a better way to do this but fuck that
 import CharPicker from './EntryLayouts/CharPicker';
@@ -61,8 +67,7 @@ import snoo from '../../../img/bannerSnooJump.png';
 
 export default {
 	components: {
-		categoryGroupHeader,
-		categoryGroupTabBar,
+		CategoryGroupTabBar,
 		CharPicker,
 		ThemePicker,
 		VAPicker,
@@ -87,6 +92,7 @@ export default {
 			'votingCats',
 			'selections',
 			'entries',
+			'categories',
 		]),
 		groupName () {
 			switch (this.group) {
@@ -113,6 +119,9 @@ export default {
 		snooImage () {
 			return snoo;
 		},
+		progress () {
+			return Object.entries(this.selections).filter(([_key, value]) => value.length).length;
+		},
 	},
 	watch: {
 		selections: {
@@ -134,6 +143,7 @@ export default {
 			'getVotingCategories',
 			'initializeSelections',
 			'getEntries',
+			'getCategories',
 		]),
 		leave () {
 			if (this.changesSinceSave) {
@@ -154,7 +164,12 @@ export default {
 		},
 	},
 	mounted () {
-		Promise.all([this.initializeSelections(), this.getEntries(), this.getVotingCategories(this.group)]).then(() => {
+		Promise.all([
+			this.selections ? Promise.resolve() : this.initializeSelections(),
+			this.entries ? Promise.resolve() : this.getEntries(),
+			this.categories ? Promise.resolve() : this.getCategories(),
+		]).then(() => {
+			this.getVotingCategories(this.group);
 			this.changesSinceSave = false;
 			this.selectedTab = this.votingCats[0].id;
 			this.selectedTabName = this.votingCats[0].name;

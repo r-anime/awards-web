@@ -39,6 +39,11 @@ module.exports = {
 			'.vue',
 		],
 	},
+	watchOptions: {
+		aggregateTimeout: 200,
+		poll: 2000,
+		ignored: /node_modules/,
+	},
 	target: 'web',
 	module: {
 		rules: [
