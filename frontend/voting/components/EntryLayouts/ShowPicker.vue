@@ -1,22 +1,7 @@
 <!--Entries pulled from the dashboard, this code needs to be changed, will use ShowPickerEntry.-->
 <template>
 	<div class="show-picker">
-		<div class="tabs is-centered show-picker-tabs">
-			<ul>
-				<li :class="{'is-active': selectedTab === 'selections'}">
-					<a @click="selectedTab = 'selections'">
-						Selections
-					</a>
-				</li>
-				<li :class="{'is-active': selectedTab === 'search'}">
-					<a @click="selectedTab = 'search'">
-						Search
-					</a>
-				</li>
-			</ul>
-		</div>
-
-		<div v-if="selectedTab === 'search'" class="show-picker-overflow-wrap">
+		<div class="show-picker-overflow-wrap">
 			<div class="show-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
@@ -58,24 +43,6 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value[category.id].length && loaded" class="show-picker-overflow-wrap">
-			<div class="show-picker-entries">
-				<show-picker-entry
-					v-for="show in value[category.id]"
-					:key="'selected' + show.id"
-					:show="show"
-					:selected="showSelected(show)"
-					@action="toggleShow(show, $event)"
-				/>
-			</div>
-		</div>
-		<div v-else-if="!loaded" class="char-picker-text">
-			Loading...
-		</div>
-		<div v-else class="show-picker-text">
-			You don't have any selections in this category yet. Get started on the search tab.
-		</div>
-		<a href="https://forms.gle/GzkoRQmuF6G8bLE78" style="display: block; text-align: center; margin-bottom: 2px;">Are we missing something?</a>
 	</div>
 </template>
 
@@ -136,7 +103,7 @@ export default {
 			}, 750);
 		},
 		sendQuery () {
-			if (!this.search || this.search.length <= 2) {
+			if (!this.search) {
 				this.shows = this.showData;
 				this.total = this.shows.length;
 				this.loaded = true;

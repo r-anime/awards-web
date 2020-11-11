@@ -22,10 +22,20 @@
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 					is better solved by v-if's so here's yet another hack-->
 					<!-- it's okay this is exactly how i did it last year too lol -->
-					<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
-					<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
-					<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
-					<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+					<div class="columns is-multiline is-mobile">
+						<div class="column is-2">
+							<nav class="panel is-platinum has-background-white">
+								<p class="panel-heading">Selections</p>
+								<Selection v-for="selection in selections[selectedCategory.id]" :key="selection.id" :selection="selection" :selectedCategory="selectedCategory" @action="removeSelection(selection)"/>
+							</nav>
+						</div>
+						<div class="column is-10">
+							<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+							<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+							<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+							<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+						</div>
+					</div>
 				</div>
 				<div class="submit-wrapper">
 					<button
@@ -62,6 +72,7 @@ import CharPicker from './EntryLayouts/CharPicker';
 import ThemePicker from './EntryLayouts/ThemePicker';
 import VAPicker from './EntryLayouts/VAPicker';
 import ShowPicker from './EntryLayouts/ShowPicker';
+import Selection from './Selection';
 
 import snoo from '../../../img/bannerSnooJump.png';
 
@@ -72,16 +83,12 @@ export default {
 		ThemePicker,
 		VAPicker,
 		ShowPicker,
+		Selection,
 	},
 	props: ['group'],
 	data () {
 		return {
 			selectedTab: null,
-			shows: [],
-			filter: '',
-			showSelected: false,
-			saveButtonText: 'Save Selections',
-			changesSinceSave: false,
 			submitting: false,
 			SelectedTabName: null,
 			loaded: false,
@@ -124,12 +131,6 @@ export default {
 		},
 	},
 	watch: {
-		selections: {
-			handler () {
-				this.changesSinceSave = true;
-			},
-			deep: true,
-		},
 		group: {
 			handler (newGroup) {
 				this.getVotingCategories(newGroup);
@@ -145,10 +146,9 @@ export default {
 			'getEntries',
 			'getCategories',
 		]),
-		leave () {
-			if (this.changesSinceSave) {
-				return 'Are you sure you want to leave without saving your selections?';
-			}
+		removeSelection (selection) {
+			const index = this.selections[this.selectedCategory.id].findIndex(aSelection => aSelection.id === selection.id);
+			this.selections[this.selectedCategory.id].splice(index, 1);
 		},
 		async submit () {
 			this.submitting = true;
@@ -158,7 +158,6 @@ export default {
 					body: JSON.stringify(this.selections),
 				});
 			} finally {
-				this.changesSinceSave = false;
 				this.submitting = false;
 			}
 		},
@@ -170,16 +169,10 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 		]).then(() => {
 			this.getVotingCategories(this.group);
-			this.changesSinceSave = false;
 			this.selectedTab = this.votingCats[0].id;
 			this.selectedTabName = this.votingCats[0].name;
 			this.loaded = true;
 		});
-	},
-	created () {
-		window.onbeforeunload = () => {
-			if (this.changesSinceSave) return 'You have unsaved selections. Leave without saving?';
-		};
 	},
 };
 </script>
