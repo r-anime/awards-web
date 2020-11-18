@@ -48,7 +48,7 @@ export default {
 			return this.char.name.full;
 		},
 		anime () {
-			return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.userPreferred;
+			return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
 		},
 		role () {
 			return this.char.media.edges[0].characterRole;

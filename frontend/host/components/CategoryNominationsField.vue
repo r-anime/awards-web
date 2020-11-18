@@ -23,7 +23,7 @@
                         <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilist_idfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilist_id" @input="emitUpdate">
                         <select class="input" v-else v-model="nom.anilist_id" @input="emitUpdate">
                             <option value="-1">Select A Show</option>
-                            <option v-for="(entry, index) in entries" :key="index" :value="entry.id">{{entry.title.userPreferred}}</option>
+                            <option v-for="(entry, index) in entries" :key="index" :value="entry.id">{{entry.title.romaji}}</option>
                         </select>
                     </div>
                 </div>

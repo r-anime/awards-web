@@ -348,12 +348,24 @@ export default {
 			return this.value.map(show => show.character_id);
 		},
 		submissions () {
-			return this.selections.map(item => ({
-				character_id: item.id,
-				categoryId: this.category.id,
-				anilist_id: item.media.nodes[0].id,
-				themeId: null,
-			}));
+			return this.selections.map(item => {
+				let search = `${item.name.full}`;
+				if (item.name.alternative) {
+					for (const altname of item.name.alternative) {
+						search = `${search}%${altname}`;
+					}
+				}
+				search = `${search}%${item.media.edges[0].voiceActors[0].name.full}`;
+				if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
+				if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
+				return {
+					character_id: item.id,
+					anilist_id: item.media.nodes[0].id,
+					themeId: null,
+					categoryId: this.category.id,
+					search,
+				};
+			});
 		},
 		anilistIDArr () {
 			return this.anilistIDs.split('\n');
@@ -532,7 +544,7 @@ export default {
 				this.vas = [];
 				for (const show of showData) {
 					if (show.characters.edges.length === 0) continue;
-					const anime = show.title.romaji || show.title.userPreferred;
+					const anime = show.title.romaji || show.title.english;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
 						this.vas.push({
@@ -605,7 +617,6 @@ export default {
 				this.vas = [];
 				for (const show of showData) {
 					if (show.characters.edges.length === 0) continue;
-					const anime = show.title.romaji || show.title.userPreferred;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
 						if (char.voiceActors.length === 0) continue;
@@ -618,7 +629,8 @@ export default {
 								nodes: [{
 									id: mediaID,
 									title: {
-										romaji: anime,
+										romaji: show.title.romaji,
+										english: show.title.english,
 									},
 								}],
 								edges: [{

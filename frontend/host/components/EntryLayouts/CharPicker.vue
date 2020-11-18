@@ -379,12 +379,23 @@ export default {
 			return this.value.map(show => show.character_id);
 		},
 		submissions () {
-			return this.selections.map(item => ({
-				character_id: item.anilistID,
-				anilist_id: item.media.nodes[0].id,
-				themeId: null,
-				categoryId: this.category.id,
-			}));
+			return this.selections.map(item => {
+				let search = `${item.name.full}`;
+				if (item.name.alternative) {
+					for (const altname of item.name.alternative) {
+						search = `${search}%${altname}`;
+					}
+				}
+				if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
+				if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
+				return {
+					character_id: item.anilistID,
+					anilist_id: item.media.nodes[0].id,
+					themeId: null,
+					categoryId: this.category.id,
+					search,
+				};
+			});
 		},
 		anilistIDArr () {
 			return this.anilistIDs.split('\n');
@@ -565,7 +576,6 @@ export default {
 				this.chars = [];
 				for (const show of showData) {
 					if (show.characters.edges.length === 0) continue;
-					const anime = show.title.romaji || show.title.userPreferred;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
 						if (this.roles === 'main' && char.role === 'SUPPORTING' || this.roles === 'supp' && char.role === 'MAIN' || char.role === 'BACKGROUND' && this.roles !== 'all') {
@@ -582,7 +592,8 @@ export default {
 								nodes: [{
 									id: mediaID,
 									title: {
-										romaji: anime,
+										romaji: show.title.romaji,
+										english: show.title.english,
 									},
 								}],
 								edges: [{
@@ -641,7 +652,7 @@ export default {
 				this.chars = [];
 				for (const show of showData) {
 					if (show.characters.edges.length === 0) continue;
-					const anime = show.title.romaji || show.title.userPreferred;
+					const anime = show.title.romaji || show.title.english;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
 						if (this.roles === 'main' && char.role === 'SUPPORTING' || this.roles === 'supp' && char.role === 'MAIN' || char.role === 'BACKGROUND' && this.roles !== 'all') {

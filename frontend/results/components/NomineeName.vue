@@ -22,7 +22,7 @@ export default {
 			const found = this.anilistData.find(el => el.id === this.nominee.id);
 
 			if (found && found.title) {
-				return found.title.userPreferred;
+				return found.title.romaji || found.title.english;
 			}
 			if (found && found.name) {
 				return found.name.full;

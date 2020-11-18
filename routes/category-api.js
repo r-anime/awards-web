@@ -143,7 +143,9 @@ apiApp.delete('/:id', async (request, response) => {
 
 apiApp.get('/entries/all', async (request, response) => {
 	try {
-		response.json(await Entries.findAll());
+		response.json(await Entries.findAll({
+			attributes: ['id', 'anilist_id', 'character_id', 'themeId', 'categoryId', 'search'],
+		}));
 	} catch (error) {
 		response.error(error);
 	}
@@ -183,6 +185,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 							character_id: entry.character_id,
 							themeId: entry.themeId,
 							categoryId: request.params.id,
+							search: entry.search ? entry.search : null,
 						},
 						transaction: t,
 					});
@@ -227,7 +230,9 @@ apiApp.post('/:id/entries', async (request, response) => {
 						color: 8302335,
 					},
 				});
-				response.json(await Entries.findAll());
+				response.json(await Entries.findAll({
+					attributes: ['id', 'anilist_id', 'character_id', 'themeId', 'categoryId', 'search'],
+				}));
 			}, error => response.error(error));
 		});
 	} catch (error) {
