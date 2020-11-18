@@ -124,8 +124,7 @@ const options = {
 	keys: [
 		'title.romaji',
 		'title.english',
-		'title.native',
-		'title.userPreferred',
+		'synonyms',
 	],
 };
 

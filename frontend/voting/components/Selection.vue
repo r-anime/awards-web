@@ -15,7 +15,7 @@ export default {
 	computed: {
 		name () {
 			if (this.selectedCategory.entryType === 'shows') {
-				return this.selection.title.romaji || this.selection.title.english || this.selection.title.native;
+				return this.selection.title.romaji || this.selection.title.english;
 			} else if (this.selectedCategory.entryType === 'character' || this.selectedCategory.entryType === 'vas') {
 				return this.selection.name.full;
 			} else if (this.selectedCategory.entryType === 'themes') {

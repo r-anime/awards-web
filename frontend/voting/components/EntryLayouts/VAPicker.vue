@@ -1,22 +1,7 @@
 <!--God there's VAs too. Pull from anilist-->
 <template>
 	<div class="va-picker">
-		<div class="tabs is-centered va-picker-tabs">
-			<ul>
-				<li :class="{'is-active': selectedTab === 'selections'}">
-					<a @click="selectedTab = 'selections'">
-						Selections
-					</a>
-				</li>
-				<li :class="{'is-active': selectedTab === 'search'}">
-					<a @click="selectedTab = 'search'">
-						Search
-					</a>
-				</li>
-			</ul>
-		</div>
-
-		<div v-if="selectedTab === 'search'" class="va-picker-overflow-wrap">
+		<div class="va-picker-overflow-wrap">
 			<div class="va-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
@@ -58,23 +43,6 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value[category.id].length && loaded" class="va-picker-overflow-wrap">
-			<div class="va-picker-entries">
-				<VAPickerEntry
-					v-for="va in value[category.id]"
-					:key="'selected' + va.id"
-					:va="va"
-					:selected="showSelected(va)"
-					@action="toggleShow(va, $event)"
-				/>
-			</div>
-		</div>
-		<div v-else-if="!loaded" class="char-picker-text">
-			Loading...
-		</div>
-		<div v-else class="va-picker-text">
-			You don't have any selections in this category yet. Get started on the search tab.
-		</div>
 	</div>
 </template>
 
@@ -97,11 +65,8 @@ const options = {
 		'name.native',
 		'media.edges.voiceActors.name.full',
 		'media.edges.voiceActors.name.alternative',
-		'media.edges.voiceActors.name.native',
 		'media.nodes.title.romaji',
 		'media.nodes.title.english',
-		'media.nodes.title.native',
-		'media.nodes.title.userPreferred',
 	],
 };
 
@@ -121,7 +86,6 @@ export default {
 			search: '',
 			vas: [],
 			total: 'No',
-			selectedTab: 'selections',
 			vaData: null,
 		};
 	},
@@ -141,7 +105,7 @@ export default {
 			}, 750);
 		},
 		sendQuery () {
-			if (!this.search || this.search.length <= 2) {
+			if (!this.search) {
 				this.vas = this.vaData;
 				this.total = 0;
 				this.loaded = true;
@@ -163,7 +127,6 @@ export default {
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 50) {
 					alert('You cannot vote for any more entries.');
-					this.selectedTab = 'selections';
 					return;
 				}
 				this.value[this.category.id].push(va);
@@ -182,7 +145,6 @@ export default {
 		async category () {
 			this.loaded = false;
 			this.search = '';
-			this.selectedTab = 'selections';
 			const promiseArray = [];
 			let charData = [];
 			if (this.vaIDs) {

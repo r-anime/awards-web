@@ -1,22 +1,7 @@
 <!--This one pulls music from the DB and stuff. Should be straightforward.-->
 <template>
 	<div class="show-picker">
-		<div class="tabs is-centered show-picker-tabs">
-			<ul>
-				<li :class="{'is-active': selectedTab === 'selections'}">
-					<a @click="selectedTab = 'selections'">
-						Selections
-					</a>
-				</li>
-				<li :class="{'is-active': selectedTab === 'search'}">
-					<a @click="selectedTab = 'search'">
-						Search
-					</a>
-				</li>
-			</ul>
-		</div>
-
-		<div v-if="selectedTab === 'search'" class="show-picker-overflow-wrap">
+		<div class="show-picker-overflow-wrap">
 			<div class="show-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
@@ -57,23 +42,6 @@
 			<div v-else class="show-picker-text">
 				Loading...
 			</div>
-		</div>
-		<div v-else-if="value[category.id].length && loaded" class="show-picker-overflow-wrap">
-			<div class="show-picker-entries">
-				<ThemePickerEntry
-					v-for="show in value[category.id]"
-					:key="'selected' + show.id"
-					:show="show"
-					:selected="showSelected(show)"
-					@action="toggleShow(show, $event)"
-				/>
-			</div>
-		</div>
-		<div v-else-if="!loaded" class="char-picker-text">
-			Loading...
-		</div>
-		<div v-else class="show-picker-text">
-			You don't have any selections in this category yet. Get started on the search tab.
 		</div>
 	</div>
 </template>
@@ -126,7 +94,6 @@ export default {
 			themeData: [],
 			backup: [],
 			total: 'No',
-			selectedTab: 'selections',
 		};
 	},
 	methods: {
@@ -141,7 +108,7 @@ export default {
 			}, 750);
 		},
 		searchThemes () {
-			if (!this.search || this.search.length <= 2) {
+			if (!this.search) {
 				this.shows = this.backup;
 				this.total = this.shows.length;
 				this.loaded = true;
@@ -163,7 +130,6 @@ export default {
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 50) {
 					alert("You cannot vote for any more entries.");
-					this.selectedTab = 'selections';
 					return;
 				}
 				const themeIndex = this.value[this.category.id].findIndex(theme => theme.title === show.title);
@@ -174,7 +140,6 @@ export default {
 						this.value[this.category.id].splice(themeIndex, 1);
 					} else {
 						// If they cancel out, return and change tab to avoid visual glitch
-						this.selectedTab = 'selections';
 						return;
 					}
 				}
@@ -234,7 +199,6 @@ export default {
 	watch: {
 		async category () {
 			this.search = '';
-			this.selectedTab = 'selections';
 			this.shows = [];
 			this.showData = [];
 			this.themeData = [];

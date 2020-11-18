@@ -1,4 +1,3 @@
-<!--Entries pulled from the dashboard, this code needs to be changed, will use ShowPickerEntry.-->
 <template>
 	<div class="show-picker">
 		<div class="show-picker-overflow-wrap">
@@ -62,8 +61,7 @@ const options = {
 	keys: [
 		'title.romaji',
 		'title.english',
-		'title.native',
-		'title.userPreferred',
+		'synonyms',
 	],
 };
 
@@ -83,7 +81,6 @@ export default {
 			search: '',
 			shows: null,
 			total: 'No',
-			selectedTab: 'selections',
 			showData: null,
 		};
 	},
@@ -125,7 +122,6 @@ export default {
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 50) {
 					alert('You cannot vote for any more entries.');
-					this.selectedTab = 'selections';
 					return;
 				}
 				this.value[this.category.id].push(show);
@@ -144,7 +140,6 @@ export default {
 		async category () {
 			this.loaded = false;
 			this.search = '';
-			this.selectedTab = 'selections';
 			const promiseArray = [];
 			let showData = [];
 			if (this.showIDs) {

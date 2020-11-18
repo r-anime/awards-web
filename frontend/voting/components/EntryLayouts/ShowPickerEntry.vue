@@ -22,6 +22,13 @@
 								:href="anilistLink"
 							>
 								AniList
+							</a> &bull;
+							<a
+								@click.stop
+								target="_blank"
+								:href="malLink"
+							>
+								MAL
 							</a>
 						</p>
 					</div>
@@ -52,7 +59,7 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.show.title.romaji || this.show.title.english || this.show.title.native;
+			return this.show.title.romaji || this.show.title.english;
 		},
 		year () {
 			return this.show.startDate.year;
@@ -65,6 +72,9 @@ export default {
 		},
 		anilistLink () {
 			return this.show.siteUrl;
+		},
+		malLink () {
+			return `https://myanimelist.net/anime/${this.show.idMal}`;
 		},
 	},
 	methods: {

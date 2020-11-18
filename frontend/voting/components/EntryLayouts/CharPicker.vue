@@ -1,25 +1,6 @@
 <template>
 	<div class="char-picker">
-		<div class="tabs is-centered char-picker-tabs">
-			<ul>
-				<li :class="{'is-active': selectedTab === 'selections'}">
-					<a @click="selectedTab = 'selections'">
-						Selections
-					</a>
-				</li>
-				<li :class="{'is-active': selectedTab === 'search'}">
-					<a @click="selectedTab = 'search'">
-						Search
-					</a>
-				</li>
-			</ul>
-		</div>
-
-		<div v-if="selectedTab === 'search'" class="char-picker-overflow-wrap">
-			<br>
-			<div class="is-size-7 is-centered has-text-centered">
-				Try searching a show/character by its full name on AniList if partial searches don't work.
-			</div>
+		<div class="char-picker-overflow-wrap">
 			<div class="char-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
@@ -61,23 +42,6 @@
 				Loading...
 			</div>
 		</div>
-		<div v-else-if="value[category.id].length && loaded" class="char-picker-overflow-wrap">
-			<div class="char-picker-entries">
-				<char-picker-entry
-					v-for="char in value[category.id]"
-					:key="'selected' + char.id"
-					:char="char"
-					:selected="characterSelected(char)"
-					@action="toggleCharacter(char, $event)"
-				/>
-			</div>
-		</div>
-		<div v-else-if="!loaded" class="char-picker-text">
-			Loading...
-		</div>
-		<div v-else class="char-picker-text">
-			You don't have any selections in this category yet. Get started on the search tab.
-		</div>
 	</div>
 </template>
 
@@ -98,11 +62,8 @@ const options = {
 	keys: [
 		'name.full',
 		'name.alternative',
-		'name.native',
 		'media.nodes.title.romaji',
 		'media.nodes.title.english',
-		'media.nodes.title.native',
-		'media.nodes.title.userPreferred',
 	],
 };
 
@@ -120,9 +81,8 @@ export default {
 			loaded: false,
 			typingTimeout: null,
 			search: '',
-			chars: [],
+			chars: null,
 			total: 'No',
-			selectedTab: 'selections',
 			charData: null,
 		};
 	},
@@ -145,9 +105,9 @@ export default {
 			}, 750);
 		},
 		sendQuery () {
-			if (!this.search || this.search.length <= 2) {
+			if (!this.search) {
 				this.chars = this.charData;
-				this.total = 0;
+				this.total = this.chars.length;
 				this.loaded = true;
 				return;
 			}
@@ -167,7 +127,6 @@ export default {
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 50) {
 					alert('You cannot vote for any more entries.');
-					this.selectedTab = 'selections';
 					return;
 				}
 
@@ -185,8 +144,6 @@ export default {
 								// If they want to move it, we need to update the entry in the other category
 								this.value[cat.id].splice(charIndex, 1);
 							} else {
-								// If they cancel out, return and change tab to avoid visual glitch
-								this.selectedTab = 'selections';
 								return;
 							}
 						}
@@ -209,7 +166,6 @@ export default {
 		async category () {
 			this.loaded = false;
 			this.search = '';
-			this.selectedTab = 'selections';
 			const promiseArray = [];
 			let charData = [];
 			if (this.charIDs) {

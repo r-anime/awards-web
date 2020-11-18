@@ -296,8 +296,6 @@ const themeByIDQuery = `query ($id: [Int]) {
 		title {
 		  romaji
 		  english
-		  native
-		  userPreferred
 		}
 		coverImage {
 		  large
@@ -324,12 +322,10 @@ const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 		title {
 		  romaji
 		  english
-		  native
-		  userPreferred
 		}
+		synonyms
 		coverImage {
 		  large
-		  extraLarge
 		}
 		siteUrl
 		idMal
@@ -349,7 +345,6 @@ const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 		name {
 		  full
 		  alternative
-		  native
 		}
 		image {
 		  large
@@ -360,13 +355,6 @@ const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 			title {
 			  romaji
 			  english
-			  native
-			  userPreferred
-			}
-			endDate {
-			  year
-			  month
-			  day
 			}
 		  }
 		  edges {
@@ -380,7 +368,6 @@ const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 			  name {
 				full
 				alternative
-				native
 			  }
 			}
 		  }

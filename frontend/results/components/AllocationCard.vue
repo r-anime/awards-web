@@ -54,7 +54,7 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.show.title.romaji || this.show.title.english || this.show.title.native;
+			return this.show.title.romaji || this.show.title.english;
 		},
 		year () {
 			return this.show.startDate.year;
