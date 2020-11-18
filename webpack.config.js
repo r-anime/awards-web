@@ -15,6 +15,7 @@ module.exports = {
 		host: './frontend/host/main.js',
 		vote: './frontend/voting/main.js',
 		jurorApps: './frontend/jurorApps/main.js',
+		finalVote: './frontend/final-vote/main.js',
 	},
 	output: {
 		path: config.publicDir,
@@ -114,25 +115,31 @@ module.exports = {
 			template: './public/template.html',
 			title: '/r/anime Awards 2019',
 			filename: 'index.html',
-			excludeChunks: ['host', 'vote', 'jurorApps'],
+			excludeChunks: ['host', 'vote', 'jurorApps', 'finalVote'],
 		}),
 		new HtmlWebpackPlugin({
 			template: './public/template.html',
 			title: '/r/anime Awards 2019',
 			filename: 'host.html',
-			excludeChunks: ['main', 'vote', 'jurorApps'],
+			excludeChunks: ['main', 'vote', 'jurorApps', 'finalVote'],
 		}),
 		new HtmlWebpackPlugin({
 			template: './public/template.html',
 			title: '/r/anime Awards 2019',
 			filename: 'vote.html',
-			excludeChunks: ['main', 'host', 'jurorApps'],
+			excludeChunks: ['main', 'host', 'jurorApps', 'finalVote'],
 		}),
 		new HtmlWebpackPlugin({
 			template: './public/template.html',
 			title: '/r/anime Awards 2019',
 			filename: 'jurorApps.html',
-			excludeChunks: ['main', 'host', 'vote'],
+			excludeChunks: ['main', 'host', 'vote', 'finalVote'],
+		}),
+		new HtmlWebpackPlugin({
+			template: './public/template.html',
+			title: '/r/anime Awards 2019',
+			filename: 'final-vote.html',
+			excludeChunks: ['main', 'host', 'vote', 'jurorApps'],
 		}),
 		new CompressionPlugin({
 			filename: '[path].br[query]',

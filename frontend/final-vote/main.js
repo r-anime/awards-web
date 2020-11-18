@@ -7,12 +7,13 @@ import store from './store';
 import router from './routes';
 
 router.beforeEach(async (to, from, next) => {
-	if (to.path.startsWith('/vote')) {
-		// Get user data
+	// We must have the user info loaded before we can route
+	if (to.path.startsWith('/final-vote')) {
+		// Fetch user data
 		if (!store.state.me) await store.dispatch('getMe');
 		if (!store.state.me) {
 			// The user is not logged in, so have them log in
-			window.location.href = '/auth/reddit/vote';
+			window.location.href = '/auth/reddit/final-vote';
 			return;
 		}
 		// The user is logged in, send them to the next page

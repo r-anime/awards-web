@@ -83,6 +83,10 @@ authApp.get('/reddit/debug', (request, response) => {
 // Deletes session
 authApp.get('/logout/:next', (request, response) => {
 	request.session.destroy(() => {
+		if (request.params.next === 'home') {
+			response.redirect('/');
+			return;
+		}
 		response.redirect(`/${request.params.next}`);
 	});
 });

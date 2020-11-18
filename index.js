@@ -22,6 +22,7 @@ const indexPage = fs.readFileSync(path.join(config.publicDir, 'index.html'));
 const hostPage = fs.readFileSync(path.join(config.publicDir, 'host.html'));
 const appsPage = fs.readFileSync(path.join(config.publicDir, 'jurorApps.html'));
 const votePage = fs.readFileSync(path.join(config.publicDir, 'vote.html'));
+const finalVotePage = fs.readFileSync(path.join(config.publicDir, 'final-vote.html'));
 
 // Discord stuff
 const {yuuko} = require('./bot/index');
@@ -69,6 +70,7 @@ app.use('/host', (request, response) => response.end(hostPage));
 app.use('/login', (request, response) => response.end(hostPage));
 app.use('/vote', (request, response) => response.end(votePage));
 app.use('/apps', (request, response) => response.end(appsPage));
+app.use('/final-vote', (request, response) => response.end(finalVotePage));
 
 // Synchronize sequelize models
 // and then start the server

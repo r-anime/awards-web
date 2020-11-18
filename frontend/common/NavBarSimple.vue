@@ -49,7 +49,7 @@
 							<a v-if="apps" class="navbar-item" href="/auth/logout/apps">
 								Log out
 							</a>
-							<a v-else class="navbar-item" href="/auth/logout/login">
+							<a v-else class="navbar-item" href="/auth/logout/home">
 								Log out
 							</a>
 						</template>
