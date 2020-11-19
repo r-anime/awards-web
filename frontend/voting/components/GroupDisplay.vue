@@ -1,6 +1,6 @@
 <template>
 	<body>
-		<div v-if="loaded">
+		<div v-if="loaded && !locked && accountOldEnough">
 			<div class="hero is-dark">
 				<div class="hero-body">
 					<div class="container">
@@ -52,7 +52,13 @@
 			<div class="hero-body">
 				<div class="columns is-centered">
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
-						<div class="loading-text">
+						<div v-if="!loaded" class="loading-text">
+						Please wait while your selections are being initialized. Thank you for your patience.
+						</div>
+						<div v-else-if="!locked" class="loading-text">
+						Please wait while your selections are being initialized. Thank you for your patience.
+						</div>
+						<div v-else-if="!accountOldEnough" class="loading-text">
 						Please wait while your selections are being initialized. Thank you for your patience.
 						</div>
 						<img loading="lazy" :src="snooImage"/>
@@ -64,7 +70,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
+import {mapActions, mapState, mapGetters} from 'vuex';
 import CategoryGroupTabBar from './CategoryGroupTabBar';
 
 // Import all the entry components here, there's a better way to do this but fuck that
@@ -92,6 +98,7 @@ export default {
 			submitting: false,
 			SelectedTabName: null,
 			loaded: false,
+			locked: null,
 		};
 	},
 	computed: {
@@ -100,7 +107,10 @@ export default {
 			'selections',
 			'entries',
 			'categories',
+			'me',
+			'locks',
 		]),
+		...mapGetters(['accountOldEnough']),
 		groupName () {
 			switch (this.group) {
 				case 'main':
@@ -145,6 +155,8 @@ export default {
 			'initializeSelections',
 			'getEntries',
 			'getCategories',
+			'getLocks',
+			'getMe',
 		]),
 		removeSelection (selection) {
 			const index = this.selections[this.selectedCategory.id].findIndex(aSelection => aSelection.id === selection.id);
@@ -167,10 +179,18 @@ export default {
 			this.selections ? Promise.resolve() : this.initializeSelections(),
 			this.entries ? Promise.resolve() : this.getEntries(),
 			this.categories ? Promise.resolve() : this.getCategories(),
+			this.locks ? Promise.resolve() : this.getLocks(),
+			this.me ? Promise.resolve() : this.getMe(),
 		]).then(() => {
-			this.getVotingCategories(this.group);
-			this.selectedTab = this.votingCats[0].id;
-			this.selectedTabName = this.votingCats[0].name;
+			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
+			if (voteLock.flag || this.me.level > voteLock.level) {
+				this.locked = false;
+				this.getVotingCategories(this.group);
+				this.selectedTab = this.votingCats[0].id;
+				this.selectedTabName = this.votingCats[0].name;
+			} else {
+				this.locked = true;
+			}
 			this.loaded = true;
 		});
 	},

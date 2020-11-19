@@ -16,7 +16,7 @@ export default {
 		name () {
 			if (this.selectedCategory.entryType === 'shows') {
 				return this.selection.title.romaji || this.selection.title.english;
-			} else if (this.selectedCategory.entryType === 'character' || this.selectedCategory.entryType === 'vas') {
+			} else if (this.selectedCategory.entryType === 'characters' || this.selectedCategory.entryType === 'vas') {
 				return this.selection.name.full;
 			} else if (this.selectedCategory.entryType === 'themes') {
 				return `${this.selection.anime.split('%')[0]} ${this.selection.themeNo || ''}`;

@@ -215,8 +215,6 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
       title {
         romaji
         english
-        native
-        userPreferred
       }
       characters(page: $charPage, perPage: 50) {
         pageInfo {
@@ -231,10 +229,8 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
           node {
             id
             name {
-              first
-              last
-              full
-              native
+			  full
+			  alternative
             }
             siteUrl
             image {
@@ -246,10 +242,7 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
           voiceActors(language: JAPANESE) {
             id
             name {
-              first
-              last
               full
-              native
             }
           }
         }
@@ -289,10 +282,8 @@ const importFromIDsQuery = `query ($page: Int,$charPage: Int, $id:[Int]) {
           node {
             id
             name {
-              first
-              last
-              full
-              native
+			  full
+			  alternative
             }
             siteUrl
             image {
@@ -304,10 +295,7 @@ const importFromIDsQuery = `query ($page: Int,$charPage: Int, $id:[Int]) {
           voiceActors(language: JAPANESE) {
             id
             name {
-              first
-              last
               full
-              native
             }
           }
         }
@@ -619,7 +607,7 @@ export default {
 					if (show.characters.edges.length === 0) continue;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
-						if (char.voiceActors.length === 0) continue;
+						if (char.voiceActors.length === 0 || this.vas.find(aChar => aChar.id === char.node.id)) continue;
 						this.vas.push({
 							id: char.node.id,
 							name: char.node.name,

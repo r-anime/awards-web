@@ -24,10 +24,39 @@
 
 <script>
 import NavBar from '../../common/NavBarSimple.vue';
+import {mapActions, mapState, mapGetters} from 'vuex';
 
 export default {
 	components: {
 		NavBar,
+	},
+	data () {
+		return {
+			loaded: false,
+			locked: null,
+		};
+	},
+	computed: {
+		...mapState(['locks', 'me']),
+		...mapGetters(['accountOldEnough']),
+	},
+	methods: {
+		...mapActions(['getLocks', 'getMe']),
+	},
+	async mounted () {
+		if (!this.me) {
+			await this.getMe();
+		}
+		if (!this.locks) {
+			await this.getLocks();
+		}
+		const voteLock = this.locks.find(aLock => aLock.name === 'voting');
+		if (voteLock.flag || this.me.level > voteLock.level) {
+			this.locked = false;
+		} else {
+			this.locked = true;
+		}
+		this.loaded = true;
 	},
 };
 </script>

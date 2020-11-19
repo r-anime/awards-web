@@ -39,6 +39,7 @@ const store = new Vuex.Store({
 		votingCats: null,
 		selections: null,
 		entries: null,
+		locks: null,
 	},
 	getters: {
 		accountOldEnough (state) {
@@ -64,6 +65,9 @@ const store = new Vuex.Store({
 		GET_ENTRIES (state, entries) {
 			state.entries = entries;
 		},
+		GET_LOCKS (state, locks) {
+			state.locks = locks;
+		},
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -86,6 +90,10 @@ const store = new Vuex.Store({
 			}
 			const votingCats = state.categories.filter(cat => cat.awardsGroup === group);
 			commit('GET_VOTING_CATEGORIES', votingCats);
+		},
+		async getLocks ({commit}) {
+			const locks = await makeRequest('/api/locks/all');
+			commit('GET_LOCKS', locks);
 		},
 		async initializeSelections ({commit, state, dispatch}) {
 			if (!state.categories) {

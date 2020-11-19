@@ -245,8 +245,6 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
       title {
         romaji
         english
-        native
-        userPreferred
       }
       characters(page: $charPage, perPage: 50) {
         pageInfo {
@@ -261,10 +259,8 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
           node {
             id
             name {
-              first
-              last
-              full
-              native
+			  full
+			  alternative
             }
             siteUrl
             image {
@@ -276,10 +272,7 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
           voiceActors(language: JAPANESE) {
             id
             name {
-              first
-              last
               full
-              native
             }
           }
         }
@@ -655,7 +648,7 @@ export default {
 					const anime = show.title.romaji || show.title.english;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
-						if (this.roles === 'main' && char.role === 'SUPPORTING' || this.roles === 'supp' && char.role === 'MAIN' || char.role === 'BACKGROUND' && this.roles !== 'all') {
+						if (this.roles === 'main' && char.role === 'SUPPORTING' || this.roles === 'supp' && char.role === 'MAIN' || char.role === 'BACKGROUND' && this.roles !== 'all' || this.chars.find(aChar => aChar.id === char.id)) {
 							continue;
 						}
 

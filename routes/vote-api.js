@@ -1,10 +1,30 @@
 /* eslint-disable no-await-in-loop */
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
+const Fuse = require('fuse.js');
 
 // Sequelize models to avoid redundancy
 const Votes = sequelize.model('votes');
 const Categories = sequelize.model('categories');
+const Entries = sequelize.model('entries');
+
+apiApp.post('/character-search', async (request, response) => {
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		return response.json(400, {error: 'Invalid JSON'});
+	}
+	const entries = await Entries.findAll({
+		where: {
+			categoryId: req.categoryId,
+		},
+	});
+	const fuse = new Fuse(entries, {
+		keys: ['search'],
+	});
+	response.json(fuse.search(req.search));
+});
 
 apiApp.get('/summary', async (request, response) => {
 	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {

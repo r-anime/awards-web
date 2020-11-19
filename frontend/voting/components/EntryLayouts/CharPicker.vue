@@ -35,6 +35,9 @@
 					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
+			<div v-else-if="search.length && search.length < 3" class="char-picker-text">
+				Please enter a longer search query.
+			</div>
 			<div v-else-if="loaded" class="char-picker-text">
 				{{search ? 'No results :(' : ''}}
 			</div>
@@ -50,22 +53,6 @@ import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
 const queries = require('../../../anilistQueries');
 const util = require('../../../util');
-import Fuse from 'fuse.js/dist/fuse.basic.min';
-
-const options = {
-	shouldSort: true,
-	threshold: 0.3,
-	location: 0,
-	distance: 70,
-	maxPatternLength: 64,
-	minMatchCharLength: 3,
-	keys: [
-		'name.full',
-		'name.alternative',
-		'media.nodes.title.romaji',
-		'media.nodes.title.english',
-	],
-};
 
 export default {
 	components: {
@@ -81,18 +68,14 @@ export default {
 			loaded: false,
 			typingTimeout: null,
 			search: '',
-			chars: null,
+			chars: [],
 			total: 'No',
-			charData: null,
 		};
 	},
 	computed: {
 		...mapState([
 			'votingCats',
 		]),
-		charIDs () {
-			return this.entries.map(char => char.character_id);
-		},
 	},
 	methods: {
 		handleInput (event) {
@@ -104,19 +87,53 @@ export default {
 				this.sendQuery();
 			}, 750);
 		},
-		sendQuery () {
-			if (!this.search) {
-				this.chars = this.charData;
-				this.total = this.chars.length;
+		async sendQuery () {
+			if (!this.search || this.search.length < 3) {
+				this.chars = [];
+				this.total = 'No';
 				this.loaded = true;
 				return;
 			}
-			const entries = this.charData;
-			const fuse = new Fuse(entries, options);
-			this.chars = fuse.search(this.search);
-			this.chars = this.chars.map(char => char.item);
-			this.total = this.chars.length;
-			this.loaded = true;
+			const returnedEntries = await fetch('/api/votes/character-search', {
+				method: 'POST',
+				body: JSON.stringify({
+					categoryId: this.category.id,
+					search: this.search,
+				}),
+			});
+			if (returnedEntries.ok) {
+				let searchResponse = await returnedEntries.json();
+				searchResponse = searchResponse.map(item => item.item.character_id).slice(0, 12);
+				const promiseArray = [];
+				let charData = [];
+				let page = 1;
+				const someData = await util.paginatedQuery(queries.charQuerySimple, searchResponse, page);
+				charData = [...charData, ...someData.data.Page.results];
+				const lastPage = someData.data.Page.pageInfo.lastPage;
+				page = 2;
+				while (page <= lastPage) {
+					// eslint-disable-next-line no-loop-func
+					promiseArray.push(new Promise(async (resolve, reject) => {
+						try {
+							const returnData = await util.paginatedQuery(queries.charQuerySimple, searchResponse, page);
+							resolve(returnData.data.Page.results);
+						} catch (error) {
+							reject(error);
+						}
+					}));
+					page++;
+				}
+				Promise.all(promiseArray).then(finalData => {
+					for (const data of finalData) {
+						charData = [...charData, ...data];
+					}
+					this.chars = charData;
+					this.total = this.chars.length;
+					this.loaded = true;
+				});
+			} else {
+				alert('No bueno');
+			}
 		},
 		characterSelected (char) {
 			return this.value[this.category.id].some(s => s.id === char.id);
@@ -163,74 +180,16 @@ export default {
 		},
 	},
 	watch: {
-		async category () {
-			this.loaded = false;
+		category () {
 			this.search = '';
-			const promiseArray = [];
-			let charData = [];
-			if (this.charIDs) {
-				let page = 1;
-				const someData = await util.paginatedQuery(queries.charQuerySimple, this.charIDs, page);
-				charData = [...charData, ...someData.data.Page.results];
-				const lastPage = someData.data.Page.pageInfo.lastPage;
-				page = 2;
-				while (page <= lastPage) {
-					// eslint-disable-next-line no-loop-func
-					promiseArray.push(new Promise(async (resolve, reject) => {
-						try {
-							const returnData = await util.paginatedQuery(queries.charQuerySimple, this.charIDs, page);
-							resolve(returnData.data.Page.results);
-						} catch (error) {
-							reject(error);
-						}
-					}));
-					page++;
-				}
-				Promise.all(promiseArray).then(finalData => {
-					for (const data of finalData) {
-						charData = [...charData, ...data];
-					}
-					this.charData = charData;
-					this.chars = charData;
-					this.loaded = true;
-				});
-			} else {
-				this.loaded = true;
-			}
+			this.total = 'No';
+			this.loaded = true;
 		},
 	},
-	async mounted () {
-		const promiseArray = [];
-		let charData = [];
-		if (this.charIDs.length) {
-			let page = 1;
-			const someData = await util.paginatedQuery(queries.charQuerySimple, this.charIDs, page);
-			charData = [...charData, ...someData.data.Page.results];
-			const lastPage = someData.data.Page.pageInfo.lastPage;
-			page = 2;
-			while (page <= lastPage) {
-				// eslint-disable-next-line no-loop-func
-				promiseArray.push(new Promise(async (resolve, reject) => {
-					try {
-						const returnData = await util.paginatedQuery(queries.charQuerySimple, this.charIDs, page);
-						resolve(returnData.data.Page.results);
-					} catch (error) {
-						reject(error);
-					}
-				}));
-				page++;
-			}
-			Promise.all(promiseArray).then(finalData => {
-				for (const data of finalData) {
-					charData = [...charData, ...data];
-				}
-				this.charData = charData;
-				this.chars = charData;
-				this.loaded = true;
-			});
-		} else {
-			this.loaded = true;
-		}
+	mounted () {
+		this.search = '';
+		this.total = 'No';
+		this.loaded = true;
 	},
 };
 </script>

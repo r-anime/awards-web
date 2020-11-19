@@ -12,7 +12,7 @@
 					<div class="content">
 						<p>
 							<em class="va-title">
-								{{name}} ({{voiceActor}})
+								{{name}} {{voiceActor.length ? `(${voiceActor})` : ''}}
 							</em>
 							<br/>
 							{{anime}}
@@ -50,7 +50,10 @@ export default {
 			return this.va.media.nodes[0].title.romaji;
 		},
 		voiceActor () {
-			return this.va.media.edges[0].voiceActors[0].name.full;
+			if (this.va.media.edges[0].voiceActors.length) {
+				return this.va.media.edges[0].voiceActors[0].name.full;
+			}
+			return '';
 		},
 		coverURI () {
 			return this.va.image.large;
