@@ -124,7 +124,6 @@ export default {
 					}
 					this.vas = charData;
 					this.total = this.vas.length;
-					console.log(this.vas);
 					this.loaded = true;
 				});
 			} else {
@@ -157,12 +156,14 @@ export default {
 	watch: {
 		category () {
 			this.search = '';
+			this.vas = [];
 			this.total = 'No';
 			this.loaded = true;
 		},
 	},
 	mounted () {
 		this.search = '';
+		this.vas = [];
 		this.total = 'No';
 		this.loaded = true;
 	},

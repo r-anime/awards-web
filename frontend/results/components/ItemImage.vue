@@ -13,12 +13,13 @@ export default {
 					return `background-image: url(${this.nominee.altimg})`;
 				}
 				const found = this.anilistData.find(el => el.id === this.nominee.id);
-
 				if (found && found.coverImage) {
-					return `background-image: url(${found.coverImage.extraLarge})`;
-				}
-				if (found && found.image) {
-					return `background-image: url(${found.image.large})`;
+					if (found.coverImage.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.coverImage.large) {
+						return `background-image: url(${found.coverImage.large})`;
+					}
 				}
 			}
 			return 'background-image: none';

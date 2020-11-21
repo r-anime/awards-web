@@ -326,6 +326,7 @@ const showQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 		synonyms
 		coverImage {
 		  large
+		  extraLarge
 		}
 		siteUrl
 		idMal

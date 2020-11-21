@@ -182,12 +182,14 @@ export default {
 	watch: {
 		category () {
 			this.search = '';
+			this.chars = [];
 			this.total = 'No';
 			this.loaded = true;
 		},
 	},
 	mounted () {
 		this.search = '';
+		this.chars = [];
 		this.total = 'No';
 		this.loaded = true;
 	},
