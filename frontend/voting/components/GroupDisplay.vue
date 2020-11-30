@@ -37,15 +37,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="submit-wrapper">
-					<button
-						class="button is-success"
-						:class="{'is-loading': submitting}"
-						@click="submit"
-					>
-						Save Entries
-					</button>
-				</div>
 			</div>
 		</div>
 		<section v-else class="hero">
@@ -158,20 +149,34 @@ export default {
 			'getLocks',
 			'getMe',
 		]),
-		removeSelection (selection) {
+		async removeSelection (selection) {
+			let json;
+			if (this.selectedCategory.entryType === 'themes') {
+				json = {
+					category_id: this.selectedCategory.id,
+					entry_id: selection.id,
+					theme_name: selection.title,
+					anilist_id: selection.anilist_id,
+				};
+			} else {
+				json = {
+					category_id: this.selectedCategory.id,
+					entry_id: selection.id,
+					anilist_id: null,
+					theme_name: null,
+				};
+			}
+			const response = await fetch('/api/votes/delete', {
+				method: 'POST',
+				body: JSON.stringify(json),
+			});
+			if (!response.ok) {
+				// eslint-disable-next-line no-alert
+				alert('Something went wrong submitting your selection');
+				return;
+			}
 			const index = this.selections[this.selectedCategory.id].findIndex(aSelection => aSelection.id === selection.id);
 			this.selections[this.selectedCategory.id].splice(index, 1);
-		},
-		async submit () {
-			this.submitting = true;
-			try {
-				await fetch('/api/votes/submit', {
-					method: 'POST',
-					body: JSON.stringify(this.selections),
-				});
-			} finally {
-				this.submitting = false;
-			}
 		},
 	},
 	mounted () {

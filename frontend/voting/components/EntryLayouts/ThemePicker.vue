@@ -73,7 +73,6 @@ export default {
 	props: {
 		value: Object,
 		category: Object,
-		entries: Array,
 	},
 	computed: {
 		...mapState([
@@ -81,7 +80,7 @@ export default {
 			'selections',
 		]),
 		showIDs () {
-			return this.entries.map(show => show.anilist_id);
+			return this.themes.map(show => show.anilistID);
 		},
 	},
 	data () {
@@ -90,8 +89,6 @@ export default {
 			typingTimeout: null,
 			search: '',
 			shows: [],
-			showData: [],
-			themeData: [],
 			backup: [],
 			total: 'No',
 		};
@@ -124,26 +121,54 @@ export default {
 		showSelected (show) {
 			return this.value[this.category.id].some(s => s.id === show.id);
 		},
-		toggleShow (show, select = true) {
+		async toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
 				// Limit number of nominations
-				if (this.value[this.category.id].length >= 50) {
-					alert("You cannot vote for any more entries.");
+				if (this.value[this.category.id].length >= 10) {
+					alert('You cannot vote for any more entries.');
 					return;
 				}
 				const themeIndex = this.value[this.category.id].findIndex(theme => theme.title === show.title);
 				if (themeIndex !== -1) { // If we find it...
 					// Confirm that the user wants to move their vote
-					if (confirm(`You have already selected another version of this theme. Do you want to move your vote to this version.`)) {
+					if (confirm('You have already selected another version of this theme. Do you want to move your vote to this version.')) {
 						// If they want to move it, we need to update the entry in the other category
+						const response = await fetch('/api/votes/delete', {
+							method: 'POST',
+							body: JSON.stringify({
+								category_id: this.category.id,
+								entry_id: show.id,
+								anilist_id: show.anilistID,
+								theme_name: show.title,
+							}),
+						});
+						if (!response.ok) {
+							// eslint-disable-next-line no-alert
+							alert('Something went wrong submitting your selection');
+							return;
+						}
 						this.value[this.category.id].splice(themeIndex, 1);
+						this.$emit('input', this.value);
 					} else {
-						// If they cancel out, return and change tab to avoid visual glitch
+						// If they cancel out, return
 						return;
 					}
 				}
-
+				const response = await fetch('/api/votes/submit', {
+					method: 'POST',
+					body: JSON.stringify({
+						category_id: this.category.id,
+						entry_id: show.id,
+						anilist_id: show.anilistID,
+						theme_name: show.title,
+					}),
+				});
+				if (!response.ok) {
+					// eslint-disable-next-line no-alert
+					alert('Something went wrong submitting your selection');
+					return;
+				}
 				this.value[this.category.id].push(show);
 				this.$emit('input', this.value);
 			} else {
@@ -151,6 +176,20 @@ export default {
 				const index = this.value[this.category.id].findIndex(s => s.id === show.id);
 				const arr = [...this.value[this.category.id]];
 				arr.splice(index, 1);
+				const response = await fetch('/api/votes/delete', {
+					method: 'POST',
+					body: JSON.stringify({
+						category_id: this.category.id,
+						entry_id: show.id,
+						anilist_id: show.anilistID,
+						theme_name: show.title,
+					}),
+				});
+				if (!response.ok) {
+					// eslint-disable-next-line no-alert
+					alert('Something went wrong submitting your selection');
+					return;
+				}
 				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
 			}
@@ -158,7 +197,7 @@ export default {
 	},
 	async mounted () {
 		if (!this.themes) {
-			this.getThemes();
+			await this.getThemes();
 		}
 		const promiseArray = [];
 		let showData = [];
@@ -184,10 +223,9 @@ export default {
 				for (const data of finalData) {
 					showData = [...showData, ...data];
 				}
-				this.entries.forEach(element => {
-					const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
-					const requiredShow = showData.find(show => show.id === element.anilist_id);
-					this.backup.push({...requiredShow, ...requiredTheme});
+				this.themes.forEach(element => {
+					const requiredShow = showData.find(show => show.id === element.anilistID);
+					this.backup.push({...requiredShow, ...element});
 				});
 				this.shows = this.backup;
 				this.loaded = true;
@@ -198,10 +236,11 @@ export default {
 	},
 	watch: {
 		async category () {
+			if (!this.themes) {
+				await this.getThemes();
+			}
 			this.search = '';
 			this.shows = [];
-			this.showData = [];
-			this.themeData = [];
 			const promiseArray = [];
 			let showData = [];
 			if (this.showIDs) {
@@ -226,10 +265,9 @@ export default {
 					for (const data of finalData) {
 						showData = [...showData, ...data];
 					}
-					this.entries.forEach(element => {
-						const requiredTheme = this.themes.find(theme => theme.id === element.themeId);
-						const requiredShow = showData.find(show => show.id === element.anilist_id);
-						this.backup.push({...requiredShow, ...requiredTheme});
+					this.themes.forEach(element => {
+						const requiredShow = showData.find(show => show.id === element.anilistID);
+						this.backup.push({...requiredShow, ...element});
 					});
 					this.shows = this.backup;
 					this.loaded = true;

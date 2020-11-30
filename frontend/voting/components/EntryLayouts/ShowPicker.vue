@@ -116,12 +116,26 @@ export default {
 		showSelected (show) {
 			return this.value[this.category.id].some(s => s.id === show.id);
 		},
-		toggleShow (show, select = true) {
+		async toggleShow (show, select = true) {
 			if (select) {
 				if (this.showSelected(show)) return;
 				// Limit number of nominations
-				if (this.value[this.category.id].length >= 50) {
+				if (this.value[this.category.id].length >= 10) {
 					alert('You cannot vote for any more entries.');
+					return;
+				}
+				const response = await fetch('/api/votes/submit', {
+					method: 'POST',
+					body: JSON.stringify({
+						category_id: this.category.id,
+						entry_id: show.id,
+						anilist_id: null,
+						theme_name: null,
+					}),
+				});
+				if (!response.ok) {
+					// eslint-disable-next-line no-alert
+					alert('Something went wrong submitting your selection');
 					return;
 				}
 				this.value[this.category.id].push(show);
@@ -131,6 +145,20 @@ export default {
 				const index = this.value[this.category.id].findIndex(s => s.id === show.id);
 				const arr = [...this.value[this.category.id]];
 				arr.splice(index, 1);
+				const response = await fetch('/api/votes/delete', {
+					method: 'POST',
+					body: JSON.stringify({
+						category_id: this.category.id,
+						entry_id: show.id,
+						anilist_id: null,
+						theme_name: null,
+					}),
+				});
+				if (!response.ok) {
+					// eslint-disable-next-line no-alert
+					alert('Something went wrong submitting your selection');
+					return;
+				}
 				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
 			}

@@ -1,11 +1,10 @@
-/* eslint-disable no-await-in-loop */
+/* eslint-disable multiline-comment-style */
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
 const Fuse = require('fuse.js');
 
 // Sequelize models to avoid redundancy
 const Votes = sequelize.model('votes');
-const Categories = sequelize.model('categories');
 const Entries = sequelize.model('entries');
 
 apiApp.post('/character-search', async (request, response) => {
@@ -26,6 +25,50 @@ apiApp.post('/character-search', async (request, response) => {
 	response.json(fuse.search(req.search));
 });
 
+apiApp.post('/submit', async (request, response) => {
+	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});
+	if (!userName) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
+	}
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		return response.json(400, {error: 'Invalid JSON'});
+	}
+	await Votes.create({
+		reddit_user: userName,
+		category_id: req.category_id,
+		entry_id: req.entry_id,
+		anilist_id: req.anilist_id,
+		theme_name: req.theme_name,
+	});
+	response.empty();
+});
+
+apiApp.post('/delete', async (request, response) => {
+	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});
+	if (!userName) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
+	}
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		return response.json(400, {error: 'Invalid JSON'});
+	}
+	await Votes.destroy({
+		where: {
+			reddit_user: userName,
+			category_id: req.category_id,
+			entry_id: req.entry_id,
+			anilist_id: req.anilist_id,
+			theme_name: req.theme_name,
+		},
+	});
+	response.empty();
+});
+
 apiApp.get('/summary', async (request, response) => {
 	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
 		return response.json(401, {error: 'You must be a host to view vote summary.'});
@@ -42,7 +85,6 @@ apiApp.get('/summary', async (request, response) => {
 			users: allUsers[0].count,
 			allVotes: [],
 		};
-		// eslint-disable-next-line multiline-comment-style
 		/* for (const vote of allVotes) {
 			voteSummary.votes += 1;
 			if (!allUsers[vote.reddit_user]) {
@@ -117,6 +159,20 @@ apiApp.get('/all/delete', async (request, response) => {
 	// }
 });
 
+apiApp.get('/get', async (request, response) => {
+	const userName = (await request.reddit().get('/api/v1/me')).body.name;
+	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'voting'})) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
+	}
+	try {
+		response.json(await Votes.findAll({where: {reddit_user: userName}}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+// Old /submit route
+/*
 apiApp.post('/submit', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'voting'})) {
@@ -199,17 +255,6 @@ apiApp.post('/submit', async (request, response) => {
 		}
 	}, error => response.error(error));
 });
-
-apiApp.get('/get', async (request, response) => {
-	const userName = (await request.reddit().get('/api/v1/me')).body.name;
-	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'voting'})) {
-		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
-	}
-	try {
-		response.json(await Votes.findAll({where: {reddit_user: userName}}));
-	} catch (error) {
-		response.error(error);
-	}
-});
+*/
 
 module.exports = apiApp;
