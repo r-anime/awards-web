@@ -47,6 +47,10 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-mutating-props */
+/* eslint-disable no-alert */
+
+import Vue from 'vue';
 import ThemePickerEntry from './ThemePickerEntry';
 import {mapActions, mapState} from 'vuex';
 import Fuse from 'fuse.js/dist/fuse.basic.min';
@@ -123,10 +127,15 @@ export default {
 		},
 		async toggleShow (show, select = true) {
 			if (select) {
-				if (this.showSelected(show)) return;
+				Vue.set(this.loading, show.id, true);
+				if (this.showSelected(show)) {
+					Vue.set(this.loading, show.id, false);
+					return;
+				}
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 10) {
 					alert('You cannot vote for any more entries.');
+					Vue.set(this.loading, show.id, false);
 					return;
 				}
 				const themeIndex = this.value[this.category.id].findIndex(theme => theme.title === show.title);
@@ -146,12 +155,15 @@ export default {
 						if (!response.ok) {
 							// eslint-disable-next-line no-alert
 							alert('Something went wrong submitting your selection');
+							Vue.set(this.loading, show.id, false);
 							return;
 						}
 						this.value[this.category.id].splice(themeIndex, 1);
 						this.$emit('input', this.value);
+						Vue.set(this.loading, show.id, false);
 					} else {
 						// If they cancel out, return
+						Vue.set(this.loading, show.id, false);
 						return;
 					}
 				}
@@ -167,10 +179,12 @@ export default {
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
+					Vue.set(this.loading, show.id, false);
 					return;
 				}
 				this.value[this.category.id].push(show);
 				this.$emit('input', this.value);
+				Vue.set(this.loading, show.id, false);
 			} else {
 				if (!this.showSelected(show)) return;
 				const index = this.value[this.category.id].findIndex(s => s.id === show.id);

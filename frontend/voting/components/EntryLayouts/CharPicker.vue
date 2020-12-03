@@ -52,6 +52,10 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-mutating-props */
+/* eslint-disable no-alert */
+
+import Vue from 'vue';
 import {mapState} from 'vuex';
 import CharPickerEntry from './CharPickerEntry';
 const queries = require('../../../anilistQueries');
@@ -73,6 +77,7 @@ export default {
 			search: '',
 			chars: [],
 			total: 'No',
+			loading: [],
 		};
 	},
 	computed: {
@@ -143,10 +148,15 @@ export default {
 		},
 		async toggleCharacter (char, select = true) {
 			if (select) {
-				if (this.characterSelected(char)) return;
+				Vue.set(this.loading, char.id, true);
+				if (this.characterSelected(char)) {
+					Vue.set(this.loading, char.id, false);
+					return;
+				}
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 10) {
 					alert('You cannot vote for any more entries.');
+					Vue.set(this.loading, char.id, false);
 					return;
 				}
 
@@ -175,11 +185,14 @@ export default {
 								if (!response.ok) {
 									// eslint-disable-next-line no-alert
 									alert('Something went wrong deleting your vote');
+									Vue.set(this.loading, char.id, false);
 									return;
 								}
 								this.value[cat.id].splice(charIndex, 1);
 								this.$emit('input', this.value);
+								Vue.set(this.loading, char.id, false);
 							} else {
+								Vue.set(this.loading, char.id, false);
 								return;
 							}
 						}
@@ -201,6 +214,7 @@ export default {
 				}
 				this.value[this.category.id].push(char);
 				this.$emit('input', this.value);
+				Vue.set(this.loading, char.id, false);
 			} else {
 				if (!this.characterSelected(char)) return;
 				const index = this.value[this.category.id].findIndex(c => c.id === char.id);

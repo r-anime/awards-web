@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="media-right">
-					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected"/>
+					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
 		</div>
@@ -41,6 +41,7 @@ export default {
 	props: {
 		va: Object,
 		selected: Boolean,
+		loading: Boolean,
 	},
 	computed: {
 		name () {

@@ -32,6 +32,7 @@
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
+					:loading="loading[show.id]"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
@@ -46,6 +47,8 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-mutating-props */
+import Vue from 'vue';
 import ShowPickerEntry from './ShowPickerEntry';
 import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
@@ -82,6 +85,7 @@ export default {
 			shows: null,
 			total: 'No',
 			showData: null,
+			loading: [],
 		};
 	},
 	computed: {
@@ -118,10 +122,13 @@ export default {
 		},
 		async toggleShow (show, select = true) {
 			if (select) {
+				Vue.set(this.loading, show.id, true);
 				if (this.showSelected(show)) return;
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 10) {
+					// eslint-disable-next-line no-alert
 					alert('You cannot vote for any more entries.');
+					Vue.set(this.loading, show.id, false);
 					return;
 				}
 				const response = await fetch('/api/votes/submit', {
@@ -140,6 +147,7 @@ export default {
 				}
 				this.value[this.category.id].push(show);
 				this.$emit('input', this.value);
+				Vue.set(this.loading, show.id, false);
 			} else {
 				if (!this.showSelected(show)) return;
 				const index = this.value[this.category.id].findIndex(s => s.id === show.id);

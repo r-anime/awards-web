@@ -53,6 +53,10 @@
 </template>
 
 <script>
+/* eslint-disable vue/no-mutating-props */
+/* eslint-disable no-alert */
+
+import Vue from 'vue';
 import VAPickerEntry from './VAPickerEntry';
 const queries = require('../../../anilistQueries');
 const util = require('../../../util');
@@ -138,10 +142,15 @@ export default {
 		},
 		async toggleShow (va, select = true) {
 			if (select) {
-				if (this.showSelected(va)) return;
+				Vue.set(this.loading, va.id, true);
+				if (this.showSelected(va)) {
+					Vue.set(this.loading, va.id, false);
+					return;
+				}
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 10) {
 					alert('You cannot vote for any more entries.');
+					Vue.set(this.loading, va.id, false);
 					return;
 				}
 				const response = await fetch('/api/votes/submit', {
@@ -156,10 +165,12 @@ export default {
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
+					Vue.set(this.loading, va.id, false);
 					return;
 				}
 				this.value[this.category.id].push(va);
 				this.$emit('input', this.value);
+				Vue.set(this.loading, va.id, false);
 			} else {
 				if (!this.showSelected(va)) return;
 				const index = this.value[this.category.id].findIndex(v => v.id === va.id);
