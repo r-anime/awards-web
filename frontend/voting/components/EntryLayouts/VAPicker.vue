@@ -77,6 +77,7 @@ export default {
 			search: '',
 			vas: [],
 			total: 'No',
+			loading: {},
 		};
 	},
 	methods: {

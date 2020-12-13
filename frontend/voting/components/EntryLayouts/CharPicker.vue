@@ -77,7 +77,7 @@ export default {
 			search: '',
 			chars: [],
 			total: 'No',
-			loading: [],
+			loading: {},
 		};
 	},
 	computed: {

@@ -95,6 +95,7 @@ export default {
 			shows: [],
 			backup: [],
 			total: 'No',
+			loading: {},
 		};
 	},
 	methods: {

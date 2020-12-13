@@ -85,7 +85,7 @@ export default {
 			shows: null,
 			total: 'No',
 			showData: null,
-			loading: [],
+			loading: {},
 		};
 	},
 	computed: {

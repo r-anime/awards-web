@@ -242,7 +242,7 @@ export default {
 			submitting: false,
 			modalOpen: false,
 			startDate: '2020-01-13',
-			endDate: '2021-01-12',
+			endDate: '2020-12-31',
 			formats: [],
 			importing: false,
 		};
