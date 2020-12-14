@@ -32,7 +32,7 @@
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
-					:loading="loading[show.id]"
+					:loading="loading[show.id] || (!showSelected(show) && maxNoms)"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
@@ -85,12 +85,15 @@ export default {
 			shows: null,
 			total: 'No',
 			showData: null,
-			loading: {},
+			loading: [],
 		};
 	},
 	computed: {
 		showIDs () {
 			return this.entries.map(show => show.anilist_id);
+		},
+		maxNoms () {
+			return this.value[this.category.id].length >= 10;
 		},
 	},
 	methods: {
@@ -121,11 +124,14 @@ export default {
 			return this.value[this.category.id].some(s => s.id === show.id);
 		},
 		async toggleShow (show, select = true) {
+			Vue.set(this.loading, show.id, true);
 			if (select) {
-				Vue.set(this.loading, show.id, true);
-				if (this.showSelected(show)) return;
+				if (this.showSelected(show)) {
+					Vue.set(this.loading, show.id, false);
+					return;
+				}
 				// Limit number of nominations
-				if (this.value[this.category.id].length >= 10) {
+				if (this.maxNoms) {
 					// eslint-disable-next-line no-alert
 					alert('You cannot vote for any more entries.');
 					Vue.set(this.loading, show.id, false);
@@ -162,6 +168,7 @@ export default {
 						theme_name: null,
 					}),
 				});
+				Vue.set(this.loading, show.id, false);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');

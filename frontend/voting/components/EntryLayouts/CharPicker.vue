@@ -31,7 +31,7 @@
 					v-for="char in chars"
 					:key="char.id"
 					:char="char"
-					:selected="characterSelected(char)"
+					:selected="characterSelected(char) || (!showSelected(show) && maxNoms)"
 					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
@@ -84,6 +84,9 @@ export default {
 		...mapState([
 			'votingCats',
 		]),
+		maxNoms () {
+			return this.value[this.category.id].length >= 10;
+		},
 	},
 	methods: {
 		handleInput (event) {
@@ -146,15 +149,15 @@ export default {
 		characterSelected (char) {
 			return this.value[this.category.id].some(s => s.id === char.id);
 		},
-		async toggleCharacter (char, select = true) {
+		async toggleCharacter (char, event, select = true) {
+			Vue.set(this.loading, char.id, true);
 			if (select) {
-				Vue.set(this.loading, char.id, true);
 				if (this.characterSelected(char)) {
 					Vue.set(this.loading, char.id, false);
 					return;
 				}
 				// Limit number of nominations
-				if (this.value[this.category.id].length >= 10) {
+				if (this.maxNoms) {
 					alert('You cannot vote for any more entries.');
 					Vue.set(this.loading, char.id, false);
 					return;
@@ -229,6 +232,7 @@ export default {
 						theme_name: null,
 					}),
 				});
+				Vue.set(this.loading, char.id, false);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');

@@ -32,7 +32,7 @@
 					v-for="show in shows"
 					:key="show.id"
 					:show="show"
-					:selected="showSelected(show)"
+					:selected="showSelected(show) || (!showSelected(show) && maxNoms)"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
@@ -86,6 +86,9 @@ export default {
 		showIDs () {
 			return this.themes.map(show => show.anilistID);
 		},
+		maxNoms () {
+			return this.value[this.category.id].length >= 10;
+		},
 	},
 	data () {
 		return {
@@ -127,8 +130,8 @@ export default {
 			return this.value[this.category.id].some(s => s.id === show.id);
 		},
 		async toggleShow (show, select = true) {
+			Vue.set(this.loading, show.id, true);
 			if (select) {
-				Vue.set(this.loading, show.id, true);
 				if (this.showSelected(show)) {
 					Vue.set(this.loading, show.id, false);
 					return;
@@ -177,6 +180,7 @@ export default {
 						theme_name: show.title,
 					}),
 				});
+				Vue.set(this.loading, show.id, true);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
