@@ -32,7 +32,7 @@
 					v-for="va in vas"
 					:key="va.id"
 					:va="va"
-					:selected="showSelected(va) || (!showSelected(show) && maxNoms)"
+					:selected="isLoading || (!showSelected(show) && maxNoms)"
 					@action="toggleShow(va, $event)"
 				/>
 			</div>
@@ -83,6 +83,9 @@ export default {
 	computed: {
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
+		},
+		isLoading () {
+			return this.loading.includes(true);
 		},
 	},
 	methods: {
@@ -232,6 +235,14 @@ export default {
 	height: calc(100vh - 410px);
 	overflow-y: auto;
 }
+@media (max-width: 1215.999px) {
+	.show-picker-overflow-wrap {
+		/* TODO hardcode bad */
+		height: calc(100vh - 350px);
+		overflow-y: auto;
+	}
+}
+
 .va-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;

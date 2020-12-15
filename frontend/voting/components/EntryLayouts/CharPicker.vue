@@ -31,7 +31,7 @@
 					v-for="char in chars"
 					:key="char.id"
 					:char="char"
-					:selected="characterSelected(char) || (!showSelected(show) && maxNoms)"
+					:selected="isLoading || (!showSelected(show) && maxNoms)"
 					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
@@ -86,6 +86,9 @@ export default {
 		]),
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
+		},
+		isLoading () {
+			return this.loading.includes(true);
 		},
 	},
 	methods: {
@@ -269,6 +272,14 @@ export default {
 	height: calc(100vh - 410px);
 	overflow-y: auto;
 }
+@media (max-width: 1215.999px) {
+	.char-picker-overflow-wrap {
+		/* TODO hardcode bad */
+		height: calc(100vh - 350px);
+		overflow-y: auto;
+	}
+}
+
 .char-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;

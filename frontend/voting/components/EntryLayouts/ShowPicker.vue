@@ -32,7 +32,7 @@
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
-					:loading="loading[show.id] || (!showSelected(show) && maxNoms)"
+					:loading="isLoading || (!showSelected(show) && maxNoms)"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
@@ -94,6 +94,9 @@ export default {
 		},
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
+		},
+		isLoading () {
+			return this.loading.includes(true);
 		},
 	},
 	methods: {
@@ -256,10 +259,18 @@ export default {
 .tabs.show-picker-tabs {
 	margin-bottom: 0 !important;
 }
+
 .show-picker-overflow-wrap {
 	/* TODO hardcode bad */
 	height: calc(100vh - 410px);
 	overflow-y: auto;
+}
+@media (max-width: 1215.999px) {
+	.show-picker-overflow-wrap {
+		/* TODO hardcode bad */
+		height: calc(100vh - 350px);
+		overflow-y: auto;
+	}
 }
 
 .show-picker-overflow-wrap::-webkit-scrollbar {

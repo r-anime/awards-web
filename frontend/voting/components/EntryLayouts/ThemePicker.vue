@@ -32,7 +32,7 @@
 					v-for="show in shows"
 					:key="show.id"
 					:show="show"
-					:selected="showSelected(show) || (!showSelected(show) && maxNoms)"
+					:selected="isLoading || (!showSelected(show) && maxNoms)"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
@@ -88,6 +88,9 @@ export default {
 		},
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
+		},
+		isLoading () {
+			return this.loading.includes(true);
 		},
 	},
 	data () {
@@ -305,9 +308,17 @@ export default {
 }
 .show-picker-overflow-wrap {
 	/* TODO hardcode bad */
-	height: calc(100vh - 410px);
+	height: calc(100vh - 310px);
 	overflow-y: auto;
 }
+@media (max-width: 1215.999px) {
+	.show-picker-overflow-wrap {
+		/* TODO hardcode bad */
+		height: calc(100vh - 350px);
+		overflow-y: auto;
+	}
+}
+
 
 .show-picker-overflow-wrap::-webkit-scrollbar {
     width: 8px;

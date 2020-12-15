@@ -4,12 +4,12 @@
 			<div class="hero is-dark">
 				<div class="hero-body">
 					<div class="container">
-						<h1 class="title is-size-1 is-size-2-mobile">{{selectedCategory.name}}</h1>
+						<h1 class="title is-size-1 is-size-4-mobile">{{selectedCategory.name}}</h1>
 						<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle">{{selectedCategory.description}}</h2>
 					</div>
 					<br/>
 					<progress class="progress is-success" :value="Math.round(progress / categories.length * 100)" max="100"></progress>
-					<p class="text is-light has-text-centered">{{progress}}/{{categories.length}} Categories Voted In</p>
+					<p class="text is-light has-text-centered is-hidden-mobile">{{progress}}/{{categories.length}} Categories Voted In</p>
 				</div>
 				<div class="hero-foot">
 					<div class="container">
@@ -22,14 +22,18 @@
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 					is better solved by v-if's so here's yet another hack-->
 					<!-- it's okay this is exactly how i did it last year too lol -->
-					<div class="columns is-multiline is-mobile">
-						<div class="column is-2">
+					<br/>
+					<div class="columns is-multiline">
+						<div class="selection-column column is-2-widescreen is-12" :class="{toggle: toggleSelection}">
+							<div class="mobile-selection-toggle">
+								<button class="button is-primary is-rounded" :class="{'is-hidden': !toggleSelection}" @click.prevent="toggle">X</button>
+							</div>
 							<nav class="panel is-platinum has-background-white">
-								<p class="panel-heading">Selections</p>
+								<h2 class="panel-heading">Selections</h2>
 								<Selection v-for="selection in selections[selectedCategory.id]" :key="selection.id" :selection="selection" :selectedCategory="selectedCategory" @action="removeSelection(selection)"/>
 							</nav>
 						</div>
-						<div class="column is-10">
+						<div class="column is-10-widescreen is-12">
 							<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
 							<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
 							<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
@@ -57,6 +61,9 @@
 				</div>
 			</div>
 		</section>
+		<div class="mobile-selection-toggle">
+			<button class="button is-primary is-rounded" :class="{'is-hidden': toggleSelection}" @click.prevent="toggle">My Votes</button>
+		</div>
 	</body>
 </template>
 
@@ -90,6 +97,7 @@ export default {
 			SelectedTabName: null,
 			loaded: false,
 			locked: null,
+			toggleSelection: false,
 		};
 	},
 	computed: {
@@ -149,6 +157,9 @@ export default {
 			'getLocks',
 			'getMe',
 		]),
+		toggle () {
+			this.toggleSelection = !this.toggleSelection;
+		},
 		async removeSelection (selection) {
 			let json;
 			if (this.selectedCategory.entryType === 'themes') {
@@ -212,5 +223,40 @@ export default {
 	box-shadow: inset 0 1px #dbdbdb;
 	text-align: center;
 	padding: 5px;
+}
+.mobile-selection-toggle{
+	display: none;
+}
+@media (max-width: 1215.999px) {
+	.mobile-selection-toggle, .mobile-selection-close{
+		display: block;
+		position: fixed;
+		bottom: 2.5rem;
+		right: 1.5rem;
+	}
+	.selection-column {
+		position: fixed;
+		top: 9999px;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 9999;
+
+		width: 100%;
+		height: 100%;
+		background: transparent;
+
+		&.toggle{
+			top: 0;
+			left: 0;
+			background: rgba(0,0,0,0.6);
+		}
+		.panel {
+			margin: 0 auto;
+			z-index: 9999;
+			width: 70%;
+		}
+	}
 }
 </style>
