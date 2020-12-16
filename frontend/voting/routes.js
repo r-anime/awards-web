@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 import NotFound from '../common/NotFound';
+import Profile from '../common/Profile';
 
 import Voting from './pages/Voting';
 import Instructions from './pages/Instructions';
@@ -28,15 +29,15 @@ export default new VueRouter({
 			redirect: '/vote/main',
 			children: [
 				{
+					path: 'profile',
+					component: Profile,
+					name: 'Profile',
+				},
+				{
 					path: ':group',
 					component: GroupDisplay,
 					name: 'GroupDisplay',
 					props: true,
-				},
-				{
-					path: 'instructions',
-					component: Instructions,
-					name: 'Instructions',
 				},
 			],
 		},

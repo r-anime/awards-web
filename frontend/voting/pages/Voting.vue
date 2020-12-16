@@ -10,6 +10,7 @@
 				{name: 'Test Categories', path: '/vote/test', props: {group: 'main'}},
 			]"
 			fullwidth
+			vote
 		>
 			<template v-slot:title>
 				<router-link to="/" style="color: inherit;">
@@ -24,7 +25,7 @@
 
 <script>
 import NavBar from '../../common/NavBarSimple.vue';
-import {mapActions, mapState, mapGetters} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 
 export default {
 	components: {
@@ -38,7 +39,6 @@ export default {
 	},
 	computed: {
 		...mapState(['locks', 'me']),
-		...mapGetters(['accountOldEnough']),
 	},
 	methods: {
 		...mapActions(['getLocks', 'getMe']),

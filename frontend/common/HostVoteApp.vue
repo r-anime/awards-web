@@ -38,4 +38,8 @@ html {
 	margin-bottom: 1.5rem;
 }
 
+.button.non-interactive {
+    pointer-events: none;  /* Imitate the behavior of is-static class */
+}
+
 </style>

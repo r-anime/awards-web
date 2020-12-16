@@ -29,7 +29,7 @@
 								<button class="button is-primary is-rounded" :class="{'is-hidden': !toggleSelection}" @click.prevent="toggle">X</button>
 							</div>
 							<nav class="panel is-platinum has-background-white">
-								<h2 class="panel-heading">Selections</h2>
+								<h2 class="panel-heading">Selections ({{selections[selectedCategory.id].length}}/10)</h2>
 								<Selection v-for="selection in selections[selectedCategory.id]" :key="selection.id" :selection="selection" :selectedCategory="selectedCategory" @action="removeSelection(selection)"/>
 							</nav>
 						</div>
@@ -50,11 +50,11 @@
 						<div v-if="!loaded" class="loading-text">
 						Please wait while your selections are being initialized. Thank you for your patience.
 						</div>
-						<div v-else-if="!locked" class="loading-text">
-						Please wait while your selections are being initialized. Thank you for your patience.
+						<div v-else-if="locked" class="loading-text">
+						Public voting is not open at this time.
 						</div>
 						<div v-else-if="!accountOldEnough" class="loading-text">
-						Please wait while your selections are being initialized. Thank you for your patience.
+						Your account is not old enough to vote in the Awards.
 						</div>
 						<img loading="lazy" :src="snooImage"/>
 					</div>

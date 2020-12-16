@@ -6,19 +6,19 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-small"
+							class="input is-primary is-medium"
 							type="text"
 							:value="search"
 							@input="handleInput($event)"
 							placeholder="Search by title..."
 						/>
-						<span class="icon is-small is-left">
+						<span class="icon is-medium is-left">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
 					<div class="control">
 						<span
-							class="button is-small is-static"
+							class="button is-medium non-interactive is-primary"
 							:class="{'is-loading': !loaded}"
 						>
 							{{total}} theme{{total === 1 ? '' : 's'}}

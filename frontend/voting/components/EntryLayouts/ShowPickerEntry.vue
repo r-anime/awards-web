@@ -1,7 +1,7 @@
 <!--Probably used for everything that's a show so like whatever just figure it out-->
 <template>
 	<label class="show-picker-entry">
-		<div class="box">
+		<div class="box" :class="{'highlighted': selected}">
 			<div class="media">
 				<div class="media-left">
 					<figure class="image show-cover">
@@ -92,5 +92,9 @@ export default {
     margin-right: 0.4rem;
     border-radius: 3px;
     overflow: hidden;
+}
+.highlighted {
+	box-shadow: 0 0 5px #00d2b4;
+	border: 2px solid #00d2b4;
 }
 </style>

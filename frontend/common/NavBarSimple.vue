@@ -39,6 +39,14 @@
 								Profile settings
 							</router-link>
 							<router-link
+							v-else-if="vote"
+								class="navbar-item"
+								active-class="is-active"
+								to="/vote/profile"
+							>
+								Profile settings
+							</router-link>
+							<router-link
 							v-else
 								class="navbar-item"
 								active-class="is-active"
@@ -79,6 +87,7 @@ export default {
 		fullwidth: Boolean,
 		vertical: Boolean,
 		apps: Boolean,
+		vote: Boolean,
 	},
 	data () {
 		return {
