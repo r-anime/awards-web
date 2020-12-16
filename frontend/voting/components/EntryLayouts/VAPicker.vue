@@ -32,7 +32,8 @@
 					v-for="va in vas"
 					:key="va.id"
 					:va="va"
-					:selected="isLoading || (!showSelected(show) && maxNoms)"
+					:selected="showSelected(va)"
+					:loading="isLoading || (!showSelected(va) && maxNoms)"
 					@action="toggleShow(va, $event)"
 				/>
 			</div>
@@ -77,7 +78,7 @@ export default {
 			search: '',
 			vas: [],
 			total: 'No',
-			loading: {},
+			loading: [],
 		};
 	},
 	computed: {
@@ -149,19 +150,17 @@ export default {
 		showSelected (va) {
 			return this.value[this.category.id].some(s => s.id === va.id);
 		},
-		async toggleShow (va, event, select = true) {
+		async toggleShow (va, select = true) {
 			Vue.set(this.loading, va.id, true);
 			if (select) {
 				if (this.showSelected(va)) {
 					Vue.set(this.loading, va.id, false);
-					event.stopPropogation();
 					return;
 				}
 				// Limit number of nominations
 				if (this.value[this.category.id].length >= 10) {
 					alert('You cannot vote for any more entries.');
 					Vue.set(this.loading, va.id, false);
-					event.stopPropogation();
 					return;
 				}
 				const response = await fetch('/api/votes/submit', {
@@ -177,7 +176,6 @@ export default {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
 					Vue.set(this.loading, va.id, false);
-					event.stopPropogation();
 					return;
 				}
 				this.value[this.category.id].push(va);
@@ -197,15 +195,15 @@ export default {
 						theme_name: null,
 					}),
 				});
-				Vue.set(this.loading, va.id, true);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
-					event.stopPropogation();
+					Vue.set(this.loading, va.id, false);
 					return;
 				}
 				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
+				Vue.set(this.loading, va.id, false);
 			}
 		},
 	},

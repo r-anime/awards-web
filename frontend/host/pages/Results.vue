@@ -3,7 +3,7 @@
 <div v-if="locked !== null">
     <div class="section" v-if="locked === false">
         <h2 class="title">Results</h2>
-        <div v-if="!loaded || !dashTotals || !opedTotals" class="content">
+        <div v-if="!loaded || !opedTotals" class="content">
             <p>Loading...</p>
         </div>
         <div v-else class="content">
@@ -94,7 +94,6 @@ export default {
 		...mapState([
 			'categories',
 			'voteTotals',
-			'dashTotals',
 			'opedTotals',
 			'themes',
 			'voteSummary',
@@ -148,51 +147,22 @@ export default {
 		...mapActions([
 			'getCategories',
 			'getVoteTotals',
-			'getDashboardTotals',
 			'getOPEDTotals',
 			'getThemes',
 			'getVoteSummary',
 			'getLocks',
 			'getMe',
 		]),
-		isDashboard (category) {
-			if (category.awardsGroup === 'genre') {
-				return true;
-			} else if (category.awardsGroup === 'main' && category.name !== 'Anime of the Year') {
-				return true;
-			} else if (category.awardsGroup === 'test' && category.name.includes('Sports')) {
-				return true;
-			} else if (category.name.includes('OST') && category.awardsGroup === 'production') {
-				return true;
-			}
-			return false;
-		},
 		votesFor (category) {
 			let allVotes = [];
-			// console.log(category.name);
-			if (this.isDashboard(category)) {
-				allVotes = this.dashTotals.filter(vote => vote.category_id === category.id);
-				// console.log('dashboard');
-			} else if (category.entryType === 'themes') {
+			if (category.entryType === 'themes') {
 				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
-				// console.log('op/ed');
 			} else {
 				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
-				// console.log('other');
 			}
 			const entries = [];
 			for (const vote of allVotes) {
-				if (this.isDashboard(category)) { // This condition is fulfilled for dashboard cats only
-					// Dashboard categories have their anilist stored here
-					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-					if (requiredShow) {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredShow.title.romaji}`,
-							image: `${requiredShow.coverImage.large}`,
-						});
-					}
-				} else if (category.entryType === 'themes') { // redundant condition for theme cats
+				if (category.entryType === 'themes') {
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 					const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
 					if (requiredShow && requiredTheme) {
@@ -202,7 +172,7 @@ export default {
 							image: `${requiredShow.coverImage.large}`,
 						});
 					}
-				} else if (category.entryType === 'shows') { // If it's an anilist show cat
+				} else if (category.entryType === 'shows') {
 					const requiredShow = this.showData.find(show => show.id === vote.entry_id);
 					if (requiredShow) {
 						entries.push({
@@ -212,20 +182,14 @@ export default {
 						});
 					}
 				} else if (category.entryType === 'characters') {
-					// if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
-					console.log(vote.entry_id);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full}`,
 						image: `${requiredChar.image.large}`,
 					});
 				} else if (category.entryType === 'vas') {
-					// if ([101338, 104071, 104212, 105928, 107663, 111131].includes(vote.entry_id)) continue;
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					console.log(requiredChar);
-					console.log(vote.entry_id);
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
@@ -233,8 +197,6 @@ export default {
 					});
 				}
 			}
-			// console.log(allVotes);
-			// console.log(entries);
 			return entries;
 		},
 		fetchShows (page) {
@@ -317,12 +279,9 @@ export default {
 			Promise.all([catPromise, votesPromise]).then(() => {
 				for (const vote of this.voteTotals) {
 					const category = this.categories.find(cat => cat.id === vote.category_id);
-					if (this.isDashboard(category)) { // This condition is fulfilled for dashboard cats only
-					// Dashboard categories have their anilist stored here
+					if (category.entryType === 'themes') {
 						this.showIDs.push(vote.anilist_id);
-					} else if (category.entryType === 'themes') { // redundant condition for theme cats
-						this.showIDs.push(vote.anilist_id);
-					} else if (category.entryType === 'shows') { // If it's an anilist show cat
+					} else if (category.entryType === 'shows') {
 						this.showIDs.push(vote.entry_id);
 					} else if (category.entryType === 'characters' || category.entryType === 'vas') {
 						this.charIDs.push(vote.entry_id);
@@ -393,16 +352,6 @@ export default {
 					}
 				});
 				Promise.all([queryPromise, themePromise]).then(() => {
-					const dashPromise = new Promise(async (resolve, reject) => {
-						try {
-							if (!this.dashTotals) {
-								await this.getDashboardTotals();
-							}
-							resolve();
-						} catch (error) {
-							reject(error);
-						}
-					});
 					const opedPromise = new Promise(async (resolve, reject) => {
 						try {
 							if (!this.opedTotals) {
@@ -423,7 +372,7 @@ export default {
 							reject(error);
 						}
 					});
-					Promise.all([dashPromise, opedPromise, summaryPromise]).then(() => {
+					Promise.all([opedPromise, summaryPromise]).then(() => {
 						this.loaded = true;
 					});
 				});

@@ -35,7 +35,6 @@ const store = new Vuex.Store({
 		voteSummary: null,
 		voteTotals: null,
 		opedTotals: null,
-		dashTotals: null,
 		nominations: null,
 		hms: null,
 		jurors: null,
@@ -95,9 +94,6 @@ const store = new Vuex.Store({
 		},
 		GET_VOTE_TOTALS (state, voteTotals) {
 			state.voteTotals = voteTotals;
-		},
-		GET_DASHBOARD_TOTALS (state, dashTotals) {
-			state.dashTotals = dashTotals;
 		},
 		GET_OPED_TOTALS (state, opedTotals) {
 			state.opedTotals = opedTotals;
@@ -242,10 +238,6 @@ const store = new Vuex.Store({
 		async getVoteTotals ({commit}) {
 			const voteTotals = await makeRequest('/api/votes/all/get');
 			commit('GET_VOTE_TOTALS', voteTotals);
-		},
-		async getDashboardTotals ({commit}) {
-			const dashTotals = await makeRequest('/api/votes/dashboard/get');
-			commit('GET_DASHBOARD_TOTALS', dashTotals);
 		},
 		async getOPEDTotals ({commit}) {
 			const opedTotals = await makeRequest('/api/votes/oped/get');

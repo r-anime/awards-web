@@ -152,6 +152,7 @@ export default {
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
+					Vue.set(this.loading, show.id, false);
 					return;
 				}
 				this.value[this.category.id].push(show);
@@ -171,7 +172,6 @@ export default {
 						theme_name: null,
 					}),
 				});
-				Vue.set(this.loading, show.id, false);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
@@ -179,6 +179,7 @@ export default {
 				}
 				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
+				Vue.set(this.loading, show.id, false);
 			}
 		},
 	},

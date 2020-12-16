@@ -78,27 +78,18 @@ apiApp.get('/summary', async (request, response) => {
 		// eslint-disable-next-line no-unused-vars
 		const [allUsers, userMeta] = await sequelize.query('SELECT COUNT(DISTINCT `reddit_user`) as `count` FROM `votes`');
 
-		// console.log(allUsers);
-
 		const voteSummary = {
 			votes: allVotes.length,
 			users: allUsers[0].count,
 			allVotes: [],
 		};
-		/* for (const vote of allVotes) {
+		for (const vote of allVotes) {
 			voteSummary.votes += 1;
 			if (!allUsers[vote.reddit_user]) {
 				allUsers[vote.reddit_user] = true;
 				voteSummary.users += 1;
 			}
-			voteSummary.allVotes.push({
-				id: vote.id,
-				categoryId: vote.category_id,
-				entryId: vote.entry_id,
-				anilistId: vote.anilist_id,
-				themeName: vote.theme_name,
-			});
-		}*/
+		}
 		response.json(voteSummary);
 	} catch (error) {
 		response.error(error);
@@ -112,19 +103,6 @@ apiApp.get('/all/get', async (request, response) => {
 	try {
 		// eslint-disable-next-line no-unused-vars
 		const [res, metadata] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` GROUP BY `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
-		response.json(res);
-	} catch (error) {
-		response.error(error);
-	}
-});
-
-apiApp.get('/dashboard/get', async (request, response) => {
-	if (!await request.authenticate({level: 2, lock: 'hostResults'})) {
-		response.json(401, {error: 'You must be a host to see vote totals.'});
-	}
-	try {
-		// eslint-disable-next-line no-unused-vars
-		const [res, metadata] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `votes`.`category_id`, `votes`.`entry_id`, `votes`.`anilist_id`, `votes`.`theme_name` FROM `votes` WHERE `votes`.`anilist_id` IS NOT NULL AND `votes`.`theme_name` IS NULL GROUP BY `votes`.`category_id`, `votes`.`anilist_id` ORDER BY `votes`.`category_id` ASC, `vote_count` DESC');
 		response.json(res);
 	} catch (error) {
 		response.error(error);

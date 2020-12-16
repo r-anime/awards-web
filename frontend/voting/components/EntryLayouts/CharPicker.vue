@@ -31,7 +31,8 @@
 					v-for="char in chars"
 					:key="char.id"
 					:char="char"
-					:selected="isLoading || (!showSelected(show) && maxNoms)"
+					:selected="characterSelected(char)"
+					:loading="isLoading || (!characterSelected(char) && maxNoms)"
 					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
@@ -77,7 +78,7 @@ export default {
 			search: '',
 			chars: [],
 			total: 'No',
-			loading: {},
+			loading: [],
 		};
 	},
 	computed: {
@@ -196,7 +197,6 @@ export default {
 								}
 								this.value[cat.id].splice(charIndex, 1);
 								this.$emit('input', this.value);
-								Vue.set(this.loading, char.id, false);
 							} else {
 								Vue.set(this.loading, char.id, false);
 								return;
@@ -216,6 +216,7 @@ export default {
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
+					Vue.set(this.loading, char.id, false);
 					return;
 				}
 				this.value[this.category.id].push(char);
@@ -235,14 +236,15 @@ export default {
 						theme_name: null,
 					}),
 				});
-				Vue.set(this.loading, char.id, false);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
+					Vue.set(this.loading, char.id, false);
 					return;
 				}
 				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
+				Vue.set(this.loading, char.id, false);
 			}
 		},
 	},

@@ -32,7 +32,8 @@
 					v-for="show in shows"
 					:key="show.id"
 					:show="show"
-					:selected="isLoading || (!showSelected(show) && maxNoms)"
+					:selected="showSelected(show)"
+					:loading="isLoading || (!showSelected(show) && maxNoms)"
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
@@ -84,7 +85,7 @@ export default {
 			'selections',
 		]),
 		showIDs () {
-			return this.themes.map(show => show.anilistID);
+			return this.themes.filter(theme => theme.themeType.toUpperCase() === this.category.name).map(show => show.anilistID);
 		},
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
@@ -101,7 +102,7 @@ export default {
 			shows: [],
 			backup: [],
 			total: 'No',
-			loading: {},
+			loading: [],
 		};
 	},
 	methods: {
@@ -167,7 +168,6 @@ export default {
 						}
 						this.value[this.category.id].splice(themeIndex, 1);
 						this.$emit('input', this.value);
-						Vue.set(this.loading, show.id, false);
 					} else {
 						// If they cancel out, return
 						Vue.set(this.loading, show.id, false);
@@ -183,7 +183,6 @@ export default {
 						theme_name: show.title,
 					}),
 				});
-				Vue.set(this.loading, show.id, true);
 				if (!response.ok) {
 					// eslint-disable-next-line no-alert
 					alert('Something went wrong submitting your selection');
@@ -214,6 +213,7 @@ export default {
 				}
 				this.value[this.category.id] = arr;
 				this.$emit('input', this.value);
+				Vue.set(this.loading, show.id, false);
 			}
 		},
 	},
