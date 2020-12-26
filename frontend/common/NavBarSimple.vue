@@ -17,7 +17,7 @@
 			</div>
 			<div :class="['navbar-menu', {'is-active': expanded}]">
 				<div class="navbar-start">
-					<a href="/" class="navbar-item" v-if="apps">Home</a>
+					<a href="/" class="navbar-item" v-if="apps || finalVote">Home</a>
 					<nav-bar-link
 						v-for="route in namedRoutes"
 						:key="route.path"
@@ -35,6 +35,14 @@
 								class="navbar-item"
 								active-class="is-active"
 								to="/apps/profile"
+							>
+								Profile settings
+							</router-link>
+							<router-link
+							v-else-if="finalVote"
+								class="navbar-item"
+								active-class="is-active"
+								to="/final-vote/profile"
 							>
 								Profile settings
 							</router-link>
@@ -88,6 +96,7 @@ export default {
 		vertical: Boolean,
 		apps: Boolean,
 		vote: Boolean,
+		finalVote: Boolean,
 	},
 	data () {
 		return {

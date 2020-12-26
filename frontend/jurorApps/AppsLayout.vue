@@ -24,9 +24,7 @@
 					<br>
 					<br>
 					<br>
-					<router-link to="/about" style="color:inherit">
-						<a class="footerLink has-text-light">About/Credits</a>
-					</router-link>
+					<a href="/about" class="footerLink has-text-light">About/Credits</a>
 				</div>
 			</footer>
 		</div>

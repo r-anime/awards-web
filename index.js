@@ -188,6 +188,56 @@ sequelize.sync().then(async () => {
 					},
 					transaction: t,
 				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'fv-genre',
+					},
+					defaults: {
+						level: 3,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'fv-character',
+					},
+					defaults: {
+						level: 3,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'fv-visual-prod',
+					},
+					defaults: {
+						level: 3,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'fv-audio-prod',
+					},
+					defaults: {
+						level: 3,
+						flag: false,
+					},
+					transaction: t,
+				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'fv-main',
+					},
+					defaults: {
+						level: 3,
+						flag: false,
+					},
+					transaction: t,
+				}),
 			]);
 		} catch (error) {
 			log.error(error);

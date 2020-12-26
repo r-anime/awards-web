@@ -7,7 +7,6 @@
 				{name: 'Genre Awards', path: '/vote/genre', props: {group: 'genre'}},
 				{name: 'Production Awards', path: '/vote/production', props: {group: 'production'}},
 				{name: 'Character Awards', path: '/vote/character', props: {group: 'character'}},
-				{name: 'Test Categories', path: '/vote/test', props: {group: 'main'}},
 			]"
 			fullwidth
 			vote

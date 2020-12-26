@@ -144,26 +144,27 @@ apiApp.delete('/:reddit', async (request, response) => {
 apiApp.post('/deleteaccount', async (request, response) => {
 	const name = (await request.reddit().get('/api/v1/me')).body.name;
 	try {
-		const user = await Users.findOne({
-			where: {
-				reddit: name,
-			},
-		});
-		const applicant = await Applicants.findOne({
-			where: {
-				user_id: user.id,
-			},
-		});
-		await Answers.destroy({
-			where: {
-				applicant_id: applicant.id,
-			},
-		});
-		await Applicants.destroy({
-			where: {
-				id: applicant.id,
-			},
-		});
+		// Don't allow people to do this lest they delete their app from the records. TODO: Only delete the app that's open
+		// const user = await Users.findOne({
+		// where: {
+		// reddit: name,
+		// },
+		// });
+		// const applicant = await Applicants.findOne({
+		// where: {
+		// user_id: user.id,
+		// },
+		// });
+		// await Answers.destroy({
+		// where: {
+		// applicant_id: applicant.id,
+		// },
+		// });
+		// await Applicants.destroy({
+		// where: {
+		// id: applicant.id,
+		// },
+		// });
 		await Users.destroy({where: {reddit: name}});
 		await Votes.destroy({where: {reddit_user: name}});
 		request.session.destroy(() => {

@@ -5,7 +5,11 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+import MainLayout from './pages/MainLayout';
+import FinalVote from './pages/FinalVote';
+
 import NotFound from '../common/NotFound';
+import Profile from '../common/Profile';
 
 
 export default new VueRouter({
@@ -15,6 +19,20 @@ export default new VueRouter({
     	document.documentElement.scrollTop = 0;
 	},
 	routes: [
+		{
+			path: '/final-vote',
+			component: MainLayout,
+			children: [
+				{
+					path: '',
+					component: FinalVote,
+				},
+				{
+					path: 'profile',
+					component: Profile,
+				},
+			],
+		},
 		// 404 route - keep last
 		{path: '*', component: NotFound},
 	],
