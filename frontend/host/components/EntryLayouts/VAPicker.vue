@@ -156,6 +156,7 @@ import {mapActions} from 'vuex';
 import VAPickerEntry from './VAPickerEntry';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
+const constants = require('../../../../constants');
 
 const VASearchQuery = `query ($search: String) {
   character: Page(page: 1, perPage: 50) {
@@ -201,7 +202,7 @@ const VASearchQuery = `query ($search: String) {
 }
 `;
 
-const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDateInt, $charPage: Int) {
+const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDateInt, $charPage: Int, $exclusions: [Int]) {
   anime: Page(page: $page, perPage: 50) {
     pageInfo {
       total
@@ -210,7 +211,7 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
       lastPage
       hasNextPage
     }
-    results: media(type: ANIME, isAdult: false, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
+    results: media(type: ANIME, id_not_in: $exclusions, isAdult: false, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
       id
       title {
         romaji
@@ -464,6 +465,7 @@ export default {
 						charPage,
 						start,
 						end,
+						exclusions: constants.exclusions,
 					},
 				}),
 			});

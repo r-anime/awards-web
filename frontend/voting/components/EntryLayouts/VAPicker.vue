@@ -59,8 +59,49 @@
 
 import Vue from 'vue';
 import VAPickerEntry from './VAPickerEntry';
-const queries = require('../../../anilistQueries');
 const util = require('../../../util');
+
+const VAPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      lastPage
+    }
+    results: characters(id_in: $id) {
+      id
+      name {
+        full
+        alternative
+      }
+      image {
+        large
+      }
+      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 1) {
+        nodes {
+          id
+          title {
+            romaji
+            english
+          }
+        }
+        edges {
+          id
+          node {
+            id
+          }
+          voiceActors(language: JAPANESE) {
+            id
+            name {
+              full
+              alternative
+            }
+          }
+        }
+      }
+      siteUrl
+    }
+  }
+}
+`;
 
 export default {
 	components: {
@@ -119,7 +160,7 @@ export default {
 				const promiseArray = [];
 				let charData = [];
 				let page = 1;
-				const someData = await util.paginatedQuery(queries.charQuerySimple, searchResponse, page);
+				const someData = await util.paginatedQuery(VAPaginatedQuery, searchResponse, page);
 				charData = [...charData, ...someData.data.Page.results];
 				const lastPage = someData.data.Page.pageInfo.lastPage;
 				page = 2;
@@ -127,7 +168,7 @@ export default {
 					// eslint-disable-next-line no-loop-func
 					promiseArray.push(new Promise(async (resolve, reject) => {
 						try {
-							const returnData = await util.paginatedQuery(queries.charQuerySimple, searchResponse, page);
+							const returnData = await util.paginatedQuery(VAPaginatedQuery, searchResponse, page);
 							resolve(returnData.data.Page.results);
 						} catch (error) {
 							reject(error);

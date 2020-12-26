@@ -56,7 +56,26 @@ import ThemePickerEntry from './ThemePickerEntry';
 import {mapActions, mapState} from 'vuex';
 import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
-const aq = require('../../../anilistQueries');
+
+const showPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      lastPage
+    }
+    results: media(type: ANIME, id_in: $id) {
+      id
+      title {
+        romaji
+        english
+      }
+      coverImage {
+        large
+      }
+      siteUrl
+      idMal
+    }
+  }
+}`;
 
 const options = {
 	shouldSort: true,
@@ -225,7 +244,7 @@ export default {
 		let showData = [];
 		if (this.showIDs) {
 			let page = 1;
-			const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+			const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
 			showData = [...showData, ...someData.data.Page.results];
 			const lastPage = someData.data.Page.pageInfo.lastPage;
 			page = 2;
@@ -233,7 +252,7 @@ export default {
 				// eslint-disable-next-line no-loop-func
 				promiseArray.push(new Promise(async (resolve, reject) => {
 					try {
-						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+						const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
 						resolve(returnData.data.Page.results);
 					} catch (error) {
 						reject(error);
@@ -267,7 +286,7 @@ export default {
 			let showData = [];
 			if (this.showIDs) {
 				let page = 1;
-				const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+				const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
 				showData = [...showData, ...someData.data.Page.results];
 				const lastPage = someData.data.Page.pageInfo.lastPage;
 				page = 2;
@@ -275,7 +294,7 @@ export default {
 					// eslint-disable-next-line no-loop-func
 					promiseArray.push(new Promise(async (resolve, reject) => {
 						try {
-							const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+							const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
 							resolve(returnData.data.Page.results);
 						} catch (error) {
 							reject(error);

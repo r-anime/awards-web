@@ -45,13 +45,10 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.char.name.full;
+			return this.char.name.full || this.char.name.alternative;
 		},
 		anime () {
-			return this.char.media.nodes[0].title.romaji;
-		},
-		role () {
-			return this.char.media.edges[0].characterRole;
+			return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
 		},
 		coverURI () {
 			return this.char.image.large;

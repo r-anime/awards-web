@@ -62,9 +62,6 @@ export default {
 		name () {
 			return this.show.title.romaji || this.show.title.english;
 		},
-		year () {
-			return this.show.startDate.year;
-		},
 		format () {
 			return readableFormats[this.show.format];
 		},

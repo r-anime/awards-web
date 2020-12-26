@@ -163,6 +163,7 @@ import {mapActions} from 'vuex';
 import ShowPickerEntry from './ShowPickerEntry';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
+const constants = require('../../../../constants');
 
 const showSearchQuery = `
     query ($search: String) {
@@ -191,7 +192,7 @@ const showSearchQuery = `
     }
 `;
 
-const showImportQuery = `query ($page: Int, $formats: [MediaFormat], $start: FuzzyDateInt, $end: FuzzyDateInt) {
+const showImportQuery = `query ($page: Int, $formats: [MediaFormat], $start: FuzzyDateInt, $end: FuzzyDateInt, $exclusions: [Int]) {
 	anime: Page(page: $page, perPage: 50) {
 	  pageInfo {
 		total
@@ -200,7 +201,7 @@ const showImportQuery = `query ($page: Int, $formats: [MediaFormat], $start: Fuz
 		lastPage
 		hasNextPage
 	  }
-	  results: media(type: ANIME, isAdult: false, format_in: $formats, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
+	  results: media(type: ANIME, id_not_in: $exclusions, isAdult: false, format_in: $formats, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
 		id
 		format
 		startDate {
@@ -354,6 +355,7 @@ export default {
 						formats,
 						start,
 						end,
+						exclusions: constants.exclusions,
 					},
 				}),
 			});

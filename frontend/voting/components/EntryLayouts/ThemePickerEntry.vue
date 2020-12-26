@@ -42,15 +42,6 @@
 </template>
 
 <script>
-const readableFormats = {
-	TV: 'TV',
-	TV_SHORT: 'TV Short',
-	MOVIE: 'Movie',
-	SPECIAL: 'Special',
-	OVA: 'OVA',
-	ONA: 'ONA',
-	MUSIC: 'Music',
-};
 
 export default {
 	props: {
@@ -59,9 +50,6 @@ export default {
 		loading: Boolean,
 	},
 	computed: {
-		format () {
-			return readableFormats[this.show.format];
-		},
 		coverURI () {
 			return this.show.coverImage.large;
 		},

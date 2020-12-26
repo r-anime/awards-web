@@ -44,7 +44,9 @@ apiApp.get('/create', async (request, response) => {
 
 apiApp.get('/', async (request, response) => {
 	try {
-		response.json(await Themes.findAll());
+		response.json(await Themes.findAll({
+			attributes: ['id', 'anime', 'title', 'themeType', 'anilistID', 'themeNo', 'link'],
+		}));
 	} catch (error) {
 		response.error(error);
 	}
