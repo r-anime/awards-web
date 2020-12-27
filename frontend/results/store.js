@@ -49,7 +49,7 @@ const store = new Vuex.Store({
 			commit('GET_CATEGORIES', categories);
 		},
 		async getEntries ({commit}) {
-			const entries = await makeRequest('/api/category/entries/all');
+			const entries = await makeRequest('/api/category/entries/vote');
 			commit('GET_ENTRIES', entries);
 		},
 		async getLocks ({commit}) {
