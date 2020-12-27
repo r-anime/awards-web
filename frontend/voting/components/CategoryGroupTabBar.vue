@@ -24,8 +24,8 @@
 								v-for="tab in tabs"
 								:key="tab.id"
 								:value="tab.id"
-								v-bind:selected="tab.id === selectedTab"
-							>{{tab.name}}
+								v-bind:selected="tab.id === selectedTab">
+							{{tab.name}}
 							</option>
 						</select>
 					</div>
@@ -48,7 +48,8 @@ export default {
 	},
 	methods: {
 		emitChange (event) {
-			this.$emit('change', event.target.value);
+			const _tabval = parseInt(event.target.value, 10);
+			this.$emit('change', _tabval);
 		},
 	},
 };
