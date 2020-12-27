@@ -10,11 +10,7 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="show-title">
-								{{anime}} {{show.themeNo || ''}}
-							</em>
-							<br/>
-							{{show.title}} &bull;
+							&bull;
 							<a
 								@click.stop
 								target="_blank"
@@ -37,6 +33,11 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
+			<em class="show-title">
+				{{anime}} {{show.themeNo || ''}}
+			</em>
+			<br/>
+			{{show.title}}
 		</div>
 	</label>
 </template>

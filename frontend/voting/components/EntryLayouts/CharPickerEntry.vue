@@ -10,10 +10,6 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="char-title">
-								{{name}}
-							</em>
-							<br/>
 							{{anime}}
 							<br/>
 							&bull;
@@ -31,6 +27,9 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
+			<em class="char-title">
+				{{name}}
+			</em>
 		</div>
 	</label>
 </template>

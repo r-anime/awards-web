@@ -11,10 +11,6 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="va-title">
-								{{name}} {{voiceActor.length ? `(${voiceActor})` : ''}}
-							</em>
-							<br/>
 							{{anime}}
 							<br/>
 							&bull;
@@ -32,6 +28,9 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
+			<em class="va-title">
+				{{name}} {{voiceActor.length ? `(${voiceActor})` : ''}}
+			</em>
 		</div>
 	</label>
 </template>

@@ -11,17 +11,13 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="show-title">
-								{{name}}
-							</em>
-							<br/>
 							{{format}} &bull;
 							<a
 								@click.stop
 								target="_blank"
 								:href="anilistLink"
 							>
-								AniList
+								Anilist
 							</a> &bull;
 							<a
 								@click.stop
@@ -37,6 +33,9 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading" />
 				</div>
 			</div>
+			<em class="show-title">
+				{{name}}
+			</em>
 		</div>
 	</label>
 </template>

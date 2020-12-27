@@ -274,13 +274,6 @@ export default {
 	height: calc(100vh - 410px);
 	overflow-y: auto;
 }
-@media (max-width: 1215.999px) {
-	.show-picker-overflow-wrap {
-		/* TODO hardcode bad */
-		height: calc(100vh - 350px);
-		overflow-y: auto;
-	}
-}
 
 .va-picker-search-bar {
 	margin: 0 auto;
@@ -304,5 +297,22 @@ export default {
 	flex: 0 1 100%;
 	padding: 0.75rem;
 	text-align: center;
+}
+
+@media (max-width: 1215.999px) {
+	.va-picker-overflow-wrap {
+		/* TODO hardcode bad */
+		height: calc(100vh - 350px);
+		overflow-y: auto;
+	}
+	.va-picker-entry {
+		flex: 1 1 calc(100%/3);
+	}
+}
+
+@media (max-width: 767px) {
+	.va-picker-entry {
+		flex: 1 1 100%;
+	}
 }
 </style>
