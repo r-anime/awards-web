@@ -232,7 +232,7 @@ export default {
 					for (const data of finalData) {
 						showData = [...showData, ...data];
 					}
-					this.showData = showData;
+					this.showData = util.shuffle(showData);
 					this.shows = showData;
 					this.loaded = true;
 				});
@@ -266,7 +266,7 @@ export default {
 				for (const data of finalData) {
 					showData = [...showData, ...data];
 				}
-				this.showData = showData;
+				this.showData = util.shuffle(showData);
 				this.shows = showData;
 				this.loaded = true;
 			});

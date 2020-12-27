@@ -104,7 +104,7 @@ export default {
 			'selections',
 		]),
 		showIDs () {
-			return this.themes.filter(theme => theme.themeType.toUpperCase() === this.category.name).map(show => show.anilistID);
+			return this.themes.filter(theme => theme.themeType.toUpperCase().includes(this.category.name)).map(show => show.anilistID);
 		},
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
@@ -265,9 +265,12 @@ export default {
 					showData = [...showData, ...data];
 				}
 				this.themes.forEach(element => {
-					const requiredShow = showData.find(show => show.id === element.anilistID);
-					this.backup.push({...requiredShow, ...element});
+					if (element.themeType.toUpperCase().includes(this.category.name)) {
+						const requiredShow = showData.find(show => show.id === element.anilistID);
+						this.backup.push({...requiredShow, ...element});
+					}
 				});
+				this.backup = util.shuffle(this.backup);
 				this.shows = this.backup;
 				this.loaded = true;
 			});
@@ -307,9 +310,12 @@ export default {
 						showData = [...showData, ...data];
 					}
 					this.themes.forEach(element => {
-						const requiredShow = showData.find(show => show.id === element.anilistID);
-						this.backup.push({...requiredShow, ...element});
+						if (element.themeType.toUpperCase().includes(this.category.name)) {
+							const requiredShow = showData.find(show => show.id === element.anilistID);
+							this.backup.push({...requiredShow, ...element});
+						}
 					});
+					this.backup = util.shuffle(this.backup);
 					this.shows = this.backup;
 					this.loaded = true;
 				});
