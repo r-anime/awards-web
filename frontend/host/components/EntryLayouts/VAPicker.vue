@@ -344,7 +344,13 @@ export default {
 						search = `${search}%${altname}`;
 					}
 				}
-				search = `${search}%${item.media.edges[0].voiceActors[0].name.full}`;
+				if (item.media.edges.length) {
+					if (item.media.edges[0].voiceActors.length) {
+						if (item.media.edges[0].voiceActors[0].name.full) {
+							search = `${search}%${item.media.edges[0].voiceActors[0].name.full}`;
+						}
+					}
+				}
 				if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
 				if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
 				return {
