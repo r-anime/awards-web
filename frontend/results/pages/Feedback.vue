@@ -7,8 +7,8 @@
 						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Feedback Form</h1>
 						<div class="has-text-light has-text-centered">
                             <section class="section has-background-dark">
-								<p>This is a form you can use to directly communicate with /r/anime mods and provide them feedback about the Awards process.
-								Feel free to say anything you want about any aspect of the Awards and /r/anime mods will receive your feedback.
+								<p>This is a form you can use to directly communicate with /r/anime mods during the off-season and Awards hosts during Awards season and provide them feedback about the Awards process.
+								Feel free to say anything you want about any aspect of the Awards and /r/anime mods/hosts will receive your feedback.
 								This is an initiative for increased /r/anime involvement and transparency for the Awards.
 								This form will remain active throughout the year to receive your feedback about the Awards at any time.
 								Your username is optional.
@@ -43,6 +43,7 @@
 								</div>
 							</div>
                         </div>
+						<!--
 						<br/><br/>
 						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Jury Suggestions</h1>
 						<div v-if="categories" class="has-text-light has-text-centered">
@@ -82,6 +83,7 @@
 							</div>
 							</section>
 						</div>
+						-->
 					</section>
 				</div>
 			</div>
@@ -135,6 +137,8 @@ export default {
 				}
 			}
 		},
+		// eslint-disable-next-line multiline-comment-style
+		/*
 		async sendSuggestion () {
 			this.suggesting = true;
 			const response = await fetch('/api/complain/suggest', {
@@ -159,6 +163,7 @@ export default {
 				this.submitting = false;
 			}
 		},
+		*/
 	},
 	mounted () {
 		this.getCategories();

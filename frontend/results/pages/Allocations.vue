@@ -60,9 +60,11 @@
                                 </div>
                             </div>
                         </div>
+						<!--
 						<section class="section has-text-centered">
 							<a @click="modalOpen = true" class="title is-3 has-text-platinum has-text-centered pb-20">Have any issues with the allocations? Click here to tell us!</a>
 						</section>
+						-->
 						</div>
                         <section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
                             <div class="container">
@@ -80,6 +82,7 @@
             </div>
         </div>
     </div>
+	<!--
 	<modal-generic v-model="modalOpen">
 		<div class="field">
 			<label class="label has-text-dark">Message</label>
@@ -101,6 +104,7 @@
 			</div>
 		</div>
 		</modal-generic>
+		-->
 	</div>
 </template>
 
