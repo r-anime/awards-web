@@ -10,6 +10,7 @@
 							:value="search"
 							@input="handleInput($event)"
 							placeholder="Search by title..."
+							:disabled="lockSearch"
 						/>
 						<span class="icon is-medium is-left">
 							<i class="fas fa-search"/>
@@ -107,6 +108,7 @@ export default {
 			total: 'No',
 			showData: null,
 			loading: [],
+			lockSearch: false,
 		};
 	},
 	computed: {
@@ -206,6 +208,8 @@ export default {
 	},
 	watch: {
 		async category () {
+			this.total = 'Loading';
+			this.lockSearch = true;
 			this.loaded = false;
 			this.search = '';
 			const promiseArray = [];
@@ -234,14 +238,19 @@ export default {
 					}
 					this.showData = util.shuffle(showData);
 					this.shows = showData;
+					this.total = this.shows.length;
+					this.lockSearch = false;
 					this.loaded = true;
 				});
 			} else {
+				this.total = 0;
+				this.lockSearch = false;
 				this.loaded = true;
 			}
 		},
 	},
 	async mounted () {
+		this.total = 'Loading';
 		const promiseArray = [];
 		let showData = [];
 		if (this.showIDs) {
@@ -268,9 +277,12 @@ export default {
 				}
 				this.showData = util.shuffle(showData);
 				this.shows = showData;
+				this.total = this.shows.length;
 				this.loaded = true;
 			});
 		} else {
+			this.total = 0;
+			this.lockSearch = false;
 			this.loaded = true;
 		}
 	},

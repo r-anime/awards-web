@@ -11,6 +11,7 @@
 							:value="search"
 							@input="handleInput($event)"
 							placeholder="Search by title..."
+							:disabled="lockSearch"
 						/>
 						<span class="icon is-medium is-left">
 							<i class="fas fa-search"/>
@@ -104,7 +105,7 @@ export default {
 			'selections',
 		]),
 		showIDs () {
-			return this.themes.filter(theme => theme.themeType.toUpperCase().includes(this.category.name)).map(show => show.anilistID);
+			return this.themes.filter(theme => theme.themeType.toUpperCase() === this.category.name).map(show => show.anilistID);
 		},
 		maxNoms () {
 			return this.value[this.category.id].length >= 10;
@@ -122,6 +123,7 @@ export default {
 			backup: [],
 			total: 'No',
 			loading: [],
+			lockSearch: false,
 		};
 	},
 	methods: {
@@ -237,6 +239,9 @@ export default {
 		},
 	},
 	async mounted () {
+		this.backup = [];
+		this.total = 'Loading';
+		this.lockSearch = true;
 		if (!this.themes) {
 			await this.getThemes();
 		}
@@ -272,14 +277,20 @@ export default {
 				});
 				this.backup = util.shuffle(this.backup);
 				this.shows = this.backup;
+				this.total = this.shows.length;
 				this.loaded = true;
+				this.lockSearch = false;
 			});
 		} else {
 			this.loaded = true;
+			this.lockSearch = false;
 		}
 	},
 	watch: {
 		async category () {
+			this.backup = [];
+			this.total = 'Loading';
+			this.lockSearch = true;
 			if (!this.themes) {
 				await this.getThemes();
 			}
@@ -310,17 +321,20 @@ export default {
 						showData = [...showData, ...data];
 					}
 					this.themes.forEach(element => {
-						if (element.themeType.toUpperCase().includes(this.category.name)) {
+						if (element.themeType.toUpperCase() === this.category.name) {
 							const requiredShow = showData.find(show => show.id === element.anilistID);
 							this.backup.push({...requiredShow, ...element});
 						}
 					});
 					this.backup = util.shuffle(this.backup);
 					this.shows = this.backup;
+					this.total = this.shows.length;
 					this.loaded = true;
+					this.lockSearch = false;
 				});
 			} else {
 				this.loaded = true;
+				this.lockSearch = false;
 			}
 		},
 	},
