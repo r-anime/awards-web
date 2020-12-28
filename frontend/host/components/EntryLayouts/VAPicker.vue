@@ -351,11 +351,13 @@ export default {
 						}
 					}
 				}
-				if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
-				if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
+				if (item.media.nodes.length) {
+					if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
+					if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
+				}
 				return {
 					character_id: item.id,
-					anilist_id: item.media.nodes[0].id,
+					anilist_id: item.media.nodes.length ? item.media.nodes[0].id : null,
 					themeId: null,
 					categoryId: this.category.id,
 					search,

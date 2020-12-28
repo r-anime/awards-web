@@ -75,7 +75,7 @@ export default {
 .hero.is-dark .tabs.is-toggle li.is-active a,
 .hero.is-dark .tabs.is-toggle li.is-active a:hover {
 	background-color: $white;
-	color: $dark;
+	color: $dark !important;
 }
 
 .navbar-item {
