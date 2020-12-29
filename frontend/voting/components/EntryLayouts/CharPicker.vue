@@ -75,13 +75,18 @@ const charPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
       image {
         large
       }
-      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 1) {
+      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 5) {
         nodes {
           id
           title {
             romaji
             english
-          }
+		  }
+		  startDate {
+			year
+			month
+			day
+		  }
         }
       }
       siteUrl

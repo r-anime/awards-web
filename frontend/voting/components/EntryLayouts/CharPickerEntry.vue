@@ -47,6 +47,10 @@ export default {
 			return this.char.name.full || this.char.name.alternative;
 		},
 		anime () {
+			const found = this.char.media.nodes.find(node => node.startDate.year === 2020);
+			if (found) {
+				return found.title.romaji || found.title.english;
+			}
 			return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
 		},
 		coverURI () {

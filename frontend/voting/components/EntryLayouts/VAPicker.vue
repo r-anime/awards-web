@@ -75,18 +75,19 @@ const VAPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
       image {
         large
       }
-      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 1) {
-        nodes {
-          id
-          title {
-            romaji
-            english
-          }
-        }
+      media(sort: [START_DATE], type: ANIME, page: 1, perPage: 5) {
         edges {
-          id
           node {
             id
+            startDate {
+              year
+              month
+              day
+            }
+            title {
+              romaji
+              english
+            }
           }
           voiceActors(language: JAPANESE) {
             id
