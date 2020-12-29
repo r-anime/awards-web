@@ -61,8 +61,10 @@ export default {
 			if (found) {
 				return found.voiceActors[0].name.full;
 			}
-			if (this.va.media.edges[0].voiceActors.length) {
-				return this.va.media.edges[0].voiceActors[0].name.full;
+			if (this.va.media.edges.length) {
+				if (this.va.media.edges[0].voiceActors.length) {
+					return this.va.media.edges[0].voiceActors[0].name.full;
+				}
 			}
 			return '';
 		},
