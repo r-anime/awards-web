@@ -51,7 +51,10 @@ export default {
 			if (found) {
 				return found.node.title.romaji || found.node.title.english;
 			}
-			return this.va.media.edges[0].node.title.romaji || this.va.media.edges[0].node.title.english;
+			if (this.va.media.edges.length) {
+				return this.va.media.edges[0].node.title.romaji || this.va.media.edges[0].node.title.english;
+			}
+			return '';
 		},
 		voiceActor () {
 			const found = this.va.media.edges.find(edge => edge.node.startDate.year === 2020 && edge.voiceActors.length);

@@ -51,7 +51,10 @@ export default {
 			if (found) {
 				return found.title.romaji || found.title.english;
 			}
-			return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
+			if (this.char.media.nodes.length) {
+				return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
+			}
+			return '';
 		},
 		coverURI () {
 			return this.char.image.large;
