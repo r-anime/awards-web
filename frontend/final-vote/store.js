@@ -29,10 +29,18 @@ async function makeRequest (path, method = 'GET', body) {
 const store = new Vuex.Store({
 	state: {
 		me: null,
+		categories: null,
+		nominations: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
 			state.me = me;
+		},
+		GET_CATEGORIES (state, categories) {
+			state.categories = categories;
+		},
+		GET_NOMINATIONS (state, noms) {
+			state.nominations = noms;
 		},
 	},
 	actions: {
@@ -41,6 +49,14 @@ const store = new Vuex.Store({
 			if (!response.ok) return;
 			const me = await response.json();
 			commit('GET_ME', me);
+		},
+		async getCategories ({commit}) {
+			const categories = await makeRequest('/api/category/all');
+			commit('GET_CATEGORIES', categories);
+		},
+		async getNominations ({commit}) {
+			const noms = await makeRequest('/api/category/nominations/all');
+			commit('GET_NOMINATIONS', noms);
 		},
 	},
 });

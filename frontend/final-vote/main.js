@@ -23,7 +23,7 @@ router.beforeEach(async (to, from, next) => {
 	next();
 });
 
-import App from '../common/HostVoteApp';
+import App from './App';
 
 const vm = new Vue({
 	store,
