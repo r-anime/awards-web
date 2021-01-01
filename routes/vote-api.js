@@ -20,7 +20,7 @@ apiApp.post('/character-search', async (request, response) => {
 		},
 	});
 	const fuse = new Fuse(entries, {
-		keys: ['search'],
+		keys: ['searchSchema.character', 'searchSchema.anime', 'searchSchema.va', 'searchSchema.synonyms'],
 		minMatchCharLength: 3,
 		shouldSort: true,
 		ignoreLocation: true,
