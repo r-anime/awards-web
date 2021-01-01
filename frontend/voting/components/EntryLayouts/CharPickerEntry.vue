@@ -1,5 +1,5 @@
 <template>
-	<label class="char-picker-entry">
+	<label class="show-picker-entry">
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
@@ -27,7 +27,7 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
-			<em class="char-title">
+			<em class="show-title">
 				{{name}}
 			</em>
 		</div>

@@ -1,6 +1,6 @@
 <!--I swear I didn't copy and paste everything here because I'm too lazy to figure out proper routing. In any case, if stuff changes, do stuff here.-->
 <template>
-	<label class="va-picker-entry">
+	<label class="show-picker-entry">
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
