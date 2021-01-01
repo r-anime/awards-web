@@ -204,7 +204,7 @@ export default {
 				// category (other than antag)
 				if (!this.category.name.includes('Antagonist')) {
 					// Get all the other character categories, other than antagonist
-					const charCats = this.votingCats.filter(cat => cat.entryType === 'characters' && && cat.id !== this.category.id);
+					const charCats = this.votingCats.filter(cat => cat.entryType === 'characters' && cat.id !== this.category.id);
 					for (const cat of charCats) {
 						// Search for this character in the other categories
 						const charIndex = this.value[cat.id].findIndex(character => character.id === char.id);
