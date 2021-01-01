@@ -198,11 +198,21 @@ export default {
 						console.log(vote.entry_id);
 						continue;
 					}
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
-						image: `${requiredChar.image.large}`,
-					});
+					if (requiredChar.media.edges.length) {
+						if (requiredChar.media.voiceActors.length) {
+							entries.push({
+								vote_count: vote.vote_count,
+								name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
+								image: `${requiredChar.image.large}`,
+							});
+						}
+					} else {
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredChar.name.full}`,
+							image: `${requiredChar.image.large}`,
+						});
+					}
 				}
 			}
 			return entries;
