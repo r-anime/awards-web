@@ -21,7 +21,10 @@
 							You can view past results of both public and jury in the /r/anime Awards by clicking the button below:
 							</p>
 							<br/><br/>
-							<router-link to="/archive" class="button is-large is-success">Past Results Archive</router-link>
+							<div class="has-text-centered">
+								<router-link to="/archive" class="button is-large is-success">Past Results Archive</router-link>
+								<router-link v-if="voting" to="/voting" class="button is-large is-platinum">Past Results Archive</router-link>
+							</div>
 						</div>
 						<div v-else>
 							<nav class="homeIntroThingy level mt-40">
@@ -106,6 +109,7 @@ export default {
 			snooImage: snoo,
 			logo,
 			ongoing: null,
+			voting: false,
 		};
 	},
 	computed: {
@@ -133,8 +137,12 @@ export default {
 		if (!this.locks) {
 			await this.getLocks();
 		}
+		// console.log(this.locks);
 		const ongoingLock = this.locks.find(lock => lock.name === 'awards-ongoing');
+		const votingLock = this.locks.find(lock => lock.name === 'voting');
 		this.ongoing = ongoingLock.flag;
+		this.voting = votingLock.flag;
+		// console.log(this.voting);
 		this.loaded = true;
 	},
 };
