@@ -184,7 +184,6 @@ export default {
 				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					if (!requiredChar) {
-						console.log(vote.entry_id);
 						continue;
 					}
 					entries.push({
@@ -195,11 +194,10 @@ export default {
 				} else if (category.entryType === 'vas') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					if (!requiredChar) {
-						console.log(vote.entry_id);
 						continue;
 					}
 					if (requiredChar.media.edges.length) {
-						if (requiredChar.media.voiceActors.length) {
+						if (requiredChar.media.edges[0].voiceActors.length) {
 							entries.push({
 								vote_count: vote.vote_count,
 								name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
