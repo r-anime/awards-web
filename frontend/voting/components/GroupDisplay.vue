@@ -5,7 +5,7 @@
 					<transition name="slide-fade">
 						<div v-if="pickerScroll <= 0" class="progress-container container pt-4">
 							<h1 class="title is-size-3 is-hidden-touch has-text-light mt-4 mb-0">{{selectedCategory.name}}</h1>
-							<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle has-text-light">{{selectedCategory.description}}</h2>
+							<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle has-text-light is-hidden-touch">{{selectedCategory.description}}</h2>
 							<br/>
 							<progress class="progress is-success" :value="Math.round(progress / categories.length * 100)" max="100"></progress>
 							<p class="text is-light has-text-centered is-hidden-mobile">{{progress}}/{{categories.length}} Categories Voted In</p>
