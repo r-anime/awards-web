@@ -181,7 +181,7 @@ export default {
 							image: `${requiredShow.coverImage.large}`,
 						});
 					}
-				} else if (category.entryType === 'character') {
+				} else if (category.entryType === 'characters') {
 					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
 					if (!requiredChar) {
 						console.log(vote.entry_id);
@@ -301,7 +301,7 @@ export default {
 						this.showIDs.push(vote.anilist_id);
 					} else if (category.entryType === 'shows') {
 						this.showIDs.push(vote.entry_id);
-					} else if (category.entryType === 'character' || category.entryType === 'vas') {
+					} else if (category.entryType === 'characters' || category.entryType === 'vas') {
 						this.charIDs.push(vote.entry_id);
 					}
 				}
