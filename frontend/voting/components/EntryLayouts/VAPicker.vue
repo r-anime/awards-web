@@ -200,7 +200,7 @@ export default {
 					return;
 				}
 				// Limit number of nominations
-				if (this.value[this.category.id].length >= 10) {
+				if (this.maxNoms) {
 					alert('You cannot vote for any more entries.');
 					Vue.set(this.loading, va.id, false);
 					return;

@@ -186,7 +186,7 @@ export default {
 		characterSelected (char) {
 			return this.value[this.category.id].some(s => s.id === char.id);
 		},
-		async toggleCharacter (char, event, select = true) {
+		async toggleCharacter (char, select = true) {
 			Vue.set(this.loading, char.id, true);
 			if (select) {
 				if (this.characterSelected(char)) {
