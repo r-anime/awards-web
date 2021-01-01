@@ -21,6 +21,8 @@ apiApp.post('/character-search', async (request, response) => {
 	});
 	const fuse = new Fuse(entries, {
 		keys: ['search'],
+		minMatchCharLength: 3,
+		ignoreLocation: true,
 	});
 	response.json(fuse.search(req.search));
 });
