@@ -10,8 +10,6 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							{{anime}}
-							<br/>
 							&bull;
 							<a
 								@click.stop
@@ -30,6 +28,7 @@
 			<em class="show-title">
 				{{name}}
 			</em>
+			{{anime}}
 		</div>
 	</label>
 </template>
