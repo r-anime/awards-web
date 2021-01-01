@@ -23,7 +23,7 @@
 							<br/><br/>
 							<div class="has-text-centered">
 								<router-link to="/archive" class="button is-large is-success">Past Results Archive</router-link>
-								<router-link v-if="voting" to="/voting" class="button is-large is-platinum">Past Results Archive</router-link>
+								<router-link v-if="voting" to="/vote" class="button is-large is-platinum">Vote Now</router-link>
 							</div>
 						</div>
 						<div v-else>
