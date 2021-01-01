@@ -1,8 +1,8 @@
 <!--God there's VAs too. Pull from anilist-->
 <template>
-	<div class="va-picker">
-		<div class="va-picker-overflow-wrap">
-			<div class="va-picker-search-bar">
+	<div class="show-picker">
+		<div class="show-picker-overflow-wrap">
+			<div class="show-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 
-			<div v-if="loaded && vas.length" class="va-picker-entries">
+			<div v-if="loaded && vas.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<VAPickerEntry
 					v-for="va in vas"
 					:key="va.id"
@@ -37,16 +37,16 @@
 					@action="toggleShow(va, $event)"
 				/>
 			</div>
-			<div v-else-if="!search.length" class="char-picker-text">
+			<div v-else-if="!search.length" class="show-picker-text">
 				Please enter a show name, a character name or a VA.
 			</div>
-			<div v-else-if="search.length && search.length < 3" class="char-picker-text">
+			<div v-else-if="search.length && search.length < 3" class="show-picker-text">
 				Please enter a longer search query.
 			</div>
-			<div v-else-if="loaded" class="va-picker-text">
+			<div v-else-if="loaded" class="show-picker-text">
 				{{search ? 'No results :(' : ''}}
 			</div>
-			<div v-else class="va-picker-text">
+			<div v-else class="show-picker-text">
 				Loading...
 			</div>
 		</div>
@@ -132,6 +132,10 @@ export default {
 		},
 	},
 	methods: {
+		handleScroll (event) {
+			// console.log(event.target.scrollTop);
+			this.$emit('scroll-picker', event.target.scrollTop);
+		},
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -265,55 +269,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-.tabs.va-picker-tabs {
-	margin-bottom: 0 !important;
-}
-.va-picker-overflow-wrap {
-	/* TODO hardcode bad */
-	height: calc(100vh - 410px);
-	overflow-y: auto;
-}
-
-.va-picker-search-bar {
-	margin: 0 auto;
-	max-width: 500px;
-	padding: 0.75rem 0.75rem 0;
-}
-.va-picker-entries {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0.375rem;
-}
-.va-picker-entry {
-	flex: 0 0 calc(100% / 3);
-	padding: 0.375rem;
-
-	> div {
-		height: 100%;
-	}
-}
-.va-picker-text {
-	flex: 0 1 100%;
-	padding: 0.75rem;
-	text-align: center;
-}
-
-@media (max-width: 1215.999px) {
-	.va-picker-overflow-wrap {
-		/* TODO hardcode bad */
-		height: calc(100vh - 350px);
-		overflow-y: auto;
-	}
-	.va-picker-entry {
-		flex: 1 1 calc(100%/3);
-	}
-}
-
-@media (max-width: 767px) {
-	.va-picker-entry {
-		flex: 1 1 100%;
-	}
-}
-</style>

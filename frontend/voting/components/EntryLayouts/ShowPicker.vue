@@ -27,7 +27,7 @@
 				</div>
 			</div>
 
-			<div v-if="loaded && shows.length" class="show-picker-entries">
+			<div v-if="loaded && shows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<show-picker-entry
 					v-for="show in shows"
 					:key="show.id"
@@ -123,6 +123,10 @@ export default {
 		},
 	},
 	methods: {
+		handleScroll (event) {
+			// console.log(event.target.scrollTop);
+			this.$emit('scroll-picker', event.target.scrollTop);
+		},
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -288,71 +292,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-.tabs.show-picker-tabs {
-	margin-bottom: 0 !important;
-}
-
-.show-picker-overflow-wrap {
-	/* TODO hardcode bad */
-	height: calc(100vh - 410px);
-	overflow-y: auto;
-}
-
-.show-picker-overflow-wrap::-webkit-scrollbar {
-    width: 8px;
-}
-
-.show-picker-overflow-wrap::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 20px;
-}
-
-.show-picker-overflow-wrap::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 20px;
-}
-
-.show-picker-search-bar {
-	margin: 0 auto;
-	max-width: 500px;
-	padding: 0.75rem 0.75rem 0;
-}
-.show-picker-entries {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0.375rem;
-}
-.show-picker-entry {
-	flex: 0 0 calc(100% / 4);
-	padding: 0.375rem;
-
-	> div {
-		height: 100%;
-	}
-}
-.show-picker-text {
-	flex: 0 1 100%;
-	padding: 0.75rem;
-	text-align: center;
-}
-
-@media (max-width: 1215.999px) {
-	.show-picker-overflow-wrap {
-		/* TODO hardcode bad */
-		height: calc(100vh - 350px);
-		overflow-y: auto;
-	}
-	.show-picker-entry {
-		flex: 1 1 calc(100%/3);
-	}
-}
-
-@media (max-width: 767px) {
-	.show-picker-entry {
-		flex: 1 1 100%;
-	}
-}
-
-</style>

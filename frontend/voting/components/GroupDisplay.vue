@@ -1,28 +1,27 @@
 <template>
-	<body>
-		<div v-if="loaded && !locked && accountOldEnough">
-			<div class="hero is-dark">
-				<div class="hero-body">
-					<div class="container">
-						<h1 class="title is-size-1 is-size-4-mobile">{{selectedCategory.name}}</h1>
-						<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle">{{selectedCategory.description}}</h2>
-					</div>
-					<br/>
-					<progress class="progress is-success" :value="Math.round(progress / categories.length * 100)" max="100"></progress>
-					<p class="text is-light has-text-centered is-hidden-mobile">{{progress}}/{{categories.length}} Categories Voted In</p>
-				</div>
-				<div class="hero-foot">
-					<div class="container">
+	<div class="voting-page-content" >
+		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough">
+				<div class="has-background-dark has-text-light">
+					<transition name="slide-fade">
+						<div v-if="pickerScroll <= 0" class="progress-container container pt-4">
+							<h1 class="title is-size-4 is-hidden-touch has-text-light mt-4 mb-0">{{selectedCategory.name}}</h1>
+							<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle">{{selectedCategory.description}}</h2>
+							<br/>
+							<progress class="progress is-success" :value="Math.round(progress / categories.length * 100)" max="100"></progress>
+							<p class="text is-light has-text-centered is-hidden-mobile">{{progress}}/{{categories.length}} Categories Voted In</p>
+						</div>
+					</transition>
+					<br />
+					<div class="tab-container container is-dark">
 						<CategoryGroupTabBar v-model="selectedTab" :tabs="votingCats"/>
 					</div>
 				</div>
-			</div>
 			<div class="container">
 				<div class="is-full-height">
 					<!--I know I wanted to make these routes but uhhhhh the entire logic behind the below view
 					is better solved by v-if's so here's yet another hack-->
 					<!-- it's okay this is exactly how i did it last year too lol -->
-					<br/>
+					<!-- I hate both of you -->
 					<div class="columns is-multiline">
 						<div class="selection-column column is-2-widescreen is-12" :class="{toggle: toggleSelection}">
 							<div class="mobile-selection-toggle">
@@ -34,10 +33,10 @@
 							</nav>
 						</div>
 						<div class="column is-10-widescreen is-12">
-							<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
-							<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
-							<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
-							<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections"/>
+							<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
+							<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
+							<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
+							<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 						</div>
 					</div>
 				</div>
@@ -64,7 +63,7 @@
 		<div class="mobile-selection-toggle">
 			<button class="button is-primary is-rounded" :class="{'is-hidden': toggleSelection}" @click.prevent="toggle">My Votes</button>
 		</div>
-	</body>
+	</div>
 </template>
 
 <script>
@@ -98,6 +97,7 @@ export default {
 			loaded: false,
 			locked: null,
 			toggleSelection: false,
+			pickerScroll: 0,
 		};
 	},
 	computed: {
@@ -189,6 +189,9 @@ export default {
 			const index = this.selections[this.selectedCategory.id].findIndex(aSelection => aSelection.id === selection.id);
 			this.selections[this.selectedCategory.id].splice(index, 1);
 		},
+		handleScrollPicker (value) {
+			this.pickerScroll = value;
+		},
 	},
 	mounted () {
 		Promise.all([
@@ -214,6 +217,23 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../../styles/voting";
+.progress-container {
+	max-height: 50vh;
+	overflow-y: hidden;
+}
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to{
+  max-height: 0;
+  opacity: 0;
+}
+
 .loading-text {
 	flex: 0 1 100%;
 	padding: 0.75rem;
@@ -226,6 +246,9 @@ export default {
 }
 .mobile-selection-toggle{
 	display: none;
+}
+.selection-column {
+	margin-top: 2rem;
 }
 @media (max-width: 1215.999px) {
 	.mobile-selection-toggle, .mobile-selection-close{
@@ -248,6 +271,8 @@ export default {
 		background: transparent;
 
 		&.toggle{
+			margin-top: 0;
+			padding-top: 2rem;
 			top: 0;
 			left: 0;
 			background: rgba(0,0,0,0.6);

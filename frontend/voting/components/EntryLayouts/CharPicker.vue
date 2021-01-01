@@ -1,7 +1,7 @@
 <template>
-	<div class="char-picker">
-		<div class="char-picker-overflow-wrap">
-			<div class="char-picker-search-bar">
+	<div class="show-picker">
+		<div class="show-picker-overflow-wrap">
+			<div class="show-picker-search-bar">
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 
-			<div v-if="loaded && chars.length" class="char-picker-entries">
+			<div v-if="loaded && chars.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<char-picker-entry
 					v-for="char in chars"
 					:key="char.id"
@@ -36,16 +36,16 @@
 					@action="toggleCharacter(char, $event)"
 				/>
 			</div>
-			<div v-else-if="!search.length" class="char-picker-text">
+			<div v-else-if="!search.length" class="show-picker-text">
 				Please enter a show name or a character name.
 			</div>
-			<div v-else-if="search.length && search.length < 3" class="char-picker-text">
+			<div v-else-if="search.length && search.length < 3" class="show-picker-text">
 				Please enter a longer search query.
 			</div>
-			<div v-else-if="loaded" class="char-picker-text">
+			<div v-else-if="loaded" class="show-picker-text">
 				{{search ? 'No results :(' : ''}}
 			</div>
-			<div v-else class="char-picker-text">
+			<div v-else class="show-picker-text">
 				Loading...
 			</div>
 		</div>
@@ -126,6 +126,10 @@ export default {
 		},
 	},
 	methods: {
+		handleScroll (event) {
+			// console.log(event.target.scrollTop);
+			this.$emit('scroll-picker', event.target.scrollTop);
+		},
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -297,55 +301,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-.tabs.char-picker-tabs {
-	margin-bottom: 0 !important;
-}
-.char-picker-overflow-wrap {
-	/* TODO hardcode bad */
-	height: calc(100vh - 410px);
-	overflow-y: auto;
-}
-
-.char-picker-search-bar {
-	margin: 0 auto;
-	max-width: 500px;
-	padding: 0.75rem 0.75rem 0;
-}
-.char-picker-entries {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0.375rem;
-}
-.char-picker-entry {
-	flex: 0 0 calc(100% / 3);
-	padding: 0.375rem;
-
-	> div {
-		height: 100%;
-	}
-}
-.char-picker-text {
-	flex: 0 1 100%;
-	padding: 0.75rem;
-	text-align: center;
-}
-
-@media (max-width: 1215.999px) {
-	.char-picker-overflow-wrap {
-		/* TODO hardcode bad */
-		height: calc(100vh - 350px);
-		overflow-y: auto;
-	}
-	.char-picker-entry {
-		flex: 1 1 calc(100%/3);
-	}
-}
-
-@media (max-width: 767px) {
-	.char-picker-entry {
-		flex: 1 1 100%;
-	}
-}
-</style>

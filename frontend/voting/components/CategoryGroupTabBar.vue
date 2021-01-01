@@ -12,13 +12,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="mobile-select is-hidden-desktop ">
+		<div class="mobile-select is-hidden-desktop">
 			<div class="field has-addons has-addons-centered is-centered has-text-centered">
 				<div class="control">
-					<p class="button is-platinum is-static"> Category </p>
+					<p class="button is-small is-platinum is-static"> Category </p>
 				</div>
 				<div class="control">
-					<div class="select">
+					<div class="select is-small">
 						<select @change="emitChange($event)">
 							<option
 								v-for="tab in tabs"
@@ -31,7 +31,6 @@
 					</div>
 				</div>
 			</div>
-			<br>
 		</div>
 	</div>
 </template>
@@ -56,7 +55,6 @@ export default {
 </script>
 <style scoped>
 .mobile-select {
-	padding: 1rem 0;
-	margin-top: -3rem;
+	padding-bottom: 1rem;
 }
 </style>

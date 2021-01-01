@@ -28,7 +28,7 @@
 				</div>
 			</div>
 
-			<div v-if="loaded && shows.length" class="show-picker-entries">
+			<div v-if="loaded && shows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<ThemePickerEntry
 					v-for="show in shows"
 					:key="show.id"
@@ -128,6 +128,10 @@ export default {
 	},
 	methods: {
 		...mapActions(['getThemes']),
+		handleScroll (event) {
+			// console.log(event.target.scrollTop);
+			this.$emit('scroll-picker', event.target.scrollTop);
+		},
 		handleInput (event) {
 			// TODO - this could just be a watcher
 			this.search = event.target.value;
@@ -345,11 +349,6 @@ export default {
 .tabs.show-picker-tabs {
 	margin-bottom: 0 !important;
 }
-.show-picker-overflow-wrap {
-	/* TODO hardcode bad */
-	height: calc(100vh - 310px);
-	overflow-y: auto;
-}
 
 .show-picker-overflow-wrap::-webkit-scrollbar {
     width: 8px;
@@ -370,6 +369,7 @@ export default {
 	max-width: 500px;
 	padding: 0.75rem 0.75rem 0;
 }
+
 .show-picker-entries {
 	display: flex;
 	flex-wrap: wrap;
@@ -383,6 +383,7 @@ export default {
 		height: 100%;
 	}
 }
+
 .show-picker-text {
 	flex: 0 1 100%;
 	padding: 0.75rem;
@@ -390,11 +391,6 @@ export default {
 }
 
 @media (max-width: 1215.999px) {
-	.show-picker-overflow-wrap {
-		/* TODO hardcode bad */
-		height: calc(100vh - 350px);
-		overflow-y: auto;
-	}
 	.show-picker-entry {
 		flex: 1 1 calc(100%/3);
 	}
