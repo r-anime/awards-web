@@ -151,7 +151,7 @@ export default {
 			});
 			if (returnedEntries.ok) {
 				let searchResponse = await returnedEntries.json();
-				searchResponse = searchResponse.map(item => item.item.character_id).slice(0, 12);
+				searchResponse = searchResponse.map(item => item.item.character_id).slice(0, 20);
 				const promiseArray = [];
 				let charData = [];
 				let page = 1;

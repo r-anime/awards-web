@@ -167,7 +167,7 @@ export default {
 					category_id: this.selectedCategory.id,
 					entry_id: selection.id,
 					theme_name: selection.title,
-					anilist_id: selection.anilist_id,
+					anilist_id: selection.anilistID,
 				};
 			} else {
 				json = {
