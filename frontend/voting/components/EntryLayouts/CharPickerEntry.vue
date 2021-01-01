@@ -28,6 +28,7 @@
 			<em class="show-title">
 				{{name}}
 			</em>
+			<br />
 			{{anime}}
 		</div>
 	</label>
