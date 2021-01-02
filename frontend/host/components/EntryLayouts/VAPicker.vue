@@ -12,9 +12,6 @@
 						Search
 					</a>
 				</li>
-				<li>
-					<input v-model="page" class="input" type="number">
-				</li>
 			</ul>
 		</div>
 
@@ -63,7 +60,7 @@
 		<div v-else-if="selections.length && loaded" class="va-picker-overflow-wrap">
 			<div class="va-picker-entries">
 				<VAPickerEntry
-					v-for="va in filteredVAs"
+					v-for="va in selections"
 					:key="'selected' + va.id"
 					:va="va"
 					:selected="showSelected(va)"
@@ -160,7 +157,6 @@ import VAPickerEntry from './VAPickerEntry';
 const util = require('../../../util');
 const aq = require('../../../anilistQueries');
 const constants = require('../../../../constants');
-
 const VASearchQuery = `query ($search: String) {
   character: Page(page: 1, perPage: 50) {
     pageInfo {
@@ -204,7 +200,6 @@ const VASearchQuery = `query ($search: String) {
   }
 }
 `;
-
 const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDateInt, $charPage: Int, $exclusions: [Int]) {
   anime: Page(page: $page, perPage: 50) {
     pageInfo {
@@ -255,7 +250,6 @@ const charImportQuery = `query ($page: Int, $start: FuzzyDateInt, $end: FuzzyDat
   }
 }
 `;
-
 const importFromIDsQuery = `query ($page: Int,$charPage: Int, $id:[Int]) {
   anime: Page(page: $page, perPage: 50) {
     pageInfo {
@@ -307,7 +301,6 @@ const importFromIDsQuery = `query ($page: Int,$charPage: Int, $id:[Int]) {
     }
   }
 }`;
-
 export default {
 	components: {
 		VAPickerEntry,
@@ -333,16 +326,9 @@ export default {
 			importing: false,
 			anilistIDs: '',
 			importOpen: false,
-			page: 0,
 		};
 	},
 	computed: {
-		filteredVAs () {
-			const _page = parseInt(this.page, 10);
-			const filtered = this.selections.filter((el, i) => i >= _page * 100 && i < (_page + 1) * 100);
-			// console.log(this.page * 50, (this.page + 1) * 50);
-			return filtered;
-		},
 		charIDs () {
 			return this.value.map(show => show.character_id);
 		},
@@ -581,11 +567,6 @@ export default {
 				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
 				this.selectedTab = 'search';
 				this.total = this.vas.length;
-				for (const va of this.vas) {
-					if (!this.showSelected(va)) {
-						this.selections.push(va);
-					}
-				}
 				this.loaded = true;
 				this.importing = false;
 				this.importOpen = false;
@@ -722,7 +703,6 @@ export default {
 .va-picker-entry {
 	flex: 0 0 calc(100% / 3);
 	padding: 0.375rem;
-
 	> div {
 		height: 100%;
 	}
