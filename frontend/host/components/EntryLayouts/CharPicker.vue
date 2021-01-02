@@ -12,6 +12,9 @@
 						Search
 					</a>
 				</li>
+				<li>
+					<input v-model="page" class="input" type="number">
+				</li>
 			</ul>
 		</div>
 
@@ -60,7 +63,7 @@
 		<div v-else-if="selections.length && loaded" class="char-picker-overflow-wrap">
 			<div class="char-picker-entries">
 				<char-picker-entry
-					v-for="char in selections"
+					v-for="char in filteredChars"
 					:key="'selected' + char.id"
 					:char="char"
 					:selected="showSelected(char)"
@@ -366,9 +369,16 @@ export default {
 			roles: 'all',
 			anilistIDs: '',
 			importOpen: false,
+			page: 0,
 		};
 	},
 	computed: {
+		filteredChars () {
+			const _page = parseInt(this.page, 10);
+			const filtered = this.selections.filter((el, i) => i >= _page * 100 && i < (_page + 1) * 100);
+			// console.log(this.page * 50, (this.page + 1) * 50);
+			return filtered;
+		},
 		charIDs () {
 			return this.value.map(show => show.character_id);
 		},

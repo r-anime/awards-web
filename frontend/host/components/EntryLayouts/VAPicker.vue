@@ -338,8 +338,9 @@ export default {
 	},
 	computed: {
 		filteredVAs () {
-			const filtered = this.selections.filter((el, i) => i >= this.page * 100 && i < (this.page + 1) * 100);
-			console.log(this.page * 100, (this.page + 1) * 100);
+			const _page = parseInt(this.page, 10);
+			const filtered = this.selections.filter((el, i) => i >= _page * 100 && i < (_page + 1) * 100);
+			// console.log(this.page * 50, (this.page + 1) * 50);
 			return filtered;
 		},
 		charIDs () {
