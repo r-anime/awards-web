@@ -12,6 +12,9 @@
 						Search
 					</a>
 				</li>
+				<li>
+					<input v-model="page" class="input" type="number">
+				</li>
 			</ul>
 		</div>
 
@@ -60,7 +63,7 @@
 		<div v-else-if="selections.length && loaded" class="va-picker-overflow-wrap">
 			<div class="va-picker-entries">
 				<VAPickerEntry
-					v-for="va in selections"
+					v-for="va in filteredVAs"
 					:key="'selected' + va.id"
 					:va="va"
 					:selected="showSelected(va)"
@@ -330,9 +333,15 @@ export default {
 			importing: false,
 			anilistIDs: '',
 			importOpen: false,
+			page: 0,
 		};
 	},
 	computed: {
+		filteredVAs () {
+			const filtered = this.selections.filter((el, i) => i >= this.page * 100 && i < (this.page + 1) * 100);
+			console.log(filtered);
+			return filtered;
+		},
 		charIDs () {
 			return this.value.map(show => show.character_id);
 		},
