@@ -555,7 +555,7 @@ export default {
 					const anime = show.title.romaji || show.title.english;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
-						if (char.role === 'BACKGROUND' || this.vas.find(va => va.id === char.id)) continue;
+						if (char.role === 'BACKGROUND' || this.selections.find(va => va.id === char.id)) continue;
 						this.vas.push({
 							id: char.id,
 							anilistID: char.node.id,

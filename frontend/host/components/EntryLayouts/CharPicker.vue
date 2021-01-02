@@ -583,7 +583,7 @@ export default {
 					if (show.characters.edges.length === 0) continue;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
-						if (this.roles === 'main' && char.role !== 'MAIN' || this.roles === 'supp' && char.role !== 'SUPPORTING' || char.role === 'BACKGROUND' && this.roles !== 'all' || this.chars.find(aChar => aChar.id === char.id)) {
+						if (this.roles === 'main' && char.role !== 'MAIN' || this.roles === 'supp' && char.role !== 'SUPPORTING' || char.role === 'BACKGROUND' && this.roles !== 'all' || this.selections.find(aChar => aChar.id === char.id)) {
 							continue;
 						}
 
@@ -660,7 +660,7 @@ export default {
 					const anime = show.title.romaji || show.title.english;
 					const mediaID = show.id;
 					for (const char of show.characters.edges) {
-						if (this.roles === 'main' && char.role !== 'MAIN' || this.roles === 'supp' && char.role !== 'SUPPORTING' || char.role === 'BACKGROUND' && this.roles !== 'all' || this.chars.find(aChar => aChar.id === char.id)) {
+						if (this.roles === 'main' && char.role !== 'MAIN' || this.roles === 'supp' && char.role !== 'SUPPORTING' || char.role === 'BACKGROUND' && this.roles !== 'all' || this.selections.find(aChar => aChar.id === char.id)) {
 							continue;
 						}
 
