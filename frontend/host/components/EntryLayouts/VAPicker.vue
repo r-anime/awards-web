@@ -582,7 +582,9 @@ export default {
 				this.selectedTab = 'search';
 				this.total = this.vas.length;
 				for (const va of this.vas) {
-					this.toggleShow(va, true);
+					if (!this.showSelected(va)) {
+						this.selections.push(va);
+					}
 				}
 				this.loaded = true;
 				this.importing = false;
