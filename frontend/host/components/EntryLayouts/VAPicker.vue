@@ -581,6 +581,9 @@ export default {
 				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
 				this.selectedTab = 'search';
 				this.total = this.vas.length;
+				for (const va of this.vas) {
+					this.toggleShow(va, true);
+				}
 				this.loaded = true;
 				this.importing = false;
 				this.importOpen = false;
