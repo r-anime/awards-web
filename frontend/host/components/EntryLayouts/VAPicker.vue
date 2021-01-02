@@ -12,6 +12,9 @@
 						Search
 					</a>
 				</li>
+				<li>
+					<input v-model="page" class="input" type="number">
+				</li>
 			</ul>
 		</div>
 
@@ -60,7 +63,7 @@
 		<div v-else-if="selections.length && loaded" class="va-picker-overflow-wrap">
 			<div class="va-picker-entries">
 				<VAPickerEntry
-					v-for="va in selections"
+					v-for="va in filteredVAs"
 					:key="'selected' + va.id"
 					:va="va"
 					:selected="showSelected(va)"
@@ -326,39 +329,18 @@ export default {
 			importing: false,
 			anilistIDs: '',
 			importOpen: false,
+			page: 0,
 		};
 	},
 	computed: {
+		filteredVAs () {
+			const _page = parseInt(this.page, 10);
+			const filtered = this.selections.filter((el, i) => i >= _page * 100 && i < (_page + 1) * 100);
+			// console.log(this.page * 50, (this.page + 1) * 50);
+			return filtered;
+		},
 		charIDs () {
 			return this.value.map(show => show.character_id);
-		},
-		submissions () {
-			return this.selections.map(item => {
-				let search = `${item.name.full}`;
-				if (item.name.alternative) {
-					for (const altname of item.name.alternative) {
-						search = `${search}%${altname}`;
-					}
-				}
-				if (item.media.edges.length) {
-					if (item.media.edges[0].voiceActors.length) {
-						if (item.media.edges[0].voiceActors[0].name.full) {
-							search = `${search}%${item.media.edges[0].voiceActors[0].name.full}`;
-						}
-					}
-				}
-				if (item.media.nodes.length) {
-					if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
-					if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
-				}
-				return {
-					character_id: item.id,
-					anilist_id: item.media.nodes.length ? item.media.nodes[0].id : null,
-					themeId: null,
-					categoryId: this.category.id,
-					search,
-				};
-			});
 		},
 		anilistIDArr () {
 			return this.anilistIDs.split('\n');
@@ -429,10 +411,36 @@ export default {
 		},
 		async submit () {
 			this.submitting = true;
+			const submissions = this.selections.map(item => {
+				let search = `${item.name.full}`;
+				if (item.name.alternative) {
+					for (const altname of item.name.alternative) {
+						search = `${search}%${altname}`;
+					}
+				}
+				if (item.media.edges.length) {
+					if (item.media.edges[0].voiceActors.length) {
+						if (item.media.edges[0].voiceActors[0].name.full) {
+							search = `${search}%${item.media.edges[0].voiceActors[0].name.full}`;
+						}
+					}
+				}
+				if (item.media.nodes.length) {
+					if (item.media.nodes[0].title.romaji) search = `${search}%${item.media.nodes[0].title.romaji}`;
+					if (item.media.nodes[0].title.english) search = `${search}%${item.media.nodes[0].title.english}`;
+				}
+				return {
+					character_id: item.id,
+					anilist_id: item.media.nodes.length ? item.media.nodes[0].id : null,
+					themeId: null,
+					categoryId: this.category.id,
+					search,
+				};
+			});
 			try {
 				await this.updateEntries({
 					id: this.category.id,
-					entries: this.submissions,
+					entries: submissions,
 				});
 			} finally {
 				this.submitting = false;
@@ -567,6 +575,14 @@ export default {
 				this.vas = this.vas.filter(va => va.media.edges[0].voiceActors.length > 0);
 				this.selectedTab = 'search';
 				this.total = this.vas.length;
+				console.log(this.selections.length);
+				for (const va of this.vas) {
+					if (!this.showSelected(va)) {
+						console.log(this.showSelected(va));
+						this.selections.push(va);
+					}
+				}
+				console.log(this.selections.length);
 				this.loaded = true;
 				this.importing = false;
 				this.importOpen = false;
