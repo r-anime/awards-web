@@ -180,9 +180,9 @@ export default {
 							method: 'POST',
 							body: JSON.stringify({
 								category_id: this.category.id,
-								entry_id: show.id,
-								anilist_id: show.anilistID,
-								theme_name: show.title,
+								entry_id: this.value[this.category.id][themeIndex].id,
+								anilist_id: this.value[this.category.id][themeIndex].anilistID,
+								theme_name: this.value[this.category.id][themeIndex].title,
 							}),
 						});
 						if (!response.ok) {
