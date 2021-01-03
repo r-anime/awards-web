@@ -103,7 +103,6 @@ const store = new Vuex.Store({
 			const allIDs = {
 				shows: [],
 				chars: [],
-				vas: [],
 			};
 			// this is gonna hold all themes data from data and after squashing, push it into selections
 			const themeObject = {
@@ -115,7 +114,9 @@ const store = new Vuex.Store({
 			}
 			const votes = await makeRequest('/api/votes/get');
 			// Check if user has voted
-			if (votes.length !== 0) {
+			if (votes.length === 0) {
+				commit('UPDATE_SELECTIONS', selections);
+			} else {
 				// Big fucking messy code that I will surely end myself after writing
 				// Haha yes, this just had to become EVEN FUCKING SLOWER, we basically need theme info to load votes
 				if (!state.themes) {
@@ -130,55 +131,109 @@ const store = new Vuex.Store({
 						// Theme category so we're gonna push the whole theme and SQUASH this shit later
 						const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
 						themeObject[theme.themeType].push(theme);
-					} else if (category.entryType === 'characters') {
+					} else if (category.entryType === 'characters' || category.entryType === 'vas') {
 						// All of these are pushing anilist IDs into a bunch of arrays for querying
 						allIDs.chars.push(vote.entry_id);
-					} else if (category.entryType === 'vas') {
-						allIDs.vas.push(vote.entry_id);
 					}
 				}
 				// Check if user actually voted for any OPs/EDs
 				if (themeObject.op.length !== 0 || themeObject.ed.length !== 0) {
 					// Pull anilist IDs of themes
-					let themeArr = [];
 					if (themeObject.op.length !== 0) {
-						themeArr = themeArr.concat(themeObject.op.map(theme => theme.anilistID));
+						allIDs.shows = allIDs.shows.concat(themeObject.op.map(theme => theme.anilistID));
 					}
 					if (themeObject.ed.length !== 0) {
-						themeArr = themeArr.concat(themeObject.ed.map(theme => theme.anilistID));
-					}
-					const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
-					const edCat = state.categories.find(cat => cat.name.includes('ED'));
-					const anilistData = await util.makeQuery(queries.themeByIDQuery, themeArr); // await ahhhhhh
-					for (const theme of themeObject.op) {
-						const foundTheme = anilistData.find(show => show.id === theme.anilistID); // search for show info associated with theme
-						selections[opCat.id].push({...foundTheme, ...theme}); // SQUASH them together and push into selections
-					}
-					for (const theme of themeObject.ed) { // repeat
-						const foundTheme = anilistData.find(show => show.id === theme.anilistID);
-						selections[edCat.id].push({...foundTheme, ...theme});
+						allIDs.shows = allIDs.shows.concat(themeObject.ed.map(theme => theme.anilistID));
 					}
 				}
 				// The final yeet
-				const showsData = allIDs.shows.length === 0 ? [] : await util.makeQuery(queries.showByIDQuery, allIDs.shows); // need to make these execute asynchronously somehow
-				const charData = allIDs.chars.length === 0 ? [] : await util.makeQuery(queries.charByIDQuery, allIDs.chars);
-				const vaData = allIDs.vas.length === 0 ? [] : await util.makeQuery(queries.vaByIDQuery, allIDs.vas);
+				let showData = [];
+				let charData = [];
+				const showPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (allIDs.shows.length) {
+							const promiseArray = [];
+							let page = 1;
+							const someData = await util.paginatedQuery(queries.showQuerySmall, allIDs.shows, page);
+							showData = [...showData, ...someData.data.Page.results];
+							const lastPage = someData.data.Page.pageInfo.lastPage;
+							page = 2;
+							while (page <= lastPage) {
+							// eslint-disable-next-line no-loop-func
+								promiseArray.push(new Promise(async (resolve2, reject2) => {
+									try {
+										const returnData = await util.paginatedQuery(queries.showQuerySmall, allIDs.shows, page);
+										resolve2(returnData.data.Page.results);
+									} catch (error) {
+										reject2(error);
+									}
+								}));
+								page++;
+							}
+							Promise.all(promiseArray).then(finalData => {
+								for (const data of finalData) {
+									showData = [...showData, ...data];
+								}
+								resolve();
+							});
+						}
+					} catch (error) {
+						reject(error);
+					}
+				});
+				const charPromise = new Promise(async (resolve, reject) => {
+					try {
+						const promiseArray = [];
+						let page = 1;
+						const someData = await util.paginatedQuery(queries.charQuerySmall, allIDs.chars, page);
+						charData = [...charData, ...someData.data.Page.results];
+						const lastPage = someData.data.Page.pageInfo.lastPage;
+						page = 2;
+						while (page <= lastPage) {
+							// eslint-disable-next-line no-loop-func
+							promiseArray.push(new Promise(async (resolve2, reject2) => {
+								try {
+									const returnData = await util.paginatedQuery(queries.charQuerySmall, allIDs.chars, page);
+									resolve2(returnData.data.Page.results);
+								} catch (error) {
+									reject2(error);
+								}
+							}));
+							page++;
+						}
+						Promise.all(promiseArray).then(finalData => {
+							for (const data of finalData) {
+								charData = [...charData, ...data];
+							}
+							resolve();
+						});
+					} catch (error) {
+						reject(error);
+					}
+				});
+				await Promise.all([showPromise, charPromise]);
+				const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
+				const edCat = state.categories.find(cat => cat.name.includes('ED'));
+				for (const theme of themeObject.op) {
+					const foundTheme = showData.find(show => show.id === theme.anilistID); // search for show info associated with theme
+					selections[opCat.id].push({...foundTheme, ...theme}); // SQUASH them together and push into selections
+				}
+				for (const theme of themeObject.ed) { // repeat
+					const foundTheme = showData.find(show => show.id === theme.anilistID);
+					selections[edCat.id].push({...foundTheme, ...theme});
+				}
 				for (const vote of votes) {
 					const category = state.categories.find(cat => cat.id === vote.category_id); // find category associated with vote
 					if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
-						if (vote.anilist_id && !vote.theme_name) { // if dashboard cat, compare anilist_id instead
-							selections[category.id].push(showsData.find(show => show.id === vote.anilist_id));
-						} else if (category.entryType === 'shows') {
-							selections[category.id].push(showsData.find(show => show.id === vote.entry_id)); // just push stuff into objects
-						} else if (category.entryType === 'characters') {
+						if (category.entryType === 'shows') {
+							selections[category.id].push(showData.find(show => show.id === vote.entry_id)); // just push stuff into objects
+						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
 							selections[category.id].push(charData.find(char => char.id === vote.entry_id));
-						} else if (category.entryType === 'vas') {
-							selections[category.id].push(vaData.find(va => va.id === vote.entry_id));
 						}
 					}
 				}
+				commit('UPDATE_SELECTIONS', selections);
 			}
-			commit('UPDATE_SELECTIONS', selections);
 		},
 		async getEntries ({commit}) {
 			const entries = await makeRequest('/api/category/entries/vote');

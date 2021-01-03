@@ -79,14 +79,14 @@ const VAPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
         edges {
           node {
             id
-            startDate {
-              year
-              month
-              day
-            }
             title {
               romaji
               english
+			}
+			startDate {
+              year
+              month
+              day
             }
           }
           voiceActors(language: JAPANESE) {

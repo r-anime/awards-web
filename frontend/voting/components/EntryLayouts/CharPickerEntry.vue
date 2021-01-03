@@ -47,12 +47,12 @@ export default {
 			return this.char.name.full || this.char.name.alternative;
 		},
 		anime () {
-			const found = this.char.media.nodes.find(node => node.startDate.year === 2020);
+			const found = this.char.media.edges.find(edge => edge.node.startDate.year === 2020);
 			if (found) {
-				return found.title.romaji || found.title.english;
+				return found.node.title.romaji || found.node.title.english;
 			}
-			if (this.char.media.nodes.length) {
-				return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
+			if (this.char.media.edges.length) {
+				return this.char.media.edges[0].node.title.romaji || this.char.media.edges[0].node.title.english;
 			}
 			return '';
 		},
