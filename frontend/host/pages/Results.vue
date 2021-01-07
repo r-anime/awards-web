@@ -3,7 +3,7 @@
 <div v-if="locked !== null">
     <div class="section" v-if="locked === false">
         <h2 class="title">Results</h2>
-        <div v-if="!loaded || !opedTotals" class="content">
+        <div v-if="!loaded" class="content">
             <p>Loading...</p>
         </div>
         <div v-else class="content">
@@ -38,11 +38,11 @@
 						<div class="card-content is-fixed-height-scrollable-300">
 							<div class="content">
 								<ul>
-									<li v-for="(votes, index) in votesFor(category)" :key="index" class="mb-1 has-no-bullet">
-										{{votes.name}}
+									<li v-for="(vote, index) in votes[category.id]" :key="index" class="mb-1 has-no-bullet">
+										{{vote.name}}
 										<br>
 										<div class="tags">
-											<small class="tag is-small">{{votes.vote_count}} votes</small>
+											<small class="tag is-small">{{vote.vote_count}} votes</small>
 										</div>
 									</li>
 								</ul>
@@ -88,6 +88,7 @@ export default {
 			charIDs: [],
 			loaded: false,
 			locked: null,
+			votes: {},
 		};
 	},
 	computed: {
@@ -271,75 +272,6 @@ export default {
 				}
 			});
 		},
-		sendQueries () {
-			const catPromise = new Promise(async (resolve, reject) => {
-				try {
-					if (!this.categories) {
-						await this.getCategories();
-					}
-					resolve();
-				} catch (err) {
-					reject(err);
-				}
-			});
-			const votesPromise = new Promise(async (resolve, reject) => {
-				try {
-					if (!this.voteTotals) {
-						await this.getVoteTotals();
-					}
-					resolve();
-				} catch (err) {
-					reject(err);
-				}
-			});
-			Promise.all([catPromise, votesPromise]).then(() => {
-				for (const vote of this.voteTotals) {
-					const category = this.categories.find(cat => cat.id === vote.category_id);
-					if (category.entryType === 'themes') {
-						this.showIDs.push(vote.anilist_id);
-					} else if (category.entryType === 'shows') {
-						this.showIDs.push(vote.entry_id);
-					} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-						this.charIDs.push(vote.entry_id);
-					}
-				}
-				this.showIDs = [...new Set(this.showIDs)];
-				this.charIDs = [...new Set(this.charIDs)];
-				const showPromise = new Promise(async (resolve, reject) => {
-					try {
-						let lastPage = false;
-						let page = 1;
-						while (!lastPage) {
-							// eslint-disable-next-line no-await-in-loop
-							const returnData = await this.fetchShows(page);
-							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-							page++;
-						}
-						resolve();
-					} catch (err) {
-						reject(err);
-					}
-				});
-				const charPromise = new Promise(async (resolve, reject) => {
-					try {
-						let lastPage = false;
-						let page = 1;
-						while (!lastPage) {
-							// eslint-disable-next-line no-await-in-loop
-							const returnData = await this.fetchChars(page);
-							lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-							page++;
-						}
-						resolve();
-					} catch (err) {
-						reject(err);
-					}
-				});
-				Promise.all([showPromise, charPromise]).then(() => {
-					this.loaded = true;
-				});
-			});
-		},
 	},
 	mounted () {
 		Promise.all([this.getLocks(), this.getMe()]).then(() => {
@@ -349,14 +281,6 @@ export default {
 			if (this.locked) {
 				this.loaded = true;
 			} else {
-				const queryPromise = new Promise(async (resolve, reject) => {
-					try {
-						await this.sendQueries();
-						resolve();
-					} catch (err) {
-						reject(err);
-					}
-				});
 				const themePromise = new Promise(async (resolve, reject) => {
 					try {
 						if (!this.themes) {
@@ -367,7 +291,27 @@ export default {
 						reject(error);
 					}
 				});
-				Promise.all([queryPromise, themePromise]).then(() => {
+				const catPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.categories) {
+							await this.getCategories();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				const votesPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.voteTotals) {
+							await this.getVoteTotals();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				Promise.all([themePromise, catPromise, votesPromise]).then(() => {
 					const opedPromise = new Promise(async (resolve, reject) => {
 						try {
 							if (!this.opedTotals) {
@@ -388,7 +332,119 @@ export default {
 							reject(error);
 						}
 					});
-					Promise.all([opedPromise, summaryPromise]).then(() => {
+					for (const vote of this.voteTotals) {
+						const category = this.categories.find(cat => cat.id === vote.category_id);
+						if (category.entryType === 'themes') {
+							this.showIDs.push(vote.anilist_id);
+						} else if (category.entryType === 'shows') {
+							this.showIDs.push(vote.entry_id);
+						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
+							this.charIDs.push(vote.entry_id);
+						}
+					}
+					this.showIDs = [...new Set(this.showIDs)];
+					this.charIDs = [...new Set(this.charIDs)];
+					const showPromise = new Promise(async (resolve, reject) => {
+						try {
+							let lastPage = false;
+							let page = 1;
+							while (!lastPage) {
+							// eslint-disable-next-line no-await-in-loop
+								const returnData = await this.fetchShows(page);
+								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+								page++;
+							}
+							resolve();
+						} catch (err) {
+							reject(err);
+						}
+					});
+					const charPromise = new Promise(async (resolve, reject) => {
+						try {
+							let lastPage = false;
+							let page = 1;
+							while (!lastPage) {
+							// eslint-disable-next-line no-await-in-loop
+								const returnData = await this.fetchChars(page);
+								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+								page++;
+							}
+							resolve();
+						} catch (err) {
+							reject(err);
+						}
+					});
+					Promise.all([opedPromise, summaryPromise, showPromise, charPromise]).then(() => {
+						for (const category of this.categories) {
+							let allVotes = [];
+							if (category.entryType === 'themes') {
+								allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
+							} else {
+								allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
+							}
+							const entries = [];
+							for (const vote of allVotes) {
+								if (category.entryType === 'themes') {
+									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+									const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
+									if (requiredShow && requiredTheme) {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
+										});
+									}
+								} else if (category.entryType === 'shows') {
+									const requiredShow = this.showData.find(show => show.id === vote.entry_id);
+									if (requiredShow) {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${requiredShow.title.romaji}`,
+										});
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${vote.entry_id}`,
+										});
+									}
+								} else if (category.entryType === 'characters') {
+									const requiredChar = this.charData.find(char => char.id === vote.entry_id);
+									if (requiredChar) {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${requiredChar.name.full}`,
+										});
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${vote.entry_id}`,
+										});
+									}
+								} else if (category.entryType === 'vas') {
+									const requiredChar = this.charData.find(char => char.id === vote.entry_id);
+									if (requiredChar) {
+										if (requiredChar.media.edges.length) {
+											if (requiredChar.media.edges[0].voiceActors.length) {
+												entries.push({
+													vote_count: vote.vote_count,
+													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
+												});
+											}
+										} else {
+											entries.push({
+												vote_count: vote.vote_count,
+												name: `${requiredChar.name.full}`,
+											});
+										}
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${vote.entry_id}`,
+										});
+									}
+								}
+							}
+							this.votes[category.id] = entries;
+						}
 						this.loaded = true;
 					});
 				});
