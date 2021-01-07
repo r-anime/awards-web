@@ -428,6 +428,11 @@ export default {
 													vote_count: vote.vote_count,
 													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
 												});
+											} else {
+												entries.push({
+													vote_count: vote.vote_count,
+													name: `${requiredChar.name.full}`,
+												});
 											}
 										} else {
 											entries.push({
