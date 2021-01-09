@@ -35,7 +35,7 @@ apiApp.post('/character-search', async (request, response) => {
 apiApp.post('/submit', async (request, response) => {
 	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});
 	if (!userName) {
-		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
+		return response.json(401, {error: 'Invalid user. Your account may be too new or voting may be closed.'});
 	}
 	let req;
 	try {
@@ -56,7 +56,7 @@ apiApp.post('/submit', async (request, response) => {
 apiApp.post('/delete', async (request, response) => {
 	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});
 	if (!userName) {
-		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
+		return response.json(401, {error: 'Invalid user. Your account may be too new or voting may be closed.'});
 	}
 	let req;
 	try {
@@ -147,7 +147,7 @@ apiApp.get('/all/delete', async (request, response) => {
 apiApp.get('/get', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
 	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'voting'})) {
-		return response.json(401, {error: 'Invalid user. Your account may be too new.'});
+		return response.json(401, {error: 'Your account may be too new or voting may be closed.'});
 	}
 	try {
 		response.json(await Votes.findAll({where: {reddit_user: userName}}));
