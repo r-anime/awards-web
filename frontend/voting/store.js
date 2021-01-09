@@ -27,7 +27,7 @@ async function makeRequest (path, method = 'GET', body) {
 	} catch (error) {
 		// eslint-disable-next-line no-alert
 		console.log(error);
-		throw error;
+		return {};
 	}
 }
 
