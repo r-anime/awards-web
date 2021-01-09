@@ -112,6 +112,13 @@ const store = new Vuex.Store({
 			for (const cat of state.categories) {
 				selections[cat.id] = [];
 			}
+			if (!state.locks) {
+				await dispatch('getLocks');
+			}
+			const voteLock = state.locks.find(aLock => aLock.name === 'voting');
+			if (voteLock.flag || this.me.level > voteLock.level) {
+				return commit('UPDATE_SELECTIONS', selections);
+			}
 			const votes = await makeRequest('/api/votes/get');
 			// Check if user has voted
 			if (votes.length === 0) {
