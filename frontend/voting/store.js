@@ -119,7 +119,7 @@ const store = new Vuex.Store({
 				await dispatch('getMe');
 			}
 			const voteLock = state.locks.find(aLock => aLock.name === 'voting');
-			if (voteLock.flag || state.me.level > voteLock.level) {
+			if (!voteLock.flag && state.me.level < voteLock.level) {
 				return commit('UPDATE_SELECTIONS', selections);
 			}
 			const votes = await makeRequest('/api/votes/get');
