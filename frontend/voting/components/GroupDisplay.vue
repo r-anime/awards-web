@@ -42,7 +42,7 @@
 				</div>
 			</div>
 		</div>
-		<section :key="loaded" v-else class="hero">
+		<section :key="`${loaded}`" v-else class="hero">
 			<div class="hero-body">
 				<div class="columns is-centered">
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
@@ -211,6 +211,8 @@ export default {
 				this.locked = true;
 			}
 			this.loaded = true;
+			console.log(this.loaded);
+			console.log(this.locked);
 		});
 	},
 };
