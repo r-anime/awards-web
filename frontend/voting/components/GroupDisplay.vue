@@ -46,14 +46,14 @@
 			<div class="hero-body">
 				<div class="columns is-centered">
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
-						<div v-if="!loaded" class="loading-text">
-						Please wait while your selections are being initialized. Thank you for your patience.
-						</div>
-						<div v-else-if="locked" class="loading-text">
+						<div v-if="locked && loaded" class="loading-text">
 						Public voting is not open at this time.
 						</div>
-						<div v-else-if="!accountOldEnough" class="loading-text">
+						<div v-else-if="!accountOldEnough && loaded" class="loading-text">
 						Your account is not old enough to vote in the Awards.
+						</div>
+						<div v-else class="loading-text">
+						Please wait while your selections are being initialized. Thank you for your patience.
 						</div>
 						<img loading="lazy" :src="snooImage"/>
 					</div>
