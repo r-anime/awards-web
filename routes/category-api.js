@@ -16,10 +16,49 @@ const config = require('../config');
 
 apiApp.get('/all', async (request, response) => {
 	try {
-		response.json(await Categories.findAll({where: {active: 1}}));
+		response.json(await Categories.findAll({where: {active: 1}, order: [['order', 'ASC']]}));
 	} catch (error) {
 		response.error(error);
 	}
+});
+
+apiApp.patch('/sort', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a host to modify categories'});
+	}
+	let categories;
+	try {
+		categories = await request.json();
+	} catch (error) {
+		return response.json({error: 'Invalid JSON'});
+	}
+	const promiseArr = [];
+	// const t = await sequelize.transaction();
+	for (let i = 0; i < categories.length; i++) {
+		const category = categories[i];
+		promiseArr.push(new Promise(async (resolve, reject) => {
+			try {
+				// console.log(category.id, i);
+				await Categories.update({order: i}, {where: {id: category.id}});
+				resolve();
+			} catch (error) {
+				response.error(error);
+				reject(error);
+			}
+		}));
+	}
+	Promise.all(promiseArr).then(async () => {
+		// await t.commit();
+		// yuuko.createMessage(config.discord.auditChannel, {
+		// 	embed: {
+		// 		title: 'Category Order',
+		// 		description: `Category order changed by **${auth}**.`,
+		// 		color: 8302335,
+		// 	},
+		// });
+		response.json(await Categories.findAll({where: {active: 1}, order: [['order', 'ASC']]}));
+	}, error => response.error(error));
 });
 
 apiApp.delete('/wipeEverything', async (request, response) => {

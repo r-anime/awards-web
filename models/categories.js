@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: true,
 		},
+		order: {
+			type: DataTypes.INTEGER,
+			defaultValue: 1,
+		},
 	});
 
 	categories.associate = models => {

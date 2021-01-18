@@ -3,7 +3,10 @@
     <div class="level title-margin">
       <div class="level-left">
         <div class="level-item">
-          <h2 class="title">Categories</h2>
+          <h2 class="title">
+			  Categories
+			  <router-link class="button is-primary ml-3" :to="{name: 'sortCategories'}">Sort</router-link>
+		  </h2>
         </div>
       </div>
       <div class="level-right">
