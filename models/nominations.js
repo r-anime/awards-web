@@ -30,6 +30,7 @@ module.exports = (sequelize, types) => {
 			allowNull: false,
 			defaultValue: true,
 		},
+
 	});
 
 	noms.associate = models => {

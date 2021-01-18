@@ -29,18 +29,26 @@ async function makeRequest (path, method = 'GET', body) {
 const store = new Vuex.Store({
 	state: {
 		me: null,
+		locks: null,
 		categories: null,
 		nominations: null,
+		themes: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
 			state.me = me;
+		},
+		GET_LOCKS (state, locks) {
+			state.locks = locks;
 		},
 		GET_CATEGORIES (state, categories) {
 			state.categories = categories;
 		},
 		GET_NOMINATIONS (state, noms) {
 			state.nominations = noms;
+		},
+		UPDATE_THEMES (state, themes) {
+			state.themes = themes;
 		},
 	},
 	actions: {
@@ -50,6 +58,10 @@ const store = new Vuex.Store({
 			const me = await response.json();
 			commit('GET_ME', me);
 		},
+		async getLocks ({commit}) {
+			const locks = await makeRequest('/api/locks/all');
+			commit('GET_LOCKS', locks);
+		},
 		async getCategories ({commit}) {
 			const categories = await makeRequest('/api/category/all');
 			commit('GET_CATEGORIES', categories);
@@ -57,6 +69,10 @@ const store = new Vuex.Store({
 		async getNominations ({commit}) {
 			const noms = await makeRequest('/api/category/nominations/all');
 			commit('GET_NOMINATIONS', noms);
+		},
+		async getThemes ({commit}) {
+			const themes = await makeRequest('/api/themes');
+			commit('UPDATE_THEMES', themes);
 		},
 	},
 });

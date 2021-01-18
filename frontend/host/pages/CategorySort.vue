@@ -13,7 +13,7 @@
         </div>
         <div v-if="isHost" class="level-item">
           <div class="control">
-            <button class="button is-primary" :class="{'is-loading': saving}" @click="updateSort">Save</button>
+            <button class="button is-primary" :class="{'is-loading': saving}" @click="updateSort" :disabled="saving">Save</button>
           </div>
         </div>
       </div>
