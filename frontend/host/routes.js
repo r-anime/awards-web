@@ -15,6 +15,7 @@ import Categories from './pages/Categories';
 import Users from './pages/Users';
 import Results from './pages/Results';
 import AllCategories from './pages/AllCategories';
+import CategorySort from './pages/CategorySort';
 import AdminPanel from './pages/AdminPanel';
 import Applications from './pages/Applications';
 import AllApplications from './pages/AllApplications';
@@ -78,6 +79,11 @@ export default new VueRouter({
 							name: 'allCategories',
 							path: '',
 							component: AllCategories,
+						},
+						{
+							name: 'sortCategories',
+							path: 'sort',
+							component: CategorySort,
 						},
 						{
 							path: ':categoryId',
