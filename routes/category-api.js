@@ -349,13 +349,13 @@ apiApp.post('/:id/nominations', async (request, response) => {
 		});
 		promise.then(async () => {
 			const category = await Categories.findOne({where: {id: request.params.id}});
-			yuuko.createMessage(config.discord.auditChannel, {
-				embed: {
-					title: 'Nominations Modified',
-					description: `Nominations of a category called **${category.name}** were modified by **${auth}**.`,
-					color: 8302335,
-				},
-			});
+			// yuuko.createMessage(config.discord.auditChannel, {
+			// 	embed: {
+			// 		title: 'Nominations Modified',
+			// 		description: `Nominations of a category called **${category.name}** were modified by **${auth}**.`,
+			// 		color: 8302335,
+			// 	},
+			// });
 			response.json(await Noms.findAll({
 				where: {
 					categoryId: request.params.id,
