@@ -109,6 +109,9 @@ export default {
 			return _cat.entryType;
 		},
 		showGetName(anilistid){
+			if (!this.data.shows){
+				return "";
+			}
 			const _show = this.data.shows.find(show => show.id === parseInt(anilistid));
 			return _show.title.romanji || _show.title.english;
 		}
