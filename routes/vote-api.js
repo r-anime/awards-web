@@ -5,6 +5,7 @@ const Fuse = require('fuse.js');
 
 // Sequelize models to avoid redundancy
 const Votes = sequelize.model('votes');
+const FinalVotes = sequelize.model('finalvote');
 const Entries = sequelize.model('entries');
 
 apiApp.post('/character-search', async (request, response) => {
@@ -52,6 +53,44 @@ apiApp.post('/submit', async (request, response) => {
 	});
 	response.empty();
 });
+
+apiApp.post('/final-vote/submit', async (request, response) => {
+	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});
+	if (!userName) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new or voting may be closed.'});
+	}
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		return response.json(400, {error: 'Invalid JSON'});
+	}
+
+	const _values = {
+		reddit_user: userName,
+		category_id: req.category_id,
+		nom_id: req.nom_id,
+		anilist_id: req.anilist_id,
+		theme_name: req.theme_name,
+	}
+
+	FinalVotes.findOne({ where: {reddit_user: userName, category_id: req.category_id }})
+	.then( (obj) => {
+		// update
+		if(obj){
+			await obj.update(_values);
+		}
+		// insert
+		await FinalVotes.create(_values);
+	}).finally(() => {
+		try {
+			response.json(await Votes.findAll({where: {reddit_user: userName}}));
+		} catch (error) {
+			response.error(error);
+		}
+	});
+});
+
 
 apiApp.post('/delete', async (request, response) => {
 	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});

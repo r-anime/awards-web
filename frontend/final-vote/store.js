@@ -33,6 +33,7 @@ const store = new Vuex.Store({
 		categories: null,
 		nominations: null,
 		themes: null,
+		votes: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
@@ -50,6 +51,9 @@ const store = new Vuex.Store({
 		UPDATE_THEMES (state, themes) {
 			state.themes = themes;
 		},
+		UPDATE_VOTES (state, votes) {
+			state.votes = votes;
+		}
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -73,6 +77,10 @@ const store = new Vuex.Store({
 		async getThemes ({commit}) {
 			const themes = await makeRequest('/api/themes');
 			commit('UPDATE_THEMES', themes);
+		},
+		async submitVote ({commit}, data) {
+			const votes = await makeRequest('/final-vote/submit', 'POST', data);
+			commit('UPDATE_VOTES', votes);
 		},
 	},
 });

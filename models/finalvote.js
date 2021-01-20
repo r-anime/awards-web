@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   finalvote.init({
-    id: DataTypes.INTEGER,
     reddit_user: DataTypes.STRING,
     category_id: DataTypes.INTEGER,
     nom_id: DataTypes.INTEGER,
