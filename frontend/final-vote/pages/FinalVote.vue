@@ -10,7 +10,7 @@
 					We should probably have something here idk.
 				</div>
 			</div>
-			<div class="message is-lperiwinkle">
+			<div v-if="currentCat" class="message is-lperiwinkle">
 				<div class="message-header">
 					{{currentCat.name}}
 				</div>
@@ -23,7 +23,9 @@
 							v-for="(nom, index) in currentNoms"
 							:key="index"
 						>
-							{{showGetName(nom.anilist_id)}}
+							<button class="button is-primary" @click="voteSubmit(currentCat.id, nom.id, nom.anilist_id, nom.themeId)">
+								{{showGetName(nom.anilist_id)}}
+							</button>
 						</div>
 					</div>
 				</div>
@@ -60,6 +62,7 @@ export default {
 			'themes',
 			'categories',
 			'nominations',
+			'votes',
 		]),
 		allLocked (){
 			return this.voteLocks.genre ||
@@ -69,10 +72,18 @@ export default {
 				   this.voteLocks.main;
 		},
 		currentCat () {
-			return this.categories[this.vote.cat];
+			if (this.categories && this.categories.length > 0){
+				return this.categories[this.vote.cat];
+			} else {
+				return false;
+			}
 		},
 		currentNoms () {
-			return this.nominations.filter(nom => nom.categoryId == this.currentCat.id);
+			if (this.nominations && this.nominations.length > 0){
+				return this.nominations.filter(nom => nom.categoryId == this.currentCat.id);
+			} else {
+				return [];
+			}
 		},
 	},
 	data () {
@@ -87,6 +98,7 @@ export default {
 			},
 			loaded: {
 				page: false,
+				voting: false,
 			},
 			unique: {
 				shows: [],
@@ -100,7 +112,7 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes']),
+		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote']),
 		markdownit (it) {
 			return marked(it);
 		},
@@ -114,6 +126,17 @@ export default {
 			}
 			const _show = this.data.shows.find(show => show.id === parseInt(anilistid));
 			return _show.title.romanji || _show.title.english;
+		},
+		async voteSubmit(cat, nom, al_id, theme = ""){
+			if (this.loaded.voting){
+				const _payload = {
+					category_id: cat,
+					nom_id: nom,
+					anilist_id: al_id,
+					theme_name: theme
+				};
+				this.submitVote(_payload);				
+			}
 		}
 	},
 	mounted () {
@@ -121,7 +144,8 @@ export default {
 					 this.me ? Promise.resolve() : this.getMe(),
 					 this.categories ? Promise.resolve() : this.getCategories(),
 					 this.nominations ? Promise.resolve() : this.getNominations(),
-					 this.themes ? Promise.resolve() : this.getThemes()]).then(() => {
+					 this.themes ? Promise.resolve() : this.getThemes(),
+					 this.votes ? Promise.resolve() : this.getVotes()]).then(() => {
 			const _gl = this.locks.find(lock => lock.name === 'fv-genre');
 			const _cl = this.locks.find(lock => lock.name === 'fv-character');
 			const _vl = this.locks.find(lock => lock.name === 'fv-visual-prod');
@@ -172,6 +196,7 @@ export default {
 			});
 		}).finally(() => {
 			this.loaded.page = true;
+			this.loaded.voting = true;
 		});
 	},
 };

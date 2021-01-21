@@ -78,8 +78,12 @@ const store = new Vuex.Store({
 			const themes = await makeRequest('/api/themes');
 			commit('UPDATE_THEMES', themes);
 		},
+		async getVotes ({commit}) {
+			const votes = await makeRequest('/api/votes/final/get');
+			commit('UPDATE_VOTES', votes);
+		},
 		async submitVote ({commit}, data) {
-			const votes = await makeRequest('/final-vote/submit', 'POST', data);
+			const votes = await makeRequest('/api/votes/final/submit', 'POST', data);
 			commit('UPDATE_VOTES', votes);
 		},
 	},

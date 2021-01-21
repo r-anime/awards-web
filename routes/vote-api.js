@@ -54,8 +54,8 @@ apiApp.post('/submit', async (request, response) => {
 	response.empty();
 });
 
-apiApp.post('/final-vote/submit', async (request, response) => {
-	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'voting'});
+apiApp.post('/final/submit', async (request, response) => {
+	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'fv-genre'});
 	if (!userName) {
 		return response.json(401, {error: 'Invalid user. Your account may be too new or voting may be closed.'});
 	}
@@ -75,14 +75,14 @@ apiApp.post('/final-vote/submit', async (request, response) => {
 	}
 
 	FinalVotes.findOne({ where: {reddit_user: userName, category_id: req.category_id }})
-	.then( (obj) => {
+	.then( async (obj) => {
 		// update
 		if(obj){
 			await obj.update(_values);
+		} else {
+			await FinalVotes.create(_values);
 		}
-		// insert
-		await FinalVotes.create(_values);
-	}).finally(() => {
+	}).finally(async () => {
 		try {
 			response.json(await Votes.findAll({where: {reddit_user: userName}}));
 		} catch (error) {
@@ -190,6 +190,20 @@ apiApp.get('/get', async (request, response) => {
 	}
 	try {
 		response.json(await Votes.findAll({where: {reddit_user: userName}}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/final/get', async (request, response) => {
+	const userName = (await request.reddit().get('/api/v1/me')).body.name;
+	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'fv-genre'})) {
+		return response.json(401, {error: 'Your account may be too new or voting may be closed.'});
+	}
+	try {
+		const _votes = await FinalVotes.findAll({where: {reddit_user: userName}});
+		console.log(_votes);
+		response.json(_votes);
 	} catch (error) {
 		response.error(error);
 	}
