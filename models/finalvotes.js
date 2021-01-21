@@ -1,4 +1,4 @@
-module.exports = (sequelize, types) => sequelize.define('finalvote', {
+module.exports = (sequelize, types) => sequelize.define('finalvotes', {
 	reddit_user: {
 		type: types.STRING,
 		allowNull: false,
