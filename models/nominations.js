@@ -30,7 +30,8 @@ module.exports = (sequelize, types) => {
 			allowNull: false,
 			defaultValue: true,
 		},
-
+		themeId: types.INTEGER,
+		categoryId: types.INTEGER,
 	});
 
 	noms.associate = models => {
