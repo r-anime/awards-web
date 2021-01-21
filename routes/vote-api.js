@@ -5,7 +5,7 @@ const Fuse = require('fuse.js');
 
 // Sequelize models to avoid redundancy
 const Votes = sequelize.model('votes');
-const FinalVotes = sequelize.model('finalvote');
+const FinalVotes = sequelize.model('finalvotes');
 const Entries = sequelize.model('entries');
 
 apiApp.post('/character-search', async (request, response) => {
