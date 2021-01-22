@@ -104,12 +104,6 @@ const store = new Vuex.Store({
 		GET_NOMINATIONS (state, nominations) {
 			state.nominations = nominations;
 		},
-		INSERT_NOMINATION (state, nomination) {
-			state.nominations.push(nomination);
-		},
-		DELETE_NOMINATIONS (state) {
-			// state.nominations = [];
-		},
 		GET_ALL_NOMINATIONS (state, allNoms) {
 			state.allNoms = allNoms;
 		},
@@ -119,17 +113,11 @@ const store = new Vuex.Store({
 		INSERT_JURORS (state, jurors) {
 			state.jurors = jurors;
 		},
-		DELETE_JURORS (state) {
-			// state.nominations = [];
-		},
 		GET_HMS (state, hms) {
 			state.hms = hms;
 		},
 		INSERT_HMS (state, hms) {
 			state.hms = hms;
-		},
-		DELETE_HMS (state) {
-			// state.nominations = [];
 		},
 		WIPE_EVERYTHING (state) {
 			state.nominations = null;
@@ -258,10 +246,6 @@ const store = new Vuex.Store({
 		async insertNominations ({commit}, {id, data}) {
 			const noms = await makeRequest(`/api/category/${id}/nominations`, 'POST', data);
 			commit('UPDATE_NOMINATIONS', noms);
-		},
-		async deleteNominations ({commit}, id) {
-			await makeRequest(`/api/category/${id}/nominations`, 'DELETE');
-			commit('DELETE_NOMINATIONS');
 		},
 		async getAllNominations ({commit}) {
 			const noms = await makeRequest('/api/category/nominations/all');

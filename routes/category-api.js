@@ -297,7 +297,7 @@ apiApp.get('/:id/nominations', async (request, response) => {
 		response.json(await Noms.findAll({
 			where: {
 				categoryId: request.params.id,
-				active: 1,
+				active: true,
 			},
 			include: [{
 				model: Categories,
@@ -318,28 +318,54 @@ apiApp.post('/:id/nominations', async (request, response) => {
 	let nominations;
 	try {
 		nominations = await request.json();
-		// log.success(nominations);
 	} catch (error) {
 		response.error(error);
 	}
 	try {
+		const ogNoms = await Noms.findAll({
+			where: {
+				categoryId: request.params.id,
+				active: true,
+			},
+			attributes: ['id'],
+		});
 		const promise = new Promise(async (resolve, reject) => {
 			try {
 				for (const nom of nominations) {
 					if (nom.themeId === -1) nom.themeId = null;
-					await Noms.create({
-						alt_name: nom.alt_name,
-						alt_img: nom.alt_img,
-						categoryId: request.params.id,
-						anilist_id: nom.anilist_id,
-						themeId: nom.themeId,
-						writeup: nom.writeup,
-						rank: nom.rank,
-						votes: nom.votes,
-						character_id: nom.character_id,
-						finished: nom.finished,
-						staff: nom.staff,
-					});
+					if (nom.id) {
+						await Noms.update({
+							alt_name: nom.alt_name,
+							alt_img: nom.alt_img,
+							categoryId: request.params.id,
+							anilist_id: nom.anilist_id,
+							themeId: nom.themeId,
+							writeup: nom.writeup,
+							rank: nom.rank,
+							votes: nom.votes,
+							character_id: nom.character_id,
+							finished: nom.finished,
+							staff: nom.staff,
+						}, {
+							where: {
+								id: nom.id,
+							},
+						});
+					} else {
+						await Noms.create({
+							alt_name: nom.alt_name,
+							alt_img: nom.alt_img,
+							categoryId: request.params.id,
+							anilist_id: nom.anilist_id,
+							themeId: nom.themeId,
+							writeup: nom.writeup,
+							rank: nom.rank,
+							votes: nom.votes,
+							character_id: nom.character_id,
+							finished: nom.finished,
+							staff: nom.staff,
+						});
+					}
 				}
 				resolve();
 			} catch (error) {
@@ -348,17 +374,28 @@ apiApp.post('/:id/nominations', async (request, response) => {
 			}
 		});
 		promise.then(async () => {
+			for (const nom of ogNoms) {
+				const found = nominations.filter(aNom => aNom.id).find(aNom => aNom.id === nom.id);
+				if (!found) {
+					await Noms.destroy({
+						where: {
+							id: nom.id,
+						},
+					});
+				}
+			}
 			const category = await Categories.findOne({where: {id: request.params.id}});
-			// yuuko.createMessage(config.discord.auditChannel, {
-			// 	embed: {
-			// 		title: 'Nominations Modified',
-			// 		description: `Nominations of a category called **${category.name}** were modified by **${auth}**.`,
-			// 		color: 8302335,
-			// 	},
-			// });
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'Nominations Modified',
+					description: `Nominations of a category called **${category.name}** were modified by **${auth}**.`,
+					color: 8302335,
+				},
+			});
 			response.json(await Noms.findAll({
 				where: {
 					categoryId: request.params.id,
+					active: true,
 				},
 				include: [{
 					model: Categories,
@@ -366,18 +403,6 @@ apiApp.post('/:id/nominations', async (request, response) => {
 				}],
 			}));
 		}, error => response.error(error));
-	} catch (error) {
-		response.error(error);
-	}
-});
-
-apiApp.delete('/:id/nominations', async (request, response) => {
-	if (!await request.authenticate({level: 2})) {
-		return response.json(401, {error: 'You must be a host to delete nominations'});
-	}
-	try {
-		await Noms.destroy({where: {categoryId: request.params.id}});
-		response.empty();
 	} catch (error) {
 		response.error(error);
 	}

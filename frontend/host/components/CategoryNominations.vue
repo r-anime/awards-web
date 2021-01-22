@@ -66,27 +66,13 @@ export default {
 				writeup: '',
 			});
 		},
-		saveNoms () {
+		async saveNoms () {
 			this.submitting = true;
-
-			const delPromise = new Promise(async (resolve, reject) => {
-				try {
-					await this.deleteNominations(this.category.id);
-					resolve();
-				} catch (err) {
-					reject(err);
-				}
+			await this.insertNominations({
+				id: this.category.id,
+				data: this.nomdata,
 			});
-			delPromise.then(async () => {
-				try {
-					await this.insertNominations({
-						id: this.category.id,
-						data: this.nomdata,
-					});
-				} finally {
-					this.submitting = false;
-				}
-			});
+			this.submitting = false;
 		},
 		updateData (index, data) {
 			this.nomdata[index] = data;
