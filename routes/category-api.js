@@ -377,10 +377,10 @@ apiApp.post('/:id/nominations', async (request, response) => {
 			for (const nom of ogNoms) {
 				const found = nominations.filter(aNom => aNom.id).find(aNom => aNom.id === nom.id);
 				if (!found) {
-					await Noms.destroy({
+					await Noms.update({active: false}, {
 						where: {
 							id: nom.id,
-						},
+						}
 					});
 				}
 			}
