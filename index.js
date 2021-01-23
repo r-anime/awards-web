@@ -238,6 +238,16 @@ sequelize.sync().then(async () => {
 					},
 					transaction: t,
 				}),
+				sequelize.model('locks').findOrCreate({
+					where: {
+						name: 'fv-results',
+					},
+					defaults: {
+						level: 2,
+						flag: false,
+					},
+					transaction: t,
+				}),
 			]);
 		} catch (error) {
 			log.error(error);
