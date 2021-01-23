@@ -90,13 +90,6 @@ apiApp.get('/summary', async (request, response) => {
 			users: allUsers[0].count,
 			allVotes: [],
 		};
-		for (const vote of allVotes) {
-			voteSummary.votes += 1;
-			if (!allUsers[vote.reddit_user]) {
-				allUsers[vote.reddit_user] = true;
-				voteSummary.users += 1;
-			}
-		}
 		response.json(voteSummary);
 	} catch (error) {
 		response.error(error);

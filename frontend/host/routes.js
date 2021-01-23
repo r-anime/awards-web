@@ -14,6 +14,7 @@ import Login from './pages/HostLogin';
 import Categories from './pages/Categories';
 import Users from './pages/Users';
 import Results from './pages/Results';
+import FinalResults from './pages/FinalResults';
 import AllCategories from './pages/AllCategories';
 import CategorySort from './pages/CategorySort';
 import AdminPanel from './pages/AdminPanel';
@@ -261,7 +262,14 @@ export default new VueRouter({
 					path: 'results',
 					component: Results,
 					meta: {
-						title: 'Results Summary',
+						title: 'Results (Initial)',
+					},
+				},
+				{
+					path: 'final-results',
+					component: FinalResults,
+					meta: {
+						title: 'Results (Final)',
 					},
 				},
 				{

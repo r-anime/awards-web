@@ -51,7 +51,8 @@ export default {
 				this.me && this.me.level >= 4 && {name: 'Admin Panel', path: '/host/admin'},
 				{name: 'Users', path: '/host/users'},
 				{name: 'Juror Applications', path: '/host/applications'},
-				{name: 'Results Summary', path: '/host/results'},
+				{name: 'Results (Initial)', path: '/host/results'},
+				{name: 'Results (Final)', path: '/host/final-results'},
 				{name: 'Juror Allocations', path: '/host/allocations'},
 			].filter(s => s);
 		},

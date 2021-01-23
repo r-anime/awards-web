@@ -1,0 +1,413 @@
+<template>
+<div v-if="locked !== null">
+    <div class="section" v-if="locked === false">
+        <h2 class="title">Final Results</h2>
+        <div v-if="!loaded" class="content">
+            <p>Loading...</p>
+        </div>
+        <div v-else class="content">
+            <div class="field is-grouped is-grouped-multiline">
+				<div class="control">
+					<div class="tags has-addons are-medium">
+						<span class="tag is-dark">Total Votes</span>
+						<span class="tag is-primary">{{finalVoteSummary.votes}}</span>
+					</div>
+				</div>
+				<div class="control">
+					<div class="tags has-addons are-medium">
+						<span class="tag is-dark">Total Users</span>
+						<span class="tag is-primary">{{finalVoteSummary.users}}</span>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="columns is-multiline">
+				<div
+					v-for="category in categories"
+					:key="category.id"
+
+					class="column is-6 is-4-desktop is-3-widescreen"
+				>
+					<div class="card">
+						<header class="card-header has-background-light">
+							<div class="card-header-title">
+								<p class="title is-4">{{category.name}}</p>
+							</div>
+						</header>
+						<div class="card-content is-fixed-height-scrollable-300">
+							<div class="content">
+								<ul>
+									<li v-for="(vote, index) in votes[category.id]" :key="index" class="mb-1 has-no-bullet">
+										{{vote.name}}
+										<br>
+										<div class="tags">
+											<small class="tag is-small">{{vote.vote_count}} votes</small>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+	<div v-else-if="locked" class="section">
+		You are not allowed to view the results at this time.
+	</div>
+</div>
+</template>
+
+<style>
+.is-fixed-height-scrollable-300 {
+	height: 300px;
+	overflow: auto;
+}
+.has-no-bullet{
+	list-style: none;
+}
+.mb-1{
+	margin-bottom: 0.5rem;
+}
+</style>
+
+<script>
+import {mapActions, mapState} from 'vuex';
+import * as aq from '../../anilistQueries';
+
+const showQuery = aq.showQuerySimple;
+const charQuery = aq.charQuerySimple;
+
+export default {
+	data () {
+		return {
+			showData: [],
+			charData: [],
+			showIDs: [],
+			charIDs: [],
+			loaded: false,
+			locked: null,
+			votes: {},
+		};
+	},
+	computed: {
+		...mapState([
+			'categories',
+			'finalVotes',
+			'themes',
+			'finalVoteSummary',
+			'locks',
+			'me',
+			'allNoms',
+		]),
+	},
+	methods: {
+		...mapActions([
+			'getCategories',
+			'getFinalVotes',
+			'getThemes',
+			'getFinalVoteSummary',
+			'getLocks',
+			'getMe',
+			'getAllNominations',
+		]),
+		votesFor (category) {
+			let allVotes = [];
+			if (category.entryType === 'themes') {
+				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
+			} else {
+				allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
+			}
+			const entries = [];
+			for (const vote of allVotes) {
+				if (category.entryType === 'themes') {
+					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+					const requiredNom = this.allNoms.find(nom => nom.id === vote.nom_id);
+					const requiredTheme = this.themes.find(theme => theme.id === requiredNom.themeId);
+					if (requiredShow && requiredTheme) {
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
+							image: `${requiredShow.coverImage.large}`,
+						});
+					}
+				} else if (category.entryType === 'shows') {
+					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+					if (requiredShow) {
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredShow.title.romaji}`,
+							image: `${requiredShow.coverImage.large}`,
+						});
+					}
+				} else if (category.entryType === 'characters') {
+					const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
+					if (!requiredChar) {
+						continue;
+					}
+					entries.push({
+						vote_count: vote.vote_count,
+						name: `${requiredChar.name.full}`,
+						image: `${requiredChar.image.large}`,
+					});
+				} else if (category.entryType === 'vas') {
+					const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
+					if (!requiredChar) {
+						continue;
+					}
+					if (requiredChar.media.edges.length) {
+						if (requiredChar.media.edges[0].voiceActors.length) {
+							entries.push({
+								vote_count: vote.vote_count,
+								name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
+								image: `${requiredChar.image.large}`,
+							});
+						}
+					} else {
+						entries.push({
+							vote_count: vote.vote_count,
+							name: `${requiredChar.name.full}`,
+							image: `${requiredChar.image.large}`,
+						});
+					}
+				}
+			}
+			return entries;
+		},
+		fetchShows (page) {
+			return new Promise(async (resolve, reject) => {
+				try {
+					const showResponse = await fetch('https://graphql.anilist.co', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+						},
+						body: JSON.stringify({
+							query: showQuery,
+							variables: {
+								id: this.showIDs,
+								page,
+								perPage: 50,
+							},
+						}),
+					});
+					// eslint-disable-next-line no-alert
+					if (!showResponse.ok) return alert('no bueno');
+					const returnData = await showResponse.json();
+					this.showData = [...this.showData, ...returnData.data.Page.results];
+					resolve(returnData);
+				} catch (err) {
+					reject(err);
+				}
+			});
+		},
+		fetchChars (page) {
+			return new Promise(async (resolve, reject) => {
+				try {
+					const charaResponse = await fetch('https://graphql.anilist.co', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+						},
+						body: JSON.stringify({
+							query: charQuery,
+							variables: {
+								id: this.charIDs,
+								page,
+								perPage: 50,
+							},
+						}),
+					});
+					// eslint-disable-next-line no-alert
+					if (!charaResponse.ok) return alert('no bueno');
+					const returnData = await charaResponse.json();
+					this.charData = [...this.charData, ...returnData.data.Page.results];
+					resolve(returnData);
+				} catch (err) {
+					reject(err);
+				}
+			});
+		},
+	},
+	mounted () {
+		Promise.all([this.getLocks(), this.getMe()]).then(() => {
+			const lock = this.locks.find(aLock => aLock.name === 'fv-results');
+			if (lock.flag || this.me.level > lock.level) this.locked = false;
+			else this.locked = true;
+			if (this.locked) {
+				this.loaded = true;
+			} else {
+				const themePromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.themes) {
+							await this.getThemes();
+						}
+						resolve();
+					} catch (error) {
+						reject(error);
+					}
+				});
+				const catPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.categories) {
+							await this.getCategories();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				const nomsPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.allNoms) {
+							await this.getAllNominations();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				const votesPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.finalVotes) {
+							await this.getFinalVotes();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				Promise.all([themePromise, catPromise, votesPromise, nomsPromise]).then(() => {
+					const summaryPromise = new Promise(async (resolve, reject) => {
+						try {
+							if (!this.finalVoteSummary) {
+								await this.getFinalVoteSummary();
+							}
+							resolve();
+						} catch (error) {
+							reject(error);
+						}
+					});
+					for (const vote of this.finalVotes) {
+						const category = this.categories.find(cat => cat.id === vote.category_id);
+						if (category.entryType === 'themes') {
+							this.showIDs.push(vote.anilist_id);
+						} else if (category.entryType === 'shows') {
+							this.showIDs.push(vote.anilist_id);
+						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
+							this.charIDs.push(vote.anilist_id);
+						}
+					}
+					this.showIDs = [...new Set(this.showIDs)];
+					this.charIDs = [...new Set(this.charIDs)];
+					const showPromise = new Promise(async (resolve, reject) => {
+						try {
+							let lastPage = false;
+							let page = 1;
+							while (!lastPage) {
+								// eslint-disable-next-line no-await-in-loop
+								const returnData = await this.fetchShows(page);
+								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+								page++;
+							}
+							resolve();
+						} catch (err) {
+							reject(err);
+						}
+					});
+					const charPromise = new Promise(async (resolve, reject) => {
+						try {
+							let lastPage = false;
+							let page = 1;
+							while (!lastPage) {
+								// eslint-disable-next-line no-await-in-loop
+								const returnData = await this.fetchChars(page);
+								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
+								page++;
+							}
+							resolve();
+						} catch (err) {
+							reject(err);
+						}
+					});
+					Promise.all([summaryPromise, showPromise, charPromise]).then(() => {
+						for (const category of this.categories) {
+							const allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
+							const entries = [];
+							for (const vote of allVotes) {
+								if (category.entryType === 'themes') {
+									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+									const requiredTheme = this.themes.find(theme => theme.id === vote.anilist_id);
+									if (requiredShow && requiredTheme) {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
+										});
+									}
+								} else if (category.entryType === 'shows') {
+									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+									if (requiredShow) {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${requiredShow.title.romaji}`,
+										});
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${vote.anilist_id}`,
+										});
+									}
+								} else if (category.entryType === 'characters') {
+									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
+									if (requiredChar) {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${requiredChar.name.full}`,
+										});
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${vote.anilist_id}`,
+										});
+									}
+								} else if (category.entryType === 'vas') {
+									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
+									if (requiredChar) {
+										if (requiredChar.media.edges.length) {
+											if (requiredChar.media.edges[0].voiceActors.length) {
+												entries.push({
+													vote_count: vote.vote_count,
+													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
+												});
+											} else {
+												entries.push({
+													vote_count: vote.vote_count,
+													name: `${requiredChar.name.full}`,
+												});
+											}
+										} else {
+											entries.push({
+												vote_count: vote.vote_count,
+												name: `${requiredChar.name.full}`,
+											});
+										}
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${vote.anilist_id}`,
+										});
+									}
+								}
+							}
+							this.votes[category.id] = entries;
+						}
+						this.loaded = true;
+					});
+				});
+			}
+		});
+	},
+};
+</script>

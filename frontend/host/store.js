@@ -46,6 +46,8 @@ const store = new Vuex.Store({
 		answers: null,
 		answerCount: null,
 		applicants: null,
+		finalVoteSummary: null,
+		finalVotes: null,
 	},
 	getters: {
 		isHost (state) {
@@ -171,6 +173,12 @@ const store = new Vuex.Store({
 		DELETE_APPLICANT (state, applicantID) {
 			const index = state.applicants.findIndex(applicant => applicant.id === applicantID);
 			state.applicants.splice(index, 1);
+		},
+		GET_FINAL_VOTE_SUMMARY (state, finalVoteSummary) {
+			state.finalVoteSummary = finalVoteSummary;
+		},
+		GET_FINAL_VOTES (state, finalVotes) {
+			state.finalVotes = finalVotes;
 		},
 	},
 	actions: {
@@ -346,6 +354,14 @@ const store = new Vuex.Store({
 		async deleteApplicant ({commit}, applicantID) {
 			await makeRequest(`/api/juror-apps/applicant/${applicantID}`, 'DELETE');
 			commit('DELETE_APPLICANT', applicantID);
+		},
+		async getFinalVoteSummary ({commit}) {
+			const voteSummary = await makeRequest('/api/final/summary');
+			commit('GET_FINAL_VOTE_SUMMARY', voteSummary);
+		},
+		async getFinalVotes ({commit}) {
+			const finalVotes = await makeRequest('/api/final/totals');
+			commit('GET_FINAL_VOTES', finalVotes);
 		},
 	},
 });

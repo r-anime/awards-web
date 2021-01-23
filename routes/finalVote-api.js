@@ -35,23 +35,25 @@ apiApp.post('/submit', async (request, response) => {
 		nom_id: req.nom_id,
 		anilist_id: req.anilist_id,
 		theme_name: req.theme_name,
-	}
+	};
 
-	FinalVotes.findOne({ where: {reddit_user: userName, category_id: req.category_id }})
-	.then( async (obj) => {
+	FinalVotes.findOne({where: {reddit_user: userName, category_id: req.category_id}})
+		.then(async obj => {
 		// update
-		if(obj){
-			await obj.update(_values);
-		} else {
-			await FinalVotes.create(_values);
-		}
-	}).finally(async () => {
-		try {
-			response.json(await Votes.findAll({where: {reddit_user: userName}}));
-		} catch (error) {
-			response.error(error);
-		}
-	});
+			if (obj) {
+				await obj.update(_values);
+			} else {
+				await FinalVotes.create(_values);
+			}
+		}).finally(async () => {
+			try {
+				const _votes = await FinalVotes.findAll({where: {reddit_user: userName}});
+				// console.log(_votes);
+				response.json(_votes);
+			} catch (error) {
+				return response.error(error);
+			}
+		});
 });
 
 apiApp.get('/summary', async (request, response) => {
@@ -68,14 +70,19 @@ apiApp.get('/summary', async (request, response) => {
 			users: allUsers[0].count,
 			allVotes: [],
 		};
-		for (const vote of allVotes) {
-			voteSummary.votes += 1;
-			if (!allUsers[vote.reddit_user]) {
-				allUsers[vote.reddit_user] = true;
-				voteSummary.users += 1;
-			}
-		}
 		response.json(voteSummary);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/totals', async (request, response) => {
+	if (!await request.authenticate({level: 2, lock: 'fv-results'})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	try {
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id`, `finalvotes`.`theme_name` FROM `finalvotes` GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id`, `finalvotes`.`theme_name` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
+		response.json(res);
 	} catch (error) {
 		response.error(error);
 	}
