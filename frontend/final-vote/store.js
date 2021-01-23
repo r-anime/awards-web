@@ -54,7 +54,7 @@ const store = new Vuex.Store({
 		UPDATE_VOTES (state, votes) {
 			console.log(votes);
 			state.votes = votes;
-		}
+		},
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -80,7 +80,7 @@ const store = new Vuex.Store({
 			commit('UPDATE_THEMES', themes);
 		},
 		async getVotes ({commit}) {
-			const votes = await makeRequest('/api/votes/final/get');
+			const votes = await makeRequest('/api/final/get');
 			console.log(votes);
 			commit('UPDATE_VOTES', votes);
 		},

@@ -59,9 +59,11 @@
 </template>
 
 <script>
+/* eslint-disable no-await-in-loop */
 import {mapState, mapActions} from 'vuex';
 import logo2020 from '../../../img/awards2020.png';
 import anilistQueries from '../queries';
+import marked from 'marked';
 const util = require('../../util');
 
 export default {
@@ -74,34 +76,29 @@ export default {
 			'nominations',
 			'votes',
 		]),
-		allLocked (){
-			return this.voteLocks.genre ||
-				   this.voteLocks.character ||
-				   this.voteLocks.vprod ||
-				   this.voteLocks.aprod ||
-				   this.voteLocks.main;
+		allLocked () {
+			return this.voteLocks.genre || this.voteLocks.character || this.voteLocks.vprod || this.voteLocks.aprod || this.voteLocks.main;
 		},
 		currentCat () {
-			if (this.categories && this.categories.length > 0){
+			if (this.categories && this.categories.length > 0) {
 				return this.categories[this.vote.cat];
-			} else {
-				return false;
 			}
+			return false;
 		},
-		currentSelection (){
+		currentSelection () {
+			// eslint-disable-next-line eqeqeq
 			const _myvote = this.votes.filter(vote => vote.category_id == this.currentCat.id);
-			if (_myvote.length <= 0){
+			if (_myvote.length <= 0) {
 				return -1;
-			} else {
-				return _myvote[0].nom_id;
 			}
+			return _myvote[0].nom_id;
 		},
 		currentNoms () {
-			if (this.nominations && this.nominations.length > 0){
+			if (this.nominations && this.nominations.length > 0) {
+				// eslint-disable-next-line eqeqeq
 				return this.nominations.filter(nom => nom.categoryId == this.currentCat.id);
-			} else {
-				return [];
 			}
+			return [];
 		},
 	},
 	data () {
@@ -126,7 +123,7 @@ export default {
 			},
 			vote: {
 				cat: 0,
-			}
+			},
 		};
 	},
 	methods: {
@@ -134,86 +131,96 @@ export default {
 		markdownit (it) {
 			return marked(it);
 		},
-		getCatType(catid){
+		getCatType (catid) {
 			const _cat = this.categories.find(cat => cat.id === catid);
 			return _cat.entryType;
 		},
-		getName(anilistid, db = "shows"){
-			if (!this.data[db]){
-				return "";
+		getName (anilistid, db = 'shows') {
+			if (!this.data[db]) {
+				return '';
 			}
-			const _show = this.data[db].find(show => show.id === parseInt(anilistid));
+			const _show = this.data[db].find(show => show.id === parseInt(anilistid, 10));
 			return _show.title.romanji || _show.title.english;
 		},
-		getImage(anilistid, db = "shows"){
-			if (!this.data[db]){
-				return "";
+		getImage (anilistid, db = 'shows') {
+			if (!this.data[db]) {
+				return '';
 			}
-			const _show = this.data[db].find(show => show.id === parseInt(anilistid));
+			const _show = this.data[db].find(show => show.id === parseInt(anilistid, 10));
 			return _show.coverImage.large;
 		},
-		async voteSubmit(cat, nom, al_id, theme = ""){
-			if (this.loaded.voting){
+		async voteSubmit (cat, nom, alID, theme = '') {
+			if (this.loaded.voting) {
 				this.loaded.voting = false;
 				const _payload = {
 					category_id: cat,
 					nom_id: nom,
-					anilist_id: al_id,
-					theme_name: theme
+					anilist_id: alID,
+					theme_name: theme,
 				};
 				await this.submitVote(_payload);
 			}
-			if (this.votes.length < this.categories.length){
-				await (new Promise(resolve => setTimeout(resolve, 500)));
-				this.vote.cat = (this.vote.cat + 1)%(this.categories.length);
+			if (this.votes.length < this.categories.length) {
+				await new Promise(resolve => setTimeout(resolve, 500));
+				this.vote.cat = (this.vote.cat + 1) % this.categories.length;
 			}
 			this.loaded.voting = true;
-		}
+		},
 	},
 	mounted () {
 		Promise.all([this.locks ? Promise.resolve() : this.getLocks(),
-					 this.me ? Promise.resolve() : this.getMe(),
-					 this.categories ? Promise.resolve() : this.getCategories(),
-					 this.nominations ? Promise.resolve() : this.getNominations(),
-					 this.themes ? Promise.resolve() : this.getThemes(),
-					 this.votes ? Promise.resolve() : this.getVotes()]).then(() => {
+			this.me ? Promise.resolve() : this.getMe(),
+			this.categories ? Promise.resolve() : this.getCategories(),
+			this.nominations ? Promise.resolve() : this.getNominations(),
+			this.themes ? Promise.resolve() : this.getThemes(),
+			this.votes ? Promise.resolve() : this.getVotes()]).then(() => {
 			const _gl = this.locks.find(lock => lock.name === 'fv-genre');
 			const _cl = this.locks.find(lock => lock.name === 'fv-character');
 			const _vl = this.locks.find(lock => lock.name === 'fv-visual-prod');
 			const _al = this.locks.find(lock => lock.name === 'fv-audio-prod');
 			const _ml = this.locks.find(lock => lock.name === 'fv-main');
 
-			if (_gl.flag || this.me.level > _gl.level) { this.voteLocks.genre = true; }
-			if (_cl.flag || this.me.level > _cl.level) { this.voteLocks.character = true; }
-			if (_vl.flag || this.me.level > _vl.level) { this.voteLocks.vprod = true; }
-			if (_al.flag || this.me.level > _al.level) { this.voteLocks.aprod = true; }
-			if (_ml.flag || this.me.level > _ml.level) { this.voteLocks.main = true; }
+			if (_gl.flag || this.me.level > _gl.level) {
+				this.voteLocks.genre = true;
+			}
+			if (_cl.flag || this.me.level > _cl.level) {
+				this.voteLocks.character = true;
+			}
+			if (_vl.flag || this.me.level > _vl.level) {
+				this.voteLocks.vprod = true;
+			}
+			if (_al.flag || this.me.level > _al.level) {
+				this.voteLocks.aprod = true;
+			}
+			if (_ml.flag || this.me.level > _ml.level) {
+				this.voteLocks.main = true;
+			}
 
 			this.nominations.forEach((nom, index) => {
-				if(this.getCatType(nom.categoryId) === 'shows'){
-					if (!this.unique.shows.includes(nom.anilist_id)){
+				if (this.getCatType(nom.categoryId) === 'shows') {
+					if (!this.unique.shows.includes(nom.anilist_id)) {
 						this.unique.shows.push(nom.anilist_id);
 					}
-				} else if(this.getCatType(nom.categoryId) === 'characters'){
+				} else if (this.getCatType(nom.categoryId) === 'characters') {
 
-				} else if(this.getCatType(nom.categoryId) === 'vas'){
+				} else if (this.getCatType(nom.categoryId) === 'vas') {
 
-				} else if(this.getCatType(nom.categoryId) === 'themes'){
+				} else if (this.getCatType(nom.categoryId) === 'themes') {
 
 				}
 			});
 
-			const _showPromise = new Promise(async (resolve, reject)=>{
+			const _showPromise = new Promise(async (resolve, reject) => {
 				try {
-					const _pages = Math.ceil(this.unique.shows.length/50);
+					const _pages = Math.ceil(this.unique.shows.length / 50);
 					let _showdata = [];
-					for (let i = 1; i <= _pages; i++){
+					for (let i = 1; i <= _pages; i++) {
 						const returnData = await util.paginatedQuery(anilistQueries.showPaginatedQuery, this.unique.shows, i);
 						_showdata = [..._showdata, ...returnData.data.Page.results];
 					}
 					this.data.shows = _showdata;
 					resolve();
-				} catch (error){
+				} catch (error) {
 					reject(error);
 				}
 			});
@@ -250,7 +257,7 @@ export default {
 		left: 0;
 		right: 0;
 
-		background: rgba(255,255,255, 0.6);		
+		background: rgba(255,255,255, 0.6);
 		width: 100%;
 		height: 100%;
 		z-index: 883;
