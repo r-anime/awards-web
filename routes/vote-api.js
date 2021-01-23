@@ -84,9 +84,11 @@ apiApp.post('/final/submit', async (request, response) => {
 		}
 	}).finally(async () => {
 		try {
-			response.json(await Votes.findAll({where: {reddit_user: userName}}));
+			const _votes = await FinalVotes.findAll({where: {reddit_user: userName}});
+			// console.log(_votes);
+			response.json(_votes);
 		} catch (error) {
-			response.error(error);
+			return response.error(error);
 		}
 	});
 });
@@ -202,7 +204,7 @@ apiApp.get('/final/get', async (request, response) => {
 	}
 	try {
 		const _votes = await FinalVotes.findAll({where: {reddit_user: userName}});
-		console.log(_votes);
+		// console.log(_votes);
 		response.json(_votes);
 	} catch (error) {
 		response.error(error);

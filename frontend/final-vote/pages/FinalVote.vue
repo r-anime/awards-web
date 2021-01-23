@@ -10,22 +10,32 @@
 					We should probably have something here idk.
 				</div>
 			</div>
-			<div v-if="currentCat" class="message is-lperiwinkle">
+			<div v-if="currentCat" class="message is-lperiwinkle voting-interface">
+				<transition name="fade">
+					<div v-if="!loaded.voting" class="loading-overlay">
+					</div>
+				</transition>
 				<div class="message-header">
 					{{currentCat.name}}
 				</div>
 				<div class="message-body">
-					<h4 class="has-text-centered">0/{{this.categories.length}} Voted On</h4>
-					<progress class="progress is-lperiwinkle" value="0" :max="this.categories.length">{{this.categories.length}}</progress>
-					<div class="columns">
+					<p>
+						{{currentCat.description}}
+					</p>
+					<h4 class="has-text-centered">{{this.votes.length}}/{{this.categories.length}} Voted On</h4>
+					<progress class="progress is-lperiwinkle" :value="this.votes.length" :max="this.categories.length">{{this.categories.length}}</progress>
+					<div class="columns is-multiline">
 						<div
 							class="column is-half-desktop is-full"
 							v-for="(nom, index) in currentNoms"
 							:key="index"
 						>
-							<button class="button is-primary" @click="voteSubmit(currentCat.id, nom.id, nom.anilist_id, nom.themeId)">
-								{{showGetName(nom.anilist_id)}}
-							</button>
+							<div class="fv-nominee" :class="{selected: currentSelection == nom.id}" @click="voteSubmit(currentCat.id, nom.id, nom.anilist_id, nom.themeId)">
+								<img :src="getImage(nom.anilist_id)" class="fv-nominee-img" />
+								<div class="fv-nominee-title">
+									{{getName(nom.anilist_id)}}
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -78,6 +88,14 @@ export default {
 				return false;
 			}
 		},
+		currentSelection (){
+			const _myvote = this.votes.filter(vote => vote.category_id == this.currentCat.id);
+			if (_myvote.length <= 0){
+				return -1;
+			} else {
+				return _myvote[0].nom_id;
+			}
+		},
 		currentNoms () {
 			if (this.nominations && this.nominations.length > 0){
 				return this.nominations.filter(nom => nom.categoryId == this.currentCat.id);
@@ -120,23 +138,36 @@ export default {
 			const _cat = this.categories.find(cat => cat.id === catid);
 			return _cat.entryType;
 		},
-		showGetName(anilistid){
-			if (!this.data.shows){
+		getName(anilistid, db = "shows"){
+			if (!this.data[db]){
 				return "";
 			}
-			const _show = this.data.shows.find(show => show.id === parseInt(anilistid));
+			const _show = this.data[db].find(show => show.id === parseInt(anilistid));
 			return _show.title.romanji || _show.title.english;
+		},
+		getImage(anilistid, db = "shows"){
+			if (!this.data[db]){
+				return "";
+			}
+			const _show = this.data[db].find(show => show.id === parseInt(anilistid));
+			return _show.coverImage.large;
 		},
 		async voteSubmit(cat, nom, al_id, theme = ""){
 			if (this.loaded.voting){
+				this.loaded.voting = false;
 				const _payload = {
 					category_id: cat,
 					nom_id: nom,
 					anilist_id: al_id,
 					theme_name: theme
 				};
-				this.submitVote(_payload);				
+				await this.submitVote(_payload);
 			}
+			if (this.votes.length < this.categories.length){
+				await (new Promise(resolve => setTimeout(resolve, 500)));
+				this.vote.cat = (this.vote.cat + 1)%(this.categories.length);
+			}
+			this.loaded.voting = true;
 		}
 	},
 	mounted () {
@@ -201,3 +232,56 @@ export default {
 	},
 };
 </script>
+<style lang="scss" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease;
+}
+.fade-enter, .fade-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+.voting-interface {
+	position: relative;
+
+	.loading-overlay {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+
+		background: rgba(255,255,255, 0.6);		
+		width: 100%;
+		height: 100%;
+		z-index: 883;
+	}
+}
+.fv-nominee{
+	display: flex;
+	background: rgba(255,255,255, 0.5);
+	cursor: pointer;
+	flex-direction: row;
+	height: 12rem;
+	width: 100%;
+	transition: background 300ms, border 300ms;
+
+	&.selected {
+		background: rgba(255,255,255, 1);
+		border-right: 1rem solid #6B9CE8;
+	}
+
+	.fv-nominee-img {
+		width: 8rem;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.fv-nominee-title {
+		padding: 2rem;
+		font-size: 1.2rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+</style>
