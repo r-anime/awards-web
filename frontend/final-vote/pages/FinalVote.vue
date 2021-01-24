@@ -5,17 +5,26 @@
 				<img :src="logo" class="image" style="height: 96px; margin: 0 auto;"/>
 			</div>
 			<h1 class="title is-3 has-text-light has-text-centered mb-50">Vote For Your Favourites!</h1>
-			<div class="is-centered">
+			<h4 class="has-text-centered has-text-light">Language</h4>
+			<div class="is-centered has-text-centered mx-auto">
 				<label class="switch">
 					<input v-model="romaji" type="checkbox">
-					<span class="slider round"></span>
+					<span class="slider round">
+					</span>
+					<div class="switch-inner-container">
+						<span class="switch-inner">
+							English
+						</span>
+						<span class="switch-inner">
+							Romaji
+						</span>
+					</div>
 				</label>
 			</div>
-			<div class="message is-primary">
-				<div class="message-body">
-					We should probably have something here idk.
-				</div>
-			</div>
+			<h6 class="smol is-centered mx-auto has-text-centered has-text-light">
+				Nominees will be sorted in alphabetical order.
+			</h6>
+			<br/>
 			<h4 class="has-text-centered has-text-gold">{{votes.length}}/{{categories.length}} Voted On</h4>
 			<progress class="progress is-gold" :value="votes.length" :max="categories.length">{{categories.length}}</progress>
 			<div v-if="currentCat" class="message is-lperiwinkle voting-interface">
@@ -52,6 +61,9 @@
 								<div class="fv-nominee-title">
 									{{getName(nom)}}
 								</div>
+								<svg v-if="currentSelection == nom.id" class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+									<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+								</svg>
 							</div>
 						</div>
 					</div>
@@ -214,7 +226,7 @@ export default {
 				await this.submitVote(_payload);
 			}
 			if (this.votes.length < this.categories.length) {
-				await new Promise(resolve => setTimeout(resolve, 200));
+				await new Promise(resolve => setTimeout(resolve, 800));
 				this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			}
 			this.loaded.voting = true;
@@ -231,6 +243,12 @@ export default {
 				_cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
 			}
 			return index;
+		},
+	},
+	watch: {
+		romaji(lang) {
+			console.log(lang);
+			localStorage.setItem('romaji', lang);
 		},
 	},
 	mounted () {
@@ -310,6 +328,9 @@ export default {
 			});
 			await Promise.all([_showPromise, _charPromise]);
 			this.vote.cat = this.nextEmptyCat(this.vote.cat);
+			if (localStorage.getItem('romaji')){
+				this.romaji = localStorage.getItem('romaji') == 'true';
+			}
 			this.loaded.page = true;
 			this.loaded.voting = true;
 		});
@@ -329,15 +350,22 @@ export default {
 	transition: width .3s ease;
 }
 
+@keyframes stroke {
+	100% {
+		stroke-dashoffset: 0;
+	}
+}
+
 .cat-select {
 	select {
 		border: none;
 		background: transparent;
 		color: white;
-		font-size: 1rem;
+		font-size: 1.20rem;
 
 		option {
 			color: black;
+			font-size: 1rem;
 		}
 	}
 }
@@ -352,7 +380,7 @@ export default {
 		left: 0;
 		right: 0;
 
-		background: rgba(255,255,255, 0.6);
+		background: rgba(0,0,0, 0.4);
 		width: 100%;
 		height: 100%;
 		z-index: 883;
@@ -360,6 +388,7 @@ export default {
 }
 .fv-nominee {
 	display: flex;
+	position: relative;
 	background: rgba(255,255,255, 0.8);
 	cursor: pointer;
 	flex-direction: row;
@@ -370,12 +399,35 @@ export default {
 	&.selected {
 		background: #ebfffc;
 		border-right: 1rem solid #6B9CE8;
+
+		.fv-nominee-img {
+			background-color: #000;
+			opacity: 0.5;
+		}
+	}
+
+	.checkmark {
+		position: absolute;
+		top: 0.5rem;
+		left: 0;
+		width: 4rem;
+		height: 4rem;
+		stroke-width: 3;
+		stroke: #6B9CE8;
+	}
+
+	.checkmark__check {
+		transform-origin: 50% 50%;
+		stroke-dasharray: 48;
+		stroke-dashoffset: 48;
+		animation: stroke cubic-bezier(0.650, 0.000, 0.450, 1.000) .6s forwards;
 	}
 
 	.fv-nominee-img {
 		width: 3.5rem;
 		height: 100%;
 		object-fit: cover;
+		transition: all .3s;
 	}
 
 	.fv-nominee-title {
@@ -399,14 +451,42 @@ export default {
 			padding: 2rem;
 			font-size: 1.2rem;
 		}
+
+		.checkmark {
+			top: 1rem;
+			width: 8rem;
+			height: 8rem;
+			stroke-width: 3;
+		}
 	}
 }
 /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 200px;
   height: 34px;
+
+  .switch-inner-container{
+	  position: absolute;
+	  display: flex;
+
+	  width: 100%;
+	  height: 100%;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+
+	  .switch-inner {
+		  flex: 1 1 auto;
+		  display: inline-flex;
+		  align-items: center;
+		  justify-content: center;
+
+		  transition: color .3s ease;
+	  }
+  }
 }
 
 /* Hide default HTML checkbox */
@@ -424,7 +504,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #aaa;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -433,7 +513,7 @@ export default {
   position: absolute;
   content: "";
   height: 26px;
-  width: 26px;
+  width: 96px;
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -442,7 +522,7 @@ export default {
 }
 
 input:checked + .slider {
-  background-color: #E7A924;
+  background-color: #aaa; // #E7A924;
 }
 
 input:focus + .slider {
@@ -450,9 +530,23 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(96px);
+  -ms-transform: translateX(96px);
+  transform: translateX(96px);
+}
+
+input ~ .switch-inner-container .switch-inner{
+	color: rgba(0, 0, 0, 0.6);
+	&:nth-child(1){
+		color: black;
+	}
+}
+
+input:checked ~ .switch-inner-container .switch-inner{
+	color: rgba(0, 0, 0, 0.6);
+	&:nth-child(2){
+		color: black;
+	}
 }
 
 /* Rounded sliders */
@@ -461,6 +555,10 @@ input:checked + .slider:before {
 }
 
 .slider.round:before {
-  border-radius: 50%;
+  border-radius: 13px;
+}
+
+.smol {
+	font-size: 0.75rem;
 }
 </style>
