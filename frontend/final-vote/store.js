@@ -85,7 +85,7 @@ const store = new Vuex.Store({
 			commit('UPDATE_VOTES', votes);
 		},
 		async submitVote ({commit}, data) {
-			const votes = await makeRequest('/api/votes/final/submit', 'POST', data);
+			const votes = await makeRequest('/api/final/submit', 'POST', data);
 			console.log(votes);
 			commit('UPDATE_VOTES', votes);
 		},
