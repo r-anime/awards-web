@@ -242,11 +242,11 @@ export default {
 			this.vote.cat = (this.vote.cat + val + this.categories.length) % this.categories.length;
 		},
 		nextEmptyCat (start = 0) {
-			let index = start;
+			const total = this.categories.length;
+			let index = (start+1)%total;
 			let _cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
-			while (_cat.length > 0 && index < this.categories.length) {
-				index++;
-				console.log(index);
+			while (_cat.length > 0 && index != start) {
+				index = (index+1)%total;
 				_cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
 			}
 			return index;
