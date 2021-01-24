@@ -24,6 +24,7 @@
 							<div class="has-text-centered">
 								<router-link to="/archive" class="button is-large is-success">Past Results Archive</router-link>
 								<a v-if="voting" href="/vote/" class="button is-large is-platinum">Vote Now</a>
+								<a v-if="fvoting" href="/final-vote/" class="button is-large is-platinum">Vote Now</a>
 							</div>
 						</div>
 						<div v-else>
@@ -110,6 +111,7 @@ export default {
 			logo,
 			ongoing: null,
 			voting: false,
+			fvoting: false,
 		};
 	},
 	computed: {
@@ -140,8 +142,10 @@ export default {
 		// console.log(this.locks);
 		const ongoingLock = this.locks.find(lock => lock.name === 'awards-ongoing');
 		const votingLock = this.locks.find(lock => lock.name === 'voting');
+		const fvotingLock = this.locks.find(lock => lock.name === 'fv-genre');
 		this.ongoing = ongoingLock.flag;
 		this.voting = votingLock.flag;
+		this.fvoting = fvotingLock.flag;
 		// console.log(this.voting);
 		this.loaded = true;
 	},

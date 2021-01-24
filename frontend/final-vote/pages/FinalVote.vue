@@ -65,6 +65,9 @@
 									<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
 								</svg>
 							</div>
+							<a class="fv-watch-button" v-if="nom.themeId" :href="getTheme(nom.themeId).link" target="_blank">
+								Watch<span class="is-hidden-mobile"> on animethemes.moe </span>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -173,6 +176,10 @@ export default {
 		markdownit (it) {
 			return marked(it);
 		},
+		getTheme (id) {
+			const _theme = this.themes.find(theme => theme.id === parseInt(id, 10));
+			return _theme;
+		},
 		getCatType (catid) {
 			const _cat = this.categories.find(cat => cat.id === catid);
 			return _cat.entryType;
@@ -247,7 +254,6 @@ export default {
 	},
 	watch: {
 		romaji(lang) {
-			console.log(lang);
 			localStorage.setItem('romaji', lang);
 		},
 	},
@@ -386,6 +392,22 @@ export default {
 		z-index: 883;
 	}
 }
+
+a.fv-watch-button{
+	display: block;
+	background: #6B9CE8;
+	font-weight: bold;
+	color: white !important;
+	width: 100%;
+	padding: 0.5rem;
+	text-decoration: none !important;
+	transition: opacity .2s ease;
+
+	&:hover{
+		opacity: 0.6;
+	}
+}
+
 .fv-nominee {
 	display: flex;
 	position: relative;
@@ -404,6 +426,10 @@ export default {
 			background-color: #000;
 			opacity: 0.5;
 		}
+	}
+
+	&:hover{
+		background: #ebfffc;
 	}
 
 	.checkmark {
