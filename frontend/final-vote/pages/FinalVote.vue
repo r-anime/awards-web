@@ -270,19 +270,19 @@ export default {
 			const _al = this.locks.find(lock => lock.name === 'fv-audio-prod');
 			const _ml = this.locks.find(lock => lock.name === 'fv-main');
 
-			if (_gl.flag || this.me.level > _gl.level) {
+			if (_gl.flag || this.me.level >= _gl.level) {
 				this.voteLocks.genre = true;
 			}
-			if (_cl.flag || this.me.level > _cl.level) {
+			if (_cl.flag || this.me.level >= _cl.level) {
 				this.voteLocks.character = true;
 			}
-			if (_vl.flag || this.me.level > _vl.level) {
+			if (_vl.flag || this.me.level >= _vl.level) {
 				this.voteLocks.vprod = true;
 			}
-			if (_al.flag || this.me.level > _al.level) {
+			if (_al.flag || this.me.level >= _al.level) {
 				this.voteLocks.aprod = true;
 			}
-			if (_ml.flag || this.me.level > _ml.level) {
+			if (_ml.flag || this.me.level >= _ml.level) {
 				this.voteLocks.main = true;
 			}
 
