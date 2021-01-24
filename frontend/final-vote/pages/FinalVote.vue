@@ -28,8 +28,8 @@
 			<h4 class="has-text-centered has-text-gold">{{votes.length}}/{{categories.length}} Voted On</h4>
 			<progress class="progress is-gold" :value="votes.length" :max="categories.length">{{categories.length}}</progress>
 			<div class="mobile-buttons is-hidden-tablet">
-				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>
 				<button class="button is-dperiwinkle fv-prev-nav" @click="shiftCat(-1)">Prev</button>
+				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>				
 			</div>
 			<div v-if="currentCat" class="message is-lperiwinkle voting-interface">
 				<transition name="fade">
