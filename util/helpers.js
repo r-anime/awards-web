@@ -97,7 +97,7 @@ const requestHelpers = {
 			// get the lock row
 			lockStatus = await sequelize.model('locks').findOne({where: {name: lock}});
 			// if user's level is immune to the lock, skip this code
-			if (userInfo.level <= lockStatus.level) {
+			if (userInfo.level < lockStatus.level) {
 				// if the lock applies to this user level and the lock is active, authentication fails
 				if (!lockStatus.flag) return false;
 			}

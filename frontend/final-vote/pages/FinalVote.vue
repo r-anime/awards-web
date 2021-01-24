@@ -27,6 +27,10 @@
 			<br/>
 			<h4 class="has-text-centered has-text-gold">{{votes.length}}/{{categories.length}} Voted On</h4>
 			<progress class="progress is-gold" :value="votes.length" :max="categories.length">{{categories.length}}</progress>
+			<div class="mobile-buttons is-hidden-tablet">
+				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>
+				<button class="button is-dperiwinkle fv-prev-nav" @click="shiftCat(-1)">Prev</button>
+			</div>
 			<div v-if="currentCat" class="message is-lperiwinkle voting-interface">
 				<transition name="fade">
 					<div v-if="!loaded.voting" class="loading-overlay">
@@ -345,6 +349,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mobile-buttons {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
+
+	button {
+		flex: 1 1 auto;
+		margin: 0.25rem;
+		margin-bottom: 0.5rem;
+	}
+}
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s ease;
 }
