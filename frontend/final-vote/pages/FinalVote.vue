@@ -113,7 +113,17 @@ export default {
 		currentNoms () {
 			if (this.nominations && this.nominations.length > 0) {
 				// eslint-disable-next-line eqeqeq
-				return this.nominations.filter(nom => nom.categoryId == this.currentCat.id);
+				const noms = this.nominations.filter(nom => nom.categoryId == this.currentCat.id);
+				noms.sort((a, b) => {
+					if (this.getName(a) < this.getName(b)) {
+						return -1;
+					}
+					if (this.getName(a) > this.getName(b)) {
+						return 1;
+					}
+					return 0;
+				});
+				return noms;
 			}
 			return [];
 		},
