@@ -253,7 +253,7 @@ const store = new Vuex.Store({
 		},
 		async insertNominations ({commit}, {id, data}) {
 			const noms = await makeRequest(`/api/category/${id}/nominations`, 'POST', data);
-			commit('UPDATE_NOMINATIONS', noms);
+			commit('GET_NOMINATIONS', noms);
 		},
 		async getAllNominations ({commit}) {
 			const noms = await makeRequest('/api/category/nominations/all');

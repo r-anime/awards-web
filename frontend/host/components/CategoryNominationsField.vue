@@ -36,7 +36,7 @@
                 <div class="column is-narrow field" v-if="category.entryType=='themes'">
                     <label class="label">Theme ID</label>
                     <div class="control">
-                        <select class="input" v-model="nom.themeID" @change="handleThemeChange($event)">
+                        <select class="input" v-model="nom.themeId" @change="handleThemeChange($event)">
                             <option value="-1">Select A Theme</option>
                             <option v-for="(entry, index) in alphathemes" :key="index" :value="entry.id">{{entry.title + " " + entry.themeNo}}</option>
                         </select>

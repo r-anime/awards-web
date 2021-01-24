@@ -5,6 +5,12 @@
 				<img :src="logo" class="image" style="height: 96px; margin: 0 auto;"/>
 			</div>
 			<h1 class="title is-3 has-text-light has-text-centered mb-50">Vote For Your Favourites!</h1>
+			<div class="is-centered">
+				<label class="switch">
+					<input v-model="romaji" type="checkbox">
+					<span class="slider round"></span>
+				</label>
+			</div>
 			<div class="message is-primary">
 				<div class="message-body">
 					We should probably have something here idk.
@@ -56,7 +62,7 @@
 	<div class="section" v-else-if="loaded.page && !allLocked">
 		Voting is not open yet. If you think this is a mistake, try logging out and then back in.
 	</div>
-	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else-if="!loaded">
+	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else-if="!loaded.page">
         <div class="container">
             <div class="columns is-desktop is-vcentered">
                 <div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
@@ -128,13 +134,16 @@ export default {
 			},
 			unique: {
 				shows: [],
+				characters: [],
 			},
 			data: {
 				shows: null,
+				characters: null,
 			},
 			vote: {
 				cat: 0,
 			},
+			romaji: true,
 		};
 	},
 	methods: {
@@ -146,27 +155,42 @@ export default {
 			const _cat = this.categories.find(cat => cat.id === catid);
 			return _cat.entryType;
 		},
-		getName (nom, db = 'shows') {
-			if (nom.alt_name !== ""){
-				return nom.alt_name;
+		getName (nom) {
+			if (this.currentCat.entryType === 'shows') {
+				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
+				if (this.romaji) {
+					return nom.alt_name || _show.title.romaji || _show.title.english;
+				}
+				return nom.alt_name || _show.title.english || _show.title.romaji;
+			} else if (this.currentCat.entryType === 'characters') {
+				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
+				if (this.romaji) {
+					return nom.alt_name || `${_char.name.full} (${_char.media.nodes[0].title.romaji})` || `${_char.name.full} (${_char.media.nodes[0].title.english})`;
+				}
+				return nom.alt_name || `${_char.name.full} (${_char.media.nodes[0].title.english})` || `${_char.name.full} (${_char.media.nodes[0].title.romaji})`;
+			} else if (this.currentCat.entryType === 'vas') {
+				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
+				return nom.alt_name || `${_char.name.full} (${_char.media.edges[0].voiceActors[0].name.full})`;
+			} else if (this.currentCat.entryType === 'themes') {
+				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
+				const _theme = this.themes.find(theme => theme.id === nom.themeId);
+				if (this.romaji) {
+					return nom.alt_name || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})` || `${_theme.title} (${_show.title.english} ${_theme.themeNo})`;
+				}
+				return nom.alt_name || `${_theme.title} (${_show.title.english} ${_theme.themeNo})` || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})`;
 			}
-			else if (!this.data[db]) {
-				return '';
-			}
-			const _show = this.data[db].find(show => show.id === parseInt(nom.anilist_id, 10));
-			return _show.title.romanji || _show.title.english;
 		},
-		getImage (nom, db = 'shows') {
-			if (nom.alt_name !== ""){
-				return nom.alt_name;
-			} else if (!this.data[db]) {
-				return '';
+		getImage (nom) {
+			if (this.currentCat.entryType === 'shows' || this.currentCat.entryType === 'themes') {
+				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
+				return nom.alt_img || _show.coverImage.large;
+			} else if (this.currentCat.entryType === 'characters' || this.currentCat.entryType === 'vas') {
+				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
+				return nom.alt_img || _char.image.large;
 			}
-			const _show = this.data[db].find(show => show.id === parseInt(nom.anilist_id, 10));
-			return _show.coverImage.large;
 		},
 		async voteSubmit (cat, nom, alID, theme = '') {
-			if (this.currentSelection == nom){
+			if (this.currentSelection == nom) {
 				return false;
 			}
 			if (this.loaded.voting) {
@@ -180,25 +204,24 @@ export default {
 				await this.submitVote(_payload);
 			}
 			if (this.votes.length < this.categories.length) {
-				await new Promise(resolve => setTimeout(resolve, 800));
-				// this.vote.cat = (this.vote.cat + 1) % this.categories.length;
+				await new Promise(resolve => setTimeout(resolve, 200));
 				this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			}
 			this.loaded.voting = true;
 		},
-		shiftCat (val = 1){
+		shiftCat (val = 1) {
 			this.vote.cat = (this.vote.cat + val + this.categories.length) % this.categories.length;
 		},
-		nextEmptyCat (start = 0){
+		nextEmptyCat (start = 0) {
 			let index = start;
 			let _cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
-			while (_cat.length > 0 && index < this.categories.length){
+			while (_cat.length > 0 && index < this.categories.length) {
 				index++;
 				console.log(index);
 				_cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
 			}
 			return index;
-		}
+		},
 	},
 	mounted () {
 		Promise.all([this.locks ? Promise.resolve() : this.getLocks(),
@@ -206,7 +229,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.nominations ? Promise.resolve() : this.getNominations(),
 			this.themes ? Promise.resolve() : this.getThemes(),
-			this.votes ? Promise.resolve() : this.getVotes()]).then(() => {
+			this.votes ? Promise.resolve() : this.getVotes()]).then(async () => {
 			const _gl = this.locks.find(lock => lock.name === 'fv-genre');
 			const _cl = this.locks.find(lock => lock.name === 'fv-character');
 			const _vl = this.locks.find(lock => lock.name === 'fv-visual-prod');
@@ -229,17 +252,20 @@ export default {
 				this.voteLocks.main = true;
 			}
 
-			this.nominations.forEach((nom, index) => {
+			this.nominations.forEach(nom => {
 				if (this.getCatType(nom.categoryId) === 'shows') {
 					if (!this.unique.shows.includes(nom.anilist_id)) {
 						this.unique.shows.push(nom.anilist_id);
 					}
-				} else if (this.getCatType(nom.categoryId) === 'characters') {
-
-				} else if (this.getCatType(nom.categoryId) === 'vas') {
-
+				} else if (this.getCatType(nom.categoryId) === 'characters' || this.getCatType(nom.categoryId) === 'vas') {
+					if (!this.unique.characters.includes(nom.character_id)) {
+						this.unique.characters.push(nom.character_id);
+					}
 				} else if (this.getCatType(nom.categoryId) === 'themes') {
-
+					const _theme = this.themes.find(theme => theme.id === nom.themeId);
+					if (!this.unique.shows.includes(_theme.anilistID)) {
+						this.unique.shows.push(_theme.anilistID);
+					}
 				}
 			});
 
@@ -258,27 +284,34 @@ export default {
 				}
 			});
 
-			// Add more promises here
-
-			Promise.all([_showPromise]).then(() => {
-				console.log(this.unique.shows);
-				console.log(this.data.shows);
-				console.log(this.themes);
+			const _charPromise = new Promise(async (resolve, reject) => {
+				try {
+					const _pages = Math.ceil(this.unique.characters.length / 50);
+					let _charData = [];
+					for (let i = 1; i <= _pages; i++) {
+						const returnData = await util.paginatedQuery(anilistQueries.charPaginatedQuery, this.unique.characters, i);
+						_charData = [..._charData, ...returnData.data.Page.results];
+					}
+					this.data.characters = _charData;
+					resolve();
+				} catch (error) {
+					reject(error);
+				}
 			});
-		}).finally(() => {
-			this.vote.cat = this.nextEmptyCat();
+			await Promise.all([_showPromise, _charPromise]);
+			this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			this.loaded.page = true;
 			this.loaded.voting = true;
 		});
 	},
 };
 </script>
+
 <style lang="scss" scoped>
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s ease;
 }
-.fade-enter, .fade-leave-to
-/* .component-fade-leave-active below version 2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 
@@ -315,7 +348,7 @@ export default {
 		z-index: 883;
 	}
 }
-.fv-nominee{
+.fv-nominee {
 	display: flex;
 	background: rgba(255,255,255, 0.8);
 	cursor: pointer;
@@ -345,9 +378,9 @@ export default {
 }
 
 @media (min-width: 768px) {
-	.fv-nominee{
+	.fv-nominee {
 		height: 12rem;
-		
+
 		.fv-nominee-img {
 			width: 8rem;
 		}
@@ -357,5 +390,67 @@ export default {
 			font-size: 1.2rem;
 		}
 	}
+}
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #E7A924;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #E7A924;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
 </style>

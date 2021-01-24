@@ -10,7 +10,6 @@ apiApp.get('/get', async (request, response) => {
 	}
 	try {
 		const _votes = await FinalVotes.findAll({where: {reddit_user: userName}});
-		console.log(_votes);
 		response.json(_votes);
 	} catch (error) {
 		response.error(error);
