@@ -337,7 +337,7 @@ export default {
 				}
 			});
 			await Promise.all([_showPromise, _charPromise]);
-			this.vote.cat = this.nextEmptyCat(this.vote.cat);
+			this.vote.cat = this.nextEmptyCat(this.categories.length-1);
 			if (localStorage.getItem('romaji')){
 				this.romaji = localStorage.getItem('romaji') == 'true';
 			}
