@@ -64,7 +64,7 @@
 							v-for="(nom, index) in currentNoms"
 							:key="index"
 						>
-							<div class="fv-nominee" :class="{selected: currentSelection == nom.id}" @click="voteSubmit(currentCat.id, nom.id, nom.anilist_id, nom.themeId)">
+							<div class="fv-nominee" :class="{selected: currentSelection == nom.id}" @click="voteSubmit(currentCat, nom)">
 								<img :src="getImage(nom)" class="fv-nominee-img" />
 								<div class="fv-nominee-title">
 									{{getName(nom)}}
@@ -226,22 +226,28 @@ export default {
 				return nom.alt_img || _char.image.large;
 			}
 		},
-		async voteSubmit (cat, nom, alID, theme = '') {
-			const _lastCat = this.votes.length == this.categories.length - 1;
-			// console.log(this.votes.length, this.categories.length-1);
-			// console.log(_lastCat);
-			if (this.currentSelection == nom) {
+		async voteSubmit (cat, nom) {
+			const _lastCat = this.votes.length === this.categories.length - 1;
+			if (this.currentSelection == nom.id) {
 				return false;
 			}
 			if (this.loaded.voting) {
 				this.loaded.voting = false;
-				const _payload = {
-					category_id: cat,
-					nom_id: nom,
-					anilist_id: alID,
-					theme_name: theme,
-				};
-				await this.submitVote(_payload);
+				let payload;
+				if (cat.entryType === 'shows' || cat.entryType === 'themes') {
+					payload = {
+						category_id: cat.id,
+						nom_id: nom.id,
+						anilist_id: nom.anilist_id,
+					};
+				} else if (cat.entryType === 'characters' || cat.entryType === 'vas') {
+					payload = {
+						category_id: cat.id,
+						nom_id: nom.id,
+						anilist_id: nom.character_id,
+					};
+				}
+				await this.submitVote(payload);
 			}
 			if (this.votes.length < this.categories.length) {
 				await new Promise(resolve => setTimeout(resolve, 800));

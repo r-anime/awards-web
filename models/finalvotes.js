@@ -9,5 +9,4 @@ module.exports = (sequelize, types) => sequelize.define('finalvotes', {
 	},
 	nom_id: types.INTEGER,
 	anilist_id: types.INTEGER,
-	theme_name: types.STRING,
 });
