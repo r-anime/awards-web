@@ -253,7 +253,7 @@ export default {
 				await new Promise(resolve => setTimeout(resolve, 800));
 			}
 			if (_lastCat) {
-				window.location.href = 'final-vote/thanks';
+				this.$router.push('/final-vote/thanks');
 			} else {
 				this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			}
