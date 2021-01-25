@@ -33,7 +33,6 @@ apiApp.post('/submit', async (request, response) => {
 		category_id: req.category_id,
 		nom_id: req.nom_id,
 		anilist_id: req.anilist_id,
-		theme_name: req.theme_name,
 	};
 
 	FinalVotes.findOne({where: {reddit_user: userName, category_id: req.category_id}})
@@ -80,7 +79,7 @@ apiApp.get('/totals', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to view vote summary.'});
 	}
 	try {
-		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id`, `finalvotes`.`theme_name` FROM `finalvotes` GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id`, `finalvotes`.`theme_name` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` FROM `finalvotes` GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
 		response.json(res);
 	} catch (error) {
 		response.error(error);
