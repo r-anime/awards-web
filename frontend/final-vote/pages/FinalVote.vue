@@ -516,7 +516,6 @@ a.fv-watch-button{
 
 	.fv-nominee-img {
 		width: 3.5rem;
-		height: 100%;
 		object-fit: cover;
 		transition: all .3s;
 	}
