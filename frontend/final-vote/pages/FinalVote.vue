@@ -33,7 +33,7 @@
 			<br/>
 			<div class="mobile-buttons is-hidden-tablet">
 				<button class="button is-dperiwinkle fv-prev-nav" @click="shiftCat(-1)">Prev</button>
-				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>				
+				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>
 			</div>
 			<div v-if="currentCat" class="message is-lperiwinkle voting-interface">
 				<transition name="fade">
@@ -227,7 +227,7 @@ export default {
 			}
 		},
 		async voteSubmit (cat, nom, alID, theme = '') {
-			const _lastCat = (this.votes.length == (this.categories.length-1));
+			const _lastCat = this.votes.length == this.categories.length - 1;
 			// console.log(this.votes.length, this.categories.length-1);
 			// console.log(_lastCat);
 			if (this.currentSelection == nom) {
@@ -246,8 +246,8 @@ export default {
 			if (this.votes.length < this.categories.length) {
 				await new Promise(resolve => setTimeout(resolve, 800));
 			}
-			if (_lastCat){
-				window.location.href = "final-vote/thanks";
+			if (_lastCat) {
+				window.location.href = 'final-vote/thanks';
 			} else {
 				this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			}
@@ -260,13 +260,13 @@ export default {
 			const _total = this.categories.length;
 			let index = start;
 			let _cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
-			if (_cat.length == 0){
+			if (_cat.length == 0) {
 				return index;
 			}
 			while (_cat.length > 0) {
-				index = (index+1)%_total;
+				index = (index + 1) % _total;
 				_cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
-				if (index == start){
+				if (index == start) {
 					break;
 				}
 			}
@@ -274,7 +274,7 @@ export default {
 		},
 	},
 	watch: {
-		romaji(lang) {
+		romaji (lang) {
 			localStorage.setItem('romaji', lang);
 		},
 	},
@@ -291,19 +291,19 @@ export default {
 			const _al = this.locks.find(lock => lock.name === 'fv-audio-prod');
 			const _ml = this.locks.find(lock => lock.name === 'fv-main');
 
-			if (_gl.flag || this.me.level >= _gl.level) {
+			if (_gl.flag || this.me.level > _gl.level) {
 				this.voteLocks.genre = true;
 			}
-			if (_cl.flag || this.me.level >= _cl.level) {
+			if (_cl.flag || this.me.level > _cl.level) {
 				this.voteLocks.character = true;
 			}
-			if (_vl.flag || this.me.level >= _vl.level) {
+			if (_vl.flag || this.me.level > _vl.level) {
 				this.voteLocks.vprod = true;
 			}
-			if (_al.flag || this.me.level >= _al.level) {
+			if (_al.flag || this.me.level > _al.level) {
 				this.voteLocks.aprod = true;
 			}
-			if (_ml.flag || this.me.level >= _ml.level) {
+			if (_ml.flag || this.me.level > _ml.level) {
 				this.voteLocks.main = true;
 			}
 
@@ -354,7 +354,7 @@ export default {
 				}
 			});
 			await Promise.all([_showPromise, _charPromise]);
-			if (this.votes.length === this.categories.length){
+			if (this.votes.length === this.categories.length) {
 				this.vote.cat = 0;
 			} else {
 				const _today = new Date();
@@ -364,20 +364,20 @@ export default {
 				const _mprodlock = new Date('02/04/2021');
 				const _mainlock = new Date('02/07/2021');
 				let _startcat = 0;
-				if (_today.getTime() > _mainlock.getTime()){
+				if (_today.getTime() > _mainlock.getTime()) {
 					_startcat = 0;
-				} else if (_today.getTime() > _mprodlock.getTime()){
+				} else if (_today.getTime() > _mprodlock.getTime()) {
 					_startcat = 25;
-				} else if (_today.getTime() > _vprodlock.getTime()){
+				} else if (_today.getTime() > _vprodlock.getTime()) {
 					_startcat = 15;
-				} else if (_today.getTime() > _charlock.getTime()){
+				} else if (_today.getTime() > _charlock.getTime()) {
 					_startcat = 10;
-				} else if (_today.getTime() > _genrelock.getTime()){
+				} else if (_today.getTime() > _genrelock.getTime()) {
 					_startcat = 3;
 				}
 				this.vote.cat = this.nextEmptyCat(_startcat);
 			}
-			if (localStorage.getItem('romaji')){
+			if (localStorage.getItem('romaji')) {
 				this.romaji = localStorage.getItem('romaji') == 'true';
 			}
 			this.loaded.page = true;
@@ -552,25 +552,25 @@ a.fv-watch-button{
   width: 200px;
   height: 34px;
 
-  .switch-inner-container{
-	  position: absolute;
-	  display: flex;
+	.switch-inner-container{
+		position: absolute;
+		display: flex;
 
-	  width: 100%;
-	  height: 100%;
-	  top: 0;
-	  left: 0;
-	  right: 0;
-	  bottom: 0;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
 
-	  .switch-inner {
-		  flex: 1 1 auto;
-		  display: inline-flex;
-		  align-items: center;
-		  justify-content: center;
+	.switch-inner {
+		flex: 1 1 auto;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 
-		  transition: color .3s ease;
-	  }
+		transition: color .3s ease;
+	}
   }
 }
 
