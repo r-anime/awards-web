@@ -27,6 +27,10 @@
 			<br/>
 			<h4 class="has-text-centered has-text-gold">{{votes.length}}/{{categories.length}} Voted On</h4>
 			<progress class="progress is-gold" :value="votes.length" :max="categories.length">{{categories.length}}</progress>
+			<h6 class="smol is-centered mx-auto has-text-centered has-text-light">
+				Your votes are automatically saved and submitted when you select them.
+			</h6>
+			<br/>
 			<div class="mobile-buttons is-hidden-tablet">
 				<button class="button is-dperiwinkle fv-prev-nav" @click="shiftCat(-1)">Prev</button>
 				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>				
@@ -366,6 +370,10 @@ export default {
 }
 .fade-enter, .fade-leave-to {
   opacity: 0;
+}
+
+.progress {
+	margin-bottom: 0.25rem !important;
 }
 
 .progress::-webkit-progress-value {
