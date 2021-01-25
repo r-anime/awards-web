@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 
 import MainLayout from './pages/MainLayout';
 import FinalVote from './pages/FinalVote';
+import FinalVoteEnd from './pages/FinalVoteEnd';
 
 import NotFound from '../common/NotFound';
 import Profile from '../common/Profile';
@@ -26,6 +27,11 @@ export default new VueRouter({
 				{
 					path: '',
 					component: FinalVote,
+				},
+				{
+					path: 'thanks',
+					component: FinalVoteEnd,
+					name: 'thankspage',
 				},
 				{
 					path: 'profile',

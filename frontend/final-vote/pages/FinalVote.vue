@@ -25,7 +25,7 @@
 				Nominees will be sorted in alphabetical order.
 			</h6>
 			<br/>
-			<h4 class="has-text-centered has-text-gold">{{votes.length}}/{{categories.length}} Voted On</h4>
+			<h4 class="has-text-centered has-text-gold">You've voted on {{votes.length}}/{{categories.length}} Categories</h4>
 			<progress class="progress is-gold" :value="votes.length" :max="categories.length">{{categories.length}}</progress>
 			<h6 class="smol is-centered mx-auto has-text-centered has-text-light">
 				Your votes are automatically saved and submitted when you select them.
@@ -227,6 +227,7 @@ export default {
 			}
 		},
 		async voteSubmit (cat, nom, alID, theme = '') {
+			const _lastCat = (this.votes.length === this.categories.length-1);
 			if (this.currentSelection == nom) {
 				return false;
 			}
@@ -242,7 +243,11 @@ export default {
 			}
 			if (this.votes.length < this.categories.length) {
 				await new Promise(resolve => setTimeout(resolve, 800));
-				this.vote.cat = this.nextEmptyCat(this.vote.cat);
+				if (_lastCat){
+					window.location.href = "final-vote/thanks";
+				} else {
+					this.vote.cat = this.nextEmptyCat(this.vote.cat);
+				}
 			}
 			this.loaded.voting = true;
 		},
@@ -250,12 +255,18 @@ export default {
 			this.vote.cat = (this.vote.cat + val + this.categories.length) % this.categories.length;
 		},
 		nextEmptyCat (start = 0) {
-			const total = this.categories.length;
-			let index = (start+1)%total;
+			const _total = this.categories.length;
+			let index = start;
 			let _cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
-			while (_cat.length > 0 && index != start) {
-				index = (index+1)%total;
+			if (_cat.length == 0){
+				return index;
+			}
+			while (_cat.length > 0) {
+				index = (index+1)%_total;
 				_cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
+				if (index == start){
+					break;
+				}
 			}
 			return index;
 		},
@@ -341,7 +352,29 @@ export default {
 				}
 			});
 			await Promise.all([_showPromise, _charPromise]);
-			this.vote.cat = this.nextEmptyCat(this.categories.length-1);
+			if (this.votes.length === this.categories.length){
+				this.vote.cat = 0;
+			} else {
+				const _today = new Date();
+				const _genrelock = new Date('01/25/2021');
+				const _charlock = new Date('01/28/2021');
+				const _vprodlock = new Date('02/01/2021');
+				const _mprodlock = new Date('02/04/2021');
+				const _mainlock = new Date('02/07/2021');
+				let _startcat = 0;
+				if (_today.getTime() > _mainlock.getTime()){
+					_startcat = 0;
+				} else if (_today.getTime() > _mprodlock.getTime()){
+					_startcat = 25;
+				} else if (_today.getTime() > _vprodlock.getTime()){
+					_startcat = 15;
+				} else if (_today.getTime() > _charlock.getTime()){
+					_startcat = 10;
+				} else if (_today.getTime() > _genrelock.getTime()){
+					_startcat = 3;
+				}
+				this.vote.cat = this.nextEmptyCat(_startcat);
+			}
 			if (localStorage.getItem('romaji')){
 				this.romaji = localStorage.getItem('romaji') == 'true';
 			}
