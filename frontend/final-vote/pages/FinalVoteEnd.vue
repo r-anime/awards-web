@@ -8,7 +8,7 @@
 			<div class="message is-lperiwinkle">
 				<div class="message-body">
 					<div class="pl-5 pr-5">
-						Thanks for voting! We plan on hosting a results livestream towards the end of February, so stay tuned and check <a href="https://www.reddit.com/r/anime/"> r/anime </a> for more information!
+						Thanks for voting! We plan on hosting a results livestream towards the end of February, so stay tuned and check <a href="https://www.reddit.com/r/anime/">r/anime</a> for more information!
 					</div>
 					<br>
 					<br>

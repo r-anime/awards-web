@@ -227,7 +227,9 @@ export default {
 			}
 		},
 		async voteSubmit (cat, nom, alID, theme = '') {
-			const _lastCat = (this.votes.length === this.categories.length-1);
+			const _lastCat = (this.votes.length == (this.categories.length-1));
+			// console.log(this.votes.length, this.categories.length-1);
+			// console.log(_lastCat);
 			if (this.currentSelection == nom) {
 				return false;
 			}
@@ -243,11 +245,11 @@ export default {
 			}
 			if (this.votes.length < this.categories.length) {
 				await new Promise(resolve => setTimeout(resolve, 800));
-				if (_lastCat){
-					window.location.href = "final-vote/thanks";
-				} else {
-					this.vote.cat = this.nextEmptyCat(this.vote.cat);
-				}
+			}
+			if (_lastCat){
+				window.location.href = "final-vote/thanks";
+			} else {
+				this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			}
 			this.loaded.voting = true;
 		},
