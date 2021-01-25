@@ -112,14 +112,11 @@ export default {
 			'getAllNominations',
 		]),
 		votesFor (category) {
-			let allVotes = [];
-			if (category.entryType === 'themes') {
-				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
-			} else {
-				allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
-			}
+			const allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
 			const entries = [];
 			for (const vote of allVotes) {
+				console.log(vote.anilist_id);
+				console.log(vote.nom_id);
 				if (category.entryType === 'themes') {
 					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 					const requiredNom = this.allNoms.find(nom => nom.id === vote.nom_id);
@@ -128,7 +125,6 @@ export default {
 						entries.push({
 							vote_count: vote.vote_count,
 							name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
-							image: `${requiredShow.coverImage.large}`,
 						});
 					}
 				} else if (category.entryType === 'shows') {
@@ -137,7 +133,6 @@ export default {
 						entries.push({
 							vote_count: vote.vote_count,
 							name: `${requiredShow.title.romaji}`,
-							image: `${requiredShow.coverImage.large}`,
 						});
 					}
 				} else if (category.entryType === 'characters') {
@@ -148,7 +143,6 @@ export default {
 					entries.push({
 						vote_count: vote.vote_count,
 						name: `${requiredChar.name.full}`,
-						image: `${requiredChar.image.large}`,
 					});
 				} else if (category.entryType === 'vas') {
 					const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
@@ -160,14 +154,12 @@ export default {
 							entries.push({
 								vote_count: vote.vote_count,
 								name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
-								image: `${requiredChar.image.large}`,
 							});
 						}
 					} else {
 						entries.push({
 							vote_count: vote.vote_count,
 							name: `${requiredChar.name.full}`,
-							image: `${requiredChar.image.large}`,
 						});
 					}
 				}
@@ -337,9 +329,11 @@ export default {
 							const allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
 							const entries = [];
 							for (const vote of allVotes) {
+								console.log(category.entryType);
 								if (category.entryType === 'themes') {
 									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-									const requiredTheme = this.themes.find(theme => theme.id === vote.anilist_id);
+									const requiredNom = this.allNoms.find(nom => nom.id === vote.nom_id);
+									const requiredTheme = this.themes.find(theme => theme.id === requiredNom.themeId);
 									if (requiredShow && requiredTheme) {
 										entries.push({
 											vote_count: vote.vote_count,

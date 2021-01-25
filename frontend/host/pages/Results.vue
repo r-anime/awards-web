@@ -154,68 +154,6 @@ export default {
 			'getLocks',
 			'getMe',
 		]),
-		votesFor (category) {
-			let allVotes = [];
-			if (category.entryType === 'themes') {
-				allVotes = this.opedTotals.filter(vote => vote.category_id === category.id);
-			} else {
-				allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
-			}
-			const entries = [];
-			for (const vote of allVotes) {
-				if (category.entryType === 'themes') {
-					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-					const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
-					if (requiredShow && requiredTheme) {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
-							image: `${requiredShow.coverImage.large}`,
-						});
-					}
-				} else if (category.entryType === 'shows') {
-					const requiredShow = this.showData.find(show => show.id === vote.entry_id);
-					if (requiredShow) {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredShow.title.romaji}`,
-							image: `${requiredShow.coverImage.large}`,
-						});
-					}
-				} else if (category.entryType === 'characters') {
-					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					if (!requiredChar) {
-						continue;
-					}
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredChar.name.full}`,
-						image: `${requiredChar.image.large}`,
-					});
-				} else if (category.entryType === 'vas') {
-					const requiredChar = this.charData.find(char => char.id === vote.entry_id);
-					if (!requiredChar) {
-						continue;
-					}
-					if (requiredChar.media.edges.length) {
-						if (requiredChar.media.edges[0].voiceActors.length) {
-							entries.push({
-								vote_count: vote.vote_count,
-								name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
-								image: `${requiredChar.image.large}`,
-							});
-						}
-					} else {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredChar.name.full}`,
-							image: `${requiredChar.image.large}`,
-						});
-					}
-				}
-			}
-			return entries;
-		},
 		fetchShows (page) {
 			return new Promise(async (resolve, reject) => {
 				try {
