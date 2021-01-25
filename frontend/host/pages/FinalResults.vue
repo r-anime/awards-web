@@ -111,61 +111,6 @@ export default {
 			'getMe',
 			'getAllNominations',
 		]),
-		votesFor (category) {
-			const allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
-			const entries = [];
-			for (const vote of allVotes) {
-				console.log(vote.anilist_id);
-				console.log(vote.nom_id);
-				if (category.entryType === 'themes') {
-					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-					const requiredNom = this.allNoms.find(nom => nom.id === vote.nom_id);
-					const requiredTheme = this.themes.find(theme => theme.id === requiredNom.themeId);
-					if (requiredShow && requiredTheme) {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
-						});
-					}
-				} else if (category.entryType === 'shows') {
-					const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-					if (requiredShow) {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredShow.title.romaji}`,
-						});
-					}
-				} else if (category.entryType === 'characters') {
-					const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
-					if (!requiredChar) {
-						continue;
-					}
-					entries.push({
-						vote_count: vote.vote_count,
-						name: `${requiredChar.name.full}`,
-					});
-				} else if (category.entryType === 'vas') {
-					const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
-					if (!requiredChar) {
-						continue;
-					}
-					if (requiredChar.media.edges.length) {
-						if (requiredChar.media.edges[0].voiceActors.length) {
-							entries.push({
-								vote_count: vote.vote_count,
-								name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
-							});
-						}
-					} else {
-						entries.push({
-							vote_count: vote.vote_count,
-							name: `${requiredChar.name.full}`,
-						});
-					}
-				}
-			}
-			return entries;
-		},
 		fetchShows (page) {
 			return new Promise(async (resolve, reject) => {
 				try {
