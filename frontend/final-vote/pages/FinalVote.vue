@@ -365,10 +365,11 @@ export default {
 			} else {
 				const _today = new Date();
 				const _genrelock = new Date('01/25/2021');
-				const _charlock = new Date('01/28/2021');
-				const _vprodlock = new Date('02/01/2021');
-				const _mprodlock = new Date('02/04/2021');
-				const _mainlock = new Date('02/07/2021');
+				// We are using UNIX timestamps here that basically translate to 13:00 on a specific day (GMT) which is the time we post threads at
+				const _charlock = new Date(1611838800000); // 01/28/2021
+				const _vprodlock = new Date(1612184400000); // 02/01/2021
+				const _mprodlock = new Date(1612443600000); // 02/04/2021
+				const _mainlock = new Date(1612702800000); // 02/07/2021
 				let _startcat = 0;
 				if (_today.getTime() > _mainlock.getTime()) {
 					_startcat = 0;
