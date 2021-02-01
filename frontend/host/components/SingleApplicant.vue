@@ -122,7 +122,7 @@ export default {
 		header () {
 			if (this.lock.flag || this.me.level > this.lock.level) {
 				const found = this.applicants.find(applicant => applicant.id === parseInt(this.applicantID, 10));
-				return `${found.user.reddit}'s Application`;
+				return found.user ? `${found.user.reddit}'s Application` : found.id;
 			}
 			return `Applicant ${this.applicantID}'s Application`;
 		},
