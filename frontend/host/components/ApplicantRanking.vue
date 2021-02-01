@@ -84,16 +84,16 @@ export default {
 			const nameLock = this.locks.find(lock => lock.name === 'app-names');
 			if (nameLock.flag || this.me.level > nameLock.level) {
 				this.locked = false;
-				const allApplicants = [...new Set(this.answers.map(answer => answer.applicant.user.reddit))];
+				const allApplicants = [...new Set(this.answers.map(answer => answer.applicant.id))];
 				for (const applicant of allApplicants) {
-					const answers = this.answers.filter(answer => answer.applicant.user.reddit === applicant && answer.question.type === 'essay');
+					const answers = this.answers.filter(answer => answer.applicant.id === applicant && answer.question.type === 'essay');
 					this.rankedList.push({
 						id: answers[0].applicant.id,
-						name: applicant,
+						name: answers[0].applicant.user ? answers[0].applicant.user.reddit : answers[0].applicant.id,
 						avgScore: answers.filter(answer => answer.scores.length).reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / this.questions.length,
 						avgScoreNoTheme: answers.filter(answer => answer.scores.length && answer.question.question_group.name !== 'OP/ED').reduce((accumulator, answer) => accumulator + Math.round(answer.scores.reduce((accum, score1) => accum + score1.score, 0) / answer.scores.length), 0) / (this.questions.length - 1),
-						noOfCats: this.jurors.filter(juror => juror.name === applicant).length,
-						categories: this.jurors.filter(juror => juror.name === applicant).map(juror => juror.category.name),
+						noOfCats: answers[0].applicant.user ? this.jurors.filter(juror => juror.name === answers[0].applicant.user.reddit).length : 'Unknown',
+						categories: answers[0].applicant.user ? this.jurors.filter(juror => juror.name === answers[0].applicant.user.reddit).map(juror => juror.category.name) : 'Unknown',
 					});
 				}
 				this.rankedList.sort((a, b) => b.avgScore - a.avgScore);

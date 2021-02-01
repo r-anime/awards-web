@@ -178,8 +178,8 @@ export default {
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
-			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
-			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
+			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
 			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
 			console.log(this.fourJurors);
 			for (const applicant of this.threesApplicants) {
@@ -237,8 +237,8 @@ export default {
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
-			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user.reddit))];
-			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user.reddit))];
+			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
+			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
 			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
 			console.log(this.fourJurors);
 			for (const applicant of this.threesApplicants) {
