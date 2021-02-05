@@ -1,7 +1,7 @@
 # [/r/anime Awards Website](https://animeawards.moe/) Mk. II
 
-[![dependency status](https://img.shields.io/david/Geo1088/awards-nomination-mkii.svg)](https://david-dm.org/geo1088/awards-nomination-mkii)
-[![devDependencies Status](https://david-dm.org/geo1088/awards-nomination-mkii/dev-status.svg)](https://david-dm.org/geo1088/awards-nomination-mkii?type=dev)
+[![dependency status](https://img.shields.io/david/r-anime/awards-web.svg)](https://david-dm.org/r-anime/awards-web)
+[![devDependencies Status](https://david-dm.org/r-anime/awards-web/dev-status.svg)](https://david-dm.org/r-anime/awards-web?type=dev)
 ![built with Vue.js](https://img.shields.io/badge/built_with_Vue.js-4FC08D.svg?logo=vue.js&logoColor=fff) [![discord server](https://img.shields.io/discord/682788356265869322.svg)](https://discord.gg/27YaM6W)
 
 Uses [this project](https://github.com/JoseiToAoiTori/animethemes-scraper) to grab themes from /r/AnimeThemes.
