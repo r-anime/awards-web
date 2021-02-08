@@ -48,6 +48,7 @@
 							</div>
 						</div>
 					</div>
+					<h2 class="title is-6">Voter Count: {{votes[category.id].reduce((accum, currentVote) => accum + currentVote.vote_count, 0)}}</h2>
 				</div>
 			</div>
         </div>
