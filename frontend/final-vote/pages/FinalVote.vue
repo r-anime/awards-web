@@ -155,10 +155,10 @@ export default {
 		return {
 			logo: logo2020,
 			voteLocks: {
-				genre: true,
-				character: true,
-				vprod: true,
-				aprod: true,
+				genre: false,
+				character: false,
+				vprod: false,
+				aprod: false,
 				main: true,
 			},
 			loaded: {
@@ -312,7 +312,11 @@ export default {
 			if (_ml.flag || this.me.level > _ml.level) {
 				this.voteLocks.main = true;
 			}
-
+			if (this.allLocked) {
+				this.loaded.page = true;
+				this.loaded.voting = true;
+				return;
+			}
 			this.nominations.forEach(nom => {
 				if (this.getCatType(nom.categoryId) === 'shows') {
 					if (!this.unique.shows.includes(nom.anilist_id)) {
