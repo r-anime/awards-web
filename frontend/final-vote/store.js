@@ -77,9 +77,20 @@ const store = new Vuex.Store({
 			const themes = await makeRequest('/api/themes');
 			commit('UPDATE_THEMES', themes);
 		},
-		async getVotes ({commit}) {
-			const votes = await makeRequest('/api/final/get');
-			commit('UPDATE_VOTES', votes);
+		async getVotes ({commit, state, dispatch}) {
+			if (!state.locks) {
+				await dispatch('getLocks');
+			}
+			if (!state.me) {
+				await dispatch('getMe');
+			}
+			const _gl = this.locks.find(lock => lock.name === 'fv-genre');
+			if (_gl.flag || state.me.level > _gl.level) {
+				const votes = await makeRequest('/api/final/get');
+				commit('UPDATE_VOTES', votes);
+			} else {
+				commit('UPDATE_VOTES', []);
+			}
 		},
 		async submitVote ({commit}, data) {
 			const votes = await makeRequest('/api/final/submit', 'POST', data);
