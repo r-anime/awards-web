@@ -84,7 +84,7 @@ const store = new Vuex.Store({
 			if (!state.me) {
 				await dispatch('getMe');
 			}
-			const _gl = this.locks.find(lock => lock.name === 'fv-genre');
+			const _gl = state.locks.find(lock => lock.name === 'fv-genre');
 			if (_gl.flag || state.me.level > _gl.level) {
 				const votes = await makeRequest('/api/final/get');
 				commit('UPDATE_VOTES', votes);
