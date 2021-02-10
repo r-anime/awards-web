@@ -315,84 +315,83 @@ export default {
 			if (this.allLocked) {
 				this.loaded.page = true;
 				this.loaded.voting = true;
-				return;
-			}
-			this.nominations.forEach(nom => {
-				if (this.getCatType(nom.categoryId) === 'shows') {
-					if (!this.unique.shows.includes(nom.anilist_id)) {
-						this.unique.shows.push(nom.anilist_id);
-					}
-				} else if (this.getCatType(nom.categoryId) === 'characters' || this.getCatType(nom.categoryId) === 'vas') {
-					if (!this.unique.characters.includes(nom.character_id)) {
-						this.unique.characters.push(nom.character_id);
-					}
-				} else if (this.getCatType(nom.categoryId) === 'themes') {
-					const _theme = this.themes.find(theme => theme.id === nom.themeId);
-					if (!this.unique.shows.includes(_theme.anilistID)) {
-						this.unique.shows.push(_theme.anilistID);
-					}
-				}
-			});
-
-			const _showPromise = new Promise(async (resolve, reject) => {
-				try {
-					const _pages = Math.ceil(this.unique.shows.length / 50);
-					let _showdata = [];
-					for (let i = 1; i <= _pages; i++) {
-						const returnData = await util.paginatedQuery(anilistQueries.showPaginatedQuery, this.unique.shows, i);
-						_showdata = [..._showdata, ...returnData.data.Page.results];
-					}
-					this.data.shows = _showdata;
-					resolve();
-				} catch (error) {
-					reject(error);
-				}
-			});
-
-			const _charPromise = new Promise(async (resolve, reject) => {
-				try {
-					const _pages = Math.ceil(this.unique.characters.length / 50);
-					let _charData = [];
-					for (let i = 1; i <= _pages; i++) {
-						const returnData = await util.paginatedQuery(anilistQueries.charPaginatedQuery, this.unique.characters, i);
-						_charData = [..._charData, ...returnData.data.Page.results];
-					}
-					this.data.characters = _charData;
-					resolve();
-				} catch (error) {
-					reject(error);
-				}
-			});
-			await Promise.all([_showPromise, _charPromise]);
-			if (this.votes.length === this.categories.length) {
-				this.vote.cat = 0;
 			} else {
-				const _today = new Date();
-				const _genrelock = new Date('01/25/2021');
-				// We are using UNIX timestamps here that basically translate to 13:00 on a specific day (GMT) which is the time we post threads at
-				const _charlock = new Date(1611838800000); // 01/28/2021
-				const _vprodlock = new Date(1612184400000); // 02/01/2021
-				const _mprodlock = new Date(1612443600000); // 02/04/2021
-				const _mainlock = new Date(1612702800000); // 02/07/2021
-				let _startcat = 0;
-				if (_today.getTime() > _mainlock.getTime()) {
-					_startcat = 0;
-				} else if (_today.getTime() > _mprodlock.getTime()) {
-					_startcat = 25;
-				} else if (_today.getTime() > _vprodlock.getTime()) {
-					_startcat = 15;
-				} else if (_today.getTime() > _charlock.getTime()) {
-					_startcat = 10;
-				} else if (_today.getTime() > _genrelock.getTime()) {
-					_startcat = 3;
+				this.nominations.forEach(nom => {
+					if (this.getCatType(nom.categoryId) === 'shows') {
+						if (!this.unique.shows.includes(nom.anilist_id)) {
+							this.unique.shows.push(nom.anilist_id);
+						}
+					} else if (this.getCatType(nom.categoryId) === 'characters' || this.getCatType(nom.categoryId) === 'vas') {
+						if (!this.unique.characters.includes(nom.character_id)) {
+							this.unique.characters.push(nom.character_id);
+						}
+					} else if (this.getCatType(nom.categoryId) === 'themes') {
+						const _theme = this.themes.find(theme => theme.id === nom.themeId);
+						if (!this.unique.shows.includes(_theme.anilistID)) {
+							this.unique.shows.push(_theme.anilistID);
+						}
+					}
+				});
+				const _showPromise = new Promise(async (resolve, reject) => {
+					try {
+						const _pages = Math.ceil(this.unique.shows.length / 50);
+						let _showdata = [];
+						for (let i = 1; i <= _pages; i++) {
+							const returnData = await util.paginatedQuery(anilistQueries.showPaginatedQuery, this.unique.shows, i);
+							_showdata = [..._showdata, ...returnData.data.Page.results];
+						}
+						this.data.shows = _showdata;
+						resolve();
+					} catch (error) {
+						reject(error);
+					}
+				});
+
+				const _charPromise = new Promise(async (resolve, reject) => {
+					try {
+						const _pages = Math.ceil(this.unique.characters.length / 50);
+						let _charData = [];
+						for (let i = 1; i <= _pages; i++) {
+							const returnData = await util.paginatedQuery(anilistQueries.charPaginatedQuery, this.unique.characters, i);
+							_charData = [..._charData, ...returnData.data.Page.results];
+						}
+						this.data.characters = _charData;
+						resolve();
+					} catch (error) {
+						reject(error);
+					}
+				});
+				await Promise.all([_showPromise, _charPromise]);
+				if (this.votes.length === this.categories.length) {
+					this.vote.cat = 0;
+				} else {
+					const _today = new Date();
+					const _genrelock = new Date('01/25/2021');
+					// We are using UNIX timestamps here that basically translate to 13:00 on a specific day (GMT) which is the time we post threads at
+					const _charlock = new Date(1611838800000); // 01/28/2021
+					const _vprodlock = new Date(1612184400000); // 02/01/2021
+					const _mprodlock = new Date(1612443600000); // 02/04/2021
+					const _mainlock = new Date(1612702800000); // 02/07/2021
+					let _startcat = 0;
+					if (_today.getTime() > _mainlock.getTime()) {
+						_startcat = 0;
+					} else if (_today.getTime() > _mprodlock.getTime()) {
+						_startcat = 25;
+					} else if (_today.getTime() > _vprodlock.getTime()) {
+						_startcat = 15;
+					} else if (_today.getTime() > _charlock.getTime()) {
+						_startcat = 10;
+					} else if (_today.getTime() > _genrelock.getTime()) {
+						_startcat = 3;
+					}
+					this.vote.cat = this.nextEmptyCat(_startcat);
 				}
-				this.vote.cat = this.nextEmptyCat(_startcat);
+				if (localStorage.getItem('romaji')) {
+					this.romaji = localStorage.getItem('romaji') == 'true';
+				}
+				this.loaded.page = true;
+				this.loaded.voting = true;
 			}
-			if (localStorage.getItem('romaji')) {
-				this.romaji = localStorage.getItem('romaji') == 'true';
-			}
-			this.loaded.page = true;
-			this.loaded.voting = true;
 		});
 	},
 };
