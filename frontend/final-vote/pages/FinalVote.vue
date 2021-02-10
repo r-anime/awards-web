@@ -1,5 +1,5 @@
 <template>
-	<section class="section has-background-dark pb-0 pt-0" v-if="loaded.page && allLocked">
+	<section class="section has-background-dark pb-0 pt-0" v-if="loaded.page && !allLocked">
 		<div class="container application-container pt-30 pb-30 mt-0 mb-0">
 			<div class="is-centered">
 				<img :src="logo" class="image" style="height: 96px; margin: 0 auto;"/>
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 	</section>
-	<div class="section" v-else-if="loaded.page && !allLocked">
+	<div class="section" v-else-if="loaded.page && allLocked">
 		Voting is not open yet. If you think this is a mistake, try logging out and then back in.
 	</div>
 	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else-if="!loaded.page">
@@ -117,7 +117,7 @@ export default {
 			'votes',
 		]),
 		allLocked () {
-			return this.voteLocks.genre || this.voteLocks.character || this.voteLocks.vprod || this.voteLocks.aprod || this.voteLocks.main;
+			return !this.voteLocks.genre || !this.voteLocks.character || !this.voteLocks.vprod || !this.voteLocks.aprod || !this.voteLocks.main;
 		},
 		currentCat () {
 			if (this.categories && this.categories.length > 0) {
@@ -159,7 +159,7 @@ export default {
 				character: false,
 				vprod: false,
 				aprod: false,
-				main: true,
+				main: false,
 			},
 			loaded: {
 				page: false,
@@ -313,6 +313,9 @@ export default {
 				this.voteLocks.main = true;
 			}
 			if (this.allLocked) {
+				this.loaded.page = true;
+				this.loaded.voting = true;
+			} else {
 				this.nominations.forEach(nom => {
 					if (this.getCatType(nom.categoryId) === 'shows') {
 						if (!this.unique.shows.includes(nom.anilist_id)) {
@@ -386,9 +389,6 @@ export default {
 				if (localStorage.getItem('romaji')) {
 					this.romaji = localStorage.getItem('romaji') == 'true';
 				}
-				this.loaded.page = true;
-				this.loaded.voting = true;
-			} else {
 				this.loaded.page = true;
 				this.loaded.voting = true;
 			}
