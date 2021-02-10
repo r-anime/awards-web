@@ -313,9 +313,6 @@ export default {
 				this.voteLocks.main = true;
 			}
 			if (this.allLocked) {
-				this.loaded.page = true;
-				this.loaded.voting = true;
-			} else {
 				this.nominations.forEach(nom => {
 					if (this.getCatType(nom.categoryId) === 'shows') {
 						if (!this.unique.shows.includes(nom.anilist_id)) {
@@ -389,6 +386,9 @@ export default {
 				if (localStorage.getItem('romaji')) {
 					this.romaji = localStorage.getItem('romaji') == 'true';
 				}
+				this.loaded.page = true;
+				this.loaded.voting = true;
+			} else {
 				this.loaded.page = true;
 				this.loaded.voting = true;
 			}
