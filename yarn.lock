@@ -1695,6 +1695,11 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
+defu@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/defu/-/defu-2.0.4.tgz#09659a6e87a8fd7178be13bd43e9357ebf6d1c46"
+  integrity sha512-G9pEH1UUMxShy6syWk01VQSRVs3CDWtlxtZu7A+NyqjxaCA4gSlWAKDBx6QiUEKezqS8+DUlXLI14Fp05Hmpwg==
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -4438,6 +4443,11 @@ pkg-dir@^4.1.0:
   dependencies:
     find-up "^4.0.0"
 
+plausible-tracker@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/plausible-tracker/-/plausible-tracker-0.3.1.tgz#dd4e1f59cafc7bf1b00e30890567287b3f204efd"
+  integrity sha512-oXnVyfTF2gzkfK3iOZCRZEnf8sH4gBASaJhY+clwWW1orIybfQpfbgg4U5Bwj5dW/4iNstM4tx4jMCVUfMCUbg==
+
 polka@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/polka/-/polka-0.5.2.tgz#588bee0c5806dbc6c64958de3a1251860e9f2e26"
@@ -5988,6 +5998,14 @@ vue-loader@^15.9.3:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-plausible@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/vue-plausible/-/vue-plausible-1.1.2.tgz#8ad4cda6a4932a04f4a6d84616cdea80ced96191"
+  integrity sha512-qK9ktd4Fyc6L2+MlKIEH6jJl//vaMcOiOTOmdVsRJM12mMJIMFy8doCKHEA/n1Ot+VDhe7gSiFhzzFQgn6crzA==
+  dependencies:
+    defu "^2.0.4"
+    plausible-tracker "^0.3.1"
 
 vue-router@^3.4.2:
   version "3.4.3"

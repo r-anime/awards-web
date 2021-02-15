@@ -132,12 +132,24 @@ export default {
 		},
 		emitNomModal (nom) {
 			const ranking = this.getPRgivenShow(nom);
+			const _catname = this.category.name;
+			const _nomid = nom.id;
+			const _juryrank = nom.id;
+
+			this.$plausible.trackEvent('view-nom', {props: { anilistid: _nomid, category: _catname, juryrank: _juryrank, publicrank: ranking}});
 			this.$emit('nomModal', nom, ranking, this.category);
 		},
 		emitHMModal (hm) {
+			const _hmname = hm.name;
+
+			this.$plausible.trackEvent('view-hm', {props: { name: _hmname}});
 			this.$emit('hmModal', hm, this.category);
 		},
 		emitCatModal () {
+			const _catname = this.category.name;
+			const _cattype = this.category.entryType;
+
+			this.$plausible.trackEvent('view-category', {props: { name: _catname, type: _cattype}});
 			this.$emit('hmModal', null, this.category);
 		},
 		markdownit (writeup) {
