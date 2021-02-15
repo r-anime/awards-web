@@ -19,46 +19,35 @@
             @nomModal="emitNomModal"
         />
         <section class="hero has-background-black-bis">
-            <div class="hero-body">
+            <div class="ranking-container">
                 <div class="container">
-                    <div class="tabs is-fullwidth has-text-centered has-text-grey">
+					<h5 class="has-text-centered has-text-light is-size-5">Rankings</h5>
+                    <div class="tabs is-fullwidth has-text-centered has-text-grey">						
                         <ul >
                             <li @click="juryOrder" class="is-gold" :class="{'is-active': focus === 'jury'}">
-                                Jury Rankings
+                                Jury
                             </li>
                             <li @click="publicOrder" class="is-periwinkle" :class="{'is-active': focus === 'public'}">
-                                Public Rankings
+                                Public
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <div class="categoryNominationCards columns is-gapless is-marginless" :class="{'is-hidden': focus === 'jury'}">
-                            <div class="categoryRankCard column" v-for="(nom, index) in nomPublicOrder"
-                            :key="index" @click="emitNomModal(nom)">
-                                <div class="categoryNominationItem" >
-                                    <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
-                                </div>
-								<div class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</div>
-								<button class="button is-small is-platinum is-outlined is-hidden-tablet mb-10">
-									<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
-									Read Nominee Writeup
-								</button>
-                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
-                            </div>
-                        </div>
-                        <div class="categoryNominationCards columns is-gapless" :class="{'is-hidden': focus === 'public'}">
-                            <div class="categoryRankCard column" v-for="(nom, index) in nomJuryOrder"
-                            :key="index" @click="emitNomModal(nom)">
-                                <div class="categoryNominationItem" >
-                                    <category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
-                                </div>
-								<div class="categoryRank has-text-platinum">{{index + 1}}</div>
-								<button class="button is-small is-platinum is-outlined is-hidden-tablet mb-10">
-									<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
-									Read Nominee Writeup
-								</button>
-                                <p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
-                            </div>
+                        <div class="categoryNominationCards columns is-gapless is-marginless">
+							<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless">
+								<div class="categoryRankCard column" v-for="(nom, index) in nomCurrentOrder"
+								:key="nom.id" @click="emitNomModal(nom)">
+									<div class="categoryNominationItem" >
+										<category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
+									</div>
+									<div class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</div>
+									<button class="button is-small is-platinum is-outlined is-hidden-tablet mb-10">
+										<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
+										Read Nominee Writeup
+									</button>
+									<p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
+								</div>
+							</transition-group>
                         </div>
                     </div>
                 </div>
@@ -126,6 +115,13 @@ export default {
 			}
 			return ranking;
 		},
+		nomCurrentOrder () {
+			if (this.focus === 'public'){
+				return this.nomPublicOrder;
+			} else {
+				return this.nomJuryOrder;
+			}
+		}
 	},
 	methods: {
 		publicOrder () {
@@ -151,6 +147,14 @@ export default {
 			const index = this.nomPublicOrder.findIndex(nom => nom.id === nominee.id);
 			return this.nomPublicRankings[index];
 		},
+		beforeLeave(el) {
+			const {marginLeft, marginTop, width, height} = window.getComputedStyle(el)
+
+			el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`
+			el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`
+			el.style.width = width
+			el.style.height = height
+		}
 	},
 };
 </script>

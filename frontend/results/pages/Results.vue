@@ -64,14 +64,14 @@
 									({{results.themes[modalNom.id].split(/ - /gm)[0]}})
 								</span>
 							</h3>
-							<p class="is-marginless">
+							<div class="is-marginless">
 								<div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
 									<div v-if="modalNom.percent > 0" class="column is-narrow"> <img class="image" :src="publicIcon" /> </div>
 									<div v-if="modalNom.percent > 0" class="column "> Public {{prettifyRank(modalRank)}} ({{(modalNom.percent*100).toFixed(2)}}%) </div>
 									<div v-if="modalNom.jury > 0" class="column is-narrow"> <img class="image" :src="juryIcon" /> </div>
 									<div v-if="modalNom.jury > 0" class="column"> Jury {{prettifyRank(modalNom.jury)}} </div>
 								</div>
-							</p>
+							</div>
 							<p class="awardsStaffCredit has-text-llperiwinkle is-size-6" v-html="markdownit(modalNom.staff)">
 							</p>
 							<div class="awardsModalBody" v-html="markdownit(modalNom.writeup)">

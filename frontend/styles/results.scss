@@ -33,6 +33,10 @@ html, body{
     overflow-x: hidden;
 }
 
+.ranking-container{
+    padding: 2rem;
+}
+
 .sectionIcon, .categorySubHeadItemIcon{
     width: 6rem;
     flex-shrink: 0;
@@ -444,3 +448,24 @@ footer {
     }
 }
 
+.categoryRankCard {
+    flex: 1;
+    width: 100%;
+    transform-origin: center center;
+    transition: all 1s;
+}
+.nominees-enter, .nominees-leave-to
+/* .list-complete-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    width: 0;
+    flex: 0;
+    flex-basis: 0;
+    overflow: hidden;
+    transform: scaleX(0);
+}
+.nominees-enter-active {
+    transition-delay: 0.5s;
+}
+.nominees-leave-active {
+    // position: absolute;
+}
