@@ -12,6 +12,7 @@ async function makeQuery (query, idArr) {
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
 		},
+		mode: 'no-cors',
 		body: JSON.stringify({
 			query,
 			variables: {
@@ -27,6 +28,7 @@ async function makeQuery (query, idArr) {
 async function paginatedQuery (query, idArr, page) {
 	const response = await fetch('https://graphql.anilist.co', {
 		method: 'POST',
+		mode: 'no-cors',
 		headers: {
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
