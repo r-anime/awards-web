@@ -368,7 +368,6 @@ export default {
 			}
 			const response = await fetch('https://graphql.anilist.co', {
 				method: 'POST',
-				mode: 'no-cors',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
@@ -467,7 +466,6 @@ export default {
 		async importQuery (query, page, start, end, charPage) {
 			const response = await fetch('https://graphql.anilist.co', {
 				method: 'POST',
-				mode: 'no-cors',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',
@@ -490,7 +488,6 @@ export default {
 		async importFromIDsQuery (page, charPage) {
 			const response = await fetch('https://graphql.anilist.co', {
 				method: 'POST',
-				mode: 'no-cors',
 				headers: {
 					'Content-Type': 'application/json',
 					'Accept': 'application/json',

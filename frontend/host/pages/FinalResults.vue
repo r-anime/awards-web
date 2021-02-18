@@ -117,7 +117,6 @@ export default {
 				try {
 					const showResponse = await fetch('https://graphql.anilist.co', {
 						method: 'POST',
-						mode: 'no-cors',
 						headers: {
 							'Content-Type': 'application/json',
 							'Accept': 'application/json',
@@ -146,7 +145,6 @@ export default {
 				try {
 					const charaResponse = await fetch('https://graphql.anilist.co', {
 						method: 'POST',
-						mode: 'no-cors',
 						headers: {
 							'Content-Type': 'application/json',
 							'Accept': 'application/json',
