@@ -240,10 +240,11 @@ export default {
 			});
 			initialize.then(() => {
 				for (const nom of this.allNoms) {
-					if (nom.entry_type === 'shows') {
+					const category = this.categories.find(aCategory => aCategory.id === nom.categoryId);
+					if (category.entryType === 'shows') {
 						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
-					} else if (nom.entry_type === 'themes') {
-						if (nom.theme_id !== '') themes.push(nom.theme_id);
+					} else if (category.entryType === 'themes') {
+						if (nom.themeId !== '') themes.push(nom.themeId);
 						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
 					} else {
 						if (nom.character_id !== '') chars.push(nom.character_id);

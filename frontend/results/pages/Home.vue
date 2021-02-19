@@ -71,7 +71,7 @@
 								</div>
 							</nav>
 							<p>
-							Welcome, one and all, to the 2019 /r/Anime Awards results!
+							Welcome, one and all, to the 2020 /r/Anime Awards results!
 							Over the past few months we've laid the groundwork for our annual selection of the best shows of the year.
 							We've recruited our jurors, cruelly subjected them to innumerable episodes of anime, and simultaneously opened it up to you, the community of /r/anime.
 							Every year we try to improve these awards to better showcase the shows and creators we love.
@@ -79,9 +79,11 @@
 							You can watch <a class="has-text-periwinkle" href="https://youtu.be/VYZ2fezPKUA" target="_blank">the full livestream here</a>.
 							The Winners Reel can be watched below.
 							</p>
+							<!--
 							<figure class="image is-16by9">
 								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/xPepKZYsgig" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
 							</figure>
+							-->
 							<br>
 							<p>
 							This site contains all of the info about the winners and rankings for the 30 award categories featured this year.

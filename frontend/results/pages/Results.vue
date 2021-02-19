@@ -159,6 +159,7 @@ import NomineeName from '../components/NomineeName';
 import ItemImage from '../components/ItemImage';
 import juryIcon from '../../../img/jury.png';
 import publicIcon from '../../../img/public.png';
+import logo20 from '../../../img/awards2020.png';
 import logo19 from '../../../img/awards2019.png';
 import logo18 from '../../../img/awards2018.png';
 import logo17 from '../../../img/awards2017.png';
@@ -212,6 +213,8 @@ export default {
 		logo () {
 			switch (this.year) {
 				case undefined:
+					return logo20;
+				case '2019':
 					return logo19;
 				case '2018':
 					return logo18;
@@ -420,7 +423,13 @@ export default {
 	mounted () {
 		switch (this.year) {
 			case undefined:
-				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+				import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
+			case '2020':
+				import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
 					this.results = Object.assign({}, data);
 					this.fetchAnilist();
 				});
