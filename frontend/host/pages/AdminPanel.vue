@@ -329,7 +329,7 @@ export default {
 									altimg: nom.alt_img,
 									public: nom.votes,
 									finished: nom.finished,
-									support: nom.votes / nom.finished,
+									support: nom.finished === -1 ? -1 : nom.votes / nom.finished,
 									jury: nom.rank,
 									percent: nom.votes / totalVotes,
 									writeup: nom.writeup.replace(/’/g, "'"),
