@@ -3,7 +3,6 @@ const resultsRoutes = [
 	{name: 'Character', path: '/results/character'},
 	{name: 'Production', path: '/results/production'},
 	{name: 'Main', path: '/results/main'},
-	{name: 'Test', path: '/results/test'},
 	{name: 'View All', path: '/results/all'},
 	{name: 'Extra', path: '/extra'},
 	{name: 'Past Results', path: '/archive'},
