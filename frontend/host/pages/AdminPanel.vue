@@ -242,13 +242,13 @@ export default {
 				for (const nom of this.allNoms) {
 					const category = this.categories.find(aCategory => aCategory.id === nom.categoryId);
 					if (category.entryType === 'shows') {
-						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
+						anime.push(nom.anilist_id);
 					} else if (category.entryType === 'themes') {
-						if (nom.themeId !== '') themes.push(nom.themeId);
-						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
+						themes.push(nom.themeId);
+						anime.push(nom.anilist_id);
 					} else {
-						if (nom.character_id !== '') chars.push(nom.character_id);
-						if (nom.anilist_id !== '') anime.push(nom.anilist_id);
+						chars.push(nom.character_id);
+						anime.push(nom.anilist_id);
 					}
 				}
 				const showPromise = new Promise(async (resolve, reject) => {
@@ -311,17 +311,18 @@ export default {
 					for (const section of data.sections) {
 						const cats = this.categories.filter(cat => cat.awardsGroup === section.slug);
 						for (const cat of cats) {
-							let catNoms = this.allNoms.filter(nom => nom.category_id === cat.id);
+							let catNoms = this.allNoms.filter(nom => nom.categoryId === cat.id);
 							const totalVotes = catNoms.reduce((sum, nom) => sum + nom.votes, 0);
 							catNoms = catNoms.sort((a, b) => a.votes - b.votes);
 							const nominees = [];
 							for (const [index, nom] of catNoms.entries()) {
 								let id;
-								if (nom.entry_type === 'shows') {
+								const category = this.categories.find(aCategory => aCategory.id === nom.categoryId);
+								if (category.entryType === 'shows') {
 									id = nom.anilist_id;
-								} else if (nom.entry_type === 'themes') {
+								} else if (category.entryType === 'themes') {
 									id = nom.theme_id;
-								} else if (nom.entry_type === 'characters' || nom.entry_type === 'vas') {
+								} else if (category.entryType === 'characters' || category.entryType === 'vas') {
 									id = nom.character_id;
 								}
 								nominees.push({
@@ -337,7 +338,7 @@ export default {
 									staff: nom.staff,
 								});
 							}
-							let jurors = this.jurors.filter(juror => juror.category_id === cat.id);
+							let jurors = this.jurors.filter(juror => juror.categoryId === cat.id);
 							jurors = jurors.map(juror => juror.name);
 							section.awards.push({
 								name: cat.name,
@@ -345,7 +346,7 @@ export default {
 								jurors,
 								blurb: '',
 								nominees,
-								hms: this.hms.filter(hm => hm.category_id === cat.id),
+								hms: this.hms.filter(hm => hm.categoryId === cat.id),
 							});
 						}
 					}
