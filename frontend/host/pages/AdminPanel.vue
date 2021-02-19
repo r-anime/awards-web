@@ -321,7 +321,7 @@ export default {
 								if (category.entryType === 'shows') {
 									id = nom.anilist_id;
 								} else if (category.entryType === 'themes') {
-									id = nom.theme_id;
+									id = nom.themeId;
 								} else if (category.entryType === 'characters' || category.entryType === 'vas') {
 									id = nom.character_id;
 								}

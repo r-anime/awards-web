@@ -33,7 +33,6 @@
                         </ul>
                     </div>
                     <div>
-                        <div class="categoryNominationCards columns is-gapless is-marginless">
 							<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless">
 								<div class="categoryRankCard column" v-for="(nom, index) in nomCurrentOrder"
 								:key="nom.id" @click="emitNomModal(nom)">
@@ -48,7 +47,6 @@
 									<p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
 								</div>
 							</transition-group>
-                        </div>
                     </div>
                 </div>
             </div>
