@@ -76,8 +76,8 @@
 							We've recruited our jurors, cruelly subjected them to innumerable episodes of anime, and simultaneously opened it up to you, the community of /r/anime.
 							Every year we try to improve these awards to better showcase the shows and creators we love.
 							Now presenting an even bigger, better, and of course saltier, r/anime awards.
-							You can watch <a class="has-text-periwinkle" href="https://youtu.be/VYZ2fezPKUA" target="_blank">the full livestream here</a>.
-							The Winners Reel can be watched below.
+							<!--You can watch <a class="has-text-periwinkle" href="https://youtu.be/VYZ2fezPKUA" target="_blank">the full livestream here</a>.-->
+							<!--The Winners Reel can be watched below.-->
 							</p>
 							<!--
 							<figure class="image is-16by9">
@@ -86,7 +86,7 @@
 							-->
 							<br>
 							<p>
-							This site contains all of the info about the winners and rankings for the 30 award categories featured this year.
+							This site contains all of the info about the winners and rankings for the 33 award categories featured this year.
 							These are separated into over-arching category groups: genre awards, character awards, production awards, and main awards.
 							On each of these pages you will find the winner and runners-up for each category, as well as a toggle with which you can compare the results of the community vote to the rankings awarded by the category's jury.
 							For more detailed result statistics and other info, click the name of the award.

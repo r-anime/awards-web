@@ -22,7 +22,7 @@
             <div class="ranking-container">
                 <div class="container">
 					<h5 class="has-text-centered has-text-light is-size-5">Rankings</h5>
-                    <div class="tabs is-fullwidth has-text-centered has-text-grey">						
+                    <div class="tabs is-fullwidth has-text-centered has-text-grey">
                         <ul >
                             <li @click="juryOrder" class="is-gold" :class="{'is-active': focus === 'jury'}">
                                 Jury
@@ -114,12 +114,11 @@ export default {
 			return ranking;
 		},
 		nomCurrentOrder () {
-			if (this.focus === 'public'){
+			if (this.focus === 'public') {
 				return this.nomPublicOrder;
-			} else {
-				return this.nomJuryOrder;
 			}
-		}
+			return this.nomJuryOrder;
+		},
 	},
 	methods: {
 		publicOrder () {
@@ -134,20 +133,20 @@ export default {
 			const _nomid = nom.id;
 			const _juryrank = nom.id;
 
-			this.$plausible.trackEvent('view-nom', {props: { anilistid: _nomid, category: _catname, juryrank: _juryrank, publicrank: ranking}});
+			this.$plausible.trackEvent('view-nom', {props: {anilistid: _nomid, category: _catname, juryrank: _juryrank, publicrank: ranking}});
 			this.$emit('nomModal', nom, ranking, this.category);
 		},
 		emitHMModal (hm) {
 			const _hmname = hm.name;
 
-			this.$plausible.trackEvent('view-hm', {props: { name: _hmname}});
+			this.$plausible.trackEvent('view-hm', {props: {name: _hmname}});
 			this.$emit('hmModal', hm, this.category);
 		},
 		emitCatModal () {
 			const _catname = this.category.name;
 			const _cattype = this.category.entryType;
 
-			this.$plausible.trackEvent('view-category', {props: { name: _catname, type: _cattype}});
+			this.$plausible.trackEvent('view-category', {props: {name: _catname, type: _cattype}});
 			this.$emit('hmModal', null, this.category);
 		},
 		markdownit (writeup) {
@@ -157,14 +156,14 @@ export default {
 			const index = this.nomPublicOrder.findIndex(nom => nom.id === nominee.id);
 			return this.nomPublicRankings[index];
 		},
-		beforeLeave(el) {
-			const {marginLeft, marginTop, width, height} = window.getComputedStyle(el)
+		beforeLeave (el) {
+			const {marginLeft, marginTop, width, height} = window.getComputedStyle(el);
 
-			el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`
-			el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`
-			el.style.width = width
-			el.style.height = height
-		}
+			el.style.left = `${el.offsetLeft - parseFloat(marginLeft, 10)}px`;
+			el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`;
+			el.style.width = width;
+			el.style.height = height;
+		},
 	},
 };
 </script>

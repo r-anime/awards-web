@@ -110,8 +110,8 @@
 							<tr>
 								<th> Show </th>
 								<th> Votes </th>
-								<th> Watched </th>
-								<th class="is-hidden-mobile"> Support % </th>
+								<th v-if="chartData.pubnoms[0].finished !== -1"> Watched </th>
+								<th v-if="(chartData.pubnoms[0].support*100).toFixed(2) > 0" class="is-hidden-mobile"> Support % </th>
 							</tr>
 						</thead>
 						<tbody>
@@ -123,10 +123,10 @@
 								<th>
 									{{chartData.pubnoms[index].public}} ({{(chartData.pubnoms[index].percent*100).toFixed(2)}}%)
 								</th>
-								<th>
+								<th v-if="chartData.pubnoms[index].finished !== -1">
 									{{chartData.pubnoms[index].finished}}
 								</th>
-								<th class="is-hidden-mobile">
+								<th v-if="(chartData.pubnoms[index].support*100).toFixed(2) > 0" class="is-hidden-mobile">
 									{{(chartData.pubnoms[index].support*100).toFixed(2)}}
 								</th>
 							</tr>
