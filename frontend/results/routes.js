@@ -89,8 +89,8 @@ const router = new VueRouter({
 	],
 });
 
-router.afterEach(async (to, from) => {
-    await store.dispatch('sendAnalytics', {name: 'pageview', url: to.fullPath, referrer: from.fullPath});
-})
+// router.afterEach(async (to, from) => {
+//     await store.dispatch('sendAnalytics', {name: 'pageview', url: to.fullPath, referrer: from.fullPath});
+// })
 
 export default router;
