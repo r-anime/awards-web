@@ -2,6 +2,7 @@
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store.js';
 
 Vue.use(VueRouter);
 
@@ -28,7 +29,7 @@ import Acknowledgements19 from './archived-pages/Acknowledgements19';
 import ExtraAwards19 from './archived-pages/ExtraAwards19';
 import About19 from './archived-pages/About19';
 
-export default new VueRouter({
+const router = new VueRouter({
 	mode: 'history',
 	scrollBehavior (to, from, savedPosition) {
 		document.body.scrollTop = 0; // For Safari
@@ -87,3 +88,9 @@ export default new VueRouter({
 		{path: '*', component: NotFound},
 	],
 });
+
+router.afterEach(async (to, from) => {
+    await store.dispatch('sendAnalytics', {name: 'pageview', url: to.fullPath, referrer: from.fullPath});
+})
+
+export default router;

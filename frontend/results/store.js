@@ -56,6 +56,22 @@ const store = new Vuex.Store({
 			const locks = await makeRequest('/api/locks/all');
 			commit('GET_LOCKS', locks);
 		},
+		async sendAnalytics ({commit}, data) {
+			const width = window.innerWidth;
+			const url = window.location.href;
+			const meta = data.meta || null;
+
+			const payload = {
+				n: data.name,
+				u: url,
+				d: 'animeawards.moe',
+				r: data.referrer,
+				w: width,
+				p: meta,
+			};
+			
+			const votes = await makeRequest('/api/analytics/send', 'POST', payload);
+		},
 	},
 });
 

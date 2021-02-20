@@ -6,4 +6,5 @@ module.exports = require('polka')()
 	.use('/locks', require('./lock-api'))
 	.use('/complain', require('./complain'))
 	.use('/juror-apps', require('./application-api'))
+	.use('/analytics', require('./analytics-api'))
 	.use('/final', require('./finalVote-api'));

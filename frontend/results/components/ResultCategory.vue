@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 import util from '../../util';
 import AwardWinners from './ResultWinners';
 import CategoryItemImage from './ItemImage';
@@ -121,6 +122,7 @@ export default {
 		},
 	},
 	methods: {
+		...mapActions(['sendAnalytics']),
 		publicOrder () {
 			this.focus = 'public';
 		},
@@ -131,22 +133,39 @@ export default {
 			const ranking = this.getPRgivenShow(nom);
 			const _catname = this.category.name;
 			const _nomid = nom.id;
-			const _juryrank = nom.id;
+			const _juryrank = nom.jury;
+			const _meta = JSON.stringify({anilistid: _nomid, category: _catname, juryrank: _juryrank, publicrank: ranking});
 
-			this.$plausible.trackEvent('view-nom', {props: {anilistid: _nomid, category: _catname, juryrank: _juryrank, publicrank: ranking}});
+			this.sendAnalytics({
+				name: 'view-nomination',
+				referrer: null,
+				meta: _meta,
+			});
 			this.$emit('nomModal', nom, ranking, this.category);
 		},
 		emitHMModal (hm) {
 			const _hmname = hm.name;
+			const _meta = JSON.stringify({name: _hmname});
 
-			this.$plausible.trackEvent('view-hm', {props: {name: _hmname}});
+			// this.$plausible.trackEvent('view-hm', {props: {name: _hmname}});
+			this.sendAnalytics({
+				name: 'view-hm',
+				referrer: null,
+				meta: _meta,
+			});
 			this.$emit('hmModal', hm, this.category);
 		},
 		emitCatModal () {
 			const _catname = this.category.name;
 			const _cattype = this.category.entryType;
+			const _meta = JSON.stringify({name: _catname, type: _cattype});
 
-			this.$plausible.trackEvent('view-category', {props: {name: _catname, type: _cattype}});
+			// this.$plausible.trackEvent('view-category', {props: {name: _catname, type: _cattype}});
+			this.sendAnalytics({
+				name: 'view-category',
+				referrer: null,
+				meta: _meta,
+			});
 			this.$emit('hmModal', null, this.category);
 		},
 		markdownit (writeup) {

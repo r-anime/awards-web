@@ -2,7 +2,7 @@
 import Vue from 'vue';
 import router from './routes';
 import store from './store';
-import { VuePlausible } from 'vue-plausible'
+//  import { VuePlausible } from 'vue-plausible'
 
 // fontawesome stuff
 import {library} from '@fortawesome/fontawesome-svg-core';
@@ -15,12 +15,12 @@ import App from './App';
 
 Vue.component('fa-icon', FontAwesomeIcon);
 
-Vue.use(VuePlausible, {
-	domain: 'animeawards.moe',
-	trackLocalhost: true,
-})
+// Vue.use(VuePlausible, {
+// 	domain: 'animeawards.moe',
+// 	trackLocalhost: true,
+// })
 
-Vue.$plausible.enableAutoPageviews();
+// Vue.$plausible.enableAutoPageviews();
 
 const vm = new Vue({
 	router,
