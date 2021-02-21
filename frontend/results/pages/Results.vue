@@ -136,7 +136,7 @@
 						<h5 class="title is-5"> Jurors </h5>
 						<div class="tags">
 							<span class="mr-10" v-for="(juror, index) in modalCat.jurors" :key="index" >
-								<a class="tag has-text-black is-platinum" v-if="typeof juror === 'string'" :href="'https://reddit.com' + juror">
+								<a class="tag has-text-black is-platinum" v-if="typeof juror === 'string'" :href="'https://reddit.com/u/' + juror">
 									{{juror}}
 								</a>
 								<a class="tag has-text-black is-platinum" v-else :href="juror.link">
