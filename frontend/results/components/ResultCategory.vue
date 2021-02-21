@@ -146,7 +146,7 @@ export default {
 		},
 		emitCatModal () {
 			const _catname = this.category.name;
-			const _cattype = this.category.type;
+			const _cattype = this.category.entryType;
 
 			this.$plausible.trackEvent('view-category', {props: {name: _catname, type: _cattype}});
 			this.$emit('hmModal', null, this.category);
