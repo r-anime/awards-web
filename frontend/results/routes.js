@@ -14,7 +14,6 @@ import About from './pages/About';
 import Acknowledgements from './pages/Acknowledgements';
 import ResultsPage from './pages/Results';
 import ArchiveLanding from './pages/ArchiveLanding';
-import ExtraAwardsPage from './pages/ExtraAwards';
 import Allocations from './pages/Allocations';
 import JuryGuide from './pages/JuryGuide';
 import Feedback from './pages/Feedback';
@@ -26,7 +25,6 @@ import NotFound from '../common/NotFound';
 
 // Archived pages
 import Acknowledgements19 from './archived-pages/Acknowledgements19';
-import ExtraAwards19 from './archived-pages/ExtraAwards19';
 import About19 from './archived-pages/About19';
 
 const router = new VueRouter({
@@ -57,7 +55,6 @@ const router = new VueRouter({
 				},
 				{path: '/acknowledgements', component: Acknowledgements},
 				{path: '/about', component: About},
-				{path: '/extra', component: ExtraAwardsPage},
 				{path: '/allocations', component: Allocations},
 				{path: '/feedback', component: Feedback},
 				{path: '/juryguide', component: JuryGuide},
@@ -80,7 +77,6 @@ const router = new VueRouter({
 				//2019
 				{path: '/acknowledgements19', component: Acknowledgements19},
 				{path: '/about19', component: About19},
-				{path: '/extra19', component: ExtraAwards19},
 			],
 		},
 

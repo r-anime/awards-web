@@ -18,9 +18,7 @@
                                         </router-link>
                                     </div>
                                     <div class="control has-text-centered">
-                                        <router-link to="/extra19" style="color:inherit">
-                                            <button class="button is-large is-platinum is-outlined mb-10">Extra Awards</button>
-                                        </router-link>
+                                        <a target="_blank" href="https://www.reddit.com/r/anime/comments/f81tvr/the_results_of_the_2019_ranime_awards/fii8moa/" class="button is-large is-platinum is-outlined mb-10">Extra Awards</a>
                                         <router-link to="/about19" style="color:inherit">
                                             <button class="button is-large is-platinum is-outlined mb-10">About/Credits</button>
                                         </router-link>

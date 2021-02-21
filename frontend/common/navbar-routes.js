@@ -4,7 +4,6 @@ const resultsRoutes = [
 	{name: 'Production', path: '/results/production'},
 	{name: 'Main', path: '/results/main'},
 	{name: 'View All', path: '/results/all'},
-	{name: 'Extra', path: '/extra'},
 	{name: 'Past Results', path: '/archive'},
 	{name: 'Acknowledgements', path: '/acknowledgements'},
 	{name: 'About', path: '/about'},

@@ -423,13 +423,13 @@ export default {
 	mounted () {
 		switch (this.year) {
 			case undefined:
-				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+				import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
 					this.results = Object.assign({}, data);
 					this.fetchAnilist();
 				});
 				break;
 			case '2020':
-				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+				import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
 					this.results = Object.assign({}, data);
 					this.fetchAnilist();
 				});
