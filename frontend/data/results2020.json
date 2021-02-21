@@ -1675,7 +1675,10 @@
 		"entryType": "shows",
 		"jurors": [
 		 "sfafreak",
-		 "tombeet",
+		 {
+			"name": "SuperMario",
+			"link": "https://www.reddit.com/user/tombeet"
+		 },
 		 "Thrasher439",
 		 "DoctorWhoops",
 		 "MetaSoshi9",
@@ -1788,7 +1791,10 @@
 		"entryType": "shows",
 		"jurors": [
 		 "sfafreak",
-		 "tombeet",
+		 {
+			"name": "SuperMario",
+			"link": "https://www.reddit.com/user/tombeet"
+		},
 		 "Thrasher439",
 		 "DoctorWhoops",
 		 "MetaSoshi9",
@@ -3385,7 +3391,10 @@
 		 "Schinco",
 		 "TheYummyBagel",
 		 "static_reset",
-		 "tombeet",
+		 {
+			"name": "SuperMario",
+			"link": "https://www.reddit.com/user/tombeet"
+		 },
 		 "MisterJaguar"
 		],
 		"blurb": "2020 was a great year for anime movies, despite the global COVID-19 epidemic limiting the theatrical releases of many films. The jury found themselves lamenting the limits on nominations due to the number of entries which they enjoyed, other categories luckily picking up many which were passed over here. Sequel films for *ACCA* and *Saekano* acted as epilogues and final acts of their respective stories. Original IP's like *Promare*, *Her Blue Sky*, and *A Whisker Away* manage to establish their settings and weave interesting thematic and narrative threads in a bite-size portion.\n\nMany of the nominated films (and even some which weren't) were visually beautiful, several having their own unique sense of style and strengths of visual storytelling. *Ride Your Wave* celebrated a larger-than-life story with grounded designs and animation. *Lupin III: The First* was a technical marvel in adapting 2D designs to 3D, while *Promare* does the reverse, expertly incorporating 3D characters and settings into its highly stylized aesthetic. *Konosuba* and *Violet Evergarden* show off quality refinements of their aesthetics, while *Children of the Sea* and *Ongaku* take full advantage of the anime medium to tell their manga stories with beautiful animation and music.\n\nAnd with that, we are happy to present these 8 spectacular nominees for best movie released in 2020!",
