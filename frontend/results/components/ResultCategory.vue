@@ -134,13 +134,19 @@ export default {
 			const _catname = this.category.name;
 			const _nomid = nom.id;
 			const _juryrank = nom.jury;
+
+			this.$plausible.trackEvent('view-nomination', {props: {anilistid: _nomid, category: _catname, juryrank: _juryrank, publicrank: ranking}});
 			this.$emit('nomModal', nom, ranking, this.category);
 		},
 		emitHMModal (hm) {
 			const _hmname = hm.name;
+
+			this.$plausible.trackEvent('view-hm', {props: {name: _hmname}});
 			this.$emit('hmModal', hm, this.category);
 		},
 		emitCatModal () {
+
+			this.$plausible.trackEvent('view-category', {props: {name: _catname, type: _cattype}});
 			this.$emit('hmModal', null, this.category);
 		},
 		markdownit (writeup) {

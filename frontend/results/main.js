@@ -2,6 +2,7 @@
 import Vue from 'vue';
 import router from './routes';
 import store from './store';
+import { VuePlausible } from 'vue-plausible'
 
 // fontawesome stuff
 import {library} from '@fortawesome/fontawesome-svg-core';
@@ -13,6 +14,13 @@ library.add(faBook, faUsers, faUserFriends, faPalette, faPaintBrush, faPencilRul
 import App from './App';
 
 Vue.component('fa-icon', FontAwesomeIcon);
+
+Vue.use(VuePlausible, {
+	domain: 'animeawards.moe',
+	trackLocalhost: true,
+})
+
+Vue.$plausible.enableAutoPageviews();
 
 const vm = new Vue({
 	router,
