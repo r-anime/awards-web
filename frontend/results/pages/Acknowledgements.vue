@@ -33,7 +33,7 @@
 								<br/>
 								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">Kevin Penkin</h1>
                                 <div class="has-text-centered has-text-periwinkle">
-                                    I’d like to thank the incredible reddit community for these amazing awards. Thank you for your passion and support throughout 2020, and I hope all if you keep well and safe during this difficult time. Much love, Kevin.
+                                    I’d like to thank the incredible reddit community for these amazing awards. Thank you for your passion and support throughout 2020, and I hope all of you keep well and safe during this difficult time. Much love, Kevin.
                                 </div>
 								<br/>
 								<figure class="image is-16by9">
