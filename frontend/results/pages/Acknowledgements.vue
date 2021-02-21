@@ -8,7 +8,7 @@
                         <section class="section">
                             <div class="container">
                                 <h1 class="title is-2 has-text-gold has-text-left has-flaired-underline pb-20">Acknowledgements</h1>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">Ongaku Team</h1>
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">The On-gaku Team</h1>
                                 <div class="has-text-centered has-text-periwinkle">
                                     ありがとうございます！下記コメントになります。
 									<br/>
