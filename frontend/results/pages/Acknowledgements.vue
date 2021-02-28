@@ -31,6 +31,20 @@
 									I am very happy that Akudama Drive has been awarded the awards for Best Action and Best Character Design in the 2020 Reddit Anime Awards. This is thanks to the earnest support of all of you. There’s still a director’s cut yet to come, so please look forward to seeing the Akudamas again!
                                 </div>
 								<br/>
+								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Jun Aoki</h1>
+								<div class="has-text-centered has-text-periwinkle">
+									『ギャルと恐竜』シリーズ構成・シリーズ監督の青木と申します。
+									この作品の『恐竜』は主役なのに全く喋らない珍しいキャラクターです。その実在感を表現するために音楽・音響スタッフと多くの苦労と試行錯誤を重ねました。
+									また『恐竜』の共演者である声優の皆さんは、そこに居ない存在と心を通わせるように演技してもらいました。通常のアニメ収録とは違う難しい挑戦だったと思います。
+									この度のサウンドデザイン賞の受賞で、私も監督としてこの試みが成功したという自信を深める事ができました。
+									この作品を視聴してくれたアニメファンとスタッフの皆さんに大いに感謝します。ありがとうございました。
+                                </div>
+								<br/>
+								<div class="has-text-centered has-text-periwinkle">
+									My name is Jun Aoki, I'm in charge of series composition and direction for "Gal and Dino." Even though he's in the leading role, the "dino" in this series is quite strange since he doesn't speak.  So with those circumstances, there's quite a bit of work and trial and error involved with the music and sound staff to really make it work. Furthermore, the voice actors in "dino" had to give it their all and pretend like they were working with something that wasn't there. I think it was a different set of challenges from the normal anime recording process. 
+									Though with this Sound Design award win, I think it really gave me more confidence as a director that this was the right move. I am very grateful to all anime fans and all the staff. Thank you very much.
+                                </div>
+								<br/>
 								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">Kevin Penkin</h1>
                                 <div class="has-text-centered has-text-periwinkle">
                                     I’d like to thank the incredible reddit community for these amazing awards. Thank you for your passion and support throughout 2020, and I hope all of you keep well and safe during this difficult time. Much love, Kevin.

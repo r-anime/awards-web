@@ -86,15 +86,13 @@
 							These are separated into over-arching category groups: genre awards, character awards, production awards, and main awards.
 							On each of these pages you will find the winner and runners-up for each category, as well as a toggle with which you can compare the results of the community vote to the rankings awarded by the category's jury.
 							For more detailed result statistics and other info, click the name of the award.
-							<!--You can watch <a class="has-text-periwinkle" href="https://youtu.be/VYZ2fezPKUA" target="_blank">the full livestream here</a>.-->
-							<!--The Winners Reel can be watched below.-->
+							You can watch <a class="has-text-periwinkle" href="https://youtu.be/3J7pyPcAJgs" target="_blank">the full livestream here</a>.
+							The Winners Reel can be watched below:
 							</p>
 							<br>
-							<!--
 							<figure class="image is-16by9">
-								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/xPepKZYsgig" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
+								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/Ssfcqm-O0eQ" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
 							</figure>
-							-->
 						</div>
 					</div>
 				</div>
