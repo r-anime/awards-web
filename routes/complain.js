@@ -37,7 +37,7 @@ apiApp.post('/allocations', async (request, response) => {
 
 apiApp.post('/feedback', async (request, response) => {
 	let req, ip;
-	ip = request.headers['x-forwarded-for'] || request.socket.remoteAddress || null;
+	ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress;
 
 	try {
 		req = await request.json();

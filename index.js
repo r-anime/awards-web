@@ -32,6 +32,7 @@ const app = polka({
 	// Send results page for routes other than /host or /apps
 	onNoMatch: (request, response) => response.end(indexPage),
 });
+app.set('trust proxy', true)
 
 // Set up global middlewares
 app.use(
