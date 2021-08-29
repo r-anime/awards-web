@@ -114,10 +114,13 @@ export default {
 		async sendMessage () {
 			if (this.message) {
 				this.submitting = true;
+				const ipresponse = await fetch('https://api.ipify.org?format=json');
+				const ip = await ipresponse.json();
+
 				const response = await fetch('/api/complain/feedback', {
 					method: 'POST',
 					body: JSON.stringify({
-						user: this.username,
+						user: this.username + ' (' + ip.ip + ')',
 						message: this.message,
 					}),
 				});
