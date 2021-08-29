@@ -37,7 +37,7 @@ apiApp.post('/allocations', async (request, response) => {
 
 apiApp.post('/feedback', async (request, response) => {
 	let req, ip;
-	ip = request.ip;
+	ip = request.socket.address().address;
 
 	try {
 		req = await request.json();
