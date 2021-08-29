@@ -36,7 +36,9 @@ apiApp.post('/allocations', async (request, response) => {
 });
 
 apiApp.post('/feedback', async (request, response) => {
-	let req;
+	let req, ip;
+	ip = request.ip;
+
 	try {
 		req = await request.json();
 	} catch (error) {
@@ -51,7 +53,7 @@ apiApp.post('/feedback', async (request, response) => {
 		try {
 			yuuko.createMessage(config.discord.feedbackChannel, {
 				embed: {
-					title: `Feedback from ${req.user ? req.user : 'Anonymous'}`,
+					title: `Feedback from ${req.user ? req.user : 'Anonymous'} with IP ${ip}`,
 					description: req.message,
 					color: 8302335,
 				},
