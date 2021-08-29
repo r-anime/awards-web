@@ -114,13 +114,15 @@ export default {
 		async sendMessage () {
 			if (this.message) {
 				this.submitting = true;
-				const ipresponse = await fetch('https://api.ipify.org?format=json');
-				const ip = await ipresponse.json();
+				fetch('https://api.ipify.org?format=json').then(async (data) => {
+					return data.json();
+				}).then(async (data) => {
+					console.log(data);
 
 				const response = await fetch('/api/complain/feedback', {
 					method: 'POST',
 					body: JSON.stringify({
-						user: this.username + ' (' + ip.ip + ')',
+						user: this.username + ' (' + data.ip + ')',
 						message: this.message,
 					}),
 				});
@@ -137,7 +139,7 @@ export default {
 					// eslint-disable-next-line no-alert
 					alert('You are submitting too many times. Please come back later.');
 					this.submitting = false;
-				}
+				}});
 			}
 		},
 		// eslint-disable-next-line multiline-comment-style
