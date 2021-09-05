@@ -36,6 +36,8 @@ const app = polka({
 	onNoMatch: (request, response) => response.end(indexPage),
 });
 
+app.set('trust proxy', true);
+
 // Set up global middlewares
 app.use(
 	// Request logging
