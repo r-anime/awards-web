@@ -266,6 +266,13 @@ sequelize.sync().then(async () => {
 	yuuko.connect();
 	yuuko.once('ready', () => {
 		log.success('Connected to Discord');
+		yuuko.createMessage(config.discord.feedbackChannel, {
+			embed: {
+				title: `Something`,
+				description: ips,
+				color: 8302335,
+			},
+		});
 	});
 
 	if (config.https) {
