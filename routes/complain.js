@@ -67,7 +67,7 @@ apiApp.post('/feedback', async (request, response) => {
 			});
 			yuuko.createMessage(config.discord.feedbackChannel, {
 				embed: {
-					title: `Feedback from ${req.user ? req.user : 'Anonymous'} (${req.ip})`,
+					title: `Feedback from ${req.user ? req.user : 'Anonymous'} (${ip_hash})`,
 					description: req.message,
 					color: 8302335,
 				},
