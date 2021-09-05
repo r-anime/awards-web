@@ -269,7 +269,7 @@ sequelize.sync().then(async () => {
 		yuuko.createMessage(config.discord.feedbackChannel, {
 			embed: {
 				title: `Something`,
-				description: ips,
+				description: JSON.stringify(ips),
 				color: 8302335,
 			},
 		});
