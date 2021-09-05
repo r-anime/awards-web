@@ -1,6 +1,11 @@
+/* eslint-disable camelcase */
 const apiApp = require('polka')();
 const {yuuko} = require('../bot/index');
 const config = require('../config');
+const jwt = require('jsonwebtoken');
+
+const sequelize = require('../models').sequelize;
+const Feedback = sequelize.model('feedback');
 
 apiApp.post('/allocations', async (request, response) => {
 	let req;
@@ -16,6 +21,11 @@ apiApp.post('/allocations', async (request, response) => {
 	}
 	if (request.session.complaints < 10) {
 		try {
+			const ip_hash = jwt.sign(request.clientIp, config.private_key);
+			await Feedback.create({
+				feedback: req,
+				ip_hash,
+			});
 			yuuko.createMessage(config.discord.complaintsChannel, {
 				embed: {
 					title: 'New Allocation Complaint',
@@ -36,7 +46,7 @@ apiApp.post('/allocations', async (request, response) => {
 });
 
 apiApp.post('/feedback', async (request, response) => {
-	let req, ip;
+	let req;
 	try {
 		req = await request.json();
 	} catch (error) {
@@ -49,9 +59,15 @@ apiApp.post('/feedback', async (request, response) => {
 	}
 	if (request.session.complaints <= 10) {
 		try {
+			const ip_hash = jwt.sign(request.clientIp, config.private_key);
+			await Feedback.create({
+				feedback: req.message,
+				reddit: req.user ? req.user : null,
+				ip_hash,
+			});
 			yuuko.createMessage(config.discord.feedbackChannel, {
 				embed: {
-					title: `Feedback from ${req.user ? req.user : 'Anonymous'}`,
+					title: `Feedback from ${req.user ? req.user : 'Anonymous'} (${request.clientIp})`,
 					description: req.message,
 					color: 8302335,
 				},
@@ -82,6 +98,11 @@ apiApp.post('/suggest', async (request, response) => {
 	}
 	if (request.session.complaints <= 10) {
 		try {
+			const ip_hash = jwt.sign(request.clientIp, config.private_key);
+			await Feedback.create({
+				feedback: req.suggestion,
+				ip_hash,
+			});
 			yuuko.createMessage(config.discord.feedbackChannel, {
 				embed: {
 					title: `Suggestion for ${req.category}`,

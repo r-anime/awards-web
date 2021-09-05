@@ -11,6 +11,9 @@ const log = require('another-logger'); // Logging utility
 const logging = require('./util/logging'); // Request logging middleware
 const helpers = require('./util/helpers'); // Generic request/response helpers
 const config = require('./config'); // Generic configuration
+const requestIp = require('request-ip');
+const ipFilter = require('express-ipfilter').IpFilter;
+const jwt = require('jsonwebtoken');
 
 const sequelize = require('./models').sequelize;
 
@@ -39,6 +42,9 @@ app.use(
 	logging,
 	// Helper functions
 	helpers,
+	// Middleware for grabbing IPs in the request
+	requestIp.mw(),
+	// Filter IPs from access
 	// Session storage
 	session({
 		secret: config.session.secret,
@@ -75,6 +81,9 @@ app.use('/final-vote', (request, response) => response.end(finalVotePage));
 // Synchronize sequelize models
 // and then start the server
 sequelize.sync().then(async () => {
+	const blacklistedFeedback = await sequelize.model('feedback').findAll({where: {blacklist: true}});
+	const ips = blacklistedFeedback.map(feedback => jwt.verify(feedback.ip_hash, config.private_key));
+	app.use(ipFilter(ips, {forbidden: 'Access denied.'}));
 	// A sequelize transaction to create required rows in tables
 	await sequelize.transaction(t => {
 		try {
