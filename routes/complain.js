@@ -59,7 +59,7 @@ apiApp.post('/feedback', async (request, response) => {
 	}
 	if (request.session.complaints <= 10) {
 		try {
-			const ip_hash = jwt.sign(req.ip, config.private_key);
+			const ip_hash = jwt.sign(request.clientIp, config.private_key);
 			await Feedback.create({
 				feedback: req.message,
 				reddit: req.user ? req.user : null,
@@ -67,7 +67,7 @@ apiApp.post('/feedback', async (request, response) => {
 			});
 			yuuko.createMessage(config.discord.feedbackChannel, {
 				embed: {
-					title: `Feedback from ${req.user ? req.user : 'Anonymous'} (${ip_hash})`,
+					title: `Feedback from ${req.user ? req.user : 'Anonymous'} (${request.clientIp})`,
 					description: req.message,
 					color: 8302335,
 				},
