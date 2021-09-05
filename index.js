@@ -83,7 +83,13 @@ app.use('/final-vote', (request, response) => response.end(finalVotePage));
 sequelize.sync().then(async () => {
 	const blacklistedFeedback = await sequelize.model('feedback').findAll({where: {blacklist: true}});
 	const ips = blacklistedFeedback.map(feedback => jwt.verify(feedback.ip_hash, config.private_key));
-	app.use(ipFilter(ips, {forbidden: 'Access denied.'}));
+	app.use((request, response, next) => {
+		if (ips.find(ip => ip == request.clientIp)) {
+			response.json(401, {error: 'Your IP is blocked.'});
+		} else {
+			next();
+		}
+	});
 	// A sequelize transaction to create required rows in tables
 	await sequelize.transaction(t => {
 		try {
@@ -266,13 +272,6 @@ sequelize.sync().then(async () => {
 	yuuko.connect();
 	yuuko.once('ready', () => {
 		log.success('Connected to Discord');
-		yuuko.createMessage(config.discord.feedbackChannel, {
-			embed: {
-				title: `Something`,
-				description: JSON.stringify(ips),
-				color: 8302335,
-			},
-		});
 	});
 
 	if (config.https) {
