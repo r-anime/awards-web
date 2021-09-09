@@ -31,6 +31,7 @@
 								<option value="Audio Production">Audio Awards</option>
 								<option value="OP/ED">OP/ED</option>
 								<option value="Main">Main Awards</option>
+								<option value="All">All (Drag-And-Drop)</option>
 							</select>
 						</div>
 					</div>

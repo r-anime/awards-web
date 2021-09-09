@@ -37,27 +37,58 @@
 								</div>
 							</div>
 							<div v-else-if="q.type == 'preference'">
-								<h3 class="question-header">{{q.question}} Preferences</h3>
-								<small>
-									Please rate as 5 for strongly desired and 1 for least desired.
-								</small>
-								<br>
-								<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
-									<div v-if="category.description" class="tooltip">
-										<h4 class="subquestion-header">{{category.name}}</h4>
-										<span class="tooltiptext">{{category.description ? category.description : 'No description'}}</span>
+								<div v-if="q.question == 'All'">
+									<div>
+										<h3 class="question-header">Category Preferences</h3>
+										<p>Leave out the categories you don't want.</p>
+										<draggable class="tags" :list="allcats" group="prefs" v-bind="dragOptions" @start="drag = true" @end="drag = false">
+											<transition-group type="transition" :name="!drag ? 'flip-list' : null">
+												<span
+													class="tag is-periwinkle"
+													v-for="(element) in allcats"
+													:key="element.name"
+												>
+													{{ element.name }}
+												</span>
+											</transition-group>
+										</draggable>
 									</div>
-									<h4 v-else class="subquestion-header">{{category.name}}</h4>
-									<br v-if="category.description">
-									<div v-for="index in 5" :key="index" class="app-radio qpref_choice">
-										<input type="radio"
-											:id="`category-${category.id}-${index}`"
-											:value="index"
-											:name="`pref-${q.id}-${category.id}`"
-											v-model="mc_answers[`${q.id}-${category.id}`]"
-											@change="handlePrefInput(q.id, category.id, $event)"
-										>
-										<label :for="`category-${category.id}-${index}`"> {{index}} </label>
+									<div>
+										<h4 class="question-header">Your Wanted Categories</h4>
+										<draggable class="tags final-tags" :list="myprefs" group="prefs" v-bind="dragOptions2" @start="drag2 = true" @end="drag2 = false">
+											<span
+												class="tag is-periwinkle"
+												v-for="(element) in myprefs"
+												:key="element.name"
+											>
+												{{ element.name }}
+											</span>
+										</draggable>
+									</div>
+								</div>
+								<div v-else>
+									<h3 class="question-header">{{q.question}} Preferences</h3>
+									<small>
+										Please rate as 5 for strongly desired and 1 for least desired.
+									</small>
+									<br>
+									<div v-for="(category, c_index) in getCategoriesByGroup(q)" :key="c_index">
+										<div v-if="category.description" class="tooltip">
+											<h4 class="subquestion-header">{{category.name}}</h4>
+											<span class="tooltiptext">{{category.description ? category.description : 'No description'}}</span>
+										</div>
+										<h4 v-else class="subquestion-header">{{category.name}}</h4>
+										<br v-if="category.description">
+										<div v-for="index in 5" :key="index" class="app-radio qpref_choice">
+											<input type="radio"
+												:id="`category-${category.id}-${index}`"
+												:value="index"
+												:name="`pref-${q.id}-${category.id}`"
+												v-model="mc_answers[`${q.id}-${category.id}`]"
+												@change="handlePrefInput(q.id, category.id, $event)"
+											>
+											<label :for="`category-${category.id}-${index}`"> {{index}} </label>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -137,11 +168,13 @@ import {Viewer, Editor} from '@toast-ui/vue-editor';
 import marked from 'marked';
 import {mapState, mapActions} from 'vuex';
 import logo2020 from '../../../img/awards2020.png';
+import draggable from 'vuedraggable';
 
 export default {
 	components: {
 		Editor,
 		Viewer,
+		draggable,
 	},
 	computed: {
 		...mapState([
@@ -155,6 +188,22 @@ export default {
 		isSaving () {
 			return this.saving.includes(true);
 		},
+		dragOptions() {
+			return {
+				animation: 200,
+				group: "prefs",
+				disabled: false,
+				ghostClass: "ghost"
+			};
+		},
+		dragOptions2() {
+			return {
+				animation: 200,
+				group: "prefs",
+				disabled: false,
+				ghostClass: "ghost"
+			};
+		}
 	},
 	data () {
 		return {
@@ -180,6 +229,10 @@ export default {
 				height: '700px',
 			},
 			logo: logo2020,
+			allcats: [],
+			myprefs: [],
+			drag: false,
+			drag2: false,
 		};
 	},
 	methods: {
@@ -291,6 +344,8 @@ export default {
 			const appLock = this.locks.find(lock => lock.name === 'apps-open');
 			if (appLock.flag || this.me.level > appLock.level) {
 				Promise.all([this.application ? Promise.resolve() : this.getApplication(), this.applicant ? Promise.resolve() : this.getApplicant(), this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
+					this.allcats = this.categories;
+					this.myprefs = [];
 					if (this.applicant) {
 						await import(/* webpackChunkName: "sampleapps" */ '../../data/sampleapps.json').then(data => {
 							this.disclaimer = data.disclaimer;
@@ -322,7 +377,11 @@ export default {
 									// eslint-disable-next-line no-lonely-if
 									if (question.type === 'preference') {
 										const categories = this.categories.filter(category => category.awardsGroup === question.question);
-										this.answers[question.id] = {};
+										if (question.question == "All"){
+											this.answers[question.id] = [];
+										} else{
+											this.answers[question.id] = {};
+										}
 										for (const category of categories) {
 											this.answers[question.id][category.id] = '3';
 											this.mc_answers[`${question.id}-${category.id}`] = '3';
@@ -349,3 +408,19 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+.final-tags{
+	min-height: 4rem;
+	background-color: #eee;
+}
+</style>
