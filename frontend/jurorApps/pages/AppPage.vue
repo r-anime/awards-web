@@ -41,28 +41,31 @@
 									<div>
 										<h3 class="question-header">Category Preferences</h3>
 										<p>Leave out the categories you don't want.</p>
-										<draggable class="tags" :list="allcats" group="prefs" v-bind="dragOptions" @start="drag = true" @end="drag = false">
-											<transition-group type="transition" :name="!drag ? 'flip-list' : null">
-												<span
-													class="tag is-periwinkle"
-													v-for="(element) in allcats"
-													:key="element.name"
-												>
-													{{ element.name }}
-												</span>
-											</transition-group>
+										<draggable class="field is-grouped is-grouped-multiline" :list="allcats" group="prefs" v-bind="dragOptions" @start="drag = true" @end="drag = false">
+											<div
+												class="control"
+												v-for="(element) in allcats"
+												:key="element.name"
+											>
+												<div class="tags has-addons">
+											      	<span class="tag is-periwinkle">{{element.name}}</span>
+												</div>
+											</div>
 										</draggable>
 									</div>
 									<div>
 										<h4 class="question-header">Your Wanted Categories</h4>
-										<draggable class="tags final-tags" :list="myprefs" group="prefs" v-bind="dragOptions2" @start="drag2 = true" @end="drag2 = false">
-											<span
-												class="tag is-periwinkle"
-												v-for="(element) in myprefs"
+										<draggable class="field is-grouped is-grouped-multiline final-tags" :list="myprefs" group="prefs" v-bind="dragOptions" @change="handlePrefAllInput(q.id)">
+											<div
+												class="control"
+												v-for="(element, index) in myprefs"
 												:key="element.name"
 											>
-												{{ element.name }}
-											</span>
+												<div class="tags has-addons">
+													<span class="tag is-dark">{{index+1}}</span>
+											      	<span class="tag is-periwinkle">{{element.name}}</span>
+												</div>
+											</div>
 										</draggable>
 									</div>
 								</div>
@@ -196,14 +199,6 @@ export default {
 				ghostClass: "ghost"
 			};
 		},
-		dragOptions2() {
-			return {
-				animation: 200,
-				group: "prefs",
-				disabled: false,
-				ghostClass: "ghost"
-			};
-		}
 	},
 	data () {
 		return {
@@ -232,7 +227,6 @@ export default {
 			allcats: [],
 			myprefs: [],
 			drag: false,
-			drag2: false,
 		};
 	},
 	methods: {
@@ -293,7 +287,26 @@ export default {
 			this.answers[questionID][categoryID] = event.target.value;
 			clearTimeout(this.typingTimeout[questionID]);
 			this.$set(this.saving, questionID, true);
+			// console.log(this.answers[questionID]);
+			this.typingTimeout[questionID] = setTimeout(async () => {
+				await fetch('/api/juror-apps/submit', {
+					method: 'POST',
+					body: JSON.stringify({
+						answer: JSON.stringify(this.answers[questionID]),
+						question_id: questionID,
+						applicant_id: this.applicant.id,
+					}),
+				});
+				this.$set(this.saving, questionID, false);
+			}, 2000);
+		},
+		handlePrefAllInput (questionID) {
+			this.answers[questionID] = [];
+			this.myprefs.forEach(element => {
+				this.answers[questionID].push(element.id)
+			});
 			console.log(this.answers[questionID]);
+			this.$set(this.saving, questionID, true);
 			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
 					method: 'POST',
@@ -364,10 +377,21 @@ export default {
 								const found = this.myAnswers.find(answer => answer.question_id === question.id);
 								if (found) {
 									if (question.type === 'preference') {
-										this.answers[question.id] = JSON.parse(found.answer);
-										for (const [key, value] of Object.entries(this.answers[question.id])) {
-											const index = `${question.id}-${key}`;
-											this.mc_answers[index] = value;
+										if (question.question == 'All'){
+											let selectedcats = JSON.parse(found.answer);
+											this.myprefs = this.allcats.filter(el => selectedcats.includes(el.id));
+											this.allcats = this.allcats.filter(el => !selectedcats.includes(el.id));
+											this.answers[question.id] = selectedcats;
+
+											console.log(selectedcats);
+											console.log(this.myprefs);
+											// console.log(this.answers[question.id]);
+										} else {
+											this.answers[question.id] = JSON.parse(found.answer);
+											for (const [key, value] of Object.entries(this.answers[question.id])) {
+												const index = `${question.id}-${key}`;
+												this.mc_answers[index] = value;
+											}
 										}
 									} else {
 										this.answers[question.id] = found.answer;
@@ -422,5 +446,10 @@ export default {
 .final-tags{
 	min-height: 4rem;
 	background-color: #eee;
+	padding: 1rem;
+}
+.field .tag{
+	user-select: none;
+	cursor: grab;
 }
 </style>

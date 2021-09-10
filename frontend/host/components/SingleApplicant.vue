@@ -12,18 +12,6 @@
 						<h2 class="title is-5">Preferences for {{answer.question.question}} categories:</h2>
 					</div>
 				</div>
-				<div class="field">
-					<div class="control">
-						<ul>
-							<li v-for="preference in preferences(answer)"
-							:key="preference.categoryID"
-							class="is-size-6"
-							>
-							<b>{{preference.categoryName}}:</b> {{preference.preference}}
-							</li>
-						</ul>
-					</div>
-				</div>
 			</div>
 			<div v-else-if="answer.question.type === 'choice'">
 				<div class="field">
@@ -127,6 +115,7 @@ export default {
 			return `Applicant ${this.applicantID}'s Application`;
 		},
 		preferences (answer) {
+			/*
 			let categories;
 			if (answer.question.question === 'Visual Production') {
 				categories = this.categories.filter(cat => cat.awardsGroup === 'production' && !cat.name.match(/Sound Design|OST|Voice Actor|OP|ED/gm));
@@ -147,6 +136,7 @@ export default {
 				});
 			}
 			return returnArr;
+			*/
 		},
 		async submitDeleteScore (score) {
 			await fetch(`/api/juror-apps/score/${score.id}`, {method: 'DELETE'});

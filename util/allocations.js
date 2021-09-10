@@ -1,9 +1,16 @@
+class ApplicationJuror {
+	constructor (name){
+		this.name = name;
+		this.genreScore = -1;
+		this.characterScore = -1;
+		this.visualScore = -1;
+		this.audioScore = -1;
+		this.opedScore = -1;
+	}
+}
+
 class Allocations {
 	constructor (categories, allocationAnswers, questions) {
-		this.allocatedJurors = [];
-		this.done = [];
-		this.doneForNow = [];
-		this.doneForMain = [];
 		// randomizing the categories so putting the same score for a genre and a production doesn't favour one over the other
 		this.categories = this.shuffle(categories);
 		this.allocationAnswers = allocationAnswers;
@@ -49,7 +56,7 @@ class Allocations {
 	}
 
 	// Method to return a preference value for a given applicant and category
-	getPreference (applicant, category) {
+	getPreferenceOld (applicant, category) {
 		// Get all answers within the question group
 		const answers = this.filteredAnswers(category);
 		// Get the preference answer if the user even bothered filling out preferences
@@ -69,7 +76,7 @@ class Allocations {
 	}
 
 	// Create a draft of applicants for main categories based on a required score
-	getMainCatApplicants (requiredScore) {
+	getMainCatApplicantsOld (requiredScore) {
 		// All the goddamn applicants
 		let applicants = [...new Set(this.allocationAnswers.map(answer => answer.applicant.user.reddit))];
 		// Filter out applicants that have hit their desired categories or are done for this round
@@ -94,7 +101,7 @@ class Allocations {
 	}
 
 	// Method where we eat the rich
-	prune (categoryLimit) {
+	pruneOld (categoryLimit) {
 		// All the goddamn allocated jurors
 		const applicants = [...new Set(this.allocatedJurors.map(juror => juror.name))];
 		for (const applicant of applicants) {
@@ -112,7 +119,7 @@ class Allocations {
 	}
 
 	// The method that actually runs the draft for categories that aren't main. This method and the next describe a bulk of the algorithm's working.
-	runDraft (category, score, preference) {
+	runDraftOld (category, score, preference) {
 		// Get all answers that fall within the question group the category belongs to
 		let answers = this.filteredAnswers(category);
 		// Make sure the juror isn't already in this category
@@ -146,7 +153,7 @@ class Allocations {
 	}
 
 	// This is basically the same shit as the above method with different looking code.
-	runMainDraft (category, score, preference) {
+	runMainDraftOld (category, score, preference) {
 		// Get all applicants for main categories that qualify according to the score threshold specified and aren't done. Method is above.
 		let applicants = this.getMainCatApplicants(score);
 		// Filter out applicants that gave a low preference to the category in question and also make sure they're not already in the category
@@ -175,7 +182,7 @@ class Allocations {
 	}
 
 	// Method that runs first in the algorithm and creates a draft of jurors with high scores in categories which they gave a preference of 5 to
-	topJurorHighPreferenceDraft () {
+	topJurorHighPreferenceDraftOld () {
 		// Run draft for categories that aren't main
 		for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
 			// Only choose from applicants that scored a 4 and gave category a preference of 5
@@ -191,7 +198,7 @@ class Allocations {
 	}
 
 	// The follow-up method that only chooses from applicants who scored 4 but places them into categories they gave 3+ to.
-	topJurorDraft () {
+	topJurorDraftOld () {
 		// Run draft for categories that aren't main
 		for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
 			// Only choose from applicants that scored a 4 and gave category a preference of 3 or higher
@@ -207,7 +214,7 @@ class Allocations {
 	}
 
 	// Draft that allocates jurors who gave 5's to categories
-	highPreferenceDraft () {
+	highPreferenceDraftOld () {
 		for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
 			this.runDraft(category, 3, 5);
 		}
@@ -218,7 +225,7 @@ class Allocations {
 	}
 
 	// The normal draft that forms the backbone of juror allocation
-	normalDraft () {
+	normalDraftOld () {
 		let categoryLimit = 1;
 		// Run 3 rounds of a normal draft to get some jurors on 3 categories
 		while (categoryLimit < 4) {
@@ -255,7 +262,7 @@ class Allocations {
 	}
 
 	// Backup draft of jurors that scored 2's
-	backupDraft () {
+	backupDraftOld () {
 		for (let i = 0; i < 20; i++) {
 			for (const category of this.categories.filter(aCategory => aCategory.awardsGroup !== 'main')) {
 				this.runDraft(category, 2, 5);
@@ -281,7 +288,7 @@ class Allocations {
 	}
 
 	// Final low interest draft that gives people an extra category if something still needs filling
-	lowInterestDraft () {
+	lowInterestDraftOld () {
 		let unfilledNonMainCategories = this.categories.filter(category => category.awardsGroup !== 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		let unfilledMainCategories = this.categories.filter(category => category.awardsGroup === 'main' && category.jurorCount !== this.allocatedJurors.filter(juror => juror.categoryId === category.id).length);
 		for (const category of unfilledNonMainCategories) {
@@ -339,7 +346,7 @@ class Allocations {
 		}
 	}
 
-	initiateDraft () {
+	initiateDraftOld () {
 		// First draft of top jurors with highest scores only in categories they gave a preference of 5 to
 		this.topJurorHighPreferenceDraft();
 		// Do a draft with only the toppest jurors who scored 4's or an average of 3.5+ in main categories

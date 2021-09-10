@@ -785,6 +785,25 @@ apiApp.get('/allocations', async (request, response) => {
 				}],
 			}],
 		}),
+		Applicants.findAll({where: {active: 1},
+			include: [
+				{
+					model: Answers,
+					as: 'answers',
+					include: [
+						{
+							model: Scores,
+							as: 'scores',
+						},
+						{
+							model: Questions,
+							as:	'question',
+						}
+					]
+				}
+			]
+
+		}),
 	]).then(async promiseArr => {
 		try {
 			// Change this every year
