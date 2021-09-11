@@ -729,7 +729,8 @@ apiApp.get('/clean', async (request, response) => {
 });
 
 apiApp.get('/allocations', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	// TODO : Change this back to 4 when algorithm is finalized
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to roll jurors.'});
 	}

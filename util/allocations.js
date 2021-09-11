@@ -1,10 +1,19 @@
 const { all } = require("../routes/complain");
 
+const HIGHPRIO_THRESHOLD = 3.5;
+const NORMAL_THRESHOLD = 3;
+const LOWPRIO_THRESHOLD = 2;
+const SCRAPING_THRESHOLD = 1;
+const JUROR_MIN = 7;
+const JUROR_MAX = 13;
+const AOTY_MAX = 23;
+
 class ApplicationJuror {
 	constructor (name, answers){
 		this.name = name;
 		this.answers = answers;
 		this.prefs = [];
+		this.prefsAssignedRemoved = [];
 
 		this.wantedCats = 1;
 		this.genreScore = -1;
@@ -89,10 +98,53 @@ class ApplicationJuror {
 			}
 
 		}
+		this.prefsAssignedRemoved = this.prefs;
+	}
+
+	qualifiesFor(cats, catid, threshold){
+		let category = cats.find(cat => cat.id == catid);
+
+		return this.qualifyingScore(cats, catid) >= threshold;
+	}
+
+	qualifyingScore(cats, catid){
+		if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
+			return this.audioScore;
+		} else if (category.name.match(/OP|ED/gm)) {
+			return this.opedScore;
+		} else if (category.awardsGroup === 'production') {
+			return this.visualScore;
+		} else if (category.awardsGroup === 'main') {
+			return this.mainScore;
+		} else if (category.awardsGroup === 'character'){
+			return this.characterScore;
+		} else if (category.awardsGroup === 'genre'){
+			return this.genreScore;
+		}
+		return 0;
+	}
+
+	// all preferences for which we have a qualifying score (passes this threshold)
+	qualifyingPrefs(cats, threshold){
+		return this.prefs.filter(x => this.qualifiesFor(cats, x, threshold));
+	}
+
+	highestScore(){
+		return Math.max(this.visualScore, this.audioScore, this.characterScore, this.genreScore, this.opedScore, 0);
 	}
 
 	catPref(catid){
 		return this.prefs.indexOf(catid);
+	}
+}
+
+class AllocatedJuror{
+	constructor (name, score, pref, catid){
+		this.name = name;
+		this.link = `https://www.reddit.com/user/${name}`;
+		this.score = score;
+		this.pref = pref;
+		this.catid = catid;
 	}
 }
 
@@ -110,10 +162,6 @@ class Allocations {
 				this.jurors.push(juror);
 			}
 		});
-
-		// Shuffle the Jurors so that ties are randomized in order
-		this.jurors = this.shuffle(this.jurors);
-		this.jurors.sort((a, b) => b.weightedScore - a.weightedScore);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -135,30 +183,42 @@ class Allocations {
 		return array;
 	}
 
+	catIsFull(catid){
+		let category = cats.find(cat => cat.id == catid);
 
+		const catJurors = this.allocatedJurors.filter(juror => juror.catid == catid);
+		if (category.name == "Anime of the Year"){
+			return catJurors.length >= AOTY_MAX;
+		} else {
+			return catJurors.length >= JUROR_MAX;
+		}
+	}
+
+	jurorIsFull(juror){
+		const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
+		return jurorAllocations.length >= juror.wantedCats();
+	}
 
 	priorityDraft(){
-		this.categories.forEach(category => {
-			// Skip Main Cats For Now
-			if (category.awardsGroup === 'main'){
-				return;
-			}
+		let eligibleJurors = this.shuffle(this.jurors);
+		eligibleJurors = eligibleJurors.filter(juror => juror.highestScore() > HIGHPRIO_THRESHOLD);
+		eligibleJurors = eligibleJurors.sort((a, b) => b.highestScore() - a.highestScore());
 
-			let shuffledJurors = this.shuffle(this.jurors);
-			if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
-				shuffledJurors = shuffledJurors.filter(juror => juror.audioScore >= 3);
-				shuffledJurors.sort((a, b) => b.audioScore - a.audioScore);
-			} else if (category.name.match(/OP|ED/gm)) {
-				shuffledJurors = shuffledJurors.filter(juror => juror.opedScore >= 3);
-				shuffledJurors.sort((a, b) => b.opedScore - a.opedScore);
-			} else if (category.awardsGroup === 'production') {
-				shuffledJurors = shuffledJurors.filter(juror => juror.opedScore >= 3);
-				shuffledJurors.sort((a, b) => b.visualScore - a.visualScore);
+		eligibleJurors.forEach((juror) => {
+			const nonMainCats = this.categories.filter(cat => cat.awardsGroup != 'main');
+			let eligiblePrefs = juror.qualifyingPrefs(this.categories, juror.highestScore());
+			if (eligiblePrefs.length > 0 && !this.catIsFull(eligiblePrefs[0])){
+				this.allocatedJurors.push(new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, eligiblePrefs[0]), juror.catPref(eligiblePrefs[0]), eligiblePrefs[0]));
+				return;
 			} else {
-				shuffledJurors = shuffledJurors.filter(juror => juror.genreScore >= 3);
-				shuffledJurors.sort((a, b) => b.genreScore - a.genreScore);
+				let eligiblePrefs = juror.qualifyingPrefs(this.categories, HIGHPRIO_THRESHOLD);
+				eligiblePrefs.forEach((pref) =>{
+					if (!this.catIsFull(pref)){
+						this.allocatedJurors.push(new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, eligiblePrefs[0]), juror.catPref(eligiblePrefs[0]), eligiblePrefs[0]));
+						return;
+					}
+				});
 			}
-			
 		});
 	}
 
