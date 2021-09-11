@@ -735,56 +735,6 @@ apiApp.get('/allocations', async (request, response) => {
 	}
 	Promise.all([
 		Categories.findAll({where: {active: 1}}),
-		Answers.findAll({
-			where: {
-				active: true,
-			},
-			include: [
-				{
-					model: Questions,
-					as: 'question',
-					include: [
-						{
-							model: QuestionGroups,
-							as: 'question_group',
-							include: [
-								{
-									model: Applications,
-									as: 'application',
-								},
-							],
-						},
-					],
-				},
-				{
-					model: Applicants,
-					as: 'applicant',
-					include: [
-						{
-							model: Users,
-							as: 'user',
-						},
-					],
-				},
-				{
-					model: Scores,
-					as: 'scores',
-				},
-			],
-		}),
-		Questions.findAll({
-			where: {
-				active: true,
-			},
-			include: [{
-				model: QuestionGroups,
-				as: 'question_group',
-				include: [{
-					model: Applications,
-					as: 'application',
-				}],
-			}],
-		}),
 		Applicants.findAll({where: {active: 1},
 			include: [
 				{
@@ -798,8 +748,20 @@ apiApp.get('/allocations', async (request, response) => {
 						{
 							model: Questions,
 							as:	'question',
+							include: {
+								model: QuestionGroups,
+								as: 'question_group'
+							}
 						}
 					]
+				},
+				{
+					model: Applications,
+					as: 'application',
+				},
+				{
+					model: Users,
+					as: 'user'
 				}
 			]
 
@@ -807,13 +769,18 @@ apiApp.get('/allocations', async (request, response) => {
 	]).then(async promiseArr => {
 		try {
 			// Change this every year
-			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1].filter(answer => answer.question.question_group.application.year === 2020), promiseArr[2].filter(question => question.question_group.application.year === 2020 && question.type === 'essay'));
-			allocationInstance.initiateDraft();
-			const jurorPromiseArr = [];
-			await Jurors.destroy({truncate: true, restartIdentity: true});
-			await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'jurors'");
-			const t = await sequelize.transaction();
-			for (const juror of allocationInstance.allocatedJurors) {
+			const applicants = promiseArr[1];
+			const validApps = applicants;
+			// const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
+			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1]);
+			response.json(allocationInstance);
+			
+			// allocationInstance.initiateDraft();
+			// const jurorPromiseArr = [];
+			// await Jurors.destroy({truncate: true, restartIdentity: true});
+			// await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'jurors'");
+			// const t = await sequelize.transaction();
+			/* for (const juror of allocationInstance.allocatedJurors) {
 				jurorPromiseArr.push(Jurors.create({
 					name: juror.name,
 					link: `https://www.reddit.com/user/${juror.name}`,
@@ -834,7 +801,7 @@ apiApp.get('/allocations', async (request, response) => {
 					},
 				});
 				response.json(allocationInstance.allocatedJurors);
-			});
+			});*/
 		} catch (error) {
 			response.error(error);
 		}

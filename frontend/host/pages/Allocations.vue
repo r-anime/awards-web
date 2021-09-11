@@ -60,12 +60,6 @@
 									<span class="tag is-primary">{{twosUnallocated}}</span>
 								</div>
 							</div>
-							<div class="column is-narrow">
-								<div class="tags has-addons are-medium">
-									<span class="tag is-dark">4 Category Jurors</span>
-									<span class="tag is-primary">{{fourJurors.length}}</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -148,58 +142,20 @@ export default {
 			'getMe',
 		]),
 		filteredAllocatedJurors (category) {
-			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
+			if (!this.allocatedJurors){
+				
+			}
+			return [];
+			// return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
 		},
 		async initiateDraft () {
 			this.loaded = false;
-			this.meanScore = 0;
-			this.averageCategories = 0;
-			this.threesUnallocated = 0;
-			this.twosUnallocated = 0;
-			this.categoriesUnfilled = 0;
-			this.fourJurors = 0;
-			this.totalJurors = 0;
 			const result = await fetch('/api/juror-apps/allocations', {
 				method: 'GET',
 			});
 			this.allocatedJurors = await result.json();
-			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
-			this.totalJurors = allJurors.length;
-			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
-			this.meanScore = Math.round(this.meanScore * 10) / 10;
-			const catDictionary = {};
-			for (const juror of allJurors) {
-				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
-			}
-			let categoryTotal = 0;
-			// eslint-disable-next-line no-unused-vars
-			for (const [key, value] of Object.entries(catDictionary)) {
-				categoryTotal += value;
-			}
-			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
-			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
-			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
-			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
-			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
-			console.log(this.fourJurors);
-			for (const applicant of this.threesApplicants) {
-				const found = allJurors.find(juror => juror === applicant);
-				if (!found) {
-					console.log(applicant);
-					this.threesUnallocated++;
-				}
-			}
-			for (const applicant of this.twosApplicants) {
-				const found = allJurors.find(juror => juror === applicant);
-				if (!found) {
-					this.twosUnallocated++;
-				}
-			}
-			for (const category of this.categories) {
-				if (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount) {
-					this.categoriesUnfilled++;
-				}
-			}
+			console.log(this.allocatedJurors);
+
 			this.loaded = true;
 		},
 	},
@@ -220,50 +176,6 @@ export default {
 			await this.getAnswers();
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
-		if (this.jurors.length > 0) {
-			this.allocatedJurors = this.jurors;
-			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
-			this.totalJurors = allJurors.length;
-			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
-			this.meanScore = Math.round(this.meanScore * 10) / 10;
-			const catDictionary = {};
-			for (const juror of allJurors) {
-				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
-			}
-			let categoryTotal = 0;
-			// eslint-disable-next-line no-unused-vars
-			for (const [key, value] of Object.entries(catDictionary)) {
-				categoryTotal += value;
-			}
-			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
-			const filteredAnswers = this.answers.filter(answer => answer.question.question_group.application.year === 2020 && Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2);
-			this.threesApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 3).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
-			this.twosApplicants = [...new Set(filteredAnswers.filter(answer => Math.round(answer.scores.reduce((a, b) => a + b.score, 0) / answer.scores.length) >= 2).map(answer => answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id))];
-			this.fourJurors = [...new Set(this.allocatedJurors.filter(juror => this.allocatedJurors.filter(aJuror => aJuror.name === juror.name).length > 3).map(juror => juror.name))];
-			console.log(this.fourJurors);
-			for (const applicant of this.threesApplicants) {
-				const found = allJurors.find(juror => juror === applicant);
-				if (!found) {
-					console.log(applicant);
-					this.threesUnallocated++;
-				}
-			}
-			for (const applicant of this.twosApplicants) {
-				const found = allJurors.find(juror => juror === applicant);
-				if (!found) {
-					this.twosUnallocated++;
-				}
-			}
-			for (const category of this.categories) {
-				if (this.allocatedJurors.filter(juror => juror.categoryId === category.id).length !== category.jurorCount) {
-					this.categoriesUnfilled++;
-				}
-			}
-		}
-		const namesLock = this.locks.find(lock => lock.name === 'app-names');
-		if (namesLock.flag || this.me.level > namesLock.level) {
-			this.showNames = true;
-		}
 		this.loaded = true;
 	},
 };
