@@ -214,7 +214,7 @@ class Allocations {
 				let eligiblePrefs = juror.qualifyingPrefs(this.categories, HIGHPRIO_THRESHOLD);
 				eligiblePrefs.forEach((pref) =>{
 					if (!this.catIsFull(pref)){
-						this.allocatedJurors.push(new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, eligiblePrefs[0]), juror.catPref(eligiblePrefs[0]), eligiblePrefs[0]));
+						this.allocatedJurors.push(new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, pref), juror.catPref(pref), pref));
 						return;
 					}
 				});
