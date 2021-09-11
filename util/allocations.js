@@ -56,11 +56,11 @@ class ApplicationJuror {
 		this.visualScore = visualqs.reduce(questionreducer, 0) / (visualqs.length);
 		if (!this.visualScore){this.visualScore = 0;} if (this.visualScore >= 1) {weight++;}
 		this.opedScore = opedqs.reduce(questionreducer, 0) / (opedqs.length);
-		if (!this.opedScore){this.opedScore = 0;} if (this.opedScore >= 1) {weight++;}
+		if (!this.opedScore){this.opedScore = 0;} // if (this.opedScore >= 1) {weight++;}
 
-		this.mainScore = (this.genreScore + this.characterScore + this.visualScore + this.audioScore + this.opedScore) / 5;
+		this.mainScore = (this.genreScore + this.characterScore + this.visualScore + this.audioScore) / 4;
 		if (weight > 0){
-			this.weightedScore = (this.genreScore + this.characterScore + this.visualScore + this.audioScore + this.opedScore) / weight;
+			this.weightedScore = (this.genreScore + this.characterScore + this.visualScore + this.audioScore) / weight;
 		} else {
 			this.weightedScore = 0;
 		}
