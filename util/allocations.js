@@ -16,7 +16,7 @@ class ApplicationJuror {
 		this.prefs = new Array();
 		this.prefsAssignedRemoved = new Array();
 
-		this.wantedCats = 1;
+		this.wantedCats = 3;
 		this.willingToFill = true;
 		this.genreScore = -1;
 		this.characterScore = -1;
@@ -37,7 +37,7 @@ class ApplicationJuror {
 		if (many.length > 0) {
 			this.wantedCats = parseInt(many[0].answer);
 		} else {
-			this.wantedCats = 1;
+			this.wantedCats = 3;
 		}
 	}
 
