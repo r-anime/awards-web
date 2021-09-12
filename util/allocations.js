@@ -1,21 +1,23 @@
 const { all } = require("../routes/complain");
 
 const HIGHPRIO_THRESHOLD = 3.5;
+const MAIN_THRESHOLD = 2.5;
 const NORMAL_THRESHOLD = 3;
 const LOWPRIO_THRESHOLD = 2;
 const SCRAPING_THRESHOLD = 1;
-const JUROR_MIN = 7;
+const JUROR_MIN = 5;
 const JUROR_MAX = 13;
-const AOTY_MAX = 23;
+const AOTY_MAX = 17;
 
 class ApplicationJuror {
 	constructor (name, answers){
 		this.name = name;
 		this.answers = answers;
-		this.prefs = [];
-		this.prefsAssignedRemoved = [];
+		this.prefs = new Array();
+		this.prefsAssignedRemoved = new Array();
 
 		this.wantedCats = 1;
+		this.willingToFill = true;
 		this.genreScore = -1;
 		this.characterScore = -1;
 		this.visualScore = -1;
@@ -23,6 +25,7 @@ class ApplicationJuror {
 		this.opedScore = -1;
 		this.mainScore = -1;
 		this.weightedScore = -1;
+		this.highestScore = 0;
 
 		this.calcWanted();
 		this.calcScores();
@@ -73,6 +76,8 @@ class ApplicationJuror {
 		} else {
 			this.weightedScore = 0;
 		}
+
+		this.highestScore = Math.max(this.visualScore, this.audioScore, this.characterScore, this.genreScore, this.opedScore, 0);
 	}
 
 	calcPrefs(){
@@ -102,12 +107,16 @@ class ApplicationJuror {
 	}
 
 	qualifiesFor(cats, catid, threshold){
-		let category = cats.find(cat => cat.id == catid);
-
 		return this.qualifyingScore(cats, catid) >= threshold;
 	}
 
 	qualifyingScore(cats, catid){
+		let category = cats.find(cat => cat.id == catid);
+		if (category === undefined){
+			// console.log(`cant find ${catid}`)
+			return 0;
+		}
+
 		if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
 			return this.audioScore;
 		} else if (category.name.match(/OP|ED/gm)) {
@@ -126,11 +135,11 @@ class ApplicationJuror {
 
 	// all preferences for which we have a qualifying score (passes this threshold)
 	qualifyingPrefs(cats, threshold){
-		return this.prefs.filter(x => this.qualifiesFor(cats, x, threshold));
-	}
-
-	highestScore(){
-		return Math.max(this.visualScore, this.audioScore, this.characterScore, this.genreScore, this.opedScore, 0);
+		try {
+			return this.prefs.filter(x => this.qualifiesFor(cats, x, threshold))
+		} catch {
+			return [];
+		}
 	}
 
 	catPref(catid){
@@ -164,7 +173,6 @@ class Allocations {
 		});
 	}
 
-	// eslint-disable-next-line class-methods-use-this
 	shuffle (array) {
 		let currentIndex = array.length; let temporaryValue; let randomIndex;
 
@@ -184,7 +192,7 @@ class Allocations {
 	}
 
 	catIsFull(catid){
-		let category = cats.find(cat => cat.id == catid);
+		let category = this.categories.find(cat => cat.id == catid);
 
 		const catJurors = this.allocatedJurors.filter(juror => juror.catid == catid);
 		if (category.name == "Anime of the Year"){
@@ -194,35 +202,111 @@ class Allocations {
 		}
 	}
 
+	catExists(catid){
+		let category = this.categories.find(cat => cat.id == catid);
+
+		return category !== undefined;
+	}
+
 	jurorIsFull(juror){
 		const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
-		return jurorAllocations.length >= juror.wantedCats();
+		return (jurorAllocations.length >= juror.wantedCats);
+	}
+
+	jurorInCat(juror, catid){
+		let allocatedJuror = this.allocatedJurors.find(aj => aj.name == juror.name && aj.catid == catid);
+
+		return allocatedJuror !== undefined;
 	}
 
 	priorityDraft(){
 		let eligibleJurors = this.shuffle(this.jurors);
-		eligibleJurors = eligibleJurors.filter(juror => juror.highestScore() > HIGHPRIO_THRESHOLD);
-		eligibleJurors = eligibleJurors.sort((a, b) => b.highestScore() - a.highestScore());
+		eligibleJurors = eligibleJurors.filter(juror => juror.highestScore >= HIGHPRIO_THRESHOLD);
+		eligibleJurors = eligibleJurors.sort((a, b) => b.highestScore - a.highestScore);
 
-		eligibleJurors.forEach((juror) => {
+		for (let juror of eligibleJurors){
 			const nonMainCats = this.categories.filter(cat => cat.awardsGroup != 'main');
-			let eligiblePrefs = juror.qualifyingPrefs(this.categories, juror.highestScore());
+			let eligiblePrefs = juror.qualifyingPrefs(nonMainCats, juror.highestScore);
 			if (eligiblePrefs.length > 0 && !this.catIsFull(eligiblePrefs[0])){
-				this.allocatedJurors.push(new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, eligiblePrefs[0]), juror.catPref(eligiblePrefs[0]), eligiblePrefs[0]));
-				return;
+				let newJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, eligiblePrefs[0]), juror.catPref(eligiblePrefs[0]), eligiblePrefs[0]);
+				this.allocatedJurors.push(newJuror);
 			} else {
 				let eligiblePrefs = juror.qualifyingPrefs(this.categories, HIGHPRIO_THRESHOLD);
-				eligiblePrefs.forEach((pref) =>{
-					if (!this.catIsFull(pref)){
-						this.allocatedJurors.push(new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, pref), juror.catPref(pref), pref));
-						return;
+				for (let pref of eligiblePrefs){
+					if (!this.catExists(pref)){
+						continue;
 					}
-				});
+					if (!this.catIsFull(pref) && !this.jurorInCat(juror, pref)){
+						let newJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, pref), juror.catPref(pref), pref);
+						this.allocatedJurors.push(newJuror);
+						break;
+					}
+				}
 			}
-		});
+		}
+	}
+	
+	mainCatDraft(){
+		let eligibleJurors = this.shuffle(this.jurors);
+		eligibleJurors = eligibleJurors.filter(juror => juror.mainScore >= MAIN_THRESHOLD);
+		// We do not order by score for Main Draft, only thresholds
+		// eligibleJurors = eligibleJurors.sort((a, b) => b.mainScore - a.mainScore);
+
+		for (let juror of eligibleJurors){
+			if (this.jurorIsFull(juror)){
+				continue;
+			}
+			const mainCats = this.categories.filter(cat => cat.awardsGroup == 'main');
+			let eligiblePrefs = juror.qualifyingPrefs(mainCats, MAIN_THRESHOLD);
+			if (eligiblePrefs.length > 0 && !this.catIsFull(eligiblePrefs[0])){
+				let newJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, eligiblePrefs[0]), juror.catPref(eligiblePrefs[0]), eligiblePrefs[0]);
+				this.allocatedJurors.push(newJuror);
+			} else {
+				let eligiblePrefs = juror.qualifyingPrefs(this.categories, MAIN_THRESHOLD);
+				for (let pref of eligiblePrefs){
+					if (!this.catExists(pref)){
+						continue;
+					}
+					if (!this.catIsFull(pref) && !this.jurorInCat(juror, pref)){
+						let newJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, pref), juror.catPref(pref), pref);
+						this.allocatedJurors.push(newJuror);
+						break;
+					}
+				}
+			}
+		}
 	}
 
+	draft(low){		
+		let succesfulAllocations = 0;
+		do {
+			succesfulAllocations = 0;
+			let eligibleJurors = this.shuffle(this.jurors);
 
+			for (let juror of eligibleJurors){
+				if (this.jurorIsFull(juror)){
+					break;
+				}
+				let eligiblePrefs = juror.qualifyingPrefs(this.categories, low);
+				if (low == 1.5){
+					console.log(juror.name, eligiblePrefs);
+				}
+				for (let pref of eligiblePrefs){
+					if (!this.catExists(pref)){
+						continue;
+					}
+					if (!this.catIsFull(pref) && !this.jurorInCat(juror, pref)){
+						let newJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, pref), juror.catPref(pref), pref);
+						this.allocatedJurors.push(newJuror);
+						succesfulAllocations++;
+
+						break;
+					}
+				}
+			}
+		}
+		while (succesfulAllocations > 0);
+	}
 }
 
 module.exports = Allocations;

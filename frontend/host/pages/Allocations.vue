@@ -27,12 +27,6 @@
 									<span class="tag is-primary">{{averageCategories}}</span>
 								</div>
 							</div>
-							<div class="column is-narrow">
-								<div class="tags has-addons are-medium">
-									<span class="tag is-dark">Categories Unfilled</span>
-									<span class="tag is-primary">{{categoriesUnfilled}}</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -40,26 +34,6 @@
 					<div class="level-item">
 						<div class="buttons">
 							<button @click="initiateDraft()" class="button is-danger">Roll Allocations</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="level">
-				<div class="level-left">
-					<div class="level-item">
-						<div class="columns is-multiline is-mobile">
-							<div class="column is-narrow">
-								<div class="tags has-addons are-medium">
-									<span class="tag is-dark">Unpassed Applicants</span>
-									<span class="tag is-primary">{{threesUnallocated}}</span>
-								</div>
-							</div>
-							<div class="column is-narrow">
-								<div class="tags has-addons are-medium">
-									<span class="tag is-dark">Unpassed Backup Applicants</span>
-									<span class="tag is-primary">{{twosUnallocated}}</span>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -116,12 +90,6 @@ export default {
 			meanScore: 0,
 			averageCategories: 0,
 			showNames: false,
-			threesUnallocated: 0,
-			twosUnallocated: 0,
-			categoriesUnfilled: 0,
-			threesApplicants: null,
-			twosApplicants: null,
-			fourJurors: null,
 		};
 	},
 	computed: {
@@ -142,20 +110,32 @@ export default {
 			'getMe',
 		]),
 		filteredAllocatedJurors (category) {
-			if (!this.allocatedJurors){
-				
-			}
-			return [];
-			// return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
+			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
 		},
 		async initiateDraft () {
 			this.loaded = false;
+			this.meanScore = 0;
+			this.averageCategories = 0;
+			this.totalJurors = 0;
 			const result = await fetch('/api/juror-apps/allocations', {
 				method: 'GET',
 			});
 			this.allocatedJurors = await result.json();
 			console.log(this.allocatedJurors);
-
+			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
+			this.totalJurors = allJurors.length;
+			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
+			this.meanScore = Math.round(this.meanScore * 10) / 10;
+			const catDictionary = {};
+			for (const juror of allJurors) {
+				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
+			}
+			let categoryTotal = 0;
+			// eslint-disable-next-line no-unused-vars
+			for (const [key, value] of Object.entries(catDictionary)) {
+				categoryTotal += value;
+			}
+			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			this.loaded = true;
 		},
 	},
@@ -176,6 +156,27 @@ export default {
 			await this.getAnswers();
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
+		if (this.jurors.length > 0) {
+			this.allocatedJurors = this.jurors;
+			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
+			this.totalJurors = allJurors.length;
+			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
+			this.meanScore = Math.round(this.meanScore * 10) / 10;
+			const catDictionary = {};
+			for (const juror of allJurors) {
+				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
+			}
+			let categoryTotal = 0;
+			// eslint-disable-next-line no-unused-vars
+			for (const [key, value] of Object.entries(catDictionary)) {
+				categoryTotal += value;
+			}
+			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
+		}
+		const namesLock = this.locks.find(lock => lock.name === 'app-names');
+		if (namesLock.flag || this.me.level > namesLock.level) {
+			this.showNames = true;
+		}
 		this.loaded = true;
 	},
 };

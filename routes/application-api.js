@@ -774,35 +774,41 @@ apiApp.get('/allocations', async (request, response) => {
 			const validApps = applicants;
 			// const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
 			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1]);
-			response.json(allocationInstance);
+			allocationInstance.priorityDraft();
+			allocationInstance.mainCatDraft();
+			allocationInstance.draft(3);
+			allocationInstance.draft(1.5);
+
+			// response.json(allocationInstance);
 			
 			// allocationInstance.initiateDraft();
-			// const jurorPromiseArr = [];
-			// await Jurors.destroy({truncate: true, restartIdentity: true});
-			// await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'jurors'");
-			// const t = await sequelize.transaction();
-			/* for (const juror of allocationInstance.allocatedJurors) {
+			const jurorPromiseArr = [];
+			await Jurors.destroy({truncate: true, restartIdentity: true});
+			await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'jurors'");
+			const t = await sequelize.transaction();
+			for (const juror of allocationInstance.allocatedJurors) {
 				jurorPromiseArr.push(Jurors.create({
 					name: juror.name,
 					link: `https://www.reddit.com/user/${juror.name}`,
 					score: juror.score,
-					preference: juror.preference,
-					categoryId: juror.categoryId,
+					preference: juror.pref,
+					categoryId: juror.catid,
 				}, {
 					transaction: t,
 				}));
 			}
+			
 			Promise.all(jurorPromiseArr).then(async () => {
 				await t.commit();
-				yuuko.createMessage(config.discord.auditChannel, {
+				/*yuuko.createMessage(config.discord.auditChannel, {
 					embed: {
 						title: 'Jurors rolled',
 						description: `Jurors were rolled by **${auth}**.`,
 						color: 8302335,
 					},
-				});
+				});*/
 				response.json(allocationInstance.allocatedJurors);
-			});*/
+			});
 		} catch (error) {
 			response.error(error);
 		}
