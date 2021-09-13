@@ -771,13 +771,13 @@ apiApp.get('/allocations', async (request, response) => {
 		try {
 			// Change this every year
 			const applicants = promiseArr[1];
-			const validApps = applicants;
-			// const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
+			// const validApps = applicants;
+			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear() - 1));
 			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1]);
 			allocationInstance.priorityDraft();
-			allocationInstance.mainCatDraft();
-			allocationInstance.draft(3);
+			// allocationInstance.mainCatDraft();
 			allocationInstance.draft(1.5);
+			allocationInstance.draft(2, true);
 
 			// response.json(allocationInstance);
 			
