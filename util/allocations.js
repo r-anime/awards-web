@@ -365,47 +365,49 @@ class Allocations {
 		}
 	}
 
-	
+
 	vaxiDraft(low, aotylow){
 		// Get the list of categories
 		let eligibleCats = this.categories;
 
 		// Loop through the categories
-		for (cat of eligibleCats){
-			// Get the list of eligible jurors
-			let catJurors = [];
-			// If we are in the AotY category, only get the jurors that qualify for it
-			if (cat.name == 'Anime of the Year'){
-				catJurors = this.getEligibleJurors(cat.id, aotylow, false);
-			} else {
-				catJurors = this.getEligibleJurors(cat.id, low, false);
-			}
-			// By sorting by immunity -> score -> preference, we actually end up with a list where the reverse is prioritized
-			// Thus we end up with a juror list that is sorted by preference, then score as a tiebreaker, then immunity as a tiebreaker
-			catJurors.sort((a, b) => b.immunity - a.immunity);
-			catJurors.sort((a, b) => Math.round(b.qualifyingScore(cat.id)) - Math.round(a.qualifyingScore(cat.id)));
-			catJurors.sort((a, b) => a.catPref(cat.id) - b.catPref(cat.id));
-			
-			let lastAllocatedJuror = null; // this is important for determining category immunity
-			// Loop through the jurors while we have space and jurors
-			while (!this.catIsFull(cat.id) && catJurors.length > 0){
-				// Get the first juror in the list and attempt to allocate them
-				let juror = catJurors.shift();
-				if (this.jurorIsFull(juror)){
-					continue;
+		for (let draft = 0; draft < eligibleCats.length; draft++){
+			for (cat of eligibleCats){
+				// Get the list of eligible jurors
+				let catJurors = [];
+				// If we are in the AotY category, only get the jurors that qualify for it
+				if (cat.name == 'Anime of the Year'){
+					catJurors = this.getEligibleJurors(cat.id, aotylow, false);
+				} else {
+					catJurors = this.getEligibleJurors(cat.id, low, false);
 				}
-				this.allocateJuror(juror, cat.id);
-			}
+				// Get catJurors of increasing breadth of preference as the draft increases
+				catJurors = catJurors.filter(juror => juror.catPref(cat.id) <= draft);
 
-			// If we allocated a juror, we need distribute immunity points to everyone who had the same score, preference, and immunity level
-			if (lastAllocatedJuror !== null){
-				let unluckyJurors = catJurors.filter(juror => (Math.round(juror.qualifyingScore(cat.id)) >= Math.round(lastAllocatedJuror.qualifyingScore(cat.id))
-																&& juror.catPref(cat.id) == lastAllocatedJuror.catPref(cat.id)
-																&& juror.immunity >= lastAllocatedJuror.immunity
-																&& !this.jurorIsFull(juror)));
-				for (let juror of unluckyJurors){
-					// This literally just increments immunity, but I liked the pun
-					juror.vaxinnate();
+				// By sorting by immunity -> score -> preference, we actually end up with a list where the reverse is prioritized
+				// Thus we end up with a juror list that is sorted by preference, then score as a tiebreaker, then immunity as a tiebreaker
+				catJurors.sort((a, b) => b.immunity - a.immunity);
+				catJurors.sort((a, b) => Math.round(b.qualifyingScore(cat.id)) - Math.round(a.qualifyingScore(cat.id)));
+				catJurors.sort((a, b) => a.catPref(cat.id) - b.catPref(cat.id));
+				
+				let lastAllocatedJuror = null; // this is important for determining category immunity
+				// Loop through the jurors while we have space and jurors
+				while (!this.catIsFull(cat.id) && catJurors.length > 0){
+					// Get the first juror in the list and attempt to allocate them
+					let juror = catJurors.shift();
+					if (this.jurorIsFull(juror)){
+						continue;
+					}
+					this.allocateJuror(juror, cat.id);
+				}
+
+				// If we allocated a juror, we need distribute immunity points to everyone who had the same or somehow higher preference
+				if (lastAllocatedJuror !== null){
+					let unluckyJurors = catJurors.filter(juror => (juror.catPref(cat.id) <= lastAllocatedJuror.catPref(cat.id) && !this.jurorIsFull(juror)));
+					for (let juror of unluckyJurors){
+						// This literally just increments immunity, but I liked the pun
+						juror.vaxinnate();
+					}
 				}
 			}
 		}
@@ -438,15 +440,6 @@ class Allocations {
 			for (let cat of eligibleCats){
 				loopedCats++;
 
-				// Get the list of eligible jurors
-				let eligibleJurors;
-				if (cat.name == 'Anime of the Year'){
-					eligibleJurors = this.getEligibleJurors(cat.id, 2.8, fill); // This is hardcoded for now, but can be changed later
-				} else {
-					eligibleJurors = this.getEligibleJurors(cat.id, low, fill);
-				}
-				console.log(`Eligible jurors for ${cat.name}: ${eligibleJurors.length}`);
-
 				// The first category we see is the category with the lowest count. We will use this count to even out categories if needed.
 				// If we encounter another category with a higher count than the current lowest, we will break out of the loop
 				// Categories with the same count will still have a juror allocated to it this cycle
@@ -459,6 +452,16 @@ class Allocations {
 						break;
 					}
 				}
+				
+				// Get the list of eligible jurors
+				let eligibleJurors;
+				if (cat.name == 'Anime of the Year'){
+					eligibleJurors = this.getEligibleJurors(cat.id, 2.8, fill); // This is hardcoded for now, but can be changed later
+				} else {
+					eligibleJurors = this.getEligibleJurors(cat.id, low, fill);
+				}
+				console.log(`Eligible jurors for ${cat.name}: ${eligibleJurors.length}`);
+				
 				// By sorting by shuffle -> score -> preference, we actually end up with a list where the reverse is prioritized
 				// Thus we end up with a juror list that is sorted by preference, then score as a tiebreaker, then shuffle as a tiebreaker
 				eligibleJurors = shuffle(eligibleJurors);
