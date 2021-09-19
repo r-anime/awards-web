@@ -372,7 +372,8 @@ class Allocations {
 
 		// Loop through the categories
 		for (let draft = 0; draft < eligibleCats.length; draft++){
-			for (cat of eligibleCats){
+			for (let cat of eligibleCats){
+				console.log(cat.name);
 				// Get the list of eligible jurors
 				let catJurors = [];
 				// If we are in the AotY category, only get the jurors that qualify for it
@@ -393,6 +394,7 @@ class Allocations {
 				let lastAllocatedJuror = null; // this is important for determining category immunity
 				// Loop through the jurors while we have space and jurors
 				while (!this.catIsFull(cat.id) && catJurors.length > 0){
+					console.log(catJurors.length);
 					// Get the first juror in the list and attempt to allocate them
 					let juror = catJurors.shift();
 					if (this.jurorIsFull(juror)){
@@ -452,7 +454,7 @@ class Allocations {
 						break;
 					}
 				}
-				
+
 				// Get the list of eligible jurors
 				let eligibleJurors;
 				if (cat.name == 'Anime of the Year'){

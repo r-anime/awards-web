@@ -774,16 +774,16 @@ apiApp.get('/allocations', async (request, response) => {
 			// const validApps = applicants;
 			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear() - 1));
 			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1]);
+			
+			// allocationInstance.pandaDraft(2.6);
+			// allocationInstance.pandaDraft(1.6, true);
+			// allocationInstance.pandaDraft(0.6, true); // OH GOD OH FUCK
 
-			allocationInstance.pandaDraft(2.6);
-			allocationInstance.pandaDraft(1.6, true);
-			allocationInstance.pandaDraft(0.6, true); // OH GOD OH FUCK
-
-			/*
+			
 			allocationInstance.vaxiDraft(2.6, 3.0);
 			allocationInstance.vaxiDraft(1.6, 2.0);
 			allocationInstance.vaxiDraft(0.6, 2.0); // OH GOD OH FUCK
-			*/
+			
 
 			const jurorPromiseArr = [];
 			await Jurors.destroy({truncate: true, restartIdentity: true});
