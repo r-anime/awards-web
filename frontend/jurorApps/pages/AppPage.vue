@@ -26,7 +26,7 @@
 						<div v-for="(q, q_index) in qg.questions"
 							:key="q_index">
 							<div v-if="q.type == 'essay'">
-								<h3 class="question-header">{{q.question}}</h3>
+								<h3 class="question-header">{{markdownit(q.question)}}</h3>
 								<Editor initialEditType="wysiwyg" :options="editorOptions" :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
 							</div>
 							<div v-else-if="q.type == 'choice'">

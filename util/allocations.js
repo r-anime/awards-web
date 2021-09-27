@@ -198,7 +198,7 @@ class ApplicationJuror {
 		try{
 			return this.prefs.indexOf(catid);
 		} catch {
-			return -1;
+			return 883;
 		}
 	}
 
@@ -271,16 +271,20 @@ class Allocations {
 		}
 
 		let jurors = this.jurors.filter(juror => {
-			if (juror.catPref(catid) === -1){
-				return false;
-			}
-			if (fill){
+			if (!fill){
 				if (this.jurorIsFull(juror)){
+					return false;
+				}
+				if (juror.catPref(catid) === 883){
 					return false;
 				}
 			} else {
 				const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
-				if (jurorAllocations.length >= (juror.wantedCats+1)){
+				let catCount = juror.wantedCats;
+				if (juror.willingToFill){
+					catCount++;
+				}
+				if (jurorAllocations.length >= (catCount)){
 					return false;
 				}
 			}
