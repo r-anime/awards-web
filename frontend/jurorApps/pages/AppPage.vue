@@ -46,7 +46,7 @@
 									<div>
 										<h3 class="question-header">Category Preferences</h3>
 										<p>
-											Drag the categories below into the the <strong>Preferred Categories</strong> box in order of preference.
+											Drag the categories below into the the <strong>Preferred Categories</strong> box <strong>in order of preference</strong>.
 											Once dragged into the box, numbers will appear next to the category name, these indicate your preference for that category.
 											1 is your number 1 preference, 2 is your number 2 preference, etc.
 											<br/>
