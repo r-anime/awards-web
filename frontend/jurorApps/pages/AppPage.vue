@@ -32,7 +32,7 @@
 							<div v-else-if="q.type == 'choice'">
 								<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
 								<p v-if="multipleChoiceQuestion(q.question).startsWith('How many categories')" >
-									Note: A 4th or 5th for categories is reserved for categories with the least amount of jurors. Expect those to be categories that are potentially lower on your preference list.
+									Note: The 4th and 5th category spots are reserved for categories with a low amount of interest. If you are assigned one, expect them to be categories that are lower on your preference list.
 									<br/>
 									<br/>
 								</p>
