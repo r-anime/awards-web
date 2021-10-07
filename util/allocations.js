@@ -2,40 +2,9 @@ const { all } = require("../routes/complain");
 
 const HIGHPRIO_THRESHOLD = 3.5;
 const MAIN_THRESHOLD = 2.5;
+const JUROR_MIN = 7;
 const JUROR_MAX = 13;
-const AOTY_MAX = 19;
-
-// Definitely real list of categories for the year
-const LIST_OF_CATEGORIES = [
-	"Anime of the Year",
-	"Movie of the Year",
-	"Short of the Year",
-	"Music Video of the Year",
-	"Action",
-	"Adventure",
-	"Comedy",
-	"Drama",
-	"Slice of Life",
-	"Suspense",
-	"Mecha",
-	"Main Dramatic",
-	"Main Comedic",
-	"Supporting Character",
-	"Antagonist",
-	"Cast",
-	"Animation",
-	"Background Art",
-	"Character Design",
-	"Storyboarding",
-	"Compositing",
-	"OST",
-	"Comedic VA",
-	"Dramatic VA",
-	"OP",
-	"ED",
-	"Comedic Sound Design",
-	"Dramatic Sound Design"
-]
+const AOTY_MAX = 15;
 
 function shuffle (array) {
 	let currentIndex = array.length; let temporaryValue; let randomIndex;
@@ -62,6 +31,7 @@ class ApplicationJuror {
 		this.prefs = new Array();
 
 		this.wantedCats = 3;
+		this.additionalCats = 2;
 		this.willingToFill = true;
 		this.immunity = 0;
 		this.genreScore = -1;
@@ -82,6 +52,10 @@ class ApplicationJuror {
 		const many = this.answers.filter(answer => answer.question.question.startsWith('How many categories') && answer.question.type === 'choice');
 		if (many.length > 0) {
 			this.wantedCats = parseInt(many[0].answer);
+			if (this.wantedCats > 3){
+				this.additionalCats = this.wantedCats - 3;
+				this.wantedCats = 3;
+			}
 		} else {
 			this.wantedCats = 3;
 		}
@@ -135,10 +109,9 @@ class ApplicationJuror {
 		} 
 		// Old Prefs (I am literally coding this part for testing with legacy data)
 		else {
-			let allprefs = [];
+			let allprefs = new Array();
 			prefqs.forEach(answer =>{
 				let prefsobj = JSON.parse(answer.answer);
-				let prefsort = [];
 				for (let prefnum in prefsobj){
 					if (parseInt(prefsobj[prefnum]) > 1){
 						allprefs.push([prefnum, parseInt(prefsobj[prefnum])]);
@@ -196,7 +169,12 @@ class ApplicationJuror {
 
 	catPref(catid){
 		try{
-			return this.prefs.indexOf(catid);
+			let returnval = this.prefs.indexOf(catid);
+			if (returnval == -1){
+				return 883;
+			} else {
+				return returnval;
+			}
 		} catch {
 			return 883;
 		}
@@ -231,6 +209,14 @@ class Allocations {
 				this.jurors.push(juror);
 			}
 		});
+	}
+
+	catsNeedFill(){
+		let catsBelowMin = this.categories.filter(cat => {
+			let jurorsinCat = this.getJurorsInCat(cat.id);
+			return jurorsinCat.length < JUROR_MIN;
+		});
+		return catsBelowMin.length > 0;
 	}
 
 	catIsFull(catid){
@@ -282,7 +268,7 @@ class Allocations {
 				const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
 				let catCount = juror.wantedCats;
 				if (juror.willingToFill){
-					catCount++;
+					catCount += juror.additionalCats;
 				}
 				if (jurorAllocations.length >= (catCount)){
 					return false;
@@ -370,21 +356,22 @@ class Allocations {
 	}
 
 
-	vaxiDraft(low, aotylow){
+	vaxiDraft(low, aotylow, fill=false){
 		// Get the list of categories
 		let eligibleCats = this.categories;
+		console.log("Main Draft", low, aotylow, fill);
 
 		// Loop through the categories
 		for (let draft = 0; draft < eligibleCats.length; draft++){
 			for (let cat of eligibleCats){
-				console.log(cat.name);
+				// console.log(cat.name);
 				// Get the list of eligible jurors
 				let catJurors = [];
 				// If we are in the AotY category, only get the jurors that qualify for it
 				if (cat.name == 'Anime of the Year'){
-					catJurors = this.getEligibleJurors(cat.id, aotylow, false);
+					catJurors = this.getEligibleJurors(cat.id, aotylow, fill);
 				} else {
-					catJurors = this.getEligibleJurors(cat.id, low, false);
+					catJurors = this.getEligibleJurors(cat.id, low, fill);
 				}
 				// Get catJurors of increasing breadth of preference as the draft increases
 				catJurors = catJurors.filter(juror => juror.catPref(cat.id) <= draft);
@@ -398,7 +385,7 @@ class Allocations {
 				let lastAllocatedJuror = null; // this is important for determining category immunity
 				// Loop through the jurors while we have space and jurors
 				while (!this.catIsFull(cat.id) && catJurors.length > 0){
-					console.log(catJurors.length);
+					// console.log(catJurors.length);
 					// Get the first juror in the list and attempt to allocate them
 					let juror = catJurors.shift();
 					if (this.jurorIsFull(juror)){
@@ -420,13 +407,14 @@ class Allocations {
 
 	}
 
-	pandaDraft(low, fill=false){
+	pandaDraft(low, aoty=2.8, fill=false){
 		// Set up helper variables we need for this draft
 		let succesfulAllocations = 0;
 		let loopedCats = 0;
 
 		// We will randomize the order of the categories so that we don't always start with the same category
 		let eligibleCats = shuffle(this.categories);
+		console.log("Fill Draft", low, aoty, fill);
 
 		do { // Do while ensures this happens at least once
 			let lowestCount = -1;
@@ -439,12 +427,42 @@ class Allocations {
 			// As explained in vaxi's algorithm, this actually uses the first sort as a tiebreaker
 			// So the categories will be sorted by the number of jurors they already contain, then randomly tiebroken by the shuffle
 			eligibleCats = eligibleCats.filter(cat => !this.catIsFull(cat.id));
-			eligibleCats = shuffle(this.categories);			
+			eligibleCats.sort((a, b) => {
+				let acount = 0;
+				let bcount = 0;
+
+				if (a.name == 'Anime of the Year'){
+					acount = this.getEligibleJurors(a.id, aoty, fill);
+				} else {
+					acount = this.getEligibleJurors(a.id, low, fill);
+				}
+
+				if (a.name == 'Anime of the Year'){
+					bcount = this.getEligibleJurors(b.id, aoty, fill); 
+				} else {
+					bcount = this.getEligibleJurors(b.id, low, fill);
+				}
+
+				return acount - bcount;
+			});
 			eligibleCats.sort((a, b) => _this.getJurorsInCat(a).length - _this.getJurorsInCat(b).length);
 
 			// Loop through the categories
 			for (let cat of eligibleCats){
 				loopedCats++;
+
+				// Get the list of eligible jurors
+				let eligibleJurors;
+				if (cat.name == 'Anime of the Year'){
+					eligibleJurors = this.getEligibleJurors(cat.id, aoty, fill);
+				} else {
+					eligibleJurors = this.getEligibleJurors(cat.id, low, fill);
+				}
+				// We don't care about categories no one likes
+				if (eligibleJurors.length == 0){
+					continue;
+				}
+				// console.log(`Eligible jurors for ${cat.name}: ${eligibleJurors.length}`);
 
 				// The first category we see is the category with the lowest count. We will use this count to even out categories if needed.
 				// If we encounter another category with a higher count than the current lowest, we will break out of the loop
@@ -458,15 +476,6 @@ class Allocations {
 						break;
 					}
 				}
-
-				// Get the list of eligible jurors
-				let eligibleJurors;
-				if (cat.name == 'Anime of the Year'){
-					eligibleJurors = this.getEligibleJurors(cat.id, 2.8, fill); // This is hardcoded for now, but can be changed later
-				} else {
-					eligibleJurors = this.getEligibleJurors(cat.id, low, fill);
-				}
-				console.log(`Eligible jurors for ${cat.name}: ${eligibleJurors.length}`);
 				
 				// By sorting by shuffle -> score -> preference, we actually end up with a list where the reverse is prioritized
 				// Thus we end up with a juror list that is sorted by preference, then score as a tiebreaker, then shuffle as a tiebreaker

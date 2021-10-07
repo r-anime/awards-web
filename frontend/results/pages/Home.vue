@@ -22,7 +22,7 @@
 							</p>
 							<br/><br/>
 							<div class="has-text-centered">
-								<router-link to="/archive" class="button is-large is-success">Past Results Archive</router-link>
+								<router-link to="/archive" class="button is-large is-success">Sign Up</router-link>
 								<a v-if="voting" href="/vote/" class="button is-large is-platinum">Vote Now</a>
 								<a v-if="fvoting" href="/final-vote/" class="button is-large is-platinum">Vote Now</a>
 							</div>

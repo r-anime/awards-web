@@ -31,6 +31,11 @@
 							</div>
 							<div v-else-if="q.type == 'choice'">
 								<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
+								<p v-if="multipleChoiceQuestion(q.question).startsWith('How many categories')" >
+									Note: A 4th or 5th for categories is reserved for categories with the least amount of jurors. Expect those to be categories that are potentially lower on your preference list.
+									<br/>
+									<br/>
+								</p>
 								<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="app-radio">
 									<input type="radio" :name="`mc-${q.id}`" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
 									<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
@@ -40,7 +45,19 @@
 								<div v-if="q.question == 'All'">
 									<div>
 										<h3 class="question-header">Category Preferences</h3>
-										<p>Leave out the categories you don't want.</p>
+										<p>
+											Drag the categories below into the the <strong>Preferred Categories</strong> box in order of preference.
+											Once dragged into the box, numbers will appear next to the category name, these indicate your preference for that category.
+											1 is your number 1 preference, 2 is your number 2 preference, etc.
+											<br/>
+											<br/>
+											<strong>Leave any categories you do not want in the top area.</strong>
+											<br/>
+											<br/>
+											You can drag categories back and forth between the boxes as well as re-order them.
+											<br/>
+											<br/>
+										</p>
 										<draggable class="field is-grouped is-grouped-multiline" :list="allcats" group="prefs" v-bind="dragOptions" @start="drag = true" @end="drag = false">
 											<div
 												class="control"
@@ -53,8 +70,9 @@
 											</div>
 										</draggable>
 									</div>
+									<br/>
 									<div>
-										<h4 class="question-header">Your Wanted Categories</h4>
+										<h4><strong>Preferred Categories</strong></h4>
 										<draggable class="field is-grouped is-grouped-multiline final-tags" :list="myprefs" group="prefs" v-bind="dragOptions" @change="handlePrefAllInput(q.id)">
 											<div
 												class="control"
