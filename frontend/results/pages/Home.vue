@@ -71,7 +71,7 @@
 								</div>
 							</nav>
 							<p>
-							Welcome, one and all, to the 2020 /r/Anime Awards results!
+							Welcome, one and all, to the 2021 /r/Anime Awards results!
 							Over the past few months we've laid the groundwork for our annual selection of the best shows of the year.
 							We've recruited our jurors, cruelly subjected them to innumerable episodes of anime, and simultaneously opened it up to you, the community of /r/anime.
 							Every year we try to improve these awards to better showcase the shows and creators we love.
@@ -82,7 +82,7 @@
 							</figure>
 							<br>
 							<p>
-							This site contains all of the info about the winners and rankings for the 33 award categories featured this year.
+							This site contains all of the info about the winners and rankings for the 24 award categories featured this year.
 							These are separated into over-arching category groups: genre awards, character awards, production awards, and main awards.
 							On each of these pages you will find the winner and runners-up for each category, as well as a toggle with which you can compare the results of the community vote to the rankings awarded by the category's jury.
 							For more detailed result statistics and other info, click the name of the award.
