@@ -1,8 +1,6 @@
 const { all } = require("../routes/complain");
 
-const HIGHPRIO_THRESHOLD = 3.5;
-const MAIN_THRESHOLD = 2.5;
-const JUROR_MIN = 7;
+const JUROR_MIN = 11;
 const JUROR_MAX = 13;
 const AOTY_MAX = 15;
 
@@ -298,64 +296,6 @@ class Allocations {
 		this.allocatedJurors.push(allocatedJuror);
 	}
 
-	priorityDraft(){
-		let eligibleJurors = shuffle(this.jurors);
-		eligibleJurors = eligibleJurors.filter(juror => juror.highestScore >= HIGHPRIO_THRESHOLD);
-		eligibleJurors.sort((a, b) => b.highestScore - a.highestScore);
-
-		for (let juror of eligibleJurors){
-			const nonMainCats = this.categories.filter(cat => cat.name != 'Anime of the Year');
-			let eligiblePrefs = juror.qualifyingPrefs(nonMainCats, juror.highestScore);
-			if (eligiblePrefs.length > 0 && !this.catIsFull(eligiblePrefs[0])){
-				this.allocateJuror(juror, eligiblePrefs[0]);
-			} else {
-				let eligiblePrefs = juror.qualifyingPrefs(nonMainCats, HIGHPRIO_THRESHOLD);
-				for (let pref of eligiblePrefs){
-					if (!this.catExists(pref)){
-						continue;
-					}
-					if (!this.catIsFull(pref) && !this.jurorInCat(juror, pref)){
-						this.allocateJuror(juror, pref);
-						break;
-					}
-				}
-			}
-		}
-	}
-	
-	mainCatDraft(){
-		let eligibleJurors = shuffle(this.jurors);
-		eligibleJurors = eligibleJurors.filter(juror => juror.mainScore >= MAIN_THRESHOLD);
-		// We do not order by score for AotY Draft, only thresholds
-		// eligibleJurors = eligibleJurors.sort((a, b) => b.mainScore - a.mainScore);
-
-		for (let juror of eligibleJurors){
-			if (this.jurorIsFull(juror)){
-				continue;
-			}
-			const mainCats = this.categories.filter(cat => cat.awardsGroup == 'Anime of the Year');
-			let eligiblePrefs = juror.qualifyingPrefs(mainCats, MAIN_THRESHOLD);
-			if (eligiblePrefs.length > 0 && !this.catIsFull(eligiblePrefs[0])){
-				this.allocateJuror(juror, eligiblePrefs[0]);
-			}
-			/* No more priority for missing AotY, you snooze you lose
-			else {
-				let eligiblePrefs = juror.qualifyingPrefs(this.categories, MAIN_THRESHOLD);
-				for (let pref of eligiblePrefs){
-					if (!this.catExists(pref)){
-						continue;
-					}
-					if (!this.catIsFull(pref) && !this.jurorInCat(juror, pref)){
-						let newJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, pref), juror.catPref(pref), pref);
-						this.allocatedJurors.push(newJuror);
-						break;
-					}
-				}
-			}*/
-		}
-	}
-
-
 	vaxiDraft(low, aotylow, fill=false){
 		// Get the list of categories
 		let eligibleCats = this.categories;
@@ -425,7 +365,7 @@ class Allocations {
 
 			// Shuffle the categories that aren't full then sort them by the number of jurors they already contain
 			// As explained in vaxi's algorithm, this actually uses the first sort as a tiebreaker
-			// So the categories will be sorted by the number of jurors they already contain, then randomly tiebroken by the shuffle
+			// So the categories will be sorted by the number of jurors they already contain, then tiebroken by the number of available jurors
 			eligibleCats = eligibleCats.filter(cat => !this.catIsFull(cat.id));
 			eligibleCats.sort((a, b) => {
 				let acount = 0;
@@ -489,7 +429,7 @@ class Allocations {
 					succesfulAllocations++;
 				}
 			}
-			console.log(`${succesfulAllocations}/${loopedCats}/${eligibleCats.length}`);
+			// console.log(`${succesfulAllocations}/${loopedCats}/${eligibleCats.length}`);
 		}
 		// We will keep allocating until the algorithm has looped through all the categories and has failed to allocate any additional jurors,
 		// Whether it be because the categories are full or because there are no more eligible jurors for any categories.

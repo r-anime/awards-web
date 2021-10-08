@@ -14,17 +14,17 @@
 					<div class="column is-centered has-text-white box has-background-dperiwinkle is-size-5 pl-40 pr-40 pt-40 pb-100">
 						<div v-if="ongoing">
 							<p>
-							Welcome, one and all, to the 2020 /r/Anime Awards!
+							Welcome, one and all, to the 2021 /r/Anime Awards!
 							<br/><br/>
-							We're proud to announce that preparations for /r/Anime Awards 2020 have begun in earnest. In these Awards, users of /r/anime will pick their favourites of the year and the nominations and winners will be showcased on our website. The /r/anime Awards are divided into a public and jury award. The jury is made up of /r/anime users selected through an anonymous application. Jurors in the /r/anime Awards are expected to watch all nominated shows in their category and vote on a ranking that is displayed alongside the public ranking.
+							We're proud to announce that preparations for /r/Anime Awards 2021 have begun in earnest. In these Awards, users of /r/anime will pick their favourites of the year and the nominations and winners will be showcased on our website. The /r/anime Awards are divided into a public and jury award. The jury is made up of /r/anime users selected through an anonymous application. Jurors in the /r/anime Awards are expected to watch all nominated shows in their category and vote on a ranking that is displayed alongside the public ranking.
 							<br/><br/>
-							You can view past results of both public and jury in the /r/anime Awards by clicking the button below:
+							If you want to participate, click the button below! If you want to check out past results, please use the past results link above.
 							</p>
 							<br/><br/>
 							<div class="has-text-centered">
-								<router-link to="/archive" class="button is-large is-success">Sign Up</router-link>
 								<a v-if="voting" href="/vote/" class="button is-large is-platinum">Vote Now</a>
-								<a v-if="fvoting" href="/final-vote/" class="button is-large is-platinum">Vote Now</a>
+								<a v-else-if="fvoting" href="/final-vote/" class="button is-large is-platinum">Vote Now</a>
+								<a v-else href="/apps/" class="button is-large is-platinum">Sign Up</a>
 							</div>
 						</div>
 						<div v-else>
@@ -103,7 +103,7 @@
 
 <script>
 import {mapState, mapGetters} from 'vuex';
-import logo from '../../../img/awards2020.png';
+import logo from '../../../img/awards2021.png';
 import snoo from '../../../img/bannerSnooJump.png';
 
 export default {

@@ -187,7 +187,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import {Viewer, Editor} from '@toast-ui/vue-editor';
 import marked from 'marked';
 import {mapState, mapActions} from 'vuex';
-import logo2020 from '../../../img/awards2020.png';
+import logo from '../../../img/awards2021.png';
 import draggable from 'vuedraggable';
 
 export default {
@@ -240,7 +240,7 @@ export default {
 				minHeight: '700px',
 				height: '700px',
 			},
-			logo: logo2020,
+			logo: logo,
 			allcats: [],
 			myprefs: [],
 			drag: false,
@@ -322,7 +322,7 @@ export default {
 			this.myprefs.forEach(element => {
 				this.answers[questionID].push(element.id)
 			});
-			console.log(this.answers[questionID]);
+			// console.log(this.answers[questionID]);
 			this.$set(this.saving, questionID, true);
 			this.typingTimeout[questionID] = setTimeout(async () => {
 				await fetch('/api/juror-apps/submit', {
@@ -400,8 +400,8 @@ export default {
 											this.allcats = this.allcats.filter(el => !selectedcats.includes(el.id));
 											this.answers[question.id] = selectedcats;
 
-											console.log(selectedcats);
-											console.log(this.myprefs);
+											// console.log(selectedcats);
+											// console.log(this.myprefs);
 											// console.log(this.answers[question.id]);
 										} else {
 											this.answers[question.id] = JSON.parse(found.answer);
