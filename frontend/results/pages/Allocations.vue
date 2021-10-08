@@ -157,7 +157,7 @@ export default {
 	computed: {
 		...mapState(['locks', 'categories', 'entries']),
 		filteredCategories () {
-			return this.categories.filter(category => category.entryType === 'shows' && category.name !== 'Anime of the Year' && category.awardsGroup !== 'character' && (category.awardsGroup !== 'production'));
+			return this.categories.filter(category => category.entryType === 'shows' && category.name !== 'Anime of the Year' && category.awardsGroup !== 'character' && (category.awardsGroup !== 'production' || category.name === 'OST'));
 		},
 		filteredEntries () {
 			return this.entries.filter(entry => entry.categoryId === this.selectedCategory.id);
