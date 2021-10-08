@@ -53,7 +53,7 @@ After the first main draft, the **second main draft** occurs. This simply repeat
 
 After the first and second main drafts, we look to categories with less than 11 jurors. We then begin the **fill draft**:
 
-* Step 1: Pick the category with the lowest number of jurors. For this category, produce a list of jurors that
+* Step 1: Pick the category with the lowest number of Jurors (tiebreaks are resolved by which category has the least available jurors, then randomly if the number is equal). For this category, produce a list of jurors that
 
   * Have this category in their preference list.
 
