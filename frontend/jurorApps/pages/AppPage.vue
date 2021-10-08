@@ -148,8 +148,7 @@
 					<p v-else class="modal-card-title has-text-dark">Tips</p>
 				</header>
 				<section v-if="showSamples" class="modal-card-body">
-					<h3 class="title is-5 has-text-dark mb-10">
-						{{samples[sampleIndex].question}}
+					<h3 class="title is-5 has-text-dark mb-10" v-html="markdownit(samples[sampleIndex].question)">
 					</h3>
 					<div class="has-text-dark awardsModalBody" v-html="markdownit(`${samples[sampleIndex].answer}\r\n\r\n***\r\n\r\n${disclaimer}`)">
 					</div>

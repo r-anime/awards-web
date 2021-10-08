@@ -2,6 +2,15 @@
     color: initial;
 }
 
+.awardsModalBody {
+    ol, li{
+    	margin-left: 1rem;
+    }
+    p {
+        margin: 0.5rem 0;
+    }
+}
+
 .application-container {    
     strong {
         color: initial;
