@@ -159,6 +159,7 @@ import NomineeName from '../components/NomineeName';
 import ItemImage from '../components/ItemImage';
 import juryIcon from '../../../img/jury.png';
 import publicIcon from '../../../img/public.png';
+import logo21 from '../../../img/awards2021.png';
 import logo20 from '../../../img/awards2020.png';
 import logo19 from '../../../img/awards2019.png';
 import logo18 from '../../../img/awards2018.png';
@@ -214,6 +215,8 @@ export default {
 			switch (this.year) {
 				case undefined:
 					return logo20;
+				case '2020':
+					return logo20;
 				case '2019':
 					return logo19;
 				case '2018':
@@ -223,7 +226,7 @@ export default {
 				case '2016':
 					return logo16;
 				default:
-					return '';
+					return logo20;
 			}
 		},
 	},
