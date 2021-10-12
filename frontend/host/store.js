@@ -343,12 +343,16 @@ const store = new Vuex.Store({
 			const answers = await makeRequest('/api/juror-apps/all-answers');
 			commit('GET_ANSWERS', answers);
 		},
-		async getAnswerCount ({commit}) {
-			const answerCount = await makeRequest('/api/juror-apps/grouped-answers');
+		async getAnswerCount ({commit}, appid) {
+			const answerCount = await makeRequest(`/api/juror-apps/grouped-answers/${appid}`);
 			commit('GET_ANSWER_COUNTS', answerCount);
 		},
 		async getApplicants ({commit}) {
 			const applicants = await makeRequest('/api/juror-apps/applicants');
+			commit('GET_APPLICANTS', applicants);
+		},
+		async getApplicantsByApp ({commit}, appid) {
+			const applicants = await makeRequest(`/api/juror-apps/applicants/${appid}`);
 			commit('GET_APPLICANTS', applicants);
 		},
 		async deleteApplicant ({commit}, applicantID) {

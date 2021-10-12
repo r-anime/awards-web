@@ -419,7 +419,7 @@ apiApp.get('/random-answer/:questionID', async (request, response) => {
 				},
 			],
 		});
-		answers = answers.filter(answer => answer.scores.length < 3 && !answer.scores.find(score => score.host_name === auth));
+		answers = answers.filter(answer => answer.scores.length < 4 && !answer.scores.find(score => score.host_name === auth));
 		if (answers.length) {
 			response.json(answers[Math.floor(Math.random() * answers.length)]);
 		} else {
@@ -457,6 +457,74 @@ apiApp.get('/grouped-answers', async (request, response) => {
 					type: 'essay',
 				},
 				attributes: ['id'],
+			}],
+			attributes: [
+				'applicant_id',
+				sequelize.fn('count', sequelize.col('applicant_id')),
+			],
+			group: ['Answers.applicant_id'],
+		});
+		response.json({
+			prefNumber,
+			answerNumber,
+		});
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/grouped-answers/:app_id', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a host to retrieve scores and answers.'});
+	}
+	try {
+		const prefNumber = await Answers.findAll({
+			where: {
+				active: true,
+			},
+			include: [{
+				model: Questions,
+				as: 'question',
+				attributes: ['id'],
+				where: {
+					active: true,
+				},
+				include: [{
+					model: QuestionGroups,
+					as: 'question_group',
+					attributes: ['app_id'],
+					where: {
+						app_id: request.params.app_id
+					}
+				}]
+			}],
+			attributes: [
+				'applicant_id',
+				sequelize.fn('count', sequelize.col('applicant_id')),
+			],
+			group: ['Answers.applicant_id'],
+		});
+		const answerNumber = await Answers.findAll({
+			where: {
+				active: true,
+			},
+			include: [{
+				model: Questions,
+				as: 'question',
+				where: {
+					type: 'essay',
+					active: true,
+				},
+				attributes: ['id'],
+				include: [{
+					model: QuestionGroups,
+					as: 'question_group',
+					attributes: ['app_id'],
+					where: {
+						app_id: request.params.app_id
+					}
+				}]
 			}],
 			attributes: [
 				'applicant_id',
@@ -539,6 +607,29 @@ apiApp.get('/applicants', async (request, response) => {
 	try {
 		response.json(await Applicants.findAll({
 			where: {
+				active: true,
+			},
+			include: [
+				{
+					model: Users,
+					as: 'user',
+				},
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/applicants/:appid', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be host to retrieve applicants.'});
+	}
+	try {
+		response.json(await Applicants.findAll({
+			where: {
+				app_id: request.params.appid,
 				active: true,
 			},
 			include: [
@@ -651,6 +742,7 @@ apiApp.post('/submit', async (request, response) => {
 			},
 		});
 		if (!created) {
+			await Scores.destroy({where: {answer_id: answer.id}});
 			await Answers.update(
 				{
 					answer: req.answer,

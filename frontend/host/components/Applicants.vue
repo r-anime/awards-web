@@ -57,15 +57,15 @@ export default {
 		...mapGetters(['isAdmin']),
 		filteredApplicants () {
 			if (this.filter === '0') {
-				return this.applicants.filter(applicant => applicant.app_id === this.application.id && this.answerCount.prefNumber.find(answer => answer.applicant_id === applicant.id));
+				return this.applicants.filter(this.answerCount.prefNumber.find(answer => answer.applicant_id === applicant.id));
 			} else if (this.filter === '1') {
-				return this.applicants.filter(applicant => applicant.app_id === this.application.id && this.answerCount.answerNumber.find(answer => answer.applicant_id === applicant.id));
+				return this.applicants.filter(this.answerCount.answerNumber.find(answer => answer.applicant_id === applicant.id));
 			}
-			return this.applicants.filter(applicant => applicant.app_id === this.application.id);
+			return this.applicants;
 		},
 	},
 	methods: {
-		...mapActions(['getApplicants', 'getLocks', 'getMe', 'deleteApplicant', 'getAnswerCount']),
+		...mapActions(['getApplicantsByApp', 'getLocks', 'getMe', 'deleteApplicant', 'getAnswerCount']),
 		linkText (applicant) {
 			if (!applicant.user) console.log(applicant);
 			if ((this.lock.flag || this.me.level > this.lock.level) && applicant.user) {
@@ -79,10 +79,10 @@ export default {
 	},
 	async mounted () {
 		if (!this.applicants) {
-			await this.getApplicants();
+			await this.getApplicantsByApp(this.application.id);
 		}
 		if (!this.answerCount) {
-			await this.getAnswerCount();
+			await this.getAnswerCount(this.application.id);
 		}
 		if (!this.locks) {
 			await this.getLocks();
