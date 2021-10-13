@@ -396,7 +396,9 @@ export default {
 									if (question.type === 'preference') {
 										if (question.question == 'All'){
 											let selectedcats = JSON.parse(found.answer);
-											this.myprefs = this.allcats.filter(el => selectedcats.includes(el.id));
+											selectedcats.forEach(element => {
+												this.myprefs.push(this.allcats.find(el=> el.id == element));
+											});
 											this.allcats = this.allcats.filter(el => !selectedcats.includes(el.id));
 											this.answers[question.id] = selectedcats;
 
