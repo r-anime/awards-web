@@ -142,7 +142,7 @@ export default {
 			this.fetching = false;
 		},
 		async submitScore () {
-			if (parseInt(this.score, 10) && parseInt(this.score, 10) > 0 && parseInt(this.score, 10) <= 4 && this.note.length) {
+			if (parseInt(this.score, 10) && parseInt(this.score, 10) >= 0 && parseInt(this.score, 10) <= 4 && this.note.length) {
 				this.submitting = true;
 				const score = await fetch('/api/juror-apps/score', {
 					method: 'POST',
