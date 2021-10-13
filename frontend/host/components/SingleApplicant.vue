@@ -12,6 +12,15 @@
 						<h2 class="title is-5">Preferences for {{answer.question.question}} categories:</h2>
 					</div>
 				</div>
+				<div class="field ml-20">
+					<div class="control">
+						<ol>
+							<li v-for="(cat, index) in JSON.parse(answer.answer)" :key="index">
+								{{categories.find(category => category.id === cat).name}}
+							</li>
+						</ol>
+					</div>
+				</div>
 			</div>
 			<div v-else-if="answer.question.type === 'choice'">
 				<div class="field">

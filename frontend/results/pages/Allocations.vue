@@ -82,7 +82,6 @@
             </div>
         </div>
     </div>
-	<!--
 	<modal-generic v-model="modalOpen">
 		<div class="field">
 			<label class="label has-text-dark">Message</label>
@@ -104,7 +103,6 @@
 			</div>
 		</div>
 		</modal-generic>
-		-->
 	</div>
 </template>
 
