@@ -61,7 +61,7 @@
 				<div class="field">
 					<h2 class="title is-4">Your Score</h2>
 					<div class="control">
-						<input type="text" class="input" v-model="score" placeholder="Value between 1 and 4"/>
+						<input type="text" class="input" v-model="score" placeholder="Value between 0 and 4"/>
 					</div>
 				</div>
 				<div class="field">
@@ -142,7 +142,8 @@ export default {
 			this.fetching = false;
 		},
 		async submitScore () {
-			if (parseInt(this.score, 10) && parseInt(this.score, 10) >= 0 && parseInt(this.score, 10) <= 4 && this.note.length) {
+			let submitedScore = parseInt(this.score, 10);
+			if (submitedScore === submitedScore && submitedScore >= 0 && submitedScore <= 4 && this.note.length) {
 				this.submitting = true;
 				const score = await fetch('/api/juror-apps/score', {
 					method: 'POST',
