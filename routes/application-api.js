@@ -785,7 +785,7 @@ apiApp.get('/my-answers/:applicant_id', async (request, response) => {
 					},
 				]
 			},
-		}));
+		});
 	} catch (error) {
 		response.error(error);
 	}
