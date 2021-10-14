@@ -775,16 +775,16 @@ apiApp.get('/my-answers/:applicant_id', async (request, response) => {
 		const answers =await Answers.findAll({
 			where: {
 				applicant_id: request.params.applicant_id,
-				include: [
-					{
-						model: Questions,
-						as: 'question',
-						where: {
-							active: true,
-						}
-					},
-				]
 			},
+			include: [
+				{
+					model: Questions,
+					as: 'question',
+					where: {
+						active: true,
+					}
+				},
+			]
 		});
 	} catch (error) {
 		response.error(error);
