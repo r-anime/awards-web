@@ -772,19 +772,20 @@ apiApp.get('/my-answers/:applicant_id', async (request, response) => {
 		return response.json(401, {error: 'Invalid user.'});
 	}
 	try {
-		const answers = await Answers.findAll({
+		const answers =await Answers.findAll({
 			where: {
 				applicant_id: request.params.applicant_id,
-				include: [{
-					model: Questions,
-					as: 'question',
-					where: {
-						active: true,
-					}
-				}]
+				include: [
+					{
+						model: Questions,
+						as: 'question',
+						where: {
+							active: true,
+						}
+					},
+				]
 			},
-		});
-		response.json(answers);
+		}));
 	} catch (error) {
 		response.error(error);
 	}
