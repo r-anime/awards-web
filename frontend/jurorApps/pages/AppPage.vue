@@ -166,7 +166,7 @@
 		</div>
 	</section>
 	<div class="section" v-else-if="loaded && locked">
-		Jury Apps are not open yet. If you think this is a mistake, try logging out and then back in.
+		Jury Apps are closed at this time. If you think this is a mistake, try logging out and then back in.
 	</div>
 	<section class="hero is-fullheight-with-navbar section has-background-dark" v-else-if="!loaded">
         <div class="container">
