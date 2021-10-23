@@ -16,7 +16,7 @@
 					<div class="control">
 						<ol>
 							<li v-for="(cat, index) in JSON.parse(answer.answer)" :key="index">
-								{{categories.find(category => category.id === cat).name}}
+								{{getName(cat)}}
 							</li>
 						</ol>
 					</div>
@@ -51,7 +51,7 @@
 							<ul>
 								<li v-for="score in answer.scores" :key="score.id">
 								{{score.host_name}}: <b>{{score.score}}</b>{{score.note ? ` (${score.note})` : ''}}
-								<a v-if="isAdmin" @click="submitDeleteScore(score)" class="tag is-danger">Delete</a>
+								<a v-if="isHost" @click="submitDeleteScore(score)" class="tag is-danger">Delete</a>
 								</li>
 							</ul>
 						</div>
@@ -103,7 +103,7 @@ export default {
 	},
 	computed: {
 		...mapState(['locks', 'me', 'applicants', 'categories', 'questionGroups']),
-		...mapGetters(['isAdmin']),
+		...mapGetters(['isAdmin', 'isHost']),
 		questions () {
 			const arr = [];
 			for (const questionGroup of this.filteredQuestionGroups) {
@@ -122,6 +122,14 @@ export default {
 				return found.user ? `${found.user.reddit}'s Application` : found.id;
 			}
 			return `Applicant ${this.applicantID}'s Application`;
+		},
+		getName(cat){
+			const findcats = this.categories.find(category => category.id === cat);
+			if (findcats){
+				return findcats.name;
+			} else {
+				return cat;
+			}
 		},
 		preferences (answer) {
 			/*

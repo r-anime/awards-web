@@ -904,13 +904,13 @@ apiApp.get('/allocations', async (request, response) => {
 			
 			Promise.all(jurorPromiseArr).then(async () => {
 				await t.commit();
-				/*yuuko.createMessage(config.discord.auditChannel, {
+				yuuko.createMessage(config.discord.auditChannel, {
 					embed: {
 						title: 'Jurors rolled',
 						description: `Jurors were rolled by **${auth}**.`,
 						color: 8302335,
 					},
-				});*/
+				});
 				response.json(allocationInstance.allocatedJurors);
 			});
 		} catch (error) {
