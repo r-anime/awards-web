@@ -580,7 +580,7 @@ apiApp.post('/score', async (request, response) => {
 });
 
 apiApp.delete('/score/:id', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to delete scores.'});
 	}
