@@ -419,7 +419,7 @@ apiApp.get('/random-answer/:questionID', async (request, response) => {
 				},
 			],
 		});
-		answers = answers.filter(answer => answer.scores.length < 4 && !answer.scores.find(score => score.host_name === auth));
+		answers = answers.filter(answer => answer.scores.length < 5 && !answer.scores.find(score => score.host_name === auth));
 		if (answers.length) {
 			response.json(answers[Math.floor(Math.random() * answers.length)]);
 		} else {
