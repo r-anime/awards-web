@@ -178,6 +178,7 @@ export default {
 				const response = await fetch(`/api/juror-apps/answers/${this.applicantID}`, {method: 'GET'});
 				if (response.ok) {
 					this.filteredAnswers = await response.json();
+					this.filteredAnswers = this.filteredAnswers.filter(ans => ans.question.question_group.application.id === this.application.id);
 				} else {
 					// eslint-disable-next-line no-alert
 					alert('Application could not be loaded.');
