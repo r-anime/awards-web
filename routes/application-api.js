@@ -853,10 +853,7 @@ apiApp.get('/allocations', async (request, response) => {
 							as:	'question',
 							include: {
 								model: QuestionGroups,
-								as: 'question_group',
-								where: {
-									app_id: 2
-								}
+								as: 'question_group'
 							}
 						}
 					]
@@ -878,7 +875,7 @@ apiApp.get('/allocations', async (request, response) => {
 			const applicants = promiseArr[1];
 			// const validApps = applicants;
 			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
-			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1]);
+			const allocationInstance = new Allocations(promiseArr[0], validApps);
 			
 			allocationInstance.vaxiDraft(2.6, 3.0);
 			allocationInstance.vaxiDraft(1.6, 3.0);
