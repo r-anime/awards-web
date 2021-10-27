@@ -874,7 +874,7 @@ apiApp.get('/allocations', async (request, response) => {
 			// Change this every year
 			const applicants = promiseArr[1];
 			// const validApps = applicants;
-			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear() - 1));
+			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
 			const allocationInstance = new Allocations(promiseArr[0], promiseArr[1]);
 			
 			allocationInstance.vaxiDraft(2.6, 3.0);
