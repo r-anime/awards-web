@@ -853,7 +853,10 @@ apiApp.get('/allocations', async (request, response) => {
 							as:	'question',
 							include: {
 								model: QuestionGroups,
-								as: 'question_group'
+								as: 'question_group',
+								where: {
+									app_id: 2
+								}
 							}
 						}
 					]
