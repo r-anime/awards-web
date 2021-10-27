@@ -62,7 +62,7 @@ class ApplicationJuror {
 	calcScores(){
 		// This is "kinda" hard coded and needs to be changed if application categories get changed
 		const audioqs = this.answers.filter(answer => answer.question.question_group.name == 'Audio Production' && answer.question.type === 'essay');
-		const opedqs = this.answers.filter(answer => answer.question.question_group.name == 'OP/ED' && answer.question.type === 'essay');
+		const opedqs = this.answers.filter(answer => answer.question.question_group.name == 'OP / ED' && answer.question.type === 'essay');
 		const visualqs = this.answers.filter(answer => answer.question.question_group.name == 'Visual Production' && answer.question.type === 'essay');		
 		const genreqs = this.answers.filter(answer => answer.question.question_group.name == 'Genre' && answer.question.type === 'essay');
 		const chareqs = this.answers.filter(answer => answer.question.question_group.name == 'Character' && answer.question.type === 'essay');
