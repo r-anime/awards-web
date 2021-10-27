@@ -259,9 +259,6 @@ class Allocations {
 				if (this.jurorIsFull(juror)){
 					return false;
 				}
-				if (juror.catPref(catid) === 883){
-					return false;
-				}
 			} else {
 				const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
 				let catCount = juror.wantedCats;
@@ -271,6 +268,9 @@ class Allocations {
 				if (jurorAllocations.length >= (catCount)){
 					return false;
 				}
+			}
+			if (juror.catPref(catid) === 883){
+				return false;
 			}
 			if (this.jurorInCat(juror, catid)){
 				return false;
