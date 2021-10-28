@@ -156,7 +156,13 @@ export default {
 			return `S: ${avgscore} P: ${avgpref}`;
 		},
 		getApplicantID(name){
-			const applicant = this.applicants.find(applicant => applicant.user.reddit == name);
+			const applicant = this.applicants.find((applicant) => {
+				if (applicant.user){
+					return applicant.user.reddit == name;
+				} else {
+					return false;
+				}
+			});
 			if (applicant)
 				return applicant.id;
 			else {
