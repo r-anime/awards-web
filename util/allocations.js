@@ -213,7 +213,7 @@ class Allocations {
 	catsNeedFill(){
 		let catsBelowMin = this.categories.filter(cat => {
 			let jurorsinCat = this.getJurorsInCat(cat.id);
-			return jurorsinCat.length < JUROR_MIN;
+			return jurorsinCat.length < FILL_MAX;
 		});
 		return catsBelowMin.length > 0;
 	}
