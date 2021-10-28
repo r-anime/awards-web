@@ -1,6 +1,7 @@
 const { all } = require("../routes/complain");
 
-const JUROR_MIN = 11;
+const JUROR_MIN = 7;
+const FILL_MAX = 11;
 const JUROR_MAX = 13;
 const AOTY_MAX = 15;
 
@@ -217,7 +218,7 @@ class Allocations {
 		return catsBelowMin.length > 0;
 	}
 
-	catIsFull(catid){
+	catIsFull(catid, fill = false){
 		let category = this.categories.find(cat => cat.id == catid);
 		if (category === undefined){
 			return true;
@@ -227,7 +228,11 @@ class Allocations {
 		if (category.name == "Anime of the Year"){
 			return catJurors.length >= AOTY_MAX;
 		} else {
-			return catJurors.length >= JUROR_MAX;
+			if (fill){
+				return catJurors.length >= FILL_MAX;
+			} else {
+				return catJurors.length >= JUROR_MAX;
+			}
 		}
 	}
 
@@ -366,7 +371,7 @@ class Allocations {
 			// Shuffle the categories that aren't full then sort them by the number of jurors they already contain
 			// As explained in vaxi's algorithm, this actually uses the first sort as a tiebreaker
 			// So the categories will be sorted by the number of jurors they already contain, then tiebroken by the number of available jurors
-			eligibleCats = eligibleCats.filter(cat => !this.catIsFull(cat.id));
+			eligibleCats = eligibleCats.filter(cat => !this.catIsFull(cat.id, true));
 			eligibleCats.sort((a, b) => {
 				let acount = 0;
 				let bcount = 0;
@@ -424,7 +429,7 @@ class Allocations {
 				eligibleJurors.sort((a, b) => a.catPref(cat.id) - b.catPref(cat.id));
 
 				// Choose the "best" juror for the category and allocate them
-				if (eligibleJurors.length > 0 && !this.catIsFull(cat.id)){
+				if (eligibleJurors.length > 0 && !this.catIsFull(cat.id, true)){
 					this.allocateJuror(eligibleJurors[0], cat.id);
 					succesfulAllocations++;
 				}
