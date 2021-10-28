@@ -22,16 +22,19 @@ module.exports = (sequelize, types) => {
 			allowNull: false,
 			defaultValue: true,
 		},
+		categoryId: {
+			type: types.INTEGER,
+			defaultValue: -1,
+			allowNull: false,
+		}
 	});
 
 	jurors.associate = models => {
 		jurors.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'category'});
-		models.categories.hasMany(jurors);
-	};
+		// models.categories.hasMany(jurors);
 
-	jurors.associate = models => {
-		jurors.belongsTo(models.users, {foreignKey: 'name', as: 'reddit'});
-		models.users.hasMany(jurors);
+		jurors.belongsTo(models.users, {foreignKey: 'name', as: 'user'});
+		// models.users.hasMany(jurors);
 	};
 
 	return jurors;

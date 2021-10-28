@@ -41,6 +41,13 @@ module.exports = (sequelize, DataTypes) => {
 				allowNull: true,
 			},
 		});
+
+		categories.hasMany(models.jurors, {
+			foreignKey: {
+				name: 'categoryId',
+				allowNull: true,
+			},
+		});
 	};
 
 	return categories;
