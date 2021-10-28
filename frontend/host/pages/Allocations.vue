@@ -190,7 +190,7 @@ export default {
 			this.calculateStats();
 		}
 		const namesLock = this.locks.find(lock => lock.name === 'app-names');
-		if (namesLock.flag || this.me.level > 69) {
+		if (namesLock.flag || this.me.level > lock.level) {
 			this.showNames = true;
 		}
 		this.loaded = true;
