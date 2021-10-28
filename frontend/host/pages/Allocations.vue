@@ -8,23 +8,29 @@
 			<div class="level">
 				<div class="level-left">
 					<div class="level-item">
-						<div class="columns is-multiline is-mobile">
-							<div class="column is-narrow">
+						<div class="field is-grouped is-grouped-multiline">
+							<div class="control">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Total Jurors</span>
 									<span class="tag is-primary">{{totalJurors}}</span>
 								</div>
 							</div>
-							<div class="column is-narrow">
+							<div class="control">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Mean Score</span>
 									<span class="tag is-primary">{{meanScore}}</span>
 								</div>
 							</div>
-							<div class="column is-narrow">
+							<div class="control">
 								<div class="tags has-addons are-medium">
 									<span class="tag is-dark">Average Categories</span>
 									<span class="tag is-primary">{{averageCategories}}</span>
+								</div>
+							</div>
+							<div class="control">
+								<div class="tags has-addons are-medium">
+									<span class="tag is-dark">Super Powerful Jurors</span>
+									<span class="tag is-primary">{{powerfulJurors}}</span>
 								</div>
 							</div>
 						</div>
@@ -51,6 +57,9 @@
 							<div class="card-header-title">
 								<p class="title is-4">{{category.name}}</p>
 							</div>
+							<p>
+								{{getCategoryAverages(category)}}
+							</p>
 						</header>
 						<div class="card-content is-fixed-height-scrollable-300">
 							<div class="content">
@@ -60,7 +69,7 @@
 											<a :href="'https://www.reddit.com/user/' + juror.name">/u/{{juror.name}}</a>
 										</span>
 										<span v-else>
-											{{juror.id}}
+											{{jurorNames.indexOf(juror.name)}}
 										</span>
 										<br>
 										<div class="tags">
@@ -86,9 +95,11 @@ export default {
 		return {
 			loaded: false,
 			allocatedJurors: [],
+			jurorNames: [],
 			totalJurors: 0,
 			meanScore: 0,
 			averageCategories: 0,
+			powerfulJurors: 0,
 			showNames: false,
 		};
 	},
@@ -112,6 +123,13 @@ export default {
 		filteredAllocatedJurors (category) {
 			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
 		},
+		getCategoryAverages(category){
+			const catJurors = this.filteredAllocatedJurors(category);
+			const avgscore = Math.round((catJurors.reduce((accum, juror) => accum + juror.score, 0) / catJurors.length) * 100) / 100;
+			const avgpref = Math.round((catJurors.reduce((accum, juror) => accum + juror.preference, 0) / catJurors.length) * 100) / 100;
+
+			return `S: ${avgscore} P: ${avgpref}`;
+		},
 		async initiateDraft () {
 			this.loaded = false;
 			this.meanScore = 0;
@@ -121,14 +139,26 @@ export default {
 				method: 'GET',
 			});
 			this.allocatedJurors = await result.json();
-			console.log(this.allocatedJurors);
+
+			await this.getJurors();
+			this.calculateStats();
+			
+		},
+		calculateStats(){
+			this.allocatedJurors = this.jurors;
 			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
+			this.jurorNames = allJurors.filter((item, i, ar) => ar.indexOf(item) === i);
+			this.jurorNames = this.jurorNames.sort( () => .5 - Math.random() );
 			this.totalJurors = allJurors.length;
 			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
 			this.meanScore = Math.round(this.meanScore * 10) / 10;
+			this.powerfulJurors = 0;
 			const catDictionary = {};
 			for (const juror of allJurors) {
 				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
+				if (catDictionary[juror] > 3){
+					this.powerfulJurors++;
+				}
 			}
 			let categoryTotal = 0;
 			// eslint-disable-next-line no-unused-vars
@@ -137,7 +167,7 @@ export default {
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
 			this.loaded = true;
-		},
+		}
 	},
 	async mounted () {
 		if (!this.me) {
@@ -157,24 +187,10 @@ export default {
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
 		if (this.jurors.length > 0) {
-			this.allocatedJurors = this.jurors;
-			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
-			this.totalJurors = allJurors.length;
-			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
-			this.meanScore = Math.round(this.meanScore * 10) / 10;
-			const catDictionary = {};
-			for (const juror of allJurors) {
-				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
-			}
-			let categoryTotal = 0;
-			// eslint-disable-next-line no-unused-vars
-			for (const [key, value] of Object.entries(catDictionary)) {
-				categoryTotal += value;
-			}
-			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
+			this.calculateStats();
 		}
 		const namesLock = this.locks.find(lock => lock.name === 'app-names');
-		if (namesLock.flag || this.me.level > namesLock.level) {
+		if (namesLock.flag || this.me.level > 69) {
 			this.showNames = true;
 		}
 		this.loaded = true;
