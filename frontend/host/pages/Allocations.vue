@@ -68,8 +68,8 @@
 										<span v-if="showNames">
 											<a :href="'https://www.reddit.com/user/' + juror.name">/u/{{juror.name}}</a>
 										</span>
-										<span v-else>
-											{{jurorNames.indexOf(juror.name)}}
+										<span>
+											({{getApplicantID(juror.name)}})
 										</span>
 										<br>
 										<div class="tags">
@@ -80,8 +80,30 @@
 							</div>
 						</div>
 					</div>
-					<h2 class="title is-6">{{filteredAllocatedJurors(category).length}}/{{category.jurorCount}}</h2>
+					<h2 class="title is-6">{{filteredAllocatedJurors(category).length}}</h2>
 				</div>
+			</div>
+			<br>
+			<div>
+				<h2>
+					Categories by Jurors
+				</h2>
+				<ul>
+					<li v-for="(value, key) in allJurors" :key="key">
+						<span v-if="showNames">
+							<a :href="'https://www.reddit.com/user/' + value">/u/{{value}}</a>
+						</span>
+						<span>
+							({{getApplicantID(value)}}): 
+						</span>
+						<span>
+							({{getCatsByName(value).length}} Cats Total): 
+						</span>
+						<span v-for="(cat, index) in getCatsByName(value)" :key="index">
+							{{categories.find(me => me.id == cat.categoryId).name}}
+						</span>
+					</li>
+				</ul>
 			</div>
         </div>
     </div>
@@ -95,8 +117,8 @@ export default {
 		return {
 			loaded: false,
 			allocatedJurors: [],
-			jurorNames: [],
 			totalJurors: 0,
+			allJurors: [],
 			meanScore: 0,
 			averageCategories: 0,
 			powerfulJurors: 0,
@@ -110,7 +132,9 @@ export default {
 			'answers',
 			'locks',
 			'me',
+			'applicants',
 		]),
+		
 	},
 	methods: {
 		...mapActions([
@@ -119,6 +143,7 @@ export default {
 			'getAnswers',
 			'getLocks',
 			'getMe',
+			'getApplicantsByApp',
 		]),
 		filteredAllocatedJurors (category) {
 			return this.allocatedJurors.filter(juror => juror.categoryId === category.id);
@@ -129,6 +154,17 @@ export default {
 			const avgpref = Math.round((catJurors.reduce((accum, juror) => accum + juror.preference, 0) / catJurors.length) * 100) / 100;
 
 			return `S: ${avgscore} P: ${avgpref}`;
+		},
+		getApplicantID(name){
+			const applicant = this.applicants.find(applicant => applicant.user.reddit == name);
+			if (applicant)
+				return applicant.id;
+			else {
+				return "???";
+			}
+		},
+		getCatsByName(name){
+			return this.allocatedJurors.filter(j => j.name == name);
 		},
 		async initiateDraft () {
 			this.loaded = false;
@@ -146,16 +182,17 @@ export default {
 		},
 		calculateStats(){
 			this.allocatedJurors = this.jurors;
-			const allJurors = [...new Set(this.allocatedJurors.map(juror => juror.name))];
-			this.jurorNames = allJurors.filter((item, i, ar) => ar.indexOf(item) === i);
-			this.jurorNames = this.jurorNames.sort( () => .5 - Math.random() );
-			this.totalJurors = allJurors.length;
+			const set = new Set(this.allocatedJurors.map(juror => juror.name));
+			this.allJurors = Array.from(set);
+			this.totalJurors = this.allJurors.length;
 			this.meanScore = this.allocatedJurors.reduce((accum, juror) => accum + juror.score, 0) / this.allocatedJurors.length;
 			this.meanScore = Math.round(this.meanScore * 10) / 10;
 			this.powerfulJurors = 0;
 			const catDictionary = {};
-			for (const juror of allJurors) {
-				catDictionary[juror] = this.allocatedJurors.filter(aJuror => aJuror.name === juror).length;
+			for (const juror of this.allJurors) {
+				const allocatedInstances = this.allocatedJurors.filter(aJuror => aJuror.name === juror);
+				catDictionary[juror] = allocatedInstances.length;
+
 				if (catDictionary[juror] > 3){
 					this.powerfulJurors++;
 				}
@@ -166,6 +203,8 @@ export default {
 				categoryTotal += value;
 			}
 			this.averageCategories = Math.round(categoryTotal / Object.keys(catDictionary).length * 10) / 10;
+			this.allJurors.sort((a, b) => this.getCatsByName(a.name).length > this.getCatsByName(b.name).length);
+
 			this.loaded = true;
 		}
 	},
@@ -184,6 +223,9 @@ export default {
 		}
 		if (!this.answers) {
 			await this.getAnswers();
+		}
+		if (!this.applicants) {
+			await this.getApplicantsByApp(2);
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
 		if (this.jurors.length > 0) {

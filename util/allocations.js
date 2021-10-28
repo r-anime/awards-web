@@ -1,4 +1,5 @@
 const { all } = require("../routes/complain");
+const {yuuko} = require('../bot/index');
 
 const JUROR_MIN = 7;
 const FILL_MAX = 11;
@@ -181,6 +182,17 @@ class ApplicationJuror {
 
 	vaxinnate(){
 		this.immunity++;
+		try {
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'RNG was used',
+					description: `To spite you specifically.`,
+					color: 8302335,
+				},
+			});
+		} catch (error) {
+			response.error(error);
+		}
 	}
 }
 

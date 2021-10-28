@@ -29,5 +29,10 @@ module.exports = (sequelize, types) => {
 		models.categories.hasMany(jurors);
 	};
 
+	jurors.associate = models => {
+		jurors.belongsTo(models.users, {foreignKey: 'name', as: 'reddit'});
+		models.users.hasMany(jurors);
+	};
+
 	return jurors;
 };
