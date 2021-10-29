@@ -100,7 +100,7 @@
 							({{getCatsByName(value).length}} Cats Total): 
 						</span>
 						<span v-for="(cat, index) in getCatsByName(value)" :key="index">
-							{{categories.find(me => me.id == cat.categoryId).name}}
+							{{categories.find(me => me.id == cat.categoryId).name}} (S:{{cat.score}}, P:{{cat.preference}})
 						</span>
 					</li>
 				</ul>
