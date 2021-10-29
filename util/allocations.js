@@ -312,6 +312,17 @@ class Allocations {
 		let allocatedJuror = new AllocatedJuror(juror.name, juror.qualifyingScore(this.categories, catid), juror.catPref(catid), catid);
 		this.allocatedJurors.push(allocatedJuror);
 	}
+	
+	getUnallocatedJurors(juror, catid){
+		return this.jurors.filter((juror) => {
+			for (let allocatedjuror of this.allocatedJurors){
+				if (juror.name == allocatedjuror.name){
+					return false;
+				}
+			}
+			return true;
+		});
+	}
 
 	vaxiDraft(low, aotylow, fill=false){
 		// Get the list of categories
