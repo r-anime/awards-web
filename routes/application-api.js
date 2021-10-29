@@ -905,6 +905,7 @@ apiApp.get('/allocations', async (request, response) => {
 			
 			Promise.all(jurorPromiseArr).then(async () => {
 				await t.commit();
+				response.json(allocationInstance.allocatedJurors);
 				yuuko.createMessage(config.discord.auditChannel, {
 					embed: {
 						title: 'Jurors rolled',
@@ -912,7 +913,20 @@ apiApp.get('/allocations', async (request, response) => {
 						color: 8302335,
 					},
 				});
-				response.json(allocationInstance.allocatedJurors);
+				
+				const unajurors = allocationInstance.getUnallocatedJurors();
+				let unallocatedJurorString = "";
+				for (let value of unajurors){
+					unallocatedJurorString += value.name + ", ";
+				}
+				yuuko.createMessage(config.discord.auditChannel, {
+					embed: {
+						title: 'Unallocated Jurors',
+						description: `${unallocatedJurorString}`,
+						color: 8302335,
+					},
+				});
+				
 			});
 		} catch (error) {
 			response.error(error);
