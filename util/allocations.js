@@ -230,7 +230,7 @@ class Allocations {
 		return catsBelowMin.length > 0;
 	}
 
-	catIsFull(catid, fill = false){
+	catIsFull(catid, fill = false, override = FILL_MAX){
 		let category = this.categories.find(cat => cat.id == catid);
 		if (category === undefined){
 			return true;
@@ -241,7 +241,7 @@ class Allocations {
 			return catJurors.length >= AOTY_MAX;
 		} else {
 			if (fill){
-				return catJurors.length >= FILL_MAX;
+				return catJurors.length >= override;
 			} else {
 				return catJurors.length >= JUROR_MAX;
 			}
@@ -452,9 +452,16 @@ class Allocations {
 				eligibleJurors.sort((a, b) => a.catPref(cat.id) - b.catPref(cat.id));
 
 				// Choose the "best" juror for the category and allocate them
-				if (eligibleJurors.length > 0 && !this.catIsFull(cat.id, true)){
-					this.allocateJuror(eligibleJurors[0], cat.id);
-					succesfulAllocations++;
+				if (low <= 1.0){
+					if (eligibleJurors.length > 0 && !this.catIsFull(cat.id, true, 11)){
+						this.allocateJuror(eligibleJurors[0], cat.id);
+						succesfulAllocations++;
+					}
+				} else {
+					if (eligibleJurors.length > 0 && !this.catIsFull(cat.id, true)){
+						this.allocateJuror(eligibleJurors[0], cat.id);
+						succesfulAllocations++;
+					}
 				}
 			}
 			// console.log(`${succesfulAllocations}/${loopedCats}/${eligibleCats.length}`);
