@@ -882,9 +882,10 @@ apiApp.get('/allocations', async (request, response) => {
 			if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.6, 2.0, true);
 			}
+			/*
 			if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.0, 2.0, true);
-			}
+			}*/
 
 			const jurorPromiseArr = [];
 			await Jurors.destroy({truncate: true, restartIdentity: true});
