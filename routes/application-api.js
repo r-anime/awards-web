@@ -882,10 +882,9 @@ apiApp.get('/allocations', async (request, response) => {
 			if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.6, 2.0, true);
 			}
-			/*
 			if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.0, 2.0, true);
-			}*/
+			}
 
 			const jurorPromiseArr = [];
 			await Jurors.destroy({truncate: true, restartIdentity: true});
@@ -913,7 +912,7 @@ apiApp.get('/allocations', async (request, response) => {
 						color: 8302335,
 					},
 				});
-				
+				/*
 				const unajurors = allocationInstance.getUnallocatedJurors();
 				let unallocatedJurorString = "";
 				for (let value of unajurors){
@@ -926,6 +925,7 @@ apiApp.get('/allocations', async (request, response) => {
 						color: 8302335,
 					},
 				});
+				*/
 				
 			});
 		} catch (error) {
