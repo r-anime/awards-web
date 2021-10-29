@@ -31,7 +31,7 @@ class ApplicationJuror {
 		this.prefs = new Array();
 
 		this.wantedCats = 3;
-		this.additionalCats = 2;
+		this.additionalCats = 0;
 		this.willingToFill = true;
 		this.immunity = 0;
 		this.genreScore = -1;
@@ -279,7 +279,7 @@ class Allocations {
 			} else {
 				const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
 				let catCount = juror.wantedCats;
-				if (juror.willingToFill){
+				if (fill){
 					catCount += juror.additionalCats;
 				}
 				if (jurorAllocations.length >= (catCount)){
