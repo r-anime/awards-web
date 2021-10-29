@@ -313,7 +313,7 @@ class Allocations {
 		this.allocatedJurors.push(allocatedJuror);
 	}
 	
-	getUnallocatedJurors(juror, catid){
+	getUnallocatedJurors(){
 		return this.jurors.filter((juror) => {
 			for (let allocatedjuror of this.allocatedJurors){
 				if (juror.name == allocatedjuror.name){
