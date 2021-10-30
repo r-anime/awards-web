@@ -6,7 +6,10 @@
 		</div>
 		<ul>
 			<li v-for="(value, index) in unallocatedJurors" :key="index">
-				{{value}}
+				<router-link
+					:to="{name: 'applicant', params: {applicantID: getJurorId(value)}}"
+					class="has-text-dark"
+				>{{value}} ({{getJurorId(value)}})</router-link>
 			</li>
 		</ul>
 	</div>
@@ -59,6 +62,21 @@ export default {
 			'getAnswers',
 			'getQuestionGroups',
 		]),
+		getJurorId(name){
+			const juror = this.answers.find(answer => {
+				if (answer.applicant.user){
+					return answer.applicant.user.reddit == name;
+				} else {
+					return false;
+				}
+			});
+			// console.log(juror);
+			if (juror) {
+				return "" + juror.applicant_id;
+			} else {
+				return "???";
+			}
+		}
 	},
 	mounted () {
 		Promise.all([
