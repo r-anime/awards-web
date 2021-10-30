@@ -72,7 +72,8 @@ export default {
 			const nameLock = this.locks.find(lock => lock.name === 'app-names');
 			if (nameLock.flag || this.me.level > nameLock.level) {
 				this.locked = false;
-				const allApplicants = [...new Set(this.answers.map(answer => {
+				const filteredAnswers = this.answers.filter(answer => answer.question.type == 'essay');
+				const allApplicants = [...new Set(filteredAnswers.map(answer => {
 					if (answer.applicant.user){
 						return answer.applicant.user.reddit;
 					} else {
