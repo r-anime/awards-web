@@ -43,7 +43,6 @@
 								</div>
 							</div>
                         </div>
-						<!--
 						<br/><br/>
 						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Jury Suggestions</h1>
 						<div v-if="categories" class="has-text-light has-text-centered">
@@ -63,9 +62,9 @@
 								<div class="field">
 									<label class="label has-text-light">Your Suggestion</label>
 									<div class="control">
-										<input v-model="suggestion" class="input has-text-dark" maxlength="50" placeholder="Optional"/>
+										<input v-model="suggestion" class="input has-text-dark" maxlength="100" placeholder="Optional"/>
 									</div>
-									<p class="help is-platinum">{{suggestion.length}}/50</p>
+									<p class="help is-platinum">{{suggestion.length}}/100</p>
 								</div>
 								<div v-if="suggested" class="field">
 								<div class="control">
@@ -83,7 +82,6 @@
 							</div>
 							</section>
 						</div>
-						-->
 					</section>
 				</div>
 			</div>
@@ -143,7 +141,6 @@ export default {
 			}
 		},
 		// eslint-disable-next-line multiline-comment-style
-		/*
 		async sendSuggestion () {
 			this.suggesting = true;
 			const response = await fetch('/api/complain/suggest', {
@@ -168,7 +165,6 @@ export default {
 				this.submitting = false;
 			}
 		},
-		*/
 	},
 	mounted () {
 		this.getCategories();

@@ -36,6 +36,6 @@ export default {
 body {
 	margin: 0;
 	font-family: sans-serif;
-	height: calc(100vh-186px);
+	height: calc(100vh - 186px);
 }
 </style>
