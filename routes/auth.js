@@ -25,6 +25,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 	if (data.error) return response.end(data.error);
 	request.session.redditAccessToken = data.access_token;
 	request.session.redditRefreshToken = data.refresh_token;
+	
 
 	// Now that we stored the tokens, we need to see who we are and if we're
 	// already in the database or not
