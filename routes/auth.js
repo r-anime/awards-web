@@ -106,7 +106,7 @@ authApp.get('/reddit/:next', (request, response) => {
 		scope: 'identity',
 	});
 	request.session.redditState = state;
-	response.redirect(`https://old.reddit.com/api/v1/authorize?${queryString}`);
+	response.redirect(`https://reddit.com/api/v1/authorize?${queryString}`);
 });
 
 module.exports = authApp;

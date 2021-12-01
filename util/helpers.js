@@ -6,6 +6,7 @@ const sequelize = require('../models').sequelize;
 const {yuuko} = require('../bot/index');
 const util = require('util');
 const log = require('another-logger');
+const jwt = require('jsonwebtoken');
 
 const requestHelpers = {
 	reddit () {
@@ -132,7 +133,7 @@ const responseHelpers = {
 		});
 		this.end();
 	},
-	error (status, message) {
+	async error (status, message) {
 		if (typeof status !== 'number') {
 			message = status;
 			status = 500;
@@ -147,7 +148,7 @@ const responseHelpers = {
 		// Log that we provided an error response
 		// TODO: is logging to Discord actually useful?
 		log.warning(`Returning HTTP ${status}: ${message}`);
-		yuuko.createMessage(config.discord.auditChannel, {
+		await yuuko.createMessage(config.discord.auditChannel, {
 			embed: {
 				title: `Error ${status}`,
 				description: `${message}`,
