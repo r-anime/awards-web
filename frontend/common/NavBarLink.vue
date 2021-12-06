@@ -27,7 +27,7 @@
 			v-if="namedChildren && namedChildren.length"
 			class="navbar-dropdown"
 		>
-			<router-link
+			<router-link class="navbar-item"
 				v-for="childRoute in namedChildren"
 				:key="childRoute.path"
 				:to="childRoute.path"

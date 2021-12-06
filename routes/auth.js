@@ -3,6 +3,7 @@ const superagent = require('superagent');
 const authApp = require('polka')();
 const config = require('../config');
 const sequelize = require('../models').sequelize;
+const jwt = require('jsonwebtoken');
 
 function query (obj) {
 	return Object.keys(obj)
@@ -25,7 +26,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 	if (data.error) return response.end(data.error);
 	request.session.redditAccessToken = data.access_token;
 	request.session.redditRefreshToken = data.refresh_token;
-	
+
 
 	// Now that we stored the tokens, we need to see who we are and if we're
 	// already in the database or not
@@ -70,11 +71,15 @@ authApp.get('/reddit/callback', async (request, response) => {
 				});
 			}
 		}
-		response.redirect(`/${next}`);
+		const token = jwt.sign({
+			reddit: name
+		}, config.private_key);
+		response.redirect(`/login/redirect/${next}/${token}`);
 	} catch (responseError) {
 		response.error(responseError);
 	}
 });
+
 // debug stuff
 authApp.get('/reddit/debug', (request, response) => {
 	request.session.redditAccessToken = null;

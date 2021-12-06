@@ -49,11 +49,16 @@ export default {
 			return [
 				{name: 'Categories', path: '/host/categories'},
 				this.me && this.me.level >= 4 && {name: 'Admin Panel', path: '/host/admin'},
-				{name: 'Users', path: '/host/users'},
-				{name: 'Juror Applications', path: '/host/applications'},
-				{name: 'Results (Initial)', path: '/host/results'},
-				{name: 'Results (Final)', path: '/host/final-results'},
-				{name: 'Juror Allocations', path: '/host/allocations'},
+				{name: 'Users', path: '/host/users', children: [
+					{name: 'Applications', path: '/host/applications'},
+					{name: 'Allocations', path: '/host/allocations'}
+				]},
+				{name: 'Results', path: '#', children: [
+					{name: 'Nominations', path: '/host/results'},
+					{name: 'Final', path: '/host/final-results'}
+				]},
+				{name: 'Entries', path: '/host/entries'}
+				,
 			].filter(s => s);
 		},
 	},

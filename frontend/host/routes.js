@@ -11,6 +11,7 @@ import HostLayout from './HostLayout';
 
 import Profile from '../common/Profile';
 import Login from './pages/HostLogin';
+import LoginRedirect from './pages/LoginRedirect';
 import Categories from './pages/Categories';
 import Users from './pages/Users';
 import Results from './pages/Results';
@@ -19,6 +20,7 @@ import AllCategories from './pages/AllCategories';
 import CategorySort from './pages/CategorySort';
 import AdminPanel from './pages/AdminPanel';
 import Applications from './pages/Applications';
+import ManageEntries from './pages/ManageEntries';
 import AllApplications from './pages/AllApplications';
 import Allocations from './pages/Allocations';
 
@@ -53,7 +55,12 @@ export default new VueRouter({
 			component: PublicLayout,
 			children: [
 				{path: '', component: Login},
-				{path: '/profile', component: Profile},
+				{path: 'profile', component: Profile},
+				{
+					path: 'redirect/:next/:token',
+					props: true,
+					component: LoginRedirect
+				},
 			],
 		},
 
@@ -256,6 +263,13 @@ export default new VueRouter({
 					component: AdminPanel,
 					meta: {
 						title: 'Admin Panel',
+					},
+				},
+				{
+					path: 'entries',
+					component: ManageEntries,
+					meta: {
+						title: 'Entries',
 					},
 				},
 				{
