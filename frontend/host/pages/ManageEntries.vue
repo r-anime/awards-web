@@ -1,6 +1,6 @@
 <template>
 <div v-if="loaded" class="section">
-	<h2 class="title is-3">Anime Management Tools</h2>
+	<h2 class="title is-3">Anime Management Tools v0.1</h2>
 	<div class="buttons">
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="submitImportAnime">Import Anime</button>
