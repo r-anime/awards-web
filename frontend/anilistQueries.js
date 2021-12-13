@@ -363,8 +363,42 @@ const charQuerySmall = `query ($id: [Int], $page: Int, $perPage: Int) {
 	}
   }`;
 
+const showQuery2 = `query ($page: Int, $perPage: Int, $edlow: FuzzyDateInt, $edhigh: FuzzyDateInt) {
+	Page(page: $page, perPage: $perPage) {
+	  pageInfo {
+			currentPage
+      lastPage
+	  }
+	  results: media(type: ANIME, endDate_greater: $edlow, endDate_lesser: $edhigh) {
+      id
+      format
+      startDate{
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+      title {
+        romaji
+        english
+      }
+      synonyms
+      coverImage {
+        large
+      }
+      siteUrl
+      idMal
+	  }
+	}
+}`;
+
 module.exports = {
 	showQuery,
+	showQuery2,
 	showQuerySimple,
 	charQuery,
 	charQuerySimple,
