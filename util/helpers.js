@@ -147,7 +147,7 @@ const responseHelpers = {
 
 		// Log that we provided an error response
 		// TODO: is logging to Discord actually useful?
-		log.warning(`Returning HTTP ${status}: ${message}`);
+		log.warn(`Returning HTTP ${status}: ${message}`);
 		await yuuko.createMessage(config.discord.auditChannel, {
 			embed: {
 				title: `Error ${status}`,

@@ -4,6 +4,8 @@
 	<div class="buttons">
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="submitImportAnime">Import Anime</button>
+		<button class="button is-danger" :class="{'is-loading' : submitting}"
+		:disabled="submitting" @click="submitClearImports">Clear Imported Shows</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="true">Import Characters</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
@@ -147,6 +149,7 @@ export default {
 			'getItems',
 			'addItems',
 			'updateItem',
+			'clearItemImports',
 		]),
 		openModal(event, edit = -1){
 			this.modalOpen = true;
@@ -212,6 +215,11 @@ export default {
 		async submitImportAnime () {
 			this.submitting = true;
 			await this.importAnime(1, 20210101, 20220110);			
+		},
+		async submitClearImports () {
+			this.submitting = true;
+			await this.clearItemImports();
+			this.submitting = false;			
 		},
 		async importAnime(page, low, high){
 			var url = 'https://graphql.anilist.co',

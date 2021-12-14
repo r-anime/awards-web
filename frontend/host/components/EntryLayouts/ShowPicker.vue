@@ -22,8 +22,7 @@
 						<input
 							class="input is-small"
 							type="text"
-							:value="search"
-							@input="handleInput($event)"
+							v-model="search"
 							placeholder="Search by title..."
 						/>
 						<span class="icon is-small is-left">
@@ -35,15 +34,15 @@
 							class="button is-small is-static"
 							:class="{'is-loading': !loaded}"
 						>
-							{{total}} show{{total === 1 ? '' : 's'}}
+							{{filteredItems.length}} show{{filteredItems.length === 1 ? '' : 's'}}
 						</span>
 					</div>
 				</div>
 			</div>
 
-			<div v-if="loaded && shows.length" class="show-picker-entries">
+			<div v-if="loaded && filteredItems.length" class="show-picker-entries">
 				<show-picker-entry
-					v-for="show in shows"
+					v-for="show in filteredItems"
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
@@ -101,131 +100,17 @@
 			>
 				Unselect All
 			</button>
-			<button
-				class="button is-primary"
-				@click="modalOpen = true"
-			>
-				Batch Import
-			</button>
 		</div>
-
-		<modal-generic v-model="modalOpen">
-		<div class="field">
-			<label class="label">Eligibility Start:</label>
-			<div class="control">
-				<input v-model="startDate" class="input" type="date">
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">Eligibility End:</label>
-			<div class="control">
-				<input v-model="endDate" class="input" type="date">
-			</div>
-		</div>
-		<div class="field">
-			<label class="label">Formats:</label>
-			<div class="control">
-				<label class="checkbox">
-					<input v-model="formats" value="TV" type="checkbox"> TV Anime
-				</label>
-				<label class="checkbox">
-					<input v-model="formats" value="TV_SHORT" type="checkbox"> TV Shorts
-				</label>
-				<label class="checkbox">
-					<input v-model="formats" value="MOVIE" type="checkbox"> Movies
-				</label>
-				<label class="checkbox">
-					<input v-model="formats" value="OVA" type="checkbox"> OVAs
-				</label>
-				<label class="checkbox">
-					<input v-model="formats" value="ONA" type="checkbox"> ONAs
-				</label>
-				<label class="checkbox">
-					<input v-model="formats" value="SPECIAL" type="checkbox"> Specials
-				</label>
-				<label class="checkbox">
-					<input v-model="formats" value="MUSIC" type="checkbox"> MVs
-				</label>
-			</div>
-		</div>
-		<div class="field">
-			<div class="control">
-				<button @click="importShows" class="button is-primary" :class="{'is-loading': importing}">Import</button>
-			</div>
-		</div>
-		</modal-generic>
 	</div>
 </template>
 
 <script>
-import ModalGeneric from '../../../common/ModalGeneric';
-import {mapActions} from 'vuex';
+import {mapActions, mapState} from 'vuex';
 import ShowPickerEntry from './ShowPickerEntry';
-const util = require('../../../util');
-const aq = require('../../../anilistQueries');
-const constants = require('../../../../constants');
-
-const showSearchQuery = `
-    query ($search: String) {
-        anime: Page (page: 1, perPage: 50) {
-            pageInfo {
-                total
-            }
-            results: media (type: ANIME, search: $search) {
-                id
-                format
-                startDate {
-                    year
-                }
-                title {
-                    romaji
-                    english
-                    native
-                    userPreferred
-                }
-                coverImage {
-                    large
-                }
-                siteUrl
-            }
-        }
-    }
-`;
-
-const showImportQuery = `query ($page: Int, $formats: [MediaFormat], $start: FuzzyDateInt, $end: FuzzyDateInt, $exclusions: [Int]) {
-	anime: Page(page: $page, perPage: 50) {
-	  pageInfo {
-		total
-		perPage
-		currentPage
-		lastPage
-		hasNextPage
-	  }
-	  results: media(type: ANIME, id_not_in: $exclusions, isAdult: false, format_in: $formats, countryOfOrigin: JP, endDate_greater: $start, endDate_lesser: $end) {
-		id
-		format
-		startDate {
-		  year
-		}
-		title {
-		  romaji
-		  english
-		  native
-		  userPreferred
-		}
-		coverImage {
-		  large
-		}
-		siteUrl
-	  }
-	}
-  }
-  `;
 
 export default {
 	components: {
 		ShowPickerEntry,
-		ModalGeneric,
 	},
 	props: {
 		value: Array,
@@ -236,34 +121,58 @@ export default {
 			loaded: false,
 			typingTimeout: null,
 			search: '',
-			shows: [],
 			selections: [],
-			total: 'No',
 			selectedTab: 'selections',
 			submitting: false,
-			modalOpen: false,
-			startDate: '2020-01-13',
-			endDate: '2020-12-31',
-			formats: [],
-			importing: false,
 		};
 	},
 	computed: {
-		showIDs () {
-			return this.value.map(show => show.anilist_id);
+		...mapState([
+			'items',
+		]),
+		filteredItems(){
+			if (this.search == ""){
+				return this.items;
+			}
+			const _filter = this.search.toLowerCase();
+			return this.items.filter((item) => {
+				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
+			});
+		},
+		showIds () {
+			return this.value.map(show =>
+				({
+					id: show.anilist_id,
+					search: show.search,
+				})
+			);
 		},
 		submissions () {
-			return this.selections.map(item => ({
-				anilist_id: item.id,
-				character_id: null,
-				themeId: null,
-				categoryId: this.category.id,
-			}));
+			return this.selections.map(item => {
+				if (item.id == -1){
+					return {
+						anilist_id: item.id,
+						character_id: null,
+						themeId: null,
+						categoryId: this.category.id,
+						search: 'internal',
+					}
+				} else {
+					return {
+						anilist_id: item.anilistID,
+						character_id: null,
+						themeId: null,
+						categoryId: this.category.id,
+						search: 'anilist',
+					}
+				}
+			});
 		},
 	},
 	methods: {
 		...mapActions([
 			'updateEntries',
+			'getItems'
 		]),
 		handleInput (event) {
 			// TODO - this could just be a watcher
@@ -273,32 +182,6 @@ export default {
 			this.typingTimeout = setTimeout(() => {
 				this.sendQuery();
 			}, 750);
-		},
-		async sendQuery () {
-			if (!this.search) {
-				this.loaded = true;
-				this.shows = [];
-				this.total = 'No';
-				return;
-			}
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query: showSearchQuery,
-					variables: {
-						search: this.search,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			this.shows = data.data.anime.results;
-			this.total = data.data.anime.pageInfo.total || 'No';
-			this.loaded = true;
 		},
 		showSelected (show) {
 			return this.selections.some(s => s.id === show.id);
@@ -325,104 +208,34 @@ export default {
 			}
 		},
 		selectAll () {
-			for (const show of this.shows) {
+			for (const show of this.filteredItems) {
 				this.toggleShow(show, true);
 			}
 		},
 		unselectAll () {
-			for (const show of this.shows) {
+			for (const show of this.filteredItems) {
 				this.toggleShow(show, false);
 			}
 		},
 		clear () {
-			this.selections = [];
-		},
-		fuzzyDate (date) {
-			const dateArr = date.split('-');
-			return Number(`${dateArr[0]}${dateArr[1]}${dateArr[2]}`);
-		},
-		async importQuery (query, page, formats, start, end) {
-			const response = await fetch('https://graphql.anilist.co', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-				},
-				body: JSON.stringify({
-					query,
-					variables: {
-						page,
-						formats,
-						start,
-						end,
-						exclusions: constants.exclusions,
-					},
-				}),
-			});
-			if (!response.ok) return alert('no bueno');
-			const data = await response.json();
-			return data;
-		},
-		importShows () {
-			this.importing = true;
-			const showPromise = new Promise(async (resolve, reject) => {
-				try {
-					let showData = [];
-					let lastPage = false;
-					let page = 1;
-					while (!lastPage) {
-						// eslint-disable-next-line no-await-in-loop
-						const returnData = await this.importQuery(showImportQuery, page, this.formats, this.fuzzyDate(this.startDate), this.fuzzyDate(this.endDate));
-						showData = [...showData, ...returnData.data.anime.results];
-						lastPage = returnData.data.anime.pageInfo.currentPage === returnData.data.anime.pageInfo.lastPage;
-						page++;
-					}
-					resolve(showData);
-				} catch (error) {
-					reject(error);
-				}
-			});
-			showPromise.then(showData => {
-				this.shows = showData;
-				this.selectedTab = 'search';
-				this.total = this.shows.length;
-				this.loaded = true;
-				this.importing = false;
-				this.modalOpen = false;
-			});
+			for (const show of this.selections) {
+				this.toggleShow(show, false);
+			}
 		},
 	},
 	async mounted () {
 		const promiseArray = [];
-		let showData = [];
-		if (this.showIDs.length) {
-			let page = 1;
-			const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
-			showData = [...showData, ...someData.data.Page.results];
-			const lastPage = someData.data.Page.pageInfo.lastPage;
-			page = 2;
-			while (page <= lastPage) {
-				// eslint-disable-next-line no-loop-func
-				promiseArray.push(new Promise(async (resolve, reject) => {
-					try {
-						const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
-						resolve(returnData.data.Page.results);
-					} catch (error) {
-						reject(error);
-					}
-				}));
-				page++;
+		await this.getItems();
+		for (const show of this.showIds){
+			let item;
+			if (show.search == 'anilist'){
+				item = this.items.find(i => i.anilistID == show.id);
+			} else {
+				item = this.items.find(i => i.id == show.id);
 			}
-			Promise.all(promiseArray).then(finalData => {
-				for (const data of finalData) {
-					showData = [...showData, ...data];
-				}
-				this.selections = showData;
-				this.loaded = true;
-			});
-		} else {
-			this.loaded = true;
+			this.toggleShow(item, true);
 		}
+		this.loaded = true;
 	},
 };
 </script>

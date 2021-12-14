@@ -35,7 +35,7 @@ module.exports = (sequelize, types) => {
 			set () {
 				throw new Error('No');
 			},
-		},
+		},	
 	});
 
 	entries.associate = models => {

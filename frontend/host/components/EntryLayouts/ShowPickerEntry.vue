@@ -51,19 +51,19 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.show.title.romaji || this.show.title.english;
+			return this.show.romanji || this.show.english;
 		},
 		year () {
-			return this.show.startDate.year;
+			return this.show.year;
 		},
 		format () {
-			return readableFormats[this.show.format];
+			return ''; // readableFormats[this.show.format];
 		},
 		coverURI () {
-			return this.show.coverImage.large;
+			return this.show.image;
 		},
 		anilistLink () {
-			return this.show.siteUrl;
+			return 'https://anilist.co/anime/' + this.show.anilistID;
 		},
 	},
 	methods: {

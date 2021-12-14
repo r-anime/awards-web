@@ -369,7 +369,7 @@ const showQuery2 = `query ($page: Int, $perPage: Int, $edlow: FuzzyDateInt, $edh
 			currentPage
       lastPage
 	  }
-	  results: media(type: ANIME, endDate_greater: $edlow, endDate_lesser: $edhigh) {
+	  results: media(type: ANIME, endDate_greater: $edlow, endDate_lesser: $edhigh, format_in: [TV, TV_SHORT, MOVIE, ONA, OVA, SPECIAL, MUSIC], countryOfOrigin: JP) {
       id
       format
       startDate{

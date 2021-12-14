@@ -383,6 +383,10 @@ const store = new Vuex.Store({
 			const items = await makeRequest(`/api/items/update`, 'POST', data);
 			commit('SET_ITEMS', items);
 		},
+		async clearItemImports ({commit}) {
+			const items = await makeRequest(`/api/items/delete/imported`, 'DELETE');
+			commit('SET_ITEMS', items);
+		},
 	},
 });
 

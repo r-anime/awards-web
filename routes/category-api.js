@@ -211,6 +211,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 	let entries;
 	try {
 		entries = await request.json();
+		console.log(entries);
 	} catch (error) {
 		return response.json({error: 'Invalid JSON'});
 	}

@@ -47,7 +47,9 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['entries']),
+		...mapState([
+			'entries',
+		]),
 	},
 	methods: {
 		...mapActions([

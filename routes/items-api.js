@@ -1,5 +1,6 @@
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
+const {Op} = require('sequelize');
 
 // Sequelize models to avoid redundancy
 const Items = sequelize.model('items');
@@ -92,35 +93,18 @@ apiApp.get('/', async (request, response) => {
 	}
 });
 
-apiApp.delete('/delete', async (request, response) => {
+apiApp.delete('/delete/imported', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an host to delete items'});
 	}
 	try {
-		/*
-		const promise = new Promise(async (resolve, reject) => {
-			try {
-				await Themes.destroy({truncate: true, restartIdentity: true});
-				await sequelize.query("DELETE FROM sqlite_sequence WHERE name = 'themes'");
-				resolve();
-			} catch (error) {
-				response.error(error);
-				reject(error);
+		await Items.destroy({where: {
+			anilistID: {
+				[Op.ne]: -1,
 			}
-		});
-
-		promise.then(() => {
-			yuuko.createMessage(config.discord.auditChannel, {
-				embed: {
-					title: 'Themes deleted',
-					description: `Themes were deleted by **${auth}**.`,
-					color: 8302335,
-				},
-			});
-			response.empty();
-		}, error => response.error(error));
-		*/
+		}});
+		response.json(await Items.findAll());
 	} catch (error) {
 		response.error(error);
 	}
