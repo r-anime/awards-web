@@ -235,6 +235,8 @@ export default {
 			}
 			if (item){
 				this.toggleShow(item, true);
+			} else {
+				console.log(show);
 			}
 		}
 		this.loaded = true;
