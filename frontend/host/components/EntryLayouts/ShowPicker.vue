@@ -236,7 +236,14 @@ export default {
 			if (item){
 				this.toggleShow(item, true);
 			} else {
-				console.log(show);
+				this.toggleShow({
+					anilistID: show.id,
+					english: String(show.id),
+					romanji: String(show.id),
+					type: 'anime',
+					id: -1,
+					image: 'none'
+				}, true);
 			}
 		}
 		this.loaded = true;
