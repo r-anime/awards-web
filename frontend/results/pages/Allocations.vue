@@ -161,7 +161,7 @@ export default {
 			return this.entries.filter(entry => entry.categoryId === this.selectedCategory.id);
 		},
 		showIDs () {
-			const entries = this.entries.filter(entry => entry.categoryId === this.selectedCategory.id);
+			const entries = this.entries.filter(entry => entry.categoryId === this.selectedCategory.id && entry.search != 'internal');
 			return entries.map(entry => entry.anilist_id);
 		},
 	},
