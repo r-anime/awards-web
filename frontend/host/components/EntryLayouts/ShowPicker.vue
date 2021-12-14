@@ -184,7 +184,11 @@ export default {
 			}, 750);
 		},
 		showSelected (show) {
-			return this.selections.some(s => s.id === show.id);
+			if (show.id > 0){
+				return this.selections.some(s => s.id === show.id);
+			} else {
+				return this.selections.some(s => s.anilistID === show.anilistID);
+			}
 		},
 		toggleShow (show, select = true) {
 			if (select) {
