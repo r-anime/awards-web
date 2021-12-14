@@ -184,9 +184,6 @@ export default {
 			}, 750);
 		},
 		showSelected (show) {
-			if (!show){
-				return false;
-			}
 			return this.selections.some(s => s.id === show.id);
 		},
 		toggleShow (show, select = true) {
@@ -236,7 +233,9 @@ export default {
 			} else {
 				item = this.items.find(i => i.anilistID == show.id);
 			}
-			this.toggleShow(item, true);
+			if (item){
+				this.toggleShow(item, true);
+			}
 		}
 		this.loaded = true;
 	},
