@@ -228,10 +228,10 @@ export default {
 		await this.getItems();
 		for (const show of this.showIds){
 			let item;
-			if (show.search == 'anilist'){
-				item = this.items.find(i => i.anilistID == show.id);
-			} else {
+			if (show.search == 'internal'){
 				item = this.items.find(i => i.id == show.id);
+			} else {
+				item = this.items.find(i => i.anilistID == show.id);
 			}
 			this.toggleShow(item, true);
 		}
