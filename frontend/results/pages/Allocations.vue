@@ -153,7 +153,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapState(['locks', 'categories', 'entries']),
+		...mapState(['locks', 'categories', 'entries', 'items']),
 		filteredCategories () {
 			return this.categories.filter(category => category.entryType === 'shows' && category.name !== 'Anime of the Year' && category.awardsGroup !== 'character' && (category.awardsGroup !== 'production' || category.name === 'OST'));
 		},
@@ -166,7 +166,7 @@ export default {
 		},
 	},
 	methods: {
-		...mapActions(['getLocks', 'getCategories', 'getEntries']),
+		...mapActions(['getLocks', 'getCategories', 'getEntries', 'getItems']),
 		changeCategory (category) {
 			this.search = '';
 			this.total = 'No';
@@ -196,6 +196,19 @@ export default {
 			this.total = this.shows.length;
 			this.fetched = true;
 		},
+		getCustomShow(show){
+			const custitem = this.items.find(item => item.id === show);
+
+			return {
+				"id": custitem.anilist_id,
+				"title":{"romaji":custitem.romanji,"english":custitem.english},
+				"coverImage":{
+					"large": custitem.image,
+					"extraLarge": custitem.image},
+				"siteUrl":"#",
+				"idMal": null
+			};
+		},
 		async fetchAnilist () {
 			const promiseArray = [];
 			let showData = [];
@@ -222,6 +235,9 @@ export default {
 				}
 				this.showData = showData;
 				this.shows = showData;
+				for (const show of this.entries.filter(entry => entry.categoryId === this.selectedCategory.id && entry.search == 'internal')){
+					this.shows.push(this.getCustomShow(show.anilist_id));
+				}
 				this.fetched = true;
 			});
 		},
@@ -250,6 +266,7 @@ export default {
 	mounted () {
 		Promise.all([this.locks ? Promise.resolve() : this.getLocks(),
 			this.entries ? Promise.resolve() : this.getEntries(),
+			this.items ? Promise.resolve() : this.getItems(),
 			this.categories ? Promise.resolve() : this.getCategories()]).then(async () => {
 			this.selectedCategory = this.filteredCategories[0];
 			const allocLock = this.locks.find(lock => lock.name === 'allocations');

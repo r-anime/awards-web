@@ -31,6 +31,7 @@ const store = new Vuex.Store({
 		locks: null,
 		categories: null,
 		entries: null,
+		items: null,
 	},
 	mutations: {
 		GET_CATEGORIES (state, categories) {
@@ -41,6 +42,9 @@ const store = new Vuex.Store({
 		},
 		GET_LOCKS (state, locks) {
 			state.locks = locks;
+		},
+		SET_ITEMS (state, items) {
+			state.items = items;
 		},
 	},
 	actions: {
@@ -55,6 +59,10 @@ const store = new Vuex.Store({
 		async getLocks ({commit}) {
 			const locks = await makeRequest('/api/locks/all');
 			commit('GET_LOCKS', locks);
+		},
+		async getItems ({commit}){
+			const items = await makeRequest(`/api/items/`, 'GET');
+			commit('SET_ITEMS', items);
 		},
 		async sendAnalytics ({commit}, data) {
 			const width = window.innerWidth;
