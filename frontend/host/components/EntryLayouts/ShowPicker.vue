@@ -149,7 +149,7 @@ export default {
 		},
 		submissions () {
 			return this.selections.map(item => {
-				if (item.id == -1){
+				if (item.anilistID == -1){
 					return {
 						anilist_id: item.id,
 						character_id: null,
@@ -184,6 +184,9 @@ export default {
 			}, 750);
 		},
 		showSelected (show) {
+			if (!show){
+				return false;
+			}
 			return this.selections.some(s => s.id === show.id);
 		},
 		toggleShow (show, select = true) {
