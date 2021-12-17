@@ -13,15 +13,20 @@
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="openModal">Add Manual Entry</button>
 	</div>
+	<div class="field">
+		<div class="control">
+			<input class="input" type="text" v-model="bulkIDs">
+		</div>
+		<button class="button is-primary" :class="{'is-loading' : submitting}"
+		:disabled="submitting" @click="submitBulkImport">Bulk Import</button>
+	</div>
 	<h2 class="title">
 		Items
 	</h2>
 	<div class="field">
-		<div class="field">
-			<label class="label">Search</label>
-			<div class="control">
-				<input class="input" type="text" v-model="filter">
-			</div>
+		<label class="label">Search</label>
+		<div class="control">
+			<input class="input" type="text" v-model="filter">
 		</div>
 	</div>
 	<table class="table is-hoverable is-fullwidth">
@@ -30,11 +35,14 @@
 			<th>ID</th>
 			<th>Eng</th>
 			<th>JP</th>
+			<th></th>
 		</tr>
 		<tr class="is-clickable" v-for="item in filteredItems" :key="item.anilistID" @click="openModal($event, item.id)">
 			<td>{{item.anilistID}}</td>
 			<td>{{item.english}}</td>
 			<td>{{item.romanji}}</td>
+			<td><button class="button is-danger" :class="{'is-loading' : submitting}"
+			:disabled="submitting" @click.stop="submitDeleteItem($event, item.id)">{{(deleting==item.id)?"Confirm":"Delete"}}</button></td>
 		</tr>
 		</tbody>
 	</table>
@@ -117,7 +125,9 @@ export default {
 			loaded: false,
 			modalOpen: false,
 			editing: -1,
+			deleting: -1,
 			submitting: false,
+			bulkIDs: "",
 			filter: "",
 			form: {
 				anilistID: -1,
@@ -142,6 +152,14 @@ export default {
 			return this.items.filter((item) => {
 				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
 			});
+		},
+		bulkIDArray(){
+			const _intarr = new Array();
+			const _split = this.bulkIDs.split(',');
+			for (const id of _split){
+				_intarr.push(Number(id));
+			}
+			return _intarr;
 		}
 	},
 	methods: {
@@ -149,13 +167,23 @@ export default {
 			'getItems',
 			'addItems',
 			'updateItem',
+			'deleteItem',
 			'clearItemImports',
 		]),
+		async submitDeleteItem(event, deleting = -1){
+			this.submitting = true;
+			if (this.deleting == deleting){
+				await this.deleteItem(deleting);
+			} else {
+				this.deleting = deleting;
+			}
+			this.submitting = false;
+		},
 		openModal(event, edit = -1){
 			this.modalOpen = true;
 			this.editing = edit;
 
-			console.log(this.editing);
+			// console.log(this.editing);
 
 			if (edit != -1){
 				const formItem = this.items.find(item => item.id == this.editing);
@@ -216,10 +244,65 @@ export default {
 			this.submitting = true;
 			await this.importAnime(1, 20210101, 20220110);			
 		},
+		async submitBulkImport () {
+			this.submitting = true;
+			await this.importAnimeByIDs(1);			
+		},
 		async submitClearImports () {
 			this.submitting = true;
 			await this.clearItemImports();
 			this.submitting = false;			
+		},
+		async importAnimeByIDs(page){
+			var url = 'https://graphql.anilist.co',
+			options = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({
+					query: aq.showQuerySmall,
+					variables: {
+						page: page,
+						perPage: 50,
+						id: this.bulkIDArray,
+					},
+				})
+			};
+
+			const _this = this;
+
+			await fetch(url, options).then(response => response.json().then(function (json) {
+				return response.ok ? json : Promise.reject(json);
+			})).then(async (data) => {
+				const results = data.data.Page;
+				// console.log(results);
+
+				for (const result of results.results){
+					if (this.items.filter(e => e.anilistID === result.id).length > 0) {
+						console.log("Skipped", result.id);
+					} else {
+						this.pulledEntries.push({
+							anilistID: result.id,
+							english: result.title.english,
+							romanji: result.title.romaji,
+							year: 2021,
+							image: result.coverImage.large,
+							type: 'anime',
+						});
+					}
+				}
+				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
+					await new Promise(resolve => setTimeout(resolve, 750));
+					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
+				} else {
+					await this.addItems(this.pulledEntries);
+					this.submitting = false;
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
 		},
 		async importAnime(page, low, high){
 			var url = 'https://graphql.anilist.co',

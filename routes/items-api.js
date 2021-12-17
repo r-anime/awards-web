@@ -110,4 +110,25 @@ apiApp.delete('/delete/imported', async (request, response) => {
 	}
 });
 
+apiApp.delete('/delete', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an host to delete items'});
+	}
+	let item;
+	try {
+		item = Number(await request.json());
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		await Items.destroy({where: {
+			id: item,
+		}});
+		response.json(await Items.findAll());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 module.exports = apiApp;
