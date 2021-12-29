@@ -48,7 +48,7 @@ const store = new Vuex.Store({
 		applicants: null,
 		finalVoteSummary: null,
 		finalVotes: null,
-		items: null,
+		items: [],
 	},
 	getters: {
 		isHost (state) {
@@ -183,6 +183,9 @@ const store = new Vuex.Store({
 		},
 		SET_ITEMS (state, items) {
 			state.items = items;
+		},
+		ADD_ITEMS (state, items) {
+			state.items.push(items);
 		},
 	},
 	actions: {
@@ -376,8 +379,8 @@ const store = new Vuex.Store({
 			commit('SET_ITEMS', items);
 		},
 		async addItems ({commit}, data) {
-			const items = await makeRequest(`/api/items/add`, 'POST', data);
-			commit('SET_ITEMS', items);
+			await makeRequest(`/api/items/add`, 'POST', data);
+			commit('ADD_ITEMS', data);
 		},
 		async updateItem ({commit}, data) {
 			const items = await makeRequest(`/api/items/update`, 'POST', data);

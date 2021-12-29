@@ -4,19 +4,20 @@
 
 // Import the Bulma styles themselves
 // TODO: only import bulma components we actually use
-@import "~bulma/sass/base/all";
-@import "~bulma/sass/elements/all";
-@import "~bulma/sass/form/all";
-@import "~bulma/sass/components/all";
-@import "~bulma/sass/grid/all";
-@import "~bulma/sass/layout/all";
+@import "~bulma/sass/base/_all.sass";
+@import "~bulma/sass/elements/_all.sass";
+@import "~bulma/sass/form/_all.sass";
+@import "~bulma/sass/components/_all.sass";
+@import "~bulma/sass/grid/_all.sass";
+@import "~bulma/sass/layout/_all.sass";
+@import "~bulma/sass/helpers/_all.sass";
 
 // Navbar menus on mobile shouldn't interfere with page content
 @include touch {
 	.navbar-menu {
 		position: absolute;
 		left: 0;
-		right: 0;
+		right: 0; 
 	}
 }
 

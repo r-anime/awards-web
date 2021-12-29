@@ -47,7 +47,7 @@ $custom-colors: (
 // the utilities including Bulma's variables. (This technically re-imports the
 // functions but they get compiled away and I'm lazy.)
 
-@import "~bulma/sass/utilities/all";
+@import "~bulma/sass/utilities/_all.sass";
 
 $spaceamounts: (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100); // Adjust this to include the pixel amounts you need.
 $sides: (top, bottom, left, right); // Leave this variable alone

@@ -44,23 +44,23 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.char.name.full || this.char.name.alternative;
+			return this.char.romanji || this.char.english;
+		},
+		year () {
+			return this.char.year;
 		},
 		anime () {
-			const found = this.char.media.edges.find(edge => edge.node.startDate.year === 2020);
-			if (found) {
-				return found.node.title.romaji || found.node.title.english;
+			if (this.char.parent) {
+				return this.char.parent.romanji || this.char.parent.english;
+			} else {
+				return "";
 			}
-			if (this.char.media.edges.length) {
-				return this.char.media.edges[0].node.title.romaji || this.char.media.edges[0].node.title.english;
-			}
-			return '';
 		},
 		coverURI () {
-			return this.char.image.large;
+			return this.char.image;
 		},
 		anilistLink () {
-			return this.char.siteUrl;
+			return 'https://anilist.co/character/' + this.char.anilistID;
 		},
 	},
 	methods: {

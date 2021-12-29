@@ -15,9 +15,9 @@ export default {
 	computed: {
 		name () {
 			if (this.selectedCategory.entryType === 'shows') {
-				return this.selection.title.romaji || this.selection.title.english;
+				return this.selection.romanji || this.selection.english;
 			} else if (this.selectedCategory.entryType === 'characters' || this.selectedCategory.entryType === 'vas') {
-				return this.selection.name.full;
+				return this.selection.romanji || this.selection.english;
 			} else if (this.selectedCategory.entryType === 'themes') {
 				return `${this.selection.anime.split('%')[0]} ${this.selection.themeNo || ''}`;
 			}

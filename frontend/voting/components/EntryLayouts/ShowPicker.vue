@@ -7,8 +7,7 @@
 						<input
 							class="input is-primary is-medium"
 							type="text"
-							:value="search"
-							@input="handleInput($event)"
+							v-model="search"
 							placeholder="Search by title..."
 							:disabled="lockSearch"
 						/>
@@ -21,15 +20,15 @@
 							class="button is-medium non-interactive is-primary"
 							:class="{'is-loading': !loaded}"
 						>
-							{{total}} show{{total === 1 ? '' : 's'}}
+							{{filteredShows.length}} show{{filteredShows.length === 1 ? '' : 's'}}
 						</span>
 					</div>
 				</div>
 			</div>
 
-			<div v-if="loaded && shows.length" class="show-picker-entries" @scroll="handleScroll($event)">
+			<div v-if="loaded && filteredShows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<show-picker-entry
-					v-for="show in shows"
+					v-for="show in filteredShows"
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
@@ -50,45 +49,9 @@
 <script>
 /* eslint-disable vue/no-mutating-props */
 import Vue from 'vue';
+import {mapActions, mapState} from 'vuex';
 import ShowPickerEntry from './ShowPickerEntry';
-import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
-
-const showPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
-  Page(page: $page, perPage: $perPage) {
-    pageInfo {
-      lastPage
-    }
-    results: media(type: ANIME, id_in: $id) {
-      id
-      format
-      title {
-        romaji
-        english
-      }
-      synonyms
-      coverImage {
-        large
-      }
-      siteUrl
-      idMal
-    }
-  }
-}`;
-
-const options = {
-	shouldSort: true,
-	threshold: 0.3,
-	location: 0,
-	distance: 70,
-	maxPatternLength: 64,
-	minMatchCharLength: 3,
-	keys: [
-		'title.romaji',
-		'title.english',
-		'synonyms',
-	],
-};
 
 export default {
 	components: {
@@ -104,7 +67,6 @@ export default {
 			loaded: false,
 			typingTimeout: null,
 			search: '',
-			shows: null,
 			total: 'No',
 			showData: null,
 			loading: [],
@@ -112,6 +74,9 @@ export default {
 		};
 	},
 	computed: {
+		...mapState([
+			'items',
+		]),
 		showIDs () {
 			return this.entries.map(show => show.anilist_id);
 		},
@@ -121,37 +86,37 @@ export default {
 		isLoading () {
 			return this.loading.includes(true);
 		},
+		categoryItems () {
+			const _this = this;
+			if (this.entries && this.entries.length > 0){
+				return this.items.filter(item => {
+					return _this.entries.some(e => ((e.search == 'internal' && e.anilist_id == item.id) || (e.search != 'internal' && e.anilist_id == item.anilistID)) && item.type == 'anime');
+				})
+			} else {
+				return this.items.filter (item => item.type == 'anime');
+			}
+		},
+		filteredShows () {
+			if (this.search == ""){
+				return this.categoryItems;
+			}
+			const _filter = this.search.toLowerCase();
+			return this.categoryItems.filter((item) => {
+				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter));
+			});
+		}
 	},
 	methods: {
+		...mapActions([
+			'getItems'
+		]),
 		handleScroll (event) {
 			// console.log(event.target.scrollTop);
 			this.$emit('scroll-picker', event.target.scrollTop);
 		},
-		handleInput (event) {
-			// TODO - this could just be a watcher
-			this.search = event.target.value;
-			this.loaded = false;
-			clearTimeout(this.typingTimeout);
-			this.typingTimeout = setTimeout(() => {
-				this.sendQuery();
-			}, 750);
-		},
-		sendQuery () {
-			if (!this.search) {
-				this.shows = this.showData;
-				this.total = this.shows.length;
-				this.loaded = true;
-				return;
-			}
-			const entries = this.showData;
-			const fuse = new Fuse(entries, options);
-			this.shows = fuse.search(this.search);
-			this.shows = this.shows.map(show => show.item);
-			this.total = this.shows.length;
-			this.loaded = true;
-		},
 		showSelected (show) {
-			return this.value[this.category.id].some(s => s.id === show.id);
+			console.log(show);
+			return this.value[this.category.id].some(s => (s.id === show.id));
 		},
 		async toggleShow (show, select = true) {
 			Vue.set(this.loading, show.id, true);
@@ -212,83 +177,14 @@ export default {
 	},
 	watch: {
 		async category () {
-			this.total = 'Loading';
-			this.lockSearch = true;
 			this.loaded = false;
 			this.search = '';
-			const promiseArray = [];
-			let showData = [];
-			if (this.showIDs) {
-				let page = 1;
-				const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
-				showData = [...showData, ...someData.data.Page.results];
-				const lastPage = someData.data.Page.pageInfo.lastPage;
-				page = 2;
-				while (page <= lastPage) {
-					// eslint-disable-next-line no-loop-func
-					promiseArray.push(new Promise(async (resolve, reject) => {
-						try {
-							const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
-							resolve(returnData.data.Page.results);
-						} catch (error) {
-							reject(error);
-						}
-					}));
-					page++;
-				}
-				Promise.all(promiseArray).then(finalData => {
-					for (const data of finalData) {
-						showData = [...showData, ...data];
-					}
-					this.showData = util.shuffle(showData);
-					this.shows = showData;
-					this.total = this.shows.length;
-					this.lockSearch = false;
-					this.loaded = true;
-				});
-			} else {
-				this.total = 0;
-				this.lockSearch = false;
-				this.loaded = true;
-			}
+			this.loaded = true;
 		},
 	},
 	async mounted () {
-		this.total = 'Loading';
-		const promiseArray = [];
-		let showData = [];
-		if (this.showIDs) {
-			let page = 1;
-			const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
-			showData = [...showData, ...someData.data.Page.results];
-			const lastPage = someData.data.Page.pageInfo.lastPage;
-			page = 2;
-			while (page <= lastPage) {
-				// eslint-disable-next-line no-loop-func
-				promiseArray.push(new Promise(async (resolve, reject) => {
-					try {
-						const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
-						resolve(returnData.data.Page.results);
-					} catch (error) {
-						reject(error);
-					}
-				}));
-				page++;
-			}
-			Promise.all(promiseArray).then(finalData => {
-				for (const data of finalData) {
-					showData = [...showData, ...data];
-				}
-				this.showData = util.shuffle(showData);
-				this.shows = showData;
-				this.total = this.shows.length;
-				this.loaded = true;
-			});
-		} else {
-			this.total = 0;
-			this.lockSearch = false;
-			this.loaded = true;
-		}
+		await this.getItems();
+		this.loaded = true;
 	},
 };
 </script>

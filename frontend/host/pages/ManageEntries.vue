@@ -7,16 +7,21 @@
 		<button class="button is-danger" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="submitClearImports">Clear Imported Shows</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
-		:disabled="true">Import Characters</button>
+		:disabled="submitting" @click="submitImportCharacters">Import Characters / VAs</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
-		:disabled="true">Import Voice Actors</button>
+		:disabled="true">Update Entries via AniList</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="openModal">Add Manual Entry</button>
+	</div>
+	<div v-if="charimporting || animeimporting">
+		<progress class="progress is-primary" :value="progCurrValue" :max="progMaxValue">{{progCurrValue}}/{{progMaxValue}}</progress>
+		<br/>
 	</div>
 	<div class="field">
 		<div class="control">
 			<input class="input" type="text" v-model="bulkIDs">
 		</div>
+		<br/>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="submitBulkImport">Bulk Import</button>
 	</div>
@@ -37,7 +42,7 @@
 			<th>JP</th>
 			<th></th>
 		</tr>
-		<tr class="is-clickable" v-for="item in filteredItems" :key="item.anilistID" @click="openModal($event, item.id)">
+		<tr class="is-clickable" v-for="item in filteredItems" :key="item.id" @click="openModal($event, item.id)">
 			<td>{{item.anilistID}}</td>
 			<td>{{item.english}}</td>
 			<td>{{item.romanji}}</td>
@@ -94,7 +99,7 @@
 					<div class="select">
 						<select v-model="form.type">
 							<option value="anime">Anime</option>
-							<option value="character">Character</option>
+							<option value="char">Character</option>
 							<option value="va">Voice Actor</option>
 						</select>
 					</div>
@@ -127,6 +132,10 @@ export default {
 			editing: -1,
 			deleting: -1,
 			submitting: false,
+			animeimporting: false,
+			charimporting: false,
+			progCurrValue: 0,
+			progMaxValue: 0,
 			bulkIDs: "",
 			filter: "",
 			form: {
@@ -152,6 +161,12 @@ export default {
 			return this.items.filter((item) => {
 				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
 			});
+		},
+		animeItems(){
+			return this.items.filter(item => item.type === 'anime');
+		},
+		animeItemIDs(){
+			return this.animeItems.map(el => el.anilistID);
 		},
 		bulkIDArray(){
 			const _intarr = new Array();
@@ -242,7 +257,24 @@ export default {
 		},
 		async submitImportAnime () {
 			this.submitting = true;
+			this.animeimporting = true;
 			await this.importAnime(1, 20210101, 20220110);			
+		},
+		async submitImportCharacters () {
+			this.submitting = true;
+			this.charimporting = true;
+			this.progCurrValue = 0;
+			this.progMaxValue = this.animeItemIDs.length;
+			for (const item of this.animeItemIDs){
+				if (item == -1 ) { continue; }
+				await new Promise(resolve => setTimeout(resolve, 750));
+				await this.importCharactersByShow(item, 1);
+				this.progCurrValue += 1;
+			}
+			this.submitting = false;
+			this.charimporting = false;
+			this.progCurrValue = 0;
+			this.progMaxValue = 0;
 		},
 		async submitBulkImport () {
 			this.submitting = true;
@@ -277,6 +309,8 @@ export default {
 				return response.ok ? json : Promise.reject(json);
 			})).then(async (data) => {
 				const results = data.data.Page;
+				this.progCurrValue = results.pageInfo.currentPage;
+				this.progMaxValue = results.pageInfo.lastPage;
 				// console.log(results);
 
 				for (const result of results.results){
@@ -299,6 +333,9 @@ export default {
 				} else {
 					await this.addItems(this.pulledEntries);
 					this.submitting = false;
+					this.pulledEntries.splice(0);
+					this.progCurrValue = 0;
+					this.progMaxValue = 0;
 				}
 			}).catch((error) => {
 				console.error(error);
@@ -313,7 +350,7 @@ export default {
 					'Accept': 'application/json',
 				},
 				body: JSON.stringify({
-					query: aq.showQuery2,
+					query: aq.showQueryCache,
 					variables: {
 						page: page,
 						perPage: 50,
@@ -329,6 +366,8 @@ export default {
 				return response.ok ? json : Promise.reject(json);
 			})).then(async (data) => {
 				const results = data.data.Page;
+				this.progCurrValue = results.pageInfo.currentPage;
+				this.progMaxValue = results.pageInfo.lastPage;
 				// console.log(results);
 
 				for (const result of results.results){
@@ -351,11 +390,143 @@ export default {
 				} else {
 					await this.addItems(this.pulledEntries);
 					this.submitting = false;
+					this.animeimporting = false;
+					this.pulledEntries.splice(0);
+					this.progCurrValue = 0;
+					this.progMaxValue = 0;
 				}
 			}).catch((error) => {
 				console.error(error);
 			});
-		}
+		},
+		async importCharactersByShow(id, page){
+			var url = 'https://graphql.anilist.co',
+			options = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({
+					query: aq.charQueryByShow,
+					variables: {
+						id: id,
+						page: page,
+						perPage: 25,
+					},
+				})
+			};
+
+			const _this = this;
+			const _id = id;
+
+			await fetch(url, options).then(response => response.json().then(function (json) {
+				return response.ok ? json : Promise.reject(json);
+			})).then(async (data) => {
+				const results = data.data.Media.characters;
+				// console.log(results);
+
+				for (const result of results.edges){
+					if (this.items.filter(e => e.anilistID === result.node.id && e.type == 'char').length > 0) {
+						console.log("Skipped", result.node.name.full);
+					} else {
+						console.log("Added", result.node.name.full);
+						this.pulledEntries.push({
+							anilistID: result.node.id,
+							english: result.node.name.full,
+							romanji: result.node.name.full,
+							year: 2021,
+							image: result.node.image.large,
+							type: 'char',
+							parentID: _id,
+							internal: false							
+						});
+					}
+					for (const va of result.voiceActors){
+						if (this.items.filter(e => e.anilistID === va.id && e.type == 'va' && e.parentID == result.node.id ).length > 0){
+							console.log("Skipped", va.name.full);
+						} else {
+							console.log("Added " +  va.name.full + " - " + result.node.name.full);
+							this.pulledEntries.push({
+								anilistID: va.id,
+								english: va.name.full,
+								romanji: va.name.full,
+								year: 2021,
+								image: va.image.large,
+								type: 'va',
+								parentID: result.node.id,
+								internal: false							
+							});
+						}
+					}
+				}
+				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
+					await new Promise(resolve => setTimeout(resolve, 750));
+					await _this.importCharactersByShow(id, results.pageInfo.currentPage+1);
+				} else {
+					await this.addItems(this.pulledEntries);
+					this.pulledEntries.splice(0);
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+		},
+		async updateAnimeByIDs(page){
+			var url = 'https://graphql.anilist.co',
+			options = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+				},
+				body: JSON.stringify({
+					query: aq.showQuerySmall,
+					variables: {
+						page: page,
+						perPage: 50,
+						id: this.bulkIDArray,
+					},
+				})
+			};
+
+			const _this = this;
+
+			await fetch(url, options).then(response => response.json().then(function (json) {
+				return response.ok ? json : Promise.reject(json);
+			})).then(async (data) => {
+				const results = data.data.Page;
+				this.progCurrValue = results.pageInfo.currentPage;
+				this.progMaxValue = results.pageInfo.lastPage;
+				// console.log(results);
+
+				for (const result of results.results){
+					if (this.items.filter(e => e.anilistID === result.id).length > 0) {
+						console.log("Skipped", result.id);
+					} else {
+						this.pulledEntries.push({
+							anilistID: result.id,
+							english: result.title.english,
+							romanji: result.title.romaji,
+							year: 2021,
+							image: result.coverImage.large,
+							type: 'anime',
+						});
+					}
+				}
+				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
+					await new Promise(resolve => setTimeout(resolve, 750));
+					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
+				} else {
+					await this.addItems(this.pulledEntries);
+					this.submitting = false;
+					this.pulledEntries.splice(0);
+					this.progCurrValue = 0;
+					this.progMaxValue = 0;
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+		},
 	},
 	async mounted () {
 		await this.getItems();

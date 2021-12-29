@@ -363,7 +363,7 @@ const charQuerySmall = `query ($id: [Int], $page: Int, $perPage: Int) {
 	}
   }`;
 
-const showQuery2 = `query ($page: Int, $perPage: Int, $edlow: FuzzyDateInt, $edhigh: FuzzyDateInt) {
+const showQueryCache = `query ($page: Int, $perPage: Int, $edlow: FuzzyDateInt, $edhigh: FuzzyDateInt) {
 	Page(page: $page, perPage: $perPage) {
 	  pageInfo {
 			currentPage
@@ -396,12 +396,46 @@ const showQuery2 = `query ($page: Int, $perPage: Int, $edlow: FuzzyDateInt, $edh
 	}
 }`;
 
+const charQueryByShow = `query ($id: Int, $page: Int, $perPage: Int) {
+	Media(id: $id) {
+	  id
+	  characters(page: $page, perPage: $perPage) {
+		pageInfo {
+		  currentPage
+		  lastPage
+		}
+		edges {
+		  node {
+			id
+			name {
+			  full
+			}
+			image {
+			  large
+			}
+		  }
+		  voiceActors(language:JAPANESE) {
+			id
+			name {
+			  full
+			}
+			image {
+			  large
+			}
+		  }
+		}
+	  }
+	}
+  }
+`;
+
 module.exports = {
 	showQuery,
-	showQuery2,
+	showQueryCache,
 	showQuerySimple,
 	charQuery,
 	charQuerySimple,
+	charQueryByShow,
 	vaQuery,
 	showByIDQuery,
 	charByIDQuery,

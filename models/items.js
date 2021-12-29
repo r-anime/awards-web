@@ -10,7 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      items.belongsTo(models.items, {foreignKey: 'parentID', as: 'parent'});
+      items.belongsTo(models.items, {
+        targetKey: 'anilistID',
+        as: 'parent',
+        foreignKey: {
+          name: 'parentID',
+          allowNull: true,
+        },
+      });
     }
   };
   items.init({
@@ -20,7 +27,10 @@ module.exports = (sequelize, DataTypes) => {
     year: DataTypes.INTEGER,
     image: DataTypes.STRING,
     type: DataTypes.STRING,
-    parentID: DataTypes.INTEGER
+    parentID: DataTypes.INTEGER,
+    internal: DataTypes.BOOLEAN,
+    mediatype: DataTypes.STRING,
+    names: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'items',

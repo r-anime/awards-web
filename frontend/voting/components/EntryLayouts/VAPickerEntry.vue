@@ -44,35 +44,34 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.va.name.full;
-		},
-		anime () {
-			const found = this.va.media.edges.find(edge => edge.node.startDate.year === 2020);
-			if (found) {
-				return found.node.title.romaji || found.node.title.english;
+			if (this.va && this.va.parent) {
+				return this.va.parent.romanji || this.va.parent.english;
+			} else {
+				return "";
 			}
-			if (this.va.media.edges.length) {
-				return this.va.media.edges[0].node.title.romaji || this.va.media.edges[0].node.title.english;
-			}
-			return '';
 		},
 		voiceActor () {
-			const found = this.va.media.edges.find(edge => edge.node.startDate.year === 2020 && edge.voiceActors.length);
-			if (found) {
-				return found.voiceActors[0].name.full;
-			}
-			if (this.va.media.edges.length) {
-				if (this.va.media.edges[0].voiceActors.length) {
-					return this.va.media.edges[0].voiceActors[0].name.full;
+			return this.va.romanji || this.va.english;
+		},
+		year () {
+			return this.va.year;
+		},
+		anime () {
+			if (this.va && this.va.parent) {
+				if (this.va.parent.parent) {
+					return this.va.parent.parent.romanji || this.va.parent.parent.english;
 				}
 			}
-			return '';
+			return "";
+		},
+		format () {
+			return ''; // readableFormats[this.char.format];
 		},
 		coverURI () {
-			return this.va.image.large;
+			return this.va.image;
 		},
 		anilistLink () {
-			return this.va.siteUrl;
+			return 'https://anilist.co/character/' + this.va.anilistID;
 		},
 	},
 	methods: {

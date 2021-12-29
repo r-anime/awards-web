@@ -12,12 +12,13 @@
 
 // Finally, import the elements themselves
 // TODO: only import bulma components we actually use
-@import "~bulma/sass/base/all";
-@import "~bulma/sass/elements/all";
-@import "~bulma/sass/form/all";
-@import "~bulma/sass/components/all";
-@import "~bulma/sass/grid/all";
-@import "~bulma/sass/layout/all";
+@import "~bulma/sass/base/_all";
+@import "~bulma/sass/elements/_all";
+@import "~bulma/sass/form/_all";
+@import "~bulma/sass/components/_all";
+@import "~bulma/sass/grid/_all";
+@import "~bulma/sass/layout/_all";
+@import "~bulma/sass/helpers/_all";
 @import "../styles/results";
 
 </style>

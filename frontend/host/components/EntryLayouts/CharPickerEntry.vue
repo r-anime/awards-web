@@ -10,14 +10,12 @@
 				<div class="media-content">
 					<div class="content">
 						<p>
-							<em class="char-title">
+							<strong class="char-title">
 								{{name}}
-							</em>
+							</strong>
 							<br/>
-							{{anime}} 
+							{{anime}}
 							<br/>
-							{{role}}
-							&bull;
 							<a
 								@click.stop
 								target="_blank"
@@ -45,19 +43,26 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.char.name.full;
+			return this.char.romanji || this.char.english;
+		},
+		year () {
+			return this.char.year;
 		},
 		anime () {
-			return this.char.media.nodes[0].title.romaji || this.char.media.nodes[0].title.english;
+			if (this.char.parent) {
+				return this.char.parent.romanji || this.char.parent.english;
+			} else {
+				return "";
+			}
 		},
-		role () {
-			return this.char.media.edges[0].characterRole;
+		format () {
+			return ''; // readableFormats[this.char.format];
 		},
 		coverURI () {
-			return this.char.image.large;
+			return this.char.image;
 		},
 		anilistLink () {
-			return this.char.siteUrl;
+			return 'https://anilist.co/character/' + this.char.anilistID;
 		},
 	},
 	methods: {

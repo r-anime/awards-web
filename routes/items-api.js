@@ -46,7 +46,7 @@ apiApp.post('/add', async (request, response) => {
 		}));
 
 		Promise.all(promiseArr).then(async ()=>{
-			response.json(await Items.findAll());
+			response.empty();
 		});
 		/*
 		promise.then(async () => {
@@ -87,7 +87,18 @@ apiApp.post('/update', async (request, response) => {
 
 apiApp.get('/', async (request, response) => {
 	try {
-		response.json(await Items.findAll());
+		response.json(await Items.findAll({include: [
+			{
+				model: Items,
+				as: 'parent',
+				include: [
+					{
+						model: Items,
+						as: 'parent',
+					},
+				],
+			},
+		]}));
 	} catch (error) {
 		response.error(error);
 	}

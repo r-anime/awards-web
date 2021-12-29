@@ -132,11 +132,13 @@ export default {
 		]),
 		filteredItems(){
 			if (this.search == ""){
-				return this.items;
+				return  this.items.filter((item) => {
+					return item.type == 'anime';
+				});
 			}
 			const _filter = this.search.toLowerCase();
 			return this.items.filter((item) => {
-				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
+				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter)) && item.type == 'anime';
 			});
 		},
 		showIds () {
@@ -228,7 +230,6 @@ export default {
 		},
 	},
 	async mounted () {
-		const promiseArray = [];
 		await this.getItems();
 		for (const show of this.showIds){
 			let item;

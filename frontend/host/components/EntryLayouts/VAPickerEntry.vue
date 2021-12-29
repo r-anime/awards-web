@@ -44,24 +44,34 @@ export default {
 	},
 	computed: {
 		name () {
-			return this.va.name.full;
-		},
-		anime () {
-			return this.va.media.nodes[0].title.romaji;
+			if (this.va && this.va.parent) {
+				return this.va.parent.romanji || this.va.parent.english;
+			} else {
+				return "";
+			}
 		},
 		voiceActor () {
-			if (this.va.media.edges.length) {
-				if (this.va.media.edges[0].voiceActors.length) {
-					return this.va.media.edges[0].voiceActors[0].name.full;
+			return this.va.romanji || this.va.english;
+		},
+		year () {
+			return this.va.year;
+		},
+		anime () {
+			if (this.va && this.va.parent) {
+				if (this.va.parent.parent) {
+					return this.va.parent.parent.romanji || this.va.parent.parent.english;
 				}
 			}
-			return '';
+			return "";
+		},
+		format () {
+			return ''; // readableFormats[this.char.format];
 		},
 		coverURI () {
-			return this.va.image.large;
+			return this.va.image;
 		},
 		anilistLink () {
-			return this.va.siteUrl;
+			return 'https://anilist.co/character/' + this.va.anilistID;
 		},
 	},
 	methods: {

@@ -39,6 +39,7 @@ const store = new Vuex.Store({
 		votingCats: null,
 		selections: null,
 		entries: null,
+		items: [],
 		locks: null,
 	},
 	getters: {
@@ -67,6 +68,9 @@ const store = new Vuex.Store({
 		},
 		GET_LOCKS (state, locks) {
 			state.locks = locks;
+		},
+		SET_ITEMS (state, items) {
+			state.items = items;
 		},
 	},
 	actions: {
@@ -156,72 +160,7 @@ const store = new Vuex.Store({
 						allIDs.shows = allIDs.shows.concat(themeObject.ed.map(theme => theme.anilistID));
 					}
 				}
-				// The final yeet
-				let showData = [];
-				let charData = [];
-				const showPromise = new Promise(async (resolve, reject) => {
-					try {
-						if (allIDs.shows.length) {
-							const promiseArray = [];
-							let page = 1;
-							const someData = await util.paginatedQuery(queries.showQuerySmall, allIDs.shows, page);
-							showData = [...showData, ...someData.data.Page.results];
-							const lastPage = someData.data.Page.pageInfo.lastPage;
-							page = 2;
-							while (page <= lastPage) {
-							// eslint-disable-next-line no-loop-func
-								promiseArray.push(new Promise(async (resolve2, reject2) => {
-									try {
-										const returnData = await util.paginatedQuery(queries.showQuerySmall, allIDs.shows, page);
-										resolve2(returnData.data.Page.results);
-									} catch (error) {
-										reject2(error);
-									}
-								}));
-								page++;
-							}
-							Promise.all(promiseArray).then(finalData => {
-								for (const data of finalData) {
-									showData = [...showData, ...data];
-								}
-								resolve();
-							});
-						}
-					} catch (error) {
-						reject(error);
-					}
-				});
-				const charPromise = new Promise(async (resolve, reject) => {
-					try {
-						const promiseArray = [];
-						let page = 1;
-						const someData = await util.paginatedQuery(queries.charQuerySmall, allIDs.chars, page);
-						charData = [...charData, ...someData.data.Page.results];
-						const lastPage = someData.data.Page.pageInfo.lastPage;
-						page = 2;
-						while (page <= lastPage) {
-							// eslint-disable-next-line no-loop-func
-							promiseArray.push(new Promise(async (resolve2, reject2) => {
-								try {
-									const returnData = await util.paginatedQuery(queries.charQuerySmall, allIDs.chars, page);
-									resolve2(returnData.data.Page.results);
-								} catch (error) {
-									reject2(error);
-								}
-							}));
-							page++;
-						}
-						Promise.all(promiseArray).then(finalData => {
-							for (const data of finalData) {
-								charData = [...charData, ...data];
-							}
-							resolve();
-						});
-					} catch (error) {
-						reject(error);
-					}
-				});
-				await Promise.all([showPromise, charPromise]);
+				const items = await makeRequest(`/api/items/`, 'GET');
 				const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
 				const edCat = state.categories.find(cat => cat.name.includes('ED'));
 				for (const theme of themeObject.op) {
@@ -236,9 +175,9 @@ const store = new Vuex.Store({
 					const category = state.categories.find(cat => cat.id === vote.category_id); // find category associated with vote
 					if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
 						if (category.entryType === 'shows') {
-							selections[category.id].push(showData.find(show => show.id === vote.entry_id)); // just push stuff into objects
+							selections[category.id].push(items.find(show => show.id === vote.entry_id)); // just push stuff into objects
 						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-							selections[category.id].push(charData.find(char => char.id === vote.entry_id));
+							selections[category.id].push(items.find(char => char.id === vote.entry_id));
 						}
 					}
 				}
@@ -248,6 +187,10 @@ const store = new Vuex.Store({
 		async getEntries ({commit}) {
 			const entries = await makeRequest('/api/category/entries/vote');
 			commit('GET_ENTRIES', entries);
+		},
+		async getItems ({commit}){
+			const items = await makeRequest(`/api/items/`, 'GET');
+			commit('SET_ITEMS', items);
 		},
 	},
 });
