@@ -185,7 +185,14 @@ const store = new Vuex.Store({
 			state.items = items;
 		},
 		ADD_ITEMS (state, items) {
-			state.items.push(items);
+			// console.log(items);
+			state.items.push(...items);
+		},
+		DELETE_ITEMS (state, items) {
+			// console.log(state.items);
+			const delIndex = state.items.findIndex(i => i.id == items);
+			// console.log(delIndex);
+			state.items.splice(delIndex, 1);
 		},
 	},
 	actions: {
@@ -387,8 +394,9 @@ const store = new Vuex.Store({
 			commit('SET_ITEMS', items);
 		},
 		async deleteItem ({commit}, data ) {
-			const items = await makeRequest(`/api/items/delete`, 'DELETE', data);
-			commit('SET_ITEMS', items);
+			// console.log(data);
+			await makeRequest(`/api/items/delete`, 'DELETE', data);
+			commit('DELETE_ITEMS', data);
 		},
 		async clearItemImports ({commit}) {
 			const items = await makeRequest(`/api/items/delete/imported`, 'DELETE');
