@@ -14,6 +14,7 @@
 		:disabled="submitting" @click="openModal">Add Manual Entry</button>
 	</div>
 	<div v-if="charimporting || animeimporting">
+		<h3>{{progCurrValue}}/{{progMaxValue}}</h3>
 		<progress class="progress is-primary" :value="progCurrValue" :max="progMaxValue">{{progCurrValue}}/{{progMaxValue}}</progress>
 		<br/>
 	</div>
