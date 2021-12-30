@@ -7,9 +7,11 @@
 		<button class="button is-danger" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="submitClearImports">Clear Imported Shows</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
-		:disabled="submitting" @click="submitImportCharacters">Import Characters / VAs</button>
+		:disabled="submitting" @click="submitImportCharacters">Import Chars / VAs</button>
+		<button class="button is-danger" :class="{'is-loading' : submitting}"
+		:disabled="submitting" @click="submitClearImportsChar">Clear Imported Char / VAs</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
-		:disabled="true">Update Entries via AniList</button>
+		:disabled="true">Update via AniList</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="openModal">Add Manual Entry</button>
 	</div>
@@ -226,6 +228,7 @@ export default {
 			'updateItem',
 			'deleteItem',
 			'clearItemImports',
+			'clearItemImportsChar',
 			'setItemParents'
 		]),
 		async submitDeleteItem(event, deleting = -1){
@@ -334,6 +337,11 @@ export default {
 		async submitClearImports () {
 			this.submitting = true;
 			await this.clearItemImports();
+			this.submitting = false;			
+		},
+		async submitClearImportsChar () {
+			this.submitting = true;
+			await this.clearItemImportsChar();
 			this.submitting = false;			
 		},
 		async submitSetItemParents () {

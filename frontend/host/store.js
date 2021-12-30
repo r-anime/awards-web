@@ -410,6 +410,10 @@ const store = new Vuex.Store({
 			const items = await makeRequest(`/api/items/delete/imported`, 'DELETE');
 			store.dispatch('getItems');
 		},
+		async clearItemImportsChar ({commit}) {
+			const items = await makeRequest(`/api/items/delete/imported/char`, 'DELETE');
+			store.dispatch('getItems');
+		},
 		async setItemParents ({commit}, data) {
 			const items = await makeRequest(`/api/items/update/parents`, 'POST', data);
 			store.dispatch('getItems');

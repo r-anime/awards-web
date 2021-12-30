@@ -130,6 +130,26 @@ apiApp.get('/page/:page', async (request, response) => {
 	}
 });
 
+apiApp.delete('/delete/imported/char', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an host to delete items'});
+	}
+	try {
+		await Items.destroy({where: {
+			anilistID: {
+				[Op.ne]: -1,
+			},
+			type: {
+				[Op.or]: ['va', 'char'],
+			}
+		}});
+		response.json(await Items.findAll());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.delete('/delete/imported', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
