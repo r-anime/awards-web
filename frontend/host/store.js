@@ -382,7 +382,15 @@ const store = new Vuex.Store({
 			commit('GET_FINAL_VOTES', finalVotes);
 		},
 		async getItems ({commit}){
-			const items = await makeRequest(`/api/items/`, 'GET');
+			const req = await makeRequest(`/api/items/page/0`, 'GET');
+			let page = 0;
+			const items = [...req.rows];
+			while (page < Math.floor(req.count/100)){
+				page += 1;
+				await new Promise(resolve => setTimeout(resolve, 100));
+				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
+				items.push(...reqp.rows);
+			}
 			commit('SET_ITEMS', items);
 		},
 		async addItems ({commit}, data) {
@@ -390,8 +398,8 @@ const store = new Vuex.Store({
 			commit('ADD_ITEMS', data);
 		},
 		async updateItem ({commit}, data) {
-			const items = await makeRequest(`/api/items/update`, 'POST', data);
-			commit('SET_ITEMS', items);
+			await makeRequest(`/api/items/update`, 'POST', data);
+			store.dispatch('getItems');
 		},
 		async deleteItem ({commit}, data ) {
 			// console.log(data);
@@ -400,11 +408,11 @@ const store = new Vuex.Store({
 		},
 		async clearItemImports ({commit}) {
 			const items = await makeRequest(`/api/items/delete/imported`, 'DELETE');
-			commit('SET_ITEMS', items);
+			store.dispatch('getItems');
 		},
 		async setItemParents ({commit}, data) {
 			const items = await makeRequest(`/api/items/update/parents`, 'POST', data);
-			commit('SET_ITEMS', items);
+			store.dispatch('getItems');
 		},
 	},
 });

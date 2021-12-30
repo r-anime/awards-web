@@ -189,7 +189,15 @@ const store = new Vuex.Store({
 			commit('GET_ENTRIES', entries);
 		},
 		async getItems ({commit}){
-			const items = await makeRequest(`/api/items/`, 'GET');
+			const req = await makeRequest(`/api/items/page/0`, 'GET');
+			let page = 0;
+			const items = [...req.rows];
+			while (page < Math.floor(req.count/100)){
+				page += 1;
+				await new Promise(resolve => setTimeout(resolve, 100));
+				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
+				items.push(...reqp.rows);
+			}
 			commit('SET_ITEMS', items);
 		},
 	},

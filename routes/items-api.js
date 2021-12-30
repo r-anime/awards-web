@@ -106,6 +106,30 @@ apiApp.get('/', async (request, response) => {
 	}
 });
 
+apiApp.get('/page/:page', async (request, response) => {
+	try {
+		const page = request.params.page;
+		const offset = 100*page;
+		
+		response.json(await Items.findAndCountAll({
+			include: [{
+				model: Items,
+				as: 'parent',
+				include: [
+					{
+						model: Items,
+						as: 'parent',
+					},
+				],
+			},],
+			offset: offset,
+			limit: 100,
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.delete('/delete/imported', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
