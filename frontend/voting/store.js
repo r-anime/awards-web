@@ -184,11 +184,13 @@ const store = new Vuex.Store({
 				}
 				for (const vote of votes) {
 					const category = state.categories.find(cat => cat.id === vote.category_id); // find category associated with vote
-					if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
-						if (category.entryType === 'shows') {
-							selections[category.id].push(items.find(show => show.id === vote.entry_id)); // just push stuff into objects
-						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-							selections[category.id].push(items.find(char => char.id === vote.entry_id));
+					if (category){
+						if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
+							if (category.entryType === 'shows') {
+								selections[category.id].push(items.find(show => show.id === vote.entry_id)); // just push stuff into objects
+							} else if (category.entryType === 'characters' || category.entryType === 'vas') {
+								selections[category.id].push(items.find(char => char.id === vote.entry_id));
+							}
 						}
 					}
 				}
