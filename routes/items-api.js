@@ -109,7 +109,7 @@ apiApp.get('/', async (request, response) => {
 apiApp.get('/page/:page', async (request, response) => {
 	try {
 		const page = request.params.page;
-		const offset = 100*page;
+		const offset = 1000*page;
 		
 		response.json(await Items.findAndCountAll({
 			include: [{
@@ -123,7 +123,7 @@ apiApp.get('/page/:page', async (request, response) => {
 				],
 			},],
 			offset: offset,
-			limit: 100,
+			limit: 1000,
 		}));
 	} catch (error) {
 		response.error(error);
