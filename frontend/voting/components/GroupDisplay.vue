@@ -88,6 +88,7 @@ export default {
 		ThemePicker,
 		VAPicker,
 		ShowPicker,
+		OSTPicker,
 		Selection,
 	},
 	props: ['group'],

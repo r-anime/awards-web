@@ -387,7 +387,7 @@ const store = new Vuex.Store({
 			const items = [...req.rows];
 			while (page < Math.floor(req.count/1000)){
 				page += 1;
-				await new Promise(resolve => setTimeout(resolve, 1000));
+				await new Promise(resolve => setTimeout(resolve, 50));
 				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
 				items.push(...reqp.rows);
 			}

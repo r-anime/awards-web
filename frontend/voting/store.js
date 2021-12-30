@@ -160,15 +160,24 @@ const store = new Vuex.Store({
 						allIDs.shows = allIDs.shows.concat(themeObject.ed.map(theme => theme.anilistID));
 					}
 				}
-				const items = await makeRequest(`/api/items/`, 'GET');
+				const req = await makeRequest(`/api/items/page/0`, 'GET');
+				let page = 0;
+				const items = [...req.rows];
+				while (page < Math.floor(req.count/1000)){
+					page += 1;
+					await new Promise(resolve => setTimeout(resolve, 50));
+					const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
+					items.push(...reqp.rows);
+				}
+
 				const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
 				const edCat = state.categories.find(cat => cat.name.includes('ED'));
 				for (const theme of themeObject.op) {
-					const foundTheme = showData.find(show => show.id === theme.anilistID); // search for show info associated with theme
+					const foundTheme = items.find(show => show.anilistID === theme.anilistID); // search for show info associated with theme
 					selections[opCat.id].push({...foundTheme, ...theme}); // SQUASH them together and push into selections
 				}
 				for (const theme of themeObject.ed) { // repeat
-					const foundTheme = showData.find(show => show.id === theme.anilistID);
+					const foundTheme = items.find(show => show.anilistID === theme.anilistID);
 					selections[edCat.id].push({...foundTheme, ...theme});
 				}
 				for (const vote of votes) {
@@ -194,7 +203,7 @@ const store = new Vuex.Store({
 			const items = [...req.rows];
 			while (page < Math.floor(req.count/1000)){
 				page += 1;
-				await new Promise(resolve => setTimeout(resolve, 1000));
+				await new Promise(resolve => setTimeout(resolve, 50));
 				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
 				items.push(...reqp.rows);
 			}
