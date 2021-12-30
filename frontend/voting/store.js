@@ -137,17 +137,19 @@ const store = new Vuex.Store({
 					await dispatch('getThemes');
 				}
 				for (const vote of votes) {
-					const category = state.categories.find(cat => cat.id === vote.category_id); // retrieve category associated with the vote
-					if (category.entryType === 'shows') {
-						// All of these are pushing anilist IDs into a bunch of arrays for querying
-						allIDs.shows.push(vote.entry_id);
-					} else if (vote.theme_name) {
-						// Theme category so we're gonna push the whole theme and SQUASH this shit later
-						const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
-						themeObject[theme.themeType].push(theme);
-					} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-						// All of these are pushing anilist IDs into a bunch of arrays for querying
-						allIDs.chars.push(vote.entry_id);
+					const category = state.categories.find(cat => cat.id === vote.category_id);
+					if (category){ // retrieve category associated with the vote
+						if (category.entryType === 'shows') {
+							// All of these are pushing anilist IDs into a bunch of arrays for querying
+							allIDs.shows.push(vote.entry_id);
+						} else if (vote.theme_name) {
+							// Theme category so we're gonna push the whole theme and SQUASH this shit later
+							const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
+							themeObject[theme.themeType].push(theme);
+						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
+							// All of these are pushing anilist IDs into a bunch of arrays for querying
+							allIDs.chars.push(vote.entry_id);
+						}
 					}
 				}
 				// Check if user actually voted for any OPs/EDs
