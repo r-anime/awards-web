@@ -90,10 +90,10 @@ export default {
 			const _this = this;
 			if (this.entries && this.entries.length > 0){
 				return this.items.filter(item => {
-					return _this.entries.some(e => ((e.search == 'internal' && e.anilist_id == item.id) || (e.search != 'internal' && e.anilist_id == item.anilistID)) && item.type == 'ost');
+					return _this.entries.some(e => ((e.search == 'internal' && e.anilist_id == item.id) || (e.search != 'internal' && e.anilist_id == item.anilistID)) && (item.type == 'ost'  || item.type =='anime'));
 				})
 			} else {
-				return this.items.filter (item => item.type == 'ost');
+				return this.items.filter (item => item.type == 'ost' || item.type =='anime');
 			}
 		},
 		filteredShows () {
