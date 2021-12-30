@@ -19,7 +19,7 @@
 		<br/>
 	</div>
 	<div class="field has-addons">
-		<div class="control">
+		<div class="control is-expanded">
 			<input class="input" type="text" v-model="bulkIDs">
 		</div>
 		<div class="control">
@@ -27,7 +27,7 @@
 			:disabled="submitting" @click="submitBulkImport">Bulk Import</button>
 		</div>
 	</div>
-	<div class="field has-addons">
+	<div class="field is-horizontal has-addons">
 		<div class="control">
 			<input class="input" type="text" v-model="mergeForm.old" placeholder="Old">
 		</div>
@@ -39,6 +39,8 @@
 			:disabled="submitting" @click="submitSetItemParents">Merge Characters</button>
 		</div>
 	</div>
+	<p class="help">This will change every Character / VA that points at the first parent and point it at the second parent. Put the deleted/merged show in the first box and the main show in the second.</p>
+	<br/>
 	<h2 class="title">
 		Items
 	</h2>
