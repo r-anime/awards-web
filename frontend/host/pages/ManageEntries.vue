@@ -18,13 +18,26 @@
 		<progress class="progress is-primary" :value="progCurrValue" :max="progMaxValue">{{progCurrValue}}/{{progMaxValue}}</progress>
 		<br/>
 	</div>
-	<div class="field">
+	<div class="field has-addons">
 		<div class="control">
 			<input class="input" type="text" v-model="bulkIDs">
 		</div>
-		<br/>
-		<button class="button is-primary" :class="{'is-loading' : submitting}"
-		:disabled="submitting" @click="submitBulkImport">Bulk Import</button>
+		<div class="control">
+			<button class="button is-primary" :class="{'is-loading' : submitting}"
+			:disabled="submitting" @click="submitBulkImport">Bulk Import</button>
+		</div>
+	</div>
+	<div class="field has-addons">
+		<div class="control">
+			<input class="input" type="text" v-model="mergeForm.old" placeholder="Old">
+		</div>
+		<div class="control">
+			<input class="input" type="text" v-model="mergeForm.new" placeholder="New">
+		</div>
+		<div class="control">
+			<button class="button is-primary" :class="{'is-loading' : submitting}"
+			:disabled="submitting" @click="submitSetItemParents">Merge Characters</button>
+		</div>
 	</div>
 	<h2 class="title">
 		Items
@@ -43,7 +56,7 @@
 			<th>JP</th>
 			<th></th>
 		</tr>
-		<tr class="is-clickable" v-for="item in filteredItems" :key="item.id" @click="openModal($event, item.id)">
+		<tr class="is-clickable" v-for="(item, index) in filteredItems" :key="index" @click="openModal($event, item.id)">
 			<td>{{item.anilistID}}</td>
 			<td>{{item.english}}</td>
 			<td>{{item.romanji}}</td>
@@ -79,9 +92,25 @@
 		</div>
 		<div class="field">
 			<div class="field">
+				<label class="label">Alt Names</label>
+				<div class="control">
+					<input class="input" type="text" v-model="form.names">
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="field">
 				<label class="label">Year</label>
 				<div class="control">
 					<input class="input" type="number" v-model="form.year">
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="field">
+				<label class="label">Parent</label>
+				<div class="control">
+					<input class="input" type="number" v-model="form.parent">
 				</div>
 			</div>
 		</div>
@@ -102,6 +131,7 @@
 							<option value="anime">Anime</option>
 							<option value="char">Character</option>
 							<option value="va">Voice Actor</option>
+							<option value="ost">OST Only</option>
 						</select>
 					</div>
 				</div>
@@ -139,13 +169,19 @@ export default {
 			progMaxValue: 0,
 			bulkIDs: "",
 			filter: "",
+			mergeForm: {
+				old: 0,
+				new: 0,
+			},
 			form: {
 				anilistID: -1,
 				english: "",
 				romanji: "",
+				names: "",
 				year: 2021,
 				image: "",
-				type: "anime"
+				type: "anime",
+				parent: 0,
 			},
 			pulledEntries: new Array(),
 		};
@@ -155,13 +191,16 @@ export default {
 			'items',
 		]),
 		filteredItems(){
+			let items = [];
 			if (this.filter == ""){
-				return this.items;
+				items = this.items;
+			} else {
+				const _filter = this.filter.toLowerCase();
+				items = this.items.filter((item) => {
+					return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
+				});
 			}
-			const _filter = this.filter.toLowerCase();
-			return this.items.filter((item) => {
-				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
-			});
+			return items.slice(0, 50);
 		},
 		animeItems(){
 			return this.items.filter(item => item.type === 'anime');
@@ -185,6 +224,7 @@ export default {
 			'updateItem',
 			'deleteItem',
 			'clearItemImports',
+			'setItemParents'
 		]),
 		async submitDeleteItem(event, deleting = -1){
 			this.submitting = true;
@@ -211,6 +251,8 @@ export default {
 					this.form.year = formItem.year;
 					this.form.image = formItem.image;
 					this.form.type = formItem.type;
+					this.form.parent = formItem.parentID;
+					this.form.names = formItem.names;
 				}
 			} else {
 				this.form.anilistID = -1;
@@ -219,6 +261,8 @@ export default {
 				this.form.year = 2021;
 				this.form.image = "";
 				this.form.type = "anime";
+				this.form.parent = "";
+				this.form.names = "";
 			}
 		},
 		async submitUpdateItem () {
@@ -234,7 +278,9 @@ export default {
 						romanji: this.form.romanji,
 						year: this.form.year,
 						image:  this.form.image,
-						type: this.form.type
+						type: this.form.type,
+						parentID: this.form.parent,
+						names: this.form.names,
 					}
 				];
 				await this.addItems(itemForAdding);
@@ -250,7 +296,9 @@ export default {
 					romanji: this.form.romanji,
 					year: this.form.year,
 					image:  this.form.image,
-					type: this.form.type
+					type: this.form.type,
+					parentID: this.form.parent,
+					names: this.form.names
 				};
 				await this.updateItem(itemForUpdate);
 			}
@@ -285,6 +333,11 @@ export default {
 			this.submitting = true;
 			await this.clearItemImports();
 			this.submitting = false;			
+		},
+		async submitSetItemParents () {
+			this.submitting = true;
+			await this.setItemParents(this.mergeForm);
+			this.submitting = false;		
 		},
 		async importAnimeByIDs(page){
 			var url = 'https://graphql.anilist.co',

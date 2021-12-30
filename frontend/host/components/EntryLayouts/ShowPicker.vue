@@ -131,15 +131,18 @@ export default {
 			'items',
 		]),
 		filteredItems(){
+			let items = [];
 			if (this.search == ""){
-				return  this.items.filter((item) => {
+				items = this.items.filter((item) => {
 					return item.type == 'anime';
 				});
+			} else {
+				const _filter = this.search.toLowerCase();
+				items = this.items.filter((item) => {
+					return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter)) && item.type == 'anime';
+				});
 			}
-			const _filter = this.search.toLowerCase();
-			return this.items.filter((item) => {
-				return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter)) && item.type == 'anime';
-			});
+			return items.slice(0, 50);
 		},
 		showIds () {
 			return this.value.map(show =>

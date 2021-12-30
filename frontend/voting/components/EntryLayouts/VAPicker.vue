@@ -96,20 +96,24 @@ export default {
 			}
 		},
 		filteredShows () {
+			let items = [];
 			if (this.search == ""){
-				return this.categoryItems;
+				items = this.categoryItems;
 			}
-			const _filter = this.search.toLowerCase();
-			return this.categoryItems.filter((item) => {
-				let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter));
-				if (item.parent) {
-					filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter));
-					if (item.parent.parent) {
-						filter = filter || (String(item.parent.parent.english).toLowerCase().includes(_filter) || String(item.parent.parent.romanji).toLowerCase().includes(_filter));
+			else {
+				const _filter = this.search.toLowerCase();
+				items = this.categoryItems.filter((item) => {
+					let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter));
+					if (item.parent) {
+						filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter));
+						if (item.parent.parent) {
+							filter = filter || (String(item.parent.parent.english).toLowerCase().includes(_filter) || String(item.parent.parent.romanji).toLowerCase().includes(_filter));
+						}
 					}
-				}
-				return filter;
-			});
+					return filter;
+				});
+			}
+			return items.slice(0, 50);
 		}
 	},
 	methods: {

@@ -131,23 +131,23 @@ export default {
 			'items',
 		]),
 		filteredItems(){
-			if (this.search.length < 3){
-				return [];
-				/*
-				return  this.items.filter((item) => {
+			let items = this.items;
+			if (this.search == ""){
+				items = this.items.filter((item) => {
 					return item.type == 'char';
 				});
-				*/
+			} else {
+				const _filter = this.search.toLowerCase();
+				items = this.items.filter((item) => {
+					let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter));
+					if (item.parent) {
+						filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter));
+					}
+					filter = filter && item.type == 'char';
+					return filter;
+				});
 			}
-			const _filter = this.search.toLowerCase();
-			return this.items.filter((item) => {
-				let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter));
-				if (item.parent) {
-					filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter));
-				}
-				filter = filter && item.type == 'char';
-				return filter;
-			});
+			return items.slice(0, 50);
 		},
 		showIds () {
 			return this.value.map(show =>

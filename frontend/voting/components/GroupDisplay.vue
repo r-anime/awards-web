@@ -34,6 +34,7 @@
 						</div>
 						<div class="column is-10-widescreen is-12">
 							<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
+							<OSTPicker v-else-if="selectedCategory.name.includes('OST')" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 							<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 							<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 							<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
@@ -75,6 +76,7 @@ import CharPicker from './EntryLayouts/CharPicker';
 import ThemePicker from './EntryLayouts/ThemePicker';
 import VAPicker from './EntryLayouts/VAPicker';
 import ShowPicker from './EntryLayouts/ShowPicker';
+import OSTPicker from './EntryLayouts/OSTPicker';
 import Selection from './Selection';
 
 import snoo from '../../../img/bannerSnooJump.png';

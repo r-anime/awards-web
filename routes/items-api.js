@@ -22,18 +22,6 @@ apiApp.post('/add', async (request, response) => {
 	}
 	try {
 		const promiseArr = new Array();
-		/*for (const item of items){
-			promiseArr.push(new Promise(async (resolve, reject) => {
-				try {
-					await Items.create(item);
-					console.log(item.anilistID);
-					resolve();
-				} catch (error) {
-					// response.error(error);
-					reject(error);
-				}
-			}));
-		}*/
 
 		promiseArr.push(new Promise(async (resolve, reject) => {
 			try {
@@ -48,18 +36,31 @@ apiApp.post('/add', async (request, response) => {
 		Promise.all(promiseArr).then(async ()=>{
 			response.empty();
 		});
-		/*
-		promise.then(async () => {
-			yuuko.createMessage(config.discord.auditChannel, {
-				embed: {
-					title: 'Themes imported',
-					description: `Themes were imported by **${auth}**.`,
-					color: 8302335,
-				},
-			});
-			response.json(await Themes.findAll());
-		}, error => response.error(error));
-		*/
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+
+apiApp.post('/update/parents', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an host to modify items'});
+	}
+
+	let data;
+	try {
+		data = await request.json();
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		if (data.old && data.new){
+			await Items.update({parentID: data.new}, {where: {parentID: data.old}});
+			response.json(await Items.findAll());
+		} else {
+			response.error("Invalid Fields.");
+		}
 	} catch (error) {
 		response.error(error);
 	}
@@ -84,6 +85,7 @@ apiApp.post('/update', async (request, response) => {
 		response.error(error);
 	}
 });
+
 
 apiApp.get('/', async (request, response) => {
 	try {
