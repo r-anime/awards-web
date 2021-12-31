@@ -102,6 +102,7 @@ export default {
 				if (i.parent){
 					if (i.parent.parent){
 						r = r && i.parent.parent.type == 'anime';
+						r = r && !(String(i.parent.parent.mediatype) == 'MOVIE' || String(i.parent.parent.mediatype) == 'ONA' || String(i.parent.parent.mediatype) == 'MUSIC');
 					}
 					r = r && i.parent.type == 'char';
 				}
@@ -126,7 +127,7 @@ export default {
 					return filter;
 				});
 			}
-			return items.slice(0, 20);
+			return items.slice(0, 200);
 		}
 	},
 	methods: {
