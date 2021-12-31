@@ -87,13 +87,26 @@ export default {
 		},
 		categoryItems () {
 			const _this = this;
+			let items = [];
+
 			if (this.entries && this.entries.length > 0){
-				return this.items.filter(item => {
+				items = this.items.filter(item => {
 					return _this.entries.some(e => ((e.search == 'internal' && e.anilist_id == item.id) || (e.search != 'internal' && e.anilist_id == item.anilistID)) && item.type == 'va');
 				})
 			} else {
-				return this.items.filter (item => item.type == 'va');
+				items = this.items.filter (item => item.type == 'va');
 			}
+
+			return items.filter(i => {
+				let r = true;
+				if (i.parent){
+					if (i.parent.parent){
+						r = r && i.parent.parent.type == 'anime';
+					}
+					r = r && i.parent.type == 'char';
+				}
+				return r;
+			});
 		},
 		filteredShows () {
 			let items = [];
@@ -193,7 +206,9 @@ export default {
 		},
 	},
 	async mounted () {
-		await this.getItems();
+		if (!this.items || this.items.length == 0){
+			await this.getItems();
+		}
 		this.loaded = true;
 	},
 };

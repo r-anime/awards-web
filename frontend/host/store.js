@@ -313,6 +313,10 @@ const store = new Vuex.Store({
 			const data = await makeRequest(`/api/category/${id}/entries`, 'POST', entries);
 			commit('UPDATE_ENTRIES', data);
 		},
+		async copyEntries ({commit}, {id, copyid}) {
+			const data = await makeRequest(`/api/category/${id}/entries/copy/${copyid}`, 'POST');
+			commit('UPDATE_ENTRIES', data);
+		},
 		async getLocks ({commit}) {
 			const locks = await makeRequest('/api/locks/all');
 			commit('UPDATE_LOCKS', locks);

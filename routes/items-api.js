@@ -125,18 +125,23 @@ apiApp.post('/update/bulk', async (request, response) => {
 
 apiApp.get('/', async (request, response) => {
 	try {
-		response.json(await Items.findAll({include: [
-			{
+		response.json(await Items.findAll({include: [{
 				model: Items,
 				as: 'parent',
+				where: {
+					type: 'anime',
+				},
 				include: [
 					{
 						model: Items,
 						as: 'parent',
+						where: {
+							type: 'char',
+						},
 					},
 				],
-			},
-		]}));
+			},],
+		}));
 	} catch (error) {
 		response.error(error);
 	}

@@ -203,6 +203,63 @@ apiApp.get('/entries/vote', async (request, response) => {
 	}
 });
 
+apiApp.post('/:id/entries/copy/:copyid', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be a host to modify entries'});
+	}
+	
+	const ogEntries = await Entries.findAll({
+		where: {
+			categoryId: request.params.copyid,
+		},
+	});
+
+	let promiseArr = [];
+
+	const t = await sequelize.transaction();
+	try {
+		for (const entry of ogEntries) {
+			promiseArr.push(new Promise(async (resolve, reject) => {
+				try {
+					await Entries.create({
+						anilist_id: entry.anilist_id,
+						character_id: entry.character_id,
+						themeId: entry.themeId,
+						categoryId: request.params.id,
+						search: entry.search ? entry.search : null,
+					},
+					{
+						transaction: t,
+					});
+					resolve();
+				} catch (error) {
+					response.error(error);
+					reject(error);
+				}
+			}));
+		}
+
+		Promise.all(promiseArr).then(async () => {
+			await t.commit();
+			const category = await Categories.findOne({where: {id: request.params.id}});
+			yuuko.createMessage(config.discord.auditChannel, {
+				embed: {
+					title: 'Entries Modified',
+					description: `Entries of a category called **${category.name}** were modified by **${auth}**.`,
+					color: 8302335,
+				},
+			});
+			response.json(await Entries.findAll({
+				attributes: ['id', 'anilist_id', 'character_id', 'themeId', 'categoryId', 'search'],
+			}));
+		}, error => response.error(error));
+		
+	} catch (error) {
+		response.error(error);
+	}
+});
+
 apiApp.post('/:id/entries', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
@@ -292,6 +349,7 @@ apiApp.post('/:id/entries', async (request, response) => {
 		response.error(error);
 	}
 });
+
 
 apiApp.get('/:id/nominations', async (request, response) => {
 	try {

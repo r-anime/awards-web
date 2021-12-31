@@ -111,6 +111,7 @@ export default {
 			'categories',
 			'me',
 			'locks',
+			'items',
 		]),
 		...mapGetters(['accountOldEnough']),
 		groupName () {
@@ -159,6 +160,7 @@ export default {
 			'getCategories',
 			'getLocks',
 			'getMe',
+			'getItems',
 		]),
 		toggle () {
 			this.toggleSelection = !this.toggleSelection;
@@ -203,6 +205,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.locks ? Promise.resolve() : this.getLocks(),
 			this.me ? Promise.resolve() : this.getMe(),
+			(this.items || this.items.length > 0) ? Promise.resolve : this.getItems(),
 		]).then(() => {
 			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
 			if (voteLock.flag || this.me.level > voteLock.level) {
@@ -214,8 +217,8 @@ export default {
 				this.locked = true;
 			}
 			this.loaded = true;
-			console.log(this.loaded);
-			console.log(this.locked);
+			// console.log(this.loaded);
+			// console.log(this.locked);
 		});
 	},
 };

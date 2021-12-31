@@ -20,6 +20,23 @@
 			v-model="computedEntries"
 			:category="category"
 		/>
+		<div class="field">
+			<label class="label">Copy Entries:</label>
+			<div class="field has-addons">
+				
+				<div class="control is-extended">
+					<div class="select">
+						<select v-model="copyId">
+							<option v-for="(cat, index) in this.categories" :key="index" :value="cat.id">{{cat.name}}</option>
+						</select>
+					</div>
+				</div>
+				<div class="control">
+					<button class="button is-primary" :class="{'is-loading' : submitting}"
+					:disabled="submitting" @click="submitCopyEntries">Copy Entries</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -44,24 +61,42 @@ export default {
 		return {
 			computedEntries: null,
 			loaded: false,
+			submitting: false,
+			copyId: -1,
 		};
 	},
 	computed: {
 		...mapState([
 			'entries',
+			'categories'
 		]),
 	},
 	methods: {
 		...mapActions([
 			'getEntries',
+			'copyEntries',
+			'getCategories'
 		]),
+		async submitCopyEntries(){
+			this.submitting = true;
+			try {
+				await this.copyEntries({
+					id: this.category.id,
+					copyid: this.copyId,
+				});
+			} finally {
+				this.submitting = false;
+			}
+		}
 	},
 	async mounted () {
-		if (!this.entries) {
-			await this.getEntries();
-		}
-		this.computedEntries = this.entries.filter(entry => entry.categoryId === this.category.id);
-		this.loaded = true;
+		Promise.all([
+			this.entries ? Promise.resolve() : this.getEntries(),
+			this.categories ? Promise.resolve() : this.getCategories(),
+		]).then(() => {
+			this.computedEntries = this.entries.filter(entry => entry.categoryId === this.category.id);
+			this.loaded = true;
+		});
 	},
 };
 </script>

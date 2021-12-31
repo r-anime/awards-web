@@ -88,13 +88,17 @@ export default {
 		},
 		categoryItems () {
 			const _this = this;
+			let items = [];
+
 			if (this.entries && this.entries.length > 0){
-				return this.items.filter(item => {
+				items = this.items.filter(item => {
 					return _this.entries.some(e => ((e.search == 'internal' && e.anilist_id == item.id) || (e.search != 'internal' && e.anilist_id == item.anilistID)) && item.type == 'anime');
 				})
 			} else {
-				return this.items.filter (item => item.type == 'anime');
+				items = this.items.filter (item => item.type == 'anime');
 			}
+
+			return items;
 		},
 		filteredShows () {
 			let items = [];
@@ -188,7 +192,9 @@ export default {
 		},
 	},
 	async mounted () {
-		await this.getItems();
+		if (!this.items || this.items.length == 0){
+			await this.getItems();
+		}
 		this.loaded = true;
 	},
 };

@@ -188,7 +188,9 @@ export default {
 		},
 	},
 	async mounted () {
-		await this.getItems();
+		if (!this.items || this.items.length == 0){
+			await this.getItems();
+		}
 		this.loaded = true;
 	},
 };
