@@ -401,6 +401,10 @@ const store = new Vuex.Store({
 			await makeRequest(`/api/items/update`, 'POST', data);
 			store.dispatch('getItems');
 		},
+		async updateItems ({commit}, data) {
+			await makeRequest(`/api/items/update/bulk`, 'POST', data);
+			store.dispatch('getItems');
+		},
 		async deleteItem ({commit}, data ) {
 			// console.log(data);
 			await makeRequest(`/api/items/delete`, 'DELETE', data);

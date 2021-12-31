@@ -80,7 +80,43 @@ apiApp.post('/update', async (request, response) => {
 	}
 	try {
 		await Items.update(item, {where: {id: item.id}});
-		response.json(await Items.findAll());
+		response.empty();
+		// response.json(await Items.findAll());
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/update/bulk', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be an host to modify items'});
+	}
+
+	let items;
+	try {
+		items = await request.json();
+	} catch (error) {
+		response.error(error);
+	}
+	try {
+		const promiseArr = new Array();
+
+		for (const item of items){
+			promiseArr.push(new Promise(async (resolve, reject) => {
+				try {
+					// console.log(item.id);
+					await Items.update(item, {where: {id: item.id}});
+					resolve();
+				} catch (error) {
+					// response.error(error);
+					reject(error);
+				}
+			}));
+		}
+		Promise.all(promiseArr).then(async ()=>{
+			response.empty();
+		});
 	} catch (error) {
 		response.error(error);
 	}

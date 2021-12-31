@@ -309,6 +309,7 @@ const charQuerySimple = `query ($id: [Int], $page: Int, $perPage: Int) {
 const showQuerySmall = `query ($id: [Int], $page: Int, $perPage: Int) {
 	Page(page: $page, perPage: $perPage) {
 	  pageInfo {
+		currentPage
 		lastPage
 	  }
 	  results: media(type: ANIME, id_in: $id) {

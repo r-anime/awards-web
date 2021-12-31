@@ -11,7 +11,7 @@
 		<button class="button is-danger" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="submitClearImportsChar">Clear Imported Char / VAs</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
-		:disabled="true">Update via AniList</button>
+		:disabled="submitting" @click="submitAnilistUpdate">Update via AniList</button>
 		<button class="button is-primary" :class="{'is-loading' : submitting}"
 		:disabled="submitting" @click="openModal">Add Manual Entry</button>
 	</div>
@@ -104,6 +104,14 @@
 		</div>
 		<div class="field">
 			<div class="field">
+				<label class="label">Media Type</label>
+				<div class="control">
+					<input class="input" type="text" v-model="form.mediatype">
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="field">
 				<label class="label">Year</label>
 				<div class="control">
 					<input class="input" type="number" v-model="form.year">
@@ -185,6 +193,7 @@ export default {
 				year: 2021,
 				image: "",
 				type: "anime",
+				mediatype: "",
 				parent: 0,
 			},
 			pulledEntries: new Array(),
@@ -226,6 +235,7 @@ export default {
 			'getItems',
 			'addItems',
 			'updateItem',
+			'updateItems',
 			'deleteItem',
 			'clearItemImports',
 			'clearItemImportsChar',
@@ -256,8 +266,10 @@ export default {
 					this.form.year = formItem.year;
 					this.form.image = formItem.image;
 					this.form.type = formItem.type;
+					this.form.mediatype = formItem.mediatype;
 					this.form.parent = formItem.parentID;
 					this.form.names = formItem.names;
+					
 				}
 			} else {
 				this.form.anilistID = -1;
@@ -266,6 +278,7 @@ export default {
 				this.form.year = 2021;
 				this.form.image = "";
 				this.form.type = "anime";
+				this.form.mediatype = "";
 				this.form.parent = "";
 				this.form.names = "";
 			}
@@ -284,6 +297,7 @@ export default {
 						year: this.form.year,
 						image:  this.form.image,
 						type: this.form.type,
+						mediatype: this.form.mediatype,
 						parentID: this.form.parent,
 						names: this.form.names,
 					}
@@ -302,6 +316,7 @@ export default {
 					year: this.form.year,
 					image:  this.form.image,
 					type: this.form.type,
+					mediatype: this.form.mediatype,
 					parentID: this.form.parent,
 					names: this.form.names
 				};
@@ -348,6 +363,13 @@ export default {
 			this.submitting = true;
 			await this.setItemParents(this.mergeForm);
 			this.submitting = false;		
+		},
+		async submitAnilistUpdate () {
+			this.submitting = true;
+			this.animeimporting = true;
+			await this.updateAnimeByIDs(1);
+			this.submitting = false;
+			this.animeimporting = false;
 		},
 		async importAnimeByIDs(page){
 			var url = 'https://graphql.anilist.co',
@@ -548,7 +570,7 @@ export default {
 					variables: {
 						page: page,
 						perPage: 50,
-						id: this.bulkIDArray,
+						id: this.animeItemIDs,
 					},
 				})
 			};
@@ -564,25 +586,27 @@ export default {
 				// console.log(results);
 
 				for (const result of results.results){
-					if (this.items.filter(e => e.anilistID === result.id).length > 0) {
-						console.log("Skipped", result.id);
-					} else {
+					const _id = (_this.animeItems.find(i => (i.anilistID == result.id && i.type == 'anime'))).id;
+					if (_id){
 						this.pulledEntries.push({
+							id: _id,
 							anilistID: result.id,
 							english: result.title.english,
 							romanji: result.title.romaji,
 							year: 2021,
 							image: result.coverImage.large,
 							type: 'anime',
+							mediatype: result.format,
+							names: result.synonyms.join(' '),
 						});
 					}
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
 					await new Promise(resolve => setTimeout(resolve, 750));
-					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
+					await _this.updateAnimeByIDs(results.pageInfo.currentPage+1);
 				} else {
-					await this.addItems(this.pulledEntries);
-					this.submitting = false;
+					await this.updateItems(this.pulledEntries);
+					console.log(this.pulledEntries);
 					this.pulledEntries.splice(0);
 					this.progCurrValue = 0;
 					this.progMaxValue = 0;
