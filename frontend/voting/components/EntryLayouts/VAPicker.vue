@@ -116,17 +116,17 @@ export default {
 			else {
 				const _filter = this.search.toLowerCase();
 				items = this.categoryItems.filter((item) => {
-					let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter));
+					let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter)  || String(item.names).toLowerCase().includes(_filter));
 					if (item.parent) {
-						filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter));
+						filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter)  || String(item.parent.names).toLowerCase().includes(_filter));
 						if (item.parent.parent) {
-							filter = filter || (String(item.parent.parent.english).toLowerCase().includes(_filter) || String(item.parent.parent.romanji).toLowerCase().includes(_filter));
+							filter = filter || (String(item.parent.parent.english).toLowerCase().includes(_filter) || String(item.parent.parent.romanji).toLowerCase().includes(_filter)  || String(item.parent.parent.names).toLowerCase().includes(_filter));
 						}
 					}
 					return filter;
 				});
 			}
-			return items.slice(0, 50);
+			return items.slice(0, 20);
 		}
 	},
 	methods: {
