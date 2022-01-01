@@ -71,7 +71,7 @@ export default {
 			return this.va.image;
 		},
 		anilistLink () {
-			return 'https://anilist.co/character/' + this.va.anilistID;
+			return 'https://anilist.co/staff/' + this.va.anilistID;
 		},
 	},
 	methods: {
