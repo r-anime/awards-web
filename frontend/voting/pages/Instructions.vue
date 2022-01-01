@@ -12,7 +12,7 @@
 		<div class="container">
             <content class="content">
 				<h1 class="title is-1">Voting Instructions</h1>
-                <p>Welcome to the /r/anime Awards 2019 Nominations Website! Here you can vote for your favourite shows or characters in a variety of categories and help choose the nominations of the year. Simply click on the various category tabs and select your favourite entries to vote. Below are a few instructions to help you out with navigating the website. You can proceed to vote by clicking the below button:</p>
+                <p>Welcome to the /r/anime Awards 2021 Nominations Website! Here you can vote for your favourite shows or characters in a variety of categories and help choose the nominations of the year. Simply click on the various category tabs and select your favourite entries to vote. Below are a few instructions to help you out with navigating the website. You can proceed to vote by clicking the below button:</p>
 				<br/>
 				<div>
                 	<router-link to="/vote/main">
