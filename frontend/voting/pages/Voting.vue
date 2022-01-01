@@ -3,10 +3,7 @@
 		<nav-bar
 			class="is-dark"
 			:routes="[
-				{name: 'Main Awards', path: '/vote/main', props: {group: 'main'}},
-				{name: 'Genre Awards', path: '/vote/genre', props: {group: 'genre'}},
-				{name: 'Production Awards', path: '/vote/production', props: {group: 'production'}},
-				{name: 'Character Awards', path: '/vote/character', props: {group: 'character'}},
+				{name: 'Vote', path: '/vote', props: {group: 'main'}},
 			]"
 			fullwidth
 			vote

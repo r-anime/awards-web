@@ -376,7 +376,6 @@ export default {
 	padding: 0.375rem;
 }
 .show-picker-entry {
-	flex: 0 0 calc(100% / 3);
 	padding: 0.375rem;
 
 	> div {

@@ -1,18 +1,6 @@
 <template>
 	<div>
-		<div class="tabs is-boxed is-hidden-touch mb-0" style="margin-bottom: -1px;">
-			<ul>
-				<li
-					v-for="tab in tabs"
-					:key="tab.id"
-					:class="{'is-active': tab.id === selectedTab}"
-					@click="$emit('change', tab.id)"
-				>
-					<a>{{tab.name}}</a>
-				</li>
-			</ul>
-		</div>
-		<div class="mobile-select is-hidden-desktop">
+		<div class="mobile-select">
 			<div class="field has-addons has-addons-centered is-centered has-text-centered">
 				<div class="control">
 					<p class="button is-small is-platinum is-static"> Category </p>

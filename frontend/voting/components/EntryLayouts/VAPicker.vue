@@ -75,6 +75,7 @@ export default {
 	computed: {
 		...mapState([
 			'items',
+			'loadingprogress',
 		]),
 		showIDs () {
 			return this.entries.map(show => show.anilist_id);

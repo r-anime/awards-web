@@ -41,6 +41,10 @@ const store = new Vuex.Store({
 		entries: null,
 		items: [],
 		locks: null,
+		loadingprogress: {
+			curr: 0,
+			max: 0,
+		}
 	},
 	getters: {
 		accountOldEnough (state) {
@@ -72,6 +76,10 @@ const store = new Vuex.Store({
 		SET_ITEMS (state, items) {
 			state.items = items;
 		},
+		SET_LOADING (state, data) {
+			state.loadingprogress.curr = data.curr;
+			state.loadingprogress.max = data.max;
+		}
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -162,24 +170,19 @@ const store = new Vuex.Store({
 						allIDs.shows = allIDs.shows.concat(themeObject.ed.map(theme => theme.anilistID));
 					}
 				}
-				const req = await makeRequest(`/api/items/page/0`, 'GET');
-				let page = 0;
-				const items = [...req.rows];
-				while (page < Math.floor(req.count/1000)){
-					page += 1;
-					await new Promise(resolve => setTimeout(resolve, 50));
-					const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
-					items.push(...reqp.rows);
+				
+				if (!state.items || state.items.length === 0) {
+					await dispatch('getItems');
 				}
 
 				const opCat = state.categories.find(cat => cat.name.includes('OP')); // hard coded shit, need these categories so info goes back into them proper
 				const edCat = state.categories.find(cat => cat.name.includes('ED'));
 				for (const theme of themeObject.op) {
-					const foundTheme = items.find(show => show.anilistID === theme.anilistID); // search for show info associated with theme
+					const foundTheme = state.items.find(show => show.anilistID === theme.anilistID); // search for show info associated with theme
 					selections[opCat.id].push({...foundTheme, ...theme}); // SQUASH them together and push into selections
 				}
 				for (const theme of themeObject.ed) { // repeat
-					const foundTheme = items.find(show => show.anilistID === theme.anilistID);
+					const foundTheme = state.items.find(show => show.anilistID === theme.anilistID);
 					selections[edCat.id].push({...foundTheme, ...theme});
 				}
 				for (const vote of votes) {
@@ -187,9 +190,9 @@ const store = new Vuex.Store({
 					if (category){
 						if (!vote.theme_name) { // This condition skips the loop if it's a theme cat
 							if (category.entryType === 'shows') {
-								selections[category.id].push(items.find(show => show.id === vote.entry_id)); // just push stuff into objects
+								selections[category.id].push(state.items.find(show => show.id === vote.entry_id)); // just push stuff into objects
 							} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-								selections[category.id].push(items.find(char => char.id === vote.entry_id));
+								selections[category.id].push(state.items.find(char => char.id === vote.entry_id));
 							}
 						}
 					}
@@ -210,6 +213,10 @@ const store = new Vuex.Store({
 				await new Promise(resolve => setTimeout(resolve, 50));
 				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
 				items.push(...reqp.rows);
+				commit('SET_LOADING', {
+					curr: page,
+					max: Math.floor(req.count/1000)}
+				);
 			}
 			commit('SET_ITEMS', items);
 		},

@@ -4,15 +4,16 @@
 		<div class="box" :class="{'highlighted': selected}">
 			<div class="media">
 				<div class="media-left">
-					<figure class="image show-cover">
+					<figure class="image is-hidden-mobile show-cover">
 						<img :src="coverURI"/>
 					</figure>
 				</div>
 				<div class="media-content">
-					<div class="content">
+					<div class="content is-hidden-mobile">
 						<p>
 							{{format}} &bull;
 							<a
+								class=""
 								@click.stop
 								target="_blank"
 								:href="anilistLink"
@@ -26,9 +27,9 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading" />
 				</div>
 			</div>
-			<em class="show-title">
+			<strong class="show-title">
 				{{name}}
-			</em>
+			</strong>
 		</div>
 	</label>
 </template>

@@ -5,7 +5,7 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium"
+							class="input is-primary is-medium is-hidden-touch"
 							type="text"
 							v-model="search"
 							placeholder="Search by title..."
@@ -75,6 +75,7 @@ export default {
 	computed: {
 		...mapState([
 			'items',
+			'loadingprogress',
 		]),
 		showIDs () {
 			return this.entries.map(show => show.anilist_id);

@@ -3,20 +3,21 @@
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
-					<figure class="image char-cover">
+					<figure class="image is-hidden-mobile show-cover">
 						<img :src="coverURI"/>
 					</figure>
 				</div>
-				<div class="media-content">
+				<div class="media-content is-hidden-mobile">
 					<div class="content">
 						<p>
-							&bull;
+							{{format}} &bull;
 							<a
+								class=""
 								@click.stop
 								target="_blank"
 								:href="anilistLink"
 							>
-								AniList
+								Anilist
 							</a>
 						</p>
 					</div>
@@ -25,9 +26,9 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
-			<em class="show-title">
+			<strong class="show-title">
 				{{name}}
-			</em>
+			</strong>
 			<br />
 			{{anime}}
 		</div>

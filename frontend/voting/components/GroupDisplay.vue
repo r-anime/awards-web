@@ -1,6 +1,6 @@
 <template>
 	<div class="voting-page-content" >
-		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough">
+		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough && loadingprogress.curr == loadingprogress.max">
 				<div class="has-background-dark has-text-light">
 					<transition name="slide-fade">
 						<div v-if="pickerScroll <= 0" class="progress-container container pt-4">
@@ -13,7 +13,7 @@
 					</transition>
 					<br />
 					<div class="tab-container container is-dark">
-						<CategoryGroupTabBar v-model="selectedTab" :tabs="votingCats"/>
+						<CategoryGroupTabBar v-model="selectedTab" :tabs="categories"/>
 					</div>
 				</div>
 			<div class="container">
@@ -54,7 +54,10 @@
 						Your account is not old enough to vote in the Awards.
 						</div>
 						<div v-else class="loading-text">
-						Please wait while your selections are being initialized. Thank you for your patience.
+							Please wait while your selections are being initialized. Thank you for your patience.
+							<h3>{{loadingprogress.curr}}/{{loadingprogress.max}}</h3>
+							<progress class="progress is-primary" :value="loadingprogress.curr" :max="loadingprogress.max">{{loadingprogress.curr}}/{{loadingprogress.max}}</progress>
+							<br/>
 						</div>
 						<img loading="lazy" :src="snooImage"/>
 					</div>
@@ -112,6 +115,7 @@ export default {
 			'me',
 			'locks',
 			'items',
+			'loadingprogress',
 		]),
 		...mapGetters(['accountOldEnough']),
 		groupName () {
@@ -131,7 +135,7 @@ export default {
 			}
 		},
 		selectedCategory () {
-			return this.votingCats.find(cat => cat.id === this.selectedTab);
+			return this.categories.find(cat => cat.id === this.selectedTab);
 		},
 		computedEntries () {
 			return this.entries.filter(entry => entry.categoryId === this.selectedCategory.id);
@@ -147,8 +151,8 @@ export default {
 		group: {
 			handler (newGroup) {
 				this.getVotingCategories(newGroup);
-				this.selectedTab = this.votingCats[0].id;
-				this.selectedTabName = this.votingCats[0].name;
+				this.selectedTab = this.categories[0].id;
+				this.selectedTabName = this.categories[0].name;
 			},
 		},
 	},
@@ -205,7 +209,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.locks ? Promise.resolve() : this.getLocks(),
 			this.me ? Promise.resolve() : this.getMe(),
-			(this.items || this.items.length > 0) ? Promise.resolve : this.getItems(),
+			(this.items || this.items.length > 0) ? Promise.resolve() : this.getItems(),
 		]).then(() => {
 			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
 			if (voteLock.flag || this.me.level > voteLock.level) {

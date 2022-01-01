@@ -3,7 +3,7 @@
 		<div class="box">
 			<div class="media">
 				<div class="media-left">
-					<figure class="image show-cover">
+					<figure class="image is-hidden-mobile show-cover">
 						<img :src="coverURI"/>
 					</figure>
 				</div>
@@ -33,9 +33,9 @@
 					<input class="item-picker-entry-cb" type="checkbox" @change="checkboxChange" :checked="selected" :disabled="loading"/>
 				</div>
 			</div>
-			<em class="show-title">
+			<strong class="show-title">
 				{{anime}} {{show.themeNo || ''}}
-			</em>
+			</strong>
 			<br/>
 			{{show.title}}
 		</div>
