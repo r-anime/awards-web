@@ -52,16 +52,33 @@ export default {
 	},
 	computed: {
 		coverURI () {
-			return this.show.coverImage.large;
+			if (this.show) {
+				if (this.show.coverImage && this.show.coverImage.large){
+					return this.show.coverImage.large;
+				}
+			}
+			return "";
 		},
 		anilistLink () {
-			return this.show.siteUrl;
+			if (this.show){
+				return this.show.siteUrl;
+			} else {
+				return "";
+			}
 		},
 		anime () {
-			return this.show.anime.split('%')[0];
+			if (this.show) {
+				return this.show.anime.split('%')[0];
+			} else {
+				return "";
+			}
 		},
 		themeLink () {
-			return this.show.link;
+			if (this.show) {
+				return this.show.link;
+			} else {
+				return "";
+			}
 		},
 	},
 	methods: {

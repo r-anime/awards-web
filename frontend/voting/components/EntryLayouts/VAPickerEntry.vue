@@ -31,6 +31,8 @@
 				<br />
 				{{voiceActor.length ? `(${voiceActor})` : ''}}
 			</strong>
+			<br />
+			{{anime}}
 		</div>
 	</label>
 </template>
