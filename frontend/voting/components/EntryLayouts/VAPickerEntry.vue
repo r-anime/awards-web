@@ -11,7 +11,6 @@
 				<div class="media-content is-hidden-mobile">
 					<div class="content">
 						<p>
-							{{format}} &bull;
 							<a
 								class=""
 								@click.stop
