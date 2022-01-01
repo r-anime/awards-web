@@ -1,6 +1,6 @@
 <template>
 	<div class="voting-page-content" >
-		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough && loadingprogress.curr == loadingprogress.max">
+		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
 				<div class="has-background-dark has-text-light">
 					<transition name="slide-fade">
 						<div v-if="pickerScroll <= 0" class="progress-container container pt-4">
@@ -37,7 +37,8 @@
 							<OSTPicker v-else-if="selectedCategory.name.includes('OST')" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 							<ShowPicker v-else-if="selectedCategory.entryType === 'shows'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 							<ThemePicker v-else-if="selectedCategory.entryType === 'themes'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
-							<CharPicker v-else-if="group === 'character'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
+							<CharPicker v-else-if="selectedCategory.entryType === 'characters'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
+							<ShowPicker v-else :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
 						</div>
 					</div>
 				</div>
@@ -209,7 +210,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.locks ? Promise.resolve() : this.getLocks(),
 			this.me ? Promise.resolve() : this.getMe(),
-			(this.items || this.items.length > 0) ? Promise.resolve() : this.getItems(),
+			(this.items && this.items.length > 0) ? Promise.resolve() : this.getItems(),
 		]).then(() => {
 			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
 			if (voteLock.flag || this.me.level > voteLock.level) {

@@ -5,7 +5,7 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium is-hidden-touch"
+							class="input is-primary is-medium"
 							type="text"
 							v-model="search"
 							placeholder="Search by title..."
