@@ -218,7 +218,8 @@ const store = new Vuex.Store({
 					max: Math.floor(req.count/1000)}
 				);
 			}
-			commit('SET_ITEMS', items);
+			const itemsshuffled = util.shuffle(items);
+			commit('SET_ITEMS', itemsshuffled);
 		},
 	},
 });
