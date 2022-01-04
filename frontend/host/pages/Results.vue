@@ -100,6 +100,7 @@ export default {
 			'voteSummary',
 			'locks',
 			'me',
+			'items',
 		]),
 		// eslint-disable-next-line multiline-comment-style
 		/*
@@ -153,6 +154,7 @@ export default {
 			'getVoteSummary',
 			'getLocks',
 			'getMe',
+			'getItems',
 		]),
 		fetchShows (page) {
 			return new Promise(async (resolve, reject) => {
@@ -249,7 +251,17 @@ export default {
 						reject(err);
 					}
 				});
-				Promise.all([themePromise, catPromise, votesPromise]).then(() => {
+				const itemsPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.items || this.items.length == 0) {
+							await this.getItems();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				Promise.all([themePromise, catPromise, votesPromise, itemsPromise]).then(() => {
 					const opedPromise = new Promise(async (resolve, reject) => {
 						try {
 							if (!this.opedTotals) {
@@ -274,14 +286,9 @@ export default {
 						const category = this.categories.find(cat => cat.id === vote.category_id);
 						if (category.entryType === 'themes') {
 							this.showIDs.push(vote.anilist_id);
-						} else if (category.entryType === 'shows') {
-							this.showIDs.push(vote.entry_id);
-						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
-							this.charIDs.push(vote.entry_id);
 						}
 					}
 					this.showIDs = [...new Set(this.showIDs)];
-					this.charIDs = [...new Set(this.charIDs)];
 					const showPromise = new Promise(async (resolve, reject) => {
 						try {
 							let lastPage = false;
@@ -297,22 +304,7 @@ export default {
 							reject(err);
 						}
 					});
-					const charPromise = new Promise(async (resolve, reject) => {
-						try {
-							let lastPage = false;
-							let page = 1;
-							while (!lastPage) {
-							// eslint-disable-next-line no-await-in-loop
-								const returnData = await this.fetchChars(page);
-								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
-								page++;
-							}
-							resolve();
-						} catch (err) {
-							reject(err);
-						}
-					});
-					Promise.all([opedPromise, summaryPromise, showPromise, charPromise]).then(() => {
+					Promise.all([opedPromise, summaryPromise, showPromise]).then(() => {
 						for (const category of this.categories) {
 							let allVotes = [];
 							if (category.entryType === 'themes') {
@@ -332,11 +324,12 @@ export default {
 										});
 									}
 								} else if (category.entryType === 'shows') {
-									const requiredShow = this.showData.find(show => show.id === vote.entry_id);
+									const requiredShow = this.items.find(show => show.id === vote.entry_id);
 									if (requiredShow) {
+										const name = requiredShow.english || requiredShow.romanji;
 										entries.push({
 											vote_count: vote.vote_count,
-											name: `${requiredShow.title.romaji}`,
+											name: `${name}`,
 										});
 									} else {
 										entries.push({
@@ -345,11 +338,16 @@ export default {
 										});
 									}
 								} else if (category.entryType === 'characters') {
-									const requiredChar = this.charData.find(char => char.id === vote.entry_id);
+									const requiredChar = this.items.find(char => char.id === vote.entry_id);
 									if (requiredChar) {
+										const name = requiredChar.english || requiredChar.romanji;
+										let show = "";
+										if (requiredChar.parent){
+											show = requiredChar.parent.english || requiredChar.parent.romanji;
+										}
 										entries.push({
 											vote_count: vote.vote_count,
-											name: `${requiredChar.name.full}`,
+											name: `${name} (${show})`,
 										});
 									} else {
 										entries.push({
@@ -358,26 +356,17 @@ export default {
 										});
 									}
 								} else if (category.entryType === 'vas') {
-									const requiredChar = this.charData.find(char => char.id === vote.entry_id);
+									const requiredChar = this.items.find(char => char.id === vote.entry_id);
 									if (requiredChar) {
-										if (requiredChar.media.edges.length) {
-											if (requiredChar.media.edges[0].voiceActors.length) {
-												entries.push({
-													vote_count: vote.vote_count,
-													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
-												});
-											} else {
-												entries.push({
-													vote_count: vote.vote_count,
-													name: `${requiredChar.name.full}`,
-												});
-											}
-										} else {
-											entries.push({
-												vote_count: vote.vote_count,
-												name: `${requiredChar.name.full}`,
-											});
+										const name = requiredChar.english || requiredChar.romanji;
+										let char = "";
+										if (requiredChar.parent){
+											char = requiredChar.parent.english || requiredChar.parent.romanji;
 										}
+										entries.push({
+											vote_count: vote.vote_count,
+											name: `${name} (${char})`,
+										});
 									} else {
 										entries.push({
 											vote_count: vote.vote_count,
