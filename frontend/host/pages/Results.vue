@@ -4,7 +4,8 @@
     <div class="section" v-if="locked === false">
         <h2 class="title">Results</h2>
         <div v-if="!loaded" class="content">
-            <p>Loading...</p>
+            <h3>{{loadingprogress.curr}}/{{loadingprogress.max}}</h3>
+			<progress class="progress is-primary" :value="loadingprogress.curr" :max="loadingprogress.max">{{loadingprogress.curr}}/{{loadingprogress.max}}</progress>
         </div>
         <div v-else class="content">
             <div class="field is-grouped is-grouped-multiline">
@@ -101,6 +102,7 @@ export default {
 			'locks',
 			'me',
 			'items',
+			'loadingprogress',
 		]),
 		// eslint-disable-next-line multiline-comment-style
 		/*

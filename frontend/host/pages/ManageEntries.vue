@@ -157,6 +157,10 @@
 		</div>
 	</modal-generic>
 </div>
+<div v-else>
+	<h3>{{loadingprogress.curr}}/{{loadingprogress.max}}</h3>
+	<progress class="progress is-primary" :value="loadingprogress.curr" :max="loadingprogress.max">{{loadingprogress.curr}}/{{loadingprogress.max}}</progress>
+</div>
 </template>
 
 <script>
@@ -202,6 +206,7 @@ export default {
 	computed: {
 		...mapState([
 			'items',
+			'loadingprogress',
 		]),
 		filteredItems(){
 			let items = [];

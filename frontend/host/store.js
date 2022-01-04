@@ -49,6 +49,10 @@ const store = new Vuex.Store({
 		finalVoteSummary: null,
 		finalVotes: null,
 		items: [],
+		loadingprogress: {
+			curr: 0,
+			max: 0,
+		}
 	},
 	getters: {
 		isHost (state) {
@@ -194,6 +198,10 @@ const store = new Vuex.Store({
 			// console.log(delIndex);
 			state.items.splice(delIndex, 1);
 		},
+		SET_LOADING (state, data) {
+			state.loadingprogress.curr = data.curr;
+			state.loadingprogress.max = data.max;
+		}
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -394,9 +402,14 @@ const store = new Vuex.Store({
 				await new Promise(resolve => setTimeout(resolve, 50));
 				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
 				items.push(...reqp.rows);
+				commit('SET_LOADING', {
+					curr: page,
+					max: Math.floor(req.count/1000)}
+				);
 			}
 			commit('SET_ITEMS', items);
 		},
+		
 		async addItems ({commit}, data) {
 			await makeRequest(`/api/items/add`, 'POST', data);
 			commit('ADD_ITEMS', data);
