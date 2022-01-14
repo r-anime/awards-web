@@ -342,7 +342,10 @@ export default {
 							},
 						}),
 					});
-					if (!charaResponse.ok) return alert('no bueno');
+					if (!charaResponse.ok) {
+						reject(charaResponse);
+						return false;
+					}
 					const returnData = await charaResponse.json();
 					this.charData = [...this.charData, ...returnData.data.Page.results];
 					resolve(returnData);
@@ -358,33 +361,25 @@ export default {
 			for (const char in this.results.characters) {
 				this.charIDs.push(char);
 			}
-			const showPromiseArr = [];
-			const charPromiseArr = [];
 			const showPromise = new Promise(async (resolve, reject) => {
 				try {
 					let page = 1;
 					const someData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
 					this.showData = [...this.showData, ...someData.data.Page.results];
-					const lastPage = someData.data.Page.pageInfo.lastPage;
-					page = 2;
-					while (page <= lastPage) {
-						// eslint-disable-next-line no-loop-func
-						showPromiseArr.push(new Promise(async (resolve2, reject2) => {
-							try {
-								const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
-								resolve2(returnData.data.Page.results);
-							} catch (error) {
-								reject2(error);
-							}
-						}));
+					const lastPage = Math.ceil(this.showIDs.length/50);
+					console.log(someData);
+					while (page < lastPage) {
 						page++;
-					}
-					Promise.all(showPromiseArr).then(finalData => {
-						for (const data of finalData) {
-							this.showData = [...this.showData, ...data];
+						try {
+							await new Promise(resolve3 => setTimeout(resolve3, 750));
+							const returnData = await util.paginatedQuery(aq.showQuerySimple, this.showIDs, page);
+							this.showData.push(...returnData.data.Page.results);
+						} catch (error) {
+							reject(error);
 						}
-						resolve();
-					});
+						
+					}
+					resolve();
 				} catch (err) {
 					reject(err);
 				}
@@ -394,26 +389,18 @@ export default {
 					let page = 1;
 					const someData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
 					this.charData = [...this.charData, ...someData.data.Page.results];
-					const lastPage = someData.data.Page.pageInfo.lastPage;
-					page = 2;
-					while (page <= lastPage) {
-						// eslint-disable-next-line no-loop-func
-						charPromiseArr.push(new Promise(async (resolve2, reject2) => {
-							try {
-								const returnData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
-								resolve2(returnData.data.Page.results);
-							} catch (error) {
-								reject2(error);
-							}
-						}));
+					const lastPage = Math.ceil(this.charIDs.length/50);
+					while (page < lastPage) {
 						page++;
-					}
-					Promise.all(charPromiseArr).then(finalData => {
-						for (const data of finalData) {
-							this.charData = [...this.charData, ...data];
+						try {
+							await new Promise(resolve => setTimeout(resolve, 750));
+							const returnData = await util.paginatedQuery(aq.charQuerySimple, this.charIDs, page);
+							this.charData.push(...returnData.data.Page.results);
+						} catch (error) {
+							reject(error);
 						}
-						resolve();
-					});
+					}
+					resolve();
 				} catch (err) {
 					reject(err);
 				}

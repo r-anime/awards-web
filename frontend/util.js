@@ -20,7 +20,10 @@ async function makeQuery (query, idArr) {
 			},
 		}),
 	});
-	if (!response.ok) return alert('no bueno');
+	if (!response.ok) {
+		console.log(response);
+		return false;
+	}
 	const data = await response.json();
 	return data.data.Page.results; // bad hardcode for the bad function
 }
@@ -41,7 +44,9 @@ async function paginatedQuery (query, idArr, page) {
 			},
 		}),
 	});
-	if (!response.ok) return alert('no bueno');
+	if (!response.ok) {
+		return false;
+	}
 	const data = await response.json();
 	return data; // bad hardcode for the bad function
 }

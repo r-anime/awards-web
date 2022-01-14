@@ -205,7 +205,9 @@ export default {
 						}),
 					});
 					// eslint-disable-next-line no-alert
-					if (!charaResponse.ok) return alert('no bueno');
+					if (!charaResponse.ok){
+						reject(charaResponse);
+					}
 					const returnData = await charaResponse.json();
 					this.charData = [...this.charData, ...returnData.data.Page.results];
 					resolve(returnData);
@@ -293,9 +295,9 @@ export default {
 					this.showIDs = [...new Set(this.showIDs)];
 					const showPromise = new Promise(async (resolve, reject) => {
 						try {
-							let lastPage = false;
+							const lastPage = Math.ceil(this.charIDs.length/50);
 							let page = 1;
-							while (!lastPage) {
+							while (page <= lastPage) {
 							// eslint-disable-next-line no-await-in-loop
 								const returnData = await this.fetchShows(page);
 								lastPage = returnData.data.Page.pageInfo.currentPage === returnData.data.Page.pageInfo.lastPage;
