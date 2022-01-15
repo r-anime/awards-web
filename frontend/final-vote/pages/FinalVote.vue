@@ -77,10 +77,10 @@
 								</svg>
 							</div>
 							<a class="fv-watch-button" v-if="nom.themeId" :href="getTheme(nom.themeId).link" target="_blank">
-								Watch<span class="is-hidden-mobile"> on animethemes.moe </span>
+								Watch<span class="is-hidden-mobile"> on {{extractRootDomain(getTheme(nom.themeId).link)}} </span>
 							</a>
 							<a class="fv-watch-button" v-if="nom.link" :href="nom.link" target="_blank">
-								Watch<span class="is-hidden-mobile"> Online </span>
+								Watch<span class="is-hidden-mobile"> on {{extractRootDomain(nom.link)}} </span>
 							</a>
 						</div>
 					</div>
@@ -428,6 +428,14 @@ export default {
 			}
 			return index;
 		},
+		extractRootDomain(url) {
+			const domain = new URL(url).hostname;
+			const elems = domain.split('.');
+			const iMax = elems.length - 1;
+			
+			const isSecondLevel = elems.length >= 3 && (elems[iMax] + elems[iMax - 1]).length <= 5;
+			return elems.splice( isSecondLevel ? -3 : -2 ).join('.');
+		}
 	},
 	watch: {
 		romaji (lang) {
