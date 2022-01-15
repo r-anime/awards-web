@@ -87,6 +87,19 @@
 						If you'd like, please let us know which shows from this year's nominees you've watched!
 					</p>
 					<br/>
+					<div class="field">
+						<div class="field has-addons has-addons-right">
+							<p class="control has-text-black">
+								<input class="input" type="text" v-model="username" placeholder="Username">
+							</p>
+							<p class="control">
+								<button class="button is-info" :class="{'is-loading': !loaded.sync}" @click="submitFetchAnilist">
+									Fill from Anilist
+								</button>
+							</p>				
+						</div>
+						<p class="help has-text-right">This function is experimental and may not work as intended.</p>
+					</div>
 					<div class="columns is-multiline">
 						<div
 							class="column is-half-desktop is-full"
@@ -182,7 +195,7 @@ export default {
 			return [];
 		},
 		sortedSurvey (){
-			if (this.unique.survey && this.unique.survey.length > 0) {
+			if (this.unique.survey && this.unique.survey.length > 0 && this.vote.cat == this.categories.length) {
 				// eslint-disable-next-line eqeqeq
 				const noms = this.unique.survey;
 				noms.sort((a, b) => {
@@ -212,6 +225,7 @@ export default {
 			loaded: {
 				page: false,
 				voting: false,
+				sync: true,
 			},
 			unique: {
 				shows: [],
@@ -225,6 +239,7 @@ export default {
 			vote: {
 				cat: 0,
 			},
+			username: "",
 			romaji: true,
 			status: ['Not Seen', 'Watched', 'Completed'],
 		};
@@ -232,7 +247,7 @@ export default {
 	methods: {
 		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote', 'getSurvey', 'submitSurvey']),
 		isWatched (nom) {
-			const _show = this.survey.find(entry => entry.status == 1 && (entry.anilist_id == nom.anilist_id || (entry.name == nom.alt_name && nom.alt_name !== "")));
+			const _show = this.survey.find(entry => entry.status == 1 && ((entry.anilist_id == nom.anilist_id && entry.anilist_id != -1) || (entry.anilist_id == -1 && entry.name == nom.alt_name && nom.alt_name !== "")));
 			return _show;
 		},
 		markdownit (it) {
@@ -350,6 +365,43 @@ export default {
 				await this.submitSurvey(payload);
 			}
 			this.loaded.voting = true;
+		},
+		async submitFetchAnilist(){
+			this.loaded.sync = false;
+			this.loaded.voting = false;
+			try {
+				let hasNextPage = true;
+				let i = 1;
+				while (hasNextPage) {
+					const returnData = await util.userPaginatedQuery(anilistQueries.userQuery, this.username, i);
+					await new Promise(resolve => setTimeout(resolve, 750));
+					// console.log(returnData.data.Page.mediaList);
+					for (const item of returnData.data.Page.mediaList){
+						console.log(item);
+						const _found = this.unique.survey.find(entry => entry.anilist_id == item.media.id);
+						if (_found && !this.isWatched(_found)){
+							try {
+								const payload = {
+									anilist_id: _found.anilist_id,
+									name: _found.alt_name,
+									status: 1,
+								};
+								await this.submitSurvey(payload);
+								await new Promise(resolve => setTimeout(resolve, 100));
+							} finally {
+
+							}
+						}
+					}
+					hasNextPage = returnData.data.Page.pageInfo.hasNextPage;
+					i++;
+				}
+			} catch (error) {
+				console.log(error);
+			} finally {
+				this.loaded.sync = true;
+				this.loaded.voting = true;
+			}
 		},
 		shiftCat (val = 1) {
 			this.vote.cat = (this.vote.cat + val + (this.categories.length+1)) % (this.categories.length+1);
@@ -777,5 +829,9 @@ input:checked ~ .switch-inner-container .switch-inner{
 
 .smol {
 	font-size: 0.75rem;
+}
+
+.control.has-text-black .input{
+	color: black !important;
 }
 </style>

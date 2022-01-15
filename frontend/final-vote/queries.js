@@ -54,6 +54,27 @@ const queries = {
 		  }
 		}
 	  }`,
+	  userQuery: `query ($userId: String, $page: Int) {
+			Page(page: $page, perPage: 50) {
+			pageInfo {
+				total
+				perPage
+				currentPage
+				lastPage
+				hasNextPage
+			}
+			mediaList(userName: $userId, type: ANIME, sort: [MEDIA_TITLE_ENGLISH], status_in:[CURRENT, COMPLETED]) {
+				media {
+				id
+				title {
+					romaji
+					english
+				}
+			  }
+			}
+		  }
+		}	  
+	 `,
 };
 
 export default queries;

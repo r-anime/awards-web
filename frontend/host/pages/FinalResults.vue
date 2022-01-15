@@ -294,10 +294,18 @@ export default {
 											name: `${requiredShow.title.romaji}`,
 										});
 									} else {
-										entries.push({
-											vote_count: vote.vote_count,
-											name: `${vote.anilist_id}`,
-										});
+										const nom = this.allNoms.find(nom => nom.id === vote.nom_id);
+										if (nom){
+											entries.push({
+												vote_count: vote.vote_count,
+												name: `${nom.alt_name}`,
+											});
+										} else {
+											entries.push({
+												vote_count: vote.vote_count,
+												name: `${vote.anilist_id}`,
+											});
+										}
 									}
 								} else if (category.entryType === 'characters') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
