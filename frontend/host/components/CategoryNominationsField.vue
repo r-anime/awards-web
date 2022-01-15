@@ -82,6 +82,14 @@
                     <p class="help">Accepts <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">markdown.</a> Please sanitize tabs and convert Unicode to ASCII.</p>
                 </div>
             </div>
+            <div class="columns">
+                <div class="column field">
+                    <label class="label">Link</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="" v-model="nom.link" @input="emitUpdate">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

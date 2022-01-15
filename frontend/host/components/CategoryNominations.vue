@@ -64,6 +64,7 @@ export default {
 				finished: -1,
 				staff: '',
 				writeup: '',
+				link: '',
 			});
 		},
 		async saveNoms () {
@@ -115,6 +116,7 @@ export default {
 					finished: nom.finished,
 					staff: nom.staff,
 					writeup: nom.writeup,
+					link: nom.link,
 				});
 			}
 			this.loaded = true;

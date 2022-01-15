@@ -405,6 +405,7 @@ apiApp.post('/:id/nominations', async (request, response) => {
 							character_id: nom.character_id,
 							finished: nom.finished,
 							staff: nom.staff,
+							link: nom.link,
 						}, {
 							where: {
 								id: nom.id,
@@ -423,6 +424,7 @@ apiApp.post('/:id/nominations', async (request, response) => {
 							character_id: nom.character_id,
 							finished: nom.finished,
 							staff: nom.staff,
+							link: nom.link,
 						});
 					}
 				}

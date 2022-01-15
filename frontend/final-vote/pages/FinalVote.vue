@@ -79,6 +79,9 @@
 							<a class="fv-watch-button" v-if="nom.themeId" :href="getTheme(nom.themeId).link" target="_blank">
 								Watch<span class="is-hidden-mobile"> on animethemes.moe </span>
 							</a>
+							<a class="fv-watch-button" v-if="nom.link" :href="nom.link" target="_blank">
+								Watch<span class="is-hidden-mobile"> Online </span>
+							</a>
 						</div>
 					</div>
 				</div>

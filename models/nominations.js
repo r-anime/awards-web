@@ -32,6 +32,10 @@ module.exports = (sequelize, types) => {
 		},
 		themeId: types.INTEGER,
 		categoryId: types.INTEGER,
+		link: {
+			type: types.STRING,
+			defaultValue: '',
+		},
 	});
 
 	noms.associate = models => {
