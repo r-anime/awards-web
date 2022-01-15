@@ -10,7 +10,7 @@
 						<div class="content has-text-centered">
 							<h3>Redirecting After 5 Seconds</h3>
 							<p>
-								<a :href="next" class="button is-platinum is-large">
+								<a :href="'/' + next" class="button is-platinum is-large">
 									Click here to go to {{next}} if page does not redirect.
 								</a>
 							</p>

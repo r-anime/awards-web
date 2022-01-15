@@ -265,7 +265,11 @@ export default {
 				return nom.alt_name || `${_char.name.full} (${_char.media.nodes[0].title.english})` || `${_char.name.full} (${_char.media.nodes[0].title.romaji})`;
 			} else if (this.currentCat.entryType === 'vas') {
 				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
-				return nom.alt_name || `${_char.name.full} (${_char.media.edges[0].voiceActors[0].name.full})`;
+				if (_char.media.edges[0].voiceActors[0]){
+					return nom.alt_name || `${_char.name.full} (${_char.media.edges[0].voiceActors[0].name.full})`;
+				} else {
+					return nom.alt_name || `${_char.name.full}`;
+				}
 			} else if (this.currentCat.entryType === 'themes') {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				const _theme = this.themes.find(theme => theme.id === nom.themeId);
@@ -281,7 +285,7 @@ export default {
 				if (_show){
 					return nom.alt_img || _show.coverImage.large;
 				} else {
-					return "";
+					return nom.alt_img || "";
 				}
 			} else if (this.currentCat.entryType === 'characters' || this.currentCat.entryType === 'vas') {
 				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
@@ -359,6 +363,9 @@ export default {
 			}
 			while (_cat.length > 0) {
 				index = (index + 1) % _total;
+				if (index == this.categories.length){
+					break;
+				}
 				_cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
 				if (index == start) {
 					break;

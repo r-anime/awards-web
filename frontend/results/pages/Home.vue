@@ -90,7 +90,7 @@
 							Now presenting an even bigger, better, and of course saltier, r/anime awards.
 							</p>
 							<figure class="image is-16by9">
-								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/Sq7Qd3jN1eU" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
+								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/h5WSBY-RDrE" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
 							</figure>
 							<br>
 							<p>
