@@ -2,6 +2,7 @@ const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
 
 const FinalVotes = sequelize.model('finalvotes');
+const WatchVotes = sequelize.model('WatchVotes');
 
 apiApp.get('/get', async (request, response) => {
 	const userName = (await request.reddit().get('/api/v1/me')).body.name;
@@ -46,6 +47,57 @@ apiApp.post('/submit', async (request, response) => {
 		}).finally(async () => {
 			try {
 				const _votes = await FinalVotes.findAll({where: {reddit_user: userName}});
+				// console.log(_votes);
+				response.json(_votes);
+			} catch (error) {
+				return response.error(error);
+			}
+		});
+});
+
+apiApp.get('/survey/get', async (request, response) => {
+	const userName = (await request.reddit().get('/api/v1/me')).body.name;
+	if (!await request.authenticate({name: userName, oldEnough: true, lock: 'fv-genre'})) {
+		return response.json(401, {error: 'Your account may be too new or voting may be closed.'});
+	}
+	try {
+		const _votes = await WatchVotes.findAll({where: {reddit_user: userName}});
+		response.json(_votes);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.post('/survey/submit', async (request, response) => {
+	const userName = await request.authenticate({name: request.session.reddit_name, oldEnough: true, lock: 'fv-genre'});
+	if (!userName) {
+		return response.json(401, {error: 'Invalid user. Your account may be too new or voting may be closed.'});
+	}
+	let req;
+	try {
+		req = await request.json();
+	} catch (error) {
+		return response.json(400, {error: 'Invalid JSON'});
+	}
+
+	const _values = {
+		reddit_user: userName,
+		anilist_id: req.anilist_id,
+		name: req.name,
+    	status: req.status
+	};
+
+	WatchVotes.findOne({where: {reddit_user: userName, anilist_id: req.anilist_id, name: req.name}})
+		.then(async obj => {
+			// update
+			if (obj) {
+				await obj.update(_values);
+			} else {
+				await WatchVotes.create(_values);
+			}
+		}).finally(async () => {
+			try {
+				const _votes = await WatchVotes.findAll({where: {reddit_user: userName}});
 				// console.log(_votes);
 				response.json(_votes);
 			} catch (error) {

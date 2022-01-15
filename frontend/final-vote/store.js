@@ -33,6 +33,7 @@ const store = new Vuex.Store({
 		nominations: null,
 		themes: null,
 		votes: null,
+		survey: null,
 	},
 	mutations: {
 		GET_ME (state, me) {
@@ -53,6 +54,9 @@ const store = new Vuex.Store({
 		UPDATE_VOTES (state, votes) {
 			state.votes = votes;
 		},
+		UPDATE_SURVEY (state, survey) {
+			state.survey = survey;
+		}
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -95,6 +99,25 @@ const store = new Vuex.Store({
 		async submitVote ({commit}, data) {
 			const votes = await makeRequest('/api/final/submit', 'POST', data);
 			commit('UPDATE_VOTES', votes);
+		},
+		async getSurvey ({commit, state, dispatch}) {
+			if (!state.locks) {
+				await dispatch('getLocks');
+			}
+			if (!state.me) {
+				await dispatch('getMe');
+			}
+			const _gl = state.locks.find(lock => lock.name === 'fv-genre');
+			if (_gl.flag || state.me.level > _gl.level) {
+				const votes = await makeRequest('/api/final/survey/get');
+				commit('UPDATE_SURVEY', votes);
+			} else {
+				commit('UPDATE_SURVEY', []);
+			}
+		},
+		async submitSurvey ({commit}, data) {
+			const votes = await makeRequest('/api/final/survey/submit', 'POST', data);
+			commit('UPDATE_SURVEY', votes);
 		},
 	},
 });

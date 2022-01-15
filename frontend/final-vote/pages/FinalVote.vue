@@ -49,11 +49,14 @@
 								:value="index"
 							>{{cat.name}}
 							</option>
+							<option :value="categories.length">
+								Watch Survey
+							</option>
 						</select>
 					</div>
 					<button class="button is-dperiwinkle fv-next-nav is-hidden-mobile" @click="shiftCat()">Next</button>
 				</div>
-				<div class="message-body">
+				<div class="message-body" v-if="vote.cat < categories.length">
 					<p>
 						{{currentCat.description}}
 					</p>
@@ -79,6 +82,29 @@
 						</div>
 					</div>
 				</div>
+				<div class="message-body" v-else>
+					<p>
+						If you'd like, please let us know which shows from this year's nominees you've watched!
+					</p>
+					<br/>
+					<div class="columns is-multiline">
+						<div
+							class="column is-half-desktop is-full"
+							v-for="(nom, index) in sortedSurvey"
+							:key="index"
+						>
+							<div class="fv-show" :class="{selected: isWatched(nom)}" @click="suverySubmit(nom)">
+								<img :src="getImage(nom)" class="fv-nominee-img" />
+								<div class="fv-nominee-title">
+									{{getName(nom)}}
+								</div>
+								<svg v-if="isWatched(nom)" class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+									<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+								</svg>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -101,7 +127,7 @@
 <script>
 /* eslint-disable no-await-in-loop */
 import {mapState, mapActions} from 'vuex';
-import logo2020 from '../../../img/awards2020.png';
+import logo2020 from '../../../img/awards2021.png';
 import anilistQueries from '../queries';
 import marked from 'marked';
 const util = require('../../util');
@@ -115,13 +141,18 @@ export default {
 			'categories',
 			'nominations',
 			'votes',
+			'survey',
 		]),
 		allLocked () {
 			return !this.voteLocks.genre || !this.voteLocks.character || !this.voteLocks.vprod || !this.voteLocks.aprod || !this.voteLocks.main;
 		},
 		currentCat () {
 			if (this.categories && this.categories.length > 0) {
-				return this.categories[this.vote.cat];
+				if (this.vote.cat >= this.categories.length){
+					return true;
+				} else {
+					return this.categories[this.vote.cat];
+				}
 			}
 			return false;
 		},
@@ -150,6 +181,23 @@ export default {
 			}
 			return [];
 		},
+		sortedSurvey (){
+			if (this.unique.survey && this.unique.survey.length > 0) {
+				// eslint-disable-next-line eqeqeq
+				const noms = this.unique.survey;
+				noms.sort((a, b) => {
+					if (this.getName(a).trim() < this.getName(b).trim()) {
+						return -1;
+					}
+					if (this.getName(a).trim() > this.getName(b).trim()) {
+						return 1;
+					}
+					return 0;
+				});
+				return noms;
+			}
+			return [];
+		}
 	},
 	data () {
 		return {
@@ -168,6 +216,7 @@ export default {
 			unique: {
 				shows: [],
 				characters: [],
+				survey: [],
 			},
 			data: {
 				shows: null,
@@ -177,10 +226,15 @@ export default {
 				cat: 0,
 			},
 			romaji: true,
+			status: ['Not Seen', 'Watched', 'Completed'],
 		};
 	},
 	methods: {
-		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote']),
+		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote', 'getSurvey', 'submitSurvey']),
+		isWatched (nom) {
+			const _show = this.survey.find(entry => entry.status == 1 && (entry.anilist_id == nom.anilist_id || (entry.name == nom.alt_name && nom.alt_name !== "")));
+			return _show;
+		},
 		markdownit (it) {
 			return marked(it);
 		},
@@ -192,8 +246,12 @@ export default {
 			const _cat = this.categories.find(cat => cat.id === catid);
 			return _cat.entryType;
 		},
+		getShow (id){
+			const _show = this.data.shows.find(show => show.id === parseInt(id, 10));
+			return _show;
+		},
 		getName (nom) {
-			if (this.currentCat.entryType === 'shows') {
+			if (this.currentCat.entryType === 'shows' || this.vote.cat >= this.categories.length) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				if (this.romaji) {
 					return nom.alt_name || _show.title.romaji || _show.title.english;
@@ -218,12 +276,20 @@ export default {
 			}
 		},
 		getImage (nom) {
-			if (this.currentCat.entryType === 'shows' || this.currentCat.entryType === 'themes') {
+			if (this.currentCat.entryType === 'shows' || this.currentCat.entryType === 'themes' || this.vote.cat >= this.categories.length) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
-				return nom.alt_img || _show.coverImage.large;
+				if (_show){
+					return nom.alt_img || _show.coverImage.large;
+				} else {
+					return "";
+				}
 			} else if (this.currentCat.entryType === 'characters' || this.currentCat.entryType === 'vas') {
 				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
-				return nom.alt_img || _char.image.large;
+				if (_char){
+					return nom.alt_img || _char.image.large;
+				} else {
+					return "";
+				}
 			}
 		},
 		async voteSubmit (cat, nom) {
@@ -253,17 +319,39 @@ export default {
 				await new Promise(resolve => setTimeout(resolve, 800));
 			}
 			if (_lastCat) {
-				this.$router.push('/final-vote/thanks');
+				this.vote.cat = this.categories.length;
 			} else {
 				this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			}
 			this.loaded.voting = true;
 		},
+		async suverySubmit (nom) {
+			if (this.loaded.voting) {
+				this.loaded.voting = false;
+				let payload;
+				
+				if (this.isWatched(nom)){
+					payload = {
+						anilist_id: nom.anilist_id,
+						name: nom.alt_name,
+						status: 0,
+					};
+				} else {
+					payload = {
+						anilist_id: nom.anilist_id,
+						name: nom.alt_name,
+						status: 1,
+					};
+				}
+				await this.submitSurvey(payload);
+			}
+			this.loaded.voting = true;
+		},
 		shiftCat (val = 1) {
-			this.vote.cat = (this.vote.cat + val + this.categories.length) % this.categories.length;
+			this.vote.cat = (this.vote.cat + val + (this.categories.length+1)) % (this.categories.length+1);
 		},
 		nextEmptyCat (start = 0) {
-			const _total = this.categories.length;
+			const _total = this.categories.length+1;
 			let index = start;
 			let _cat = this.votes.filter(vote => vote.category_id == this.categories[index].id);
 			if (_cat.length == 0) {
@@ -290,6 +378,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.nominations ? Promise.resolve() : this.getNominations(),
 			this.themes ? Promise.resolve() : this.getThemes(),
+			this.survey ? Promise.resolve() : this.getSurvey(),
 			this.votes ? Promise.resolve() : this.getVotes()]).then(async () => {
 			const _gl = this.locks.find(lock => lock.name === 'fv-genre');
 			const _cl = this.locks.find(lock => lock.name === 'fv-character');
@@ -320,6 +409,9 @@ export default {
 					if (this.getCatType(nom.categoryId) === 'shows') {
 						if (!this.unique.shows.includes(nom.anilist_id)) {
 							this.unique.shows.push(nom.anilist_id);
+							this.unique.survey.push(nom);
+						} else if(nom.anilist_id == -1) {
+							this.unique.survey.push(nom);
 						}
 					} else if (this.getCatType(nom.categoryId) === 'characters' || this.getCatType(nom.categoryId) === 'vas') {
 						if (!this.unique.characters.includes(nom.character_id)) {
@@ -366,23 +458,23 @@ export default {
 					this.vote.cat = 0;
 				} else {
 					const _today = new Date();
-					const _genrelock = new Date('01/25/2021');
+					const _genrelock = new Date('01/14/2022');
 					// We are using UNIX timestamps here that basically translate to 13:00 on a specific day (GMT) which is the time we post threads at
-					const _charlock = new Date(1611838800000); // 01/28/2021
-					const _vprodlock = new Date(1612184400000); // 02/01/2021
-					const _mprodlock = new Date(1612443600000); // 02/04/2021
-					const _mainlock = new Date(1612702800000); // 02/07/2021
+					const _charlock = new Date('01/20/2022'); // 01/20/2021
+					const _vprodlock = new Date('01/25/2022'); // 01/25/2021
+					const _mprodlock = new Date('01/30/2022'); // 01/30/2021
+					const _mainlock = new Date('02/05/2022'); // 02/05/2021
 					let _startcat = 0;
 					if (_today.getTime() > _mainlock.getTime()) {
 						_startcat = 0;
 					} else if (_today.getTime() > _mprodlock.getTime()) {
-						_startcat = 25;
+						_startcat = 19;
 					} else if (_today.getTime() > _vprodlock.getTime()) {
 						_startcat = 15;
 					} else if (_today.getTime() > _charlock.getTime()) {
-						_startcat = 10;
+						_startcat = 11;
 					} else if (_today.getTime() > _genrelock.getTime()) {
-						_startcat = 3;
+						_startcat = 4;
 					}
 					this.vote.cat = this.nextEmptyCat(_startcat);
 				}
@@ -477,7 +569,7 @@ a.fv-watch-button{
 	}
 }
 
-.fv-nominee {
+.fv-nominee, .fv-show {
 	display: flex;
 	position: relative;
 	background: rgba(255,255,255, 0.8);
@@ -530,6 +622,30 @@ a.fv-watch-button{
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.fv-show-status {
+		display: flex;
+		flex-direction: column;
+		font-size: 11px;
+
+		.fv-show-status-units{
+			flex: 1 1 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			transition: background-color 0.3s ease, color 0.3s ease;
+			padding-left: 4px;
+			padding-right: 4px;
+
+			background-color: rgba(0, 0, 0, 0.6);
+			color: white;
+
+			&.selected {
+				background-color: #ebfffc;
+				color: black;
+			}
+		}
 	}
 }
 
