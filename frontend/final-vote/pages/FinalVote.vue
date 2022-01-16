@@ -487,7 +487,7 @@ export default {
 						if (!this.unique.characters.includes(nom.character_id)) {
 							this.unique.characters.push(nom.character_id);
 						}
-						if (!this.unique.shows.includes(nom.anilist_id)) {
+						if (!this.unique.shows.includes(nom.anilist_id) && this.getCatType(nom.categoryId) != 'vas') {
 							this.unique.shows.push(nom.anilist_id);
 							this.unique.survey.push(nom);
 						}
