@@ -480,17 +480,22 @@ export default {
 						if (!this.unique.shows.includes(nom.anilist_id)) {
 							this.unique.shows.push(nom.anilist_id);
 							this.unique.survey.push(nom);
-						} else if(nom.anilist_id == -1) {
+						} else if(nom.anilist_id === -1) {
 							this.unique.survey.push(nom);
 						}
 					} else if (this.getCatType(nom.categoryId) === 'characters' || this.getCatType(nom.categoryId) === 'vas') {
 						if (!this.unique.characters.includes(nom.character_id)) {
 							this.unique.characters.push(nom.character_id);
 						}
+						if (!this.unique.shows.includes(nom.anilist_id)) {
+							this.unique.shows.push(nom.anilist_id);
+							this.unique.survey.push(nom);
+						}
 					} else if (this.getCatType(nom.categoryId) === 'themes') {
 						const _theme = this.themes.find(theme => theme.id === nom.themeId);
 						if (!this.unique.shows.includes(_theme.anilistID)) {
 							this.unique.shows.push(_theme.anilistID);
+							this.unique.survey.push(nom);
 						}
 					}
 				});
