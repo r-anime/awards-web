@@ -269,7 +269,7 @@ export default {
 			return _show;
 		},
 		getName (nom) {
-			if (this.currentCat.entryType === 'shows' || this.vote.cat >= this.categories.length) {
+			if (this.currentCat.entryType === 'shows' || this.vote.cat >= this.categories.length ) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				if (this.romaji) {
 					return nom.alt_name || _show.title.romaji || _show.title.english;
@@ -487,15 +487,19 @@ export default {
 						if (!this.unique.characters.includes(nom.character_id)) {
 							this.unique.characters.push(nom.character_id);
 						}
-						if (!this.unique.shows.includes(nom.anilist_id) && this.getCatType(nom.categoryId) != 'vas') {
+						if (!this.unique.shows.includes(nom.anilist_id)) {
 							this.unique.shows.push(nom.anilist_id);
-							this.unique.survey.push(nom);
+							this.unique.survey.push({
+								anilist_id: nom.anilist_id,
+							});
 						}
 					} else if (this.getCatType(nom.categoryId) === 'themes') {
 						const _theme = this.themes.find(theme => theme.id === nom.themeId);
 						if (!this.unique.shows.includes(_theme.anilistID)) {
 							this.unique.shows.push(_theme.anilistID);
-							this.unique.survey.push(nom);
+							this.unique.survey.push({
+								anilist_id: nom.anilist_id,
+							});
 						}
 					}
 				});
