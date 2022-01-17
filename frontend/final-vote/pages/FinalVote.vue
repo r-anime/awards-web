@@ -491,6 +491,7 @@ export default {
 							this.unique.shows.push(nom.anilist_id);
 							this.unique.survey.push({
 								anilist_id: nom.anilist_id,
+								alt_name: "",
 							});
 						}
 					} else if (this.getCatType(nom.categoryId) === 'themes') {
@@ -499,6 +500,7 @@ export default {
 							this.unique.shows.push(_theme.anilistID);
 							this.unique.survey.push({
 								anilist_id: nom.anilist_id,
+								alt_name: "",
 							});
 						}
 					}
