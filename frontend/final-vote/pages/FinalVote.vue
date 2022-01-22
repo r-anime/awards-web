@@ -340,11 +340,11 @@ export default {
 			if (this.votes.length < this.categories.length) {
 				await new Promise(resolve => setTimeout(resolve, 800));
 			}
-			if (_lastCat) {
-				this.vote.cat = this.categories.length;
-			} else {
-				this.vote.cat = this.nextEmptyCat(this.vote.cat);
-			}
+			// if (_lastCat) {
+			// 	this.vote.cat = this.categories.length;
+			// } else {
+			// 	this.vote.cat = this.nextEmptyCat(this.vote.cat);
+			// }
 			this.loaded.voting = true;
 		},
 		async suverySubmit (nom) {
@@ -542,9 +542,9 @@ export default {
 					const _genrelock = new Date('01/14/2022');
 					// We are using UNIX timestamps here that basically translate to 13:00 on a specific day (GMT) which is the time we post threads at
 					const _charlock = new Date('01/20/2022'); // 01/20/2021
-					const _vprodlock = new Date('01/25/2022'); // 01/25/2021
-					const _mprodlock = new Date('01/30/2022'); // 01/30/2021
-					const _mainlock = new Date('02/05/2022'); // 02/05/2021
+					const _vprodlock = new Date('01/22/2022'); // 01/25/2021
+					const _mprodlock = new Date('01/29/2022'); // 01/30/2021
+					const _mainlock = new Date('02/06/2022'); // 02/05/2021
 					let _startcat = 0;
 					if (_today.getTime() > _mainlock.getTime()) {
 						_startcat = 0;
