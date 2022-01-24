@@ -275,11 +275,15 @@ export default {
 							const allVotes = this.finalVotes.filter(vote => vote.category_id === category.id);
 							const entries = [];
 							for (const vote of allVotes) {
-								console.log(category.entryType);
+								// console.log(category.entryType);
 								if (category.entryType === 'themes') {
+									// console.log(vote);
 									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
 									const requiredNom = this.allNoms.find(nom => nom.id === vote.nom_id);
-									const requiredTheme = this.themes.find(theme => theme.id === requiredNom.themeId);
+									let requiredTheme = null;
+									if (requiredNom){
+										requiredTheme = this.themes.find(theme => theme.id === requiredNom.themeId);
+									}
 									if (requiredShow && requiredTheme) {
 										entries.push({
 											vote_count: vote.vote_count,
