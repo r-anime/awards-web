@@ -138,4 +138,41 @@ apiApp.get('/totals', async (request, response) => {
 	}
 });
 
+apiApp.get('/totals', async (request, response) => {
+	if (!await request.authenticate({level: 2, lock: 'fv-results'})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	try {
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` FROM `finalvotes` GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
+		response.json(res);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/totals', async (request, response) => {
+	if (!await request.authenticate({level: 2, lock: 'fv-results'})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	try {
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` FROM `finalvotes` GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
+		response.json(res);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+apiApp.get('/watched', async (request, response) => {
+	if (!await request.authenticate({level: 2, lock: 'fv-results'})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	try {
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` FROM `finalvotes` INNER JOIN `WatchVotes` ON `finalvotes`.`reddit_user` = `WatchVotes`.`reddit_user` AND `finalvotes`.`anilist_id` = `WatchVotes`.`anilist_id` WHERE `WatchVotes`.`status` = 1 GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
+		response.json(res);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+
 module.exports = apiApp;

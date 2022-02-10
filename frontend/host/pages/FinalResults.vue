@@ -42,6 +42,7 @@
 										<br>
 										<div class="tags">
 											<small class="tag is-small">{{vote.vote_count}} votes</small>
+											<small class="tag is-small">{{vote.watched}} watched that voted</small>
 										</div>
 									</li>
 								</ul>
@@ -95,6 +96,7 @@ export default {
 		...mapState([
 			'categories',
 			'finalVotes',
+			'finalVotesPercent',
 			'themes',
 			'finalVoteSummary',
 			'locks',
@@ -106,6 +108,7 @@ export default {
 		...mapActions([
 			'getCategories',
 			'getFinalVotes',
+			'getFinalVotesWatched',
 			'getThemes',
 			'getFinalVoteSummary',
 			'getLocks',
@@ -217,7 +220,17 @@ export default {
 						reject(err);
 					}
 				});
-				Promise.all([themePromise, catPromise, votesPromise, nomsPromise]).then(() => {
+				const votesWatchedPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.finalVotes) {
+							await this.getFinalVotesWatched();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				Promise.all([themePromise, catPromise, votesPromise, nomsPromise, votesWatchedPromise]).then(() => {
 					const summaryPromise = new Promise(async (resolve, reject) => {
 						try {
 							if (!this.finalVoteSummary) {
@@ -279,6 +292,11 @@ export default {
 								if (category.entryType === 'themes') {
 									// console.log(vote);
 									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id && perc.category_id === vote.category_id);
+									let watched = 0;
+									if (requiredPercent) {
+										watched = requiredPercent.vote_count;
+									}
 									const requiredNom = this.allNoms.find(nom => nom.id === vote.nom_id);
 									let requiredTheme = null;
 									if (requiredNom){
@@ -287,14 +305,21 @@ export default {
 									if (requiredShow && requiredTheme) {
 										entries.push({
 											vote_count: vote.vote_count,
+											watched: watched,
 											name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
 										});
 									}
 								} else if (category.entryType === 'shows') {
 									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id);
+									let watched = 0;
+									if (requiredPercent) {
+										watched = requiredPercent.vote_count;
+									}
 									if (requiredShow) {
 										entries.push({
 											vote_count: vote.vote_count,
+											watched: watched,
 											name: `${requiredShow.title.romaji}`,
 										});
 									} else {
@@ -302,52 +327,70 @@ export default {
 										if (nom){
 											entries.push({
 												vote_count: vote.vote_count,
+												watched: watched,
 												name: `${nom.alt_name}`,
 											});
 										} else {
 											entries.push({
 												vote_count: vote.vote_count,
+												watched: watched,
 												name: `${vote.anilist_id}`,
 											});
 										}
 									}
 								} else if (category.entryType === 'characters') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id);
+									let watched = 0;
+									if (requiredPercent) {
+										watched = requiredPercent.vote_count;
+									}
 									if (requiredChar) {
 										entries.push({
 											vote_count: vote.vote_count,
+											watched: watched,
 											name: `${requiredChar.name.full}`,
 										});
 									} else {
 										entries.push({
 											vote_count: vote.vote_count,
+											watched: watched,
 											name: `${vote.anilist_id}`,
 										});
 									}
 								} else if (category.entryType === 'vas') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id);
+									let watched = 0;
+									if (requiredPercent) {
+										watched = requiredPercent.vote_count;
+									}
 									if (requiredChar) {
 										if (requiredChar.media.edges.length) {
 											if (requiredChar.media.edges[0].voiceActors.length) {
 												entries.push({
 													vote_count: vote.vote_count,
+													watched: watched,
 													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
 												});
 											} else {
 												entries.push({
 													vote_count: vote.vote_count,
+													watched: watched,
 													name: `${requiredChar.name.full}`,
 												});
 											}
 										} else {
 											entries.push({
 												vote_count: vote.vote_count,
+												watched: watched,
 												name: `${requiredChar.name.full}`,
 											});
 										}
 									} else {
 										entries.push({
 											vote_count: vote.vote_count,
+											watched: watched,
 											name: `${vote.anilist_id}`,
 										});
 									}

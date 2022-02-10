@@ -48,6 +48,7 @@ const store = new Vuex.Store({
 		applicants: null,
 		finalVoteSummary: null,
 		finalVotes: null,
+		finalVotesPercent: null,
 		items: [],
 		loadingprogress: {
 			curr: 0,
@@ -184,6 +185,9 @@ const store = new Vuex.Store({
 		},
 		GET_FINAL_VOTES (state, finalVotes) {
 			state.finalVotes = finalVotes;
+		},
+		GET_FINAL_VOTES_WATCHED (state, finalVotesPercent) {
+			state.finalVotesPercent = finalVotesPercent;
 		},
 		SET_ITEMS (state, items) {
 			state.items = items;
@@ -392,6 +396,10 @@ const store = new Vuex.Store({
 		async getFinalVotes ({commit}) {
 			const finalVotes = await makeRequest('/api/final/totals');
 			commit('GET_FINAL_VOTES', finalVotes);
+		},
+		async getFinalVotesWatched ({commit}) {
+			const finalVotes = await makeRequest('/api/final/watched');
+			commit('GET_FINAL_VOTES_WATCHED', finalVotes);
 		},
 		async getItems ({commit}){
 			const req = await makeRequest(`/api/items/page/0`, 'GET');
