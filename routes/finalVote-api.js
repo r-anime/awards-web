@@ -174,5 +174,18 @@ apiApp.get('/watched', async (request, response) => {
 	}
 });
 
+apiApp.get('/watchstats', async (request, response) => {
+	if (!await request.authenticate({level: 2, lock: 'fv-results'})) {
+		return response.json(401, {error: 'You must be a host to view vote summary.'});
+	}
+	try {
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `anilist_id`, `name` FROM `WatchVotes` WHERE `status`=1 GROUP BY `anilist_id`, `name` ORDER BY `vote_count` DESC');
+		response.json(res);
+	} catch (error) {
+		response.error(error);
+	}
+});
+
+
 
 module.exports = apiApp;

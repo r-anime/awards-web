@@ -42,7 +42,8 @@
 										<br>
 										<div class="tags">
 											<small class="tag is-small">{{vote.vote_count}} votes</small>
-											<small class="tag is-small">{{vote.watched}} watched that voted</small>
+											<small class="tag is-small">{{vote.watched}} supp</small>
+											<small class="tag is-small">{{vote.totalwatched}} total</small>
 										</div>
 									</li>
 								</ul>
@@ -99,6 +100,7 @@ export default {
 			'finalVotesPercent',
 			'themes',
 			'finalVoteSummary',
+			'watchStats',
 			'locks',
 			'me',
 			'allNoms',
@@ -111,10 +113,22 @@ export default {
 			'getFinalVotesWatched',
 			'getThemes',
 			'getFinalVoteSummary',
+			'getWatchStats',
 			'getLocks',
 			'getMe',
 			'getAllNominations',
 		]),
+		getShowWatchStats (id) {
+			if (id === null){
+				return 0;
+			}
+			const show = this.watchStats.find(show => show.anilist_id == id);
+			if (show){
+				return show.vote_count;
+			} else {
+				return 0;
+			}
+		},
 		fetchShows (page) {
 			return new Promise(async (resolve, reject) => {
 				try {
@@ -230,7 +244,17 @@ export default {
 						reject(err);
 					}
 				});
-				Promise.all([themePromise, catPromise, votesPromise, nomsPromise, votesWatchedPromise]).then(() => {
+				const watchStatsPromise = new Promise(async (resolve, reject) => {
+					try {
+						if (!this.watchStats) {
+							await this.getWatchStats();
+						}
+						resolve();
+					} catch (err) {
+						reject(err);
+					}
+				});
+				Promise.all([themePromise, catPromise, votesPromise, nomsPromise, votesWatchedPromise, watchStatsPromise]).then(() => {
 					const summaryPromise = new Promise(async (resolve, reject) => {
 						try {
 							if (!this.finalVoteSummary) {
@@ -306,6 +330,7 @@ export default {
 										entries.push({
 											vote_count: vote.vote_count,
 											watched: watched,
+											totalwatched: this.getShowWatchStats(vote.anilist_id),
 											name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
 										});
 									}
@@ -320,6 +345,7 @@ export default {
 										entries.push({
 											vote_count: vote.vote_count,
 											watched: watched,
+											totalwatched: this.getShowWatchStats(vote.anilist_id),
 											name: `${requiredShow.title.romaji}`,
 										});
 									} else {
@@ -328,12 +354,14 @@ export default {
 											entries.push({
 												vote_count: vote.vote_count,
 												watched: watched,
+												totalwatched: this.getShowWatchStats(vote.anilist_id),
 												name: `${nom.alt_name}`,
 											});
 										} else {
 											entries.push({
 												vote_count: vote.vote_count,
 												watched: watched,
+												totalwatched: 0,
 												name: `${vote.anilist_id}`,
 											});
 										}
@@ -349,12 +377,14 @@ export default {
 										entries.push({
 											vote_count: vote.vote_count,
 											watched: watched,
+											totalwatched: 0,
 											name: `${requiredChar.name.full}`,
 										});
 									} else {
 										entries.push({
 											vote_count: vote.vote_count,
 											watched: watched,
+											totalwatched: 0,
 											name: `${vote.anilist_id}`,
 										});
 									}
@@ -371,12 +401,14 @@ export default {
 												entries.push({
 													vote_count: vote.vote_count,
 													watched: watched,
+													totalwatched: 0,
 													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
 												});
 											} else {
 												entries.push({
 													vote_count: vote.vote_count,
 													watched: watched,
+													totalwatched: 0,
 													name: `${requiredChar.name.full}`,
 												});
 											}
@@ -384,6 +416,7 @@ export default {
 											entries.push({
 												vote_count: vote.vote_count,
 												watched: watched,
+												totalwatched: 0,
 												name: `${requiredChar.name.full}`,
 											});
 										}
@@ -391,6 +424,7 @@ export default {
 										entries.push({
 											vote_count: vote.vote_count,
 											watched: watched,
+											totalwatched: 0,
 											name: `${vote.anilist_id}`,
 										});
 									}
