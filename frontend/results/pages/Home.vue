@@ -14,12 +14,15 @@
 							which are revealed in our livestream in February.
 						</p>
 						<div class="has-text-centered">
-							<button class="button is-primary is-large is-centered" href="results">View Results</button>
+							<a v-if="voting" href="/vote/" class="button is-primary is-large is-centered">Vote Now</a>
+							<a v-else-if="fvoting" href="/final-vote/" class="button is-primary is-large is-centered">Vote Now</a>
+							<a v-else-if="ongoing" href="/apps/" class="button is-primary is-large is-centered">Sign Up</a>
+							<a v-else href="/results/" class="button is-primary is-large is-centered">View Results</a>
 						</div>
 					</div>
 				</div>
 				<div class="column is-one-third">
-					<img loading="lazy" src="img/snoo_hyeinlee.png"/>
+					<img loading="lazy" src="img/snoo_hyeinlee.png" height="820" width="432"/>
 				</div>
 			</div>
 		</div>
@@ -95,7 +98,7 @@
 						by following the link below.
 					</p>
 					<div class="has-text-centered mb-6">
-						<button class="button is-primary is-large is-centered" href="results">Full Livestream</button>
+						<a class="button is-primary is-large is-centered" target="_blank" href="https://youtu.be/3J7pyPcAJgs">Full Livestream</a>
 					</div>
 				</div>
 			</div>
