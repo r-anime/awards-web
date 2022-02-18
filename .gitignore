@@ -8,6 +8,7 @@ node_modules
 public/*[.png, .svg, .jpg, .gif, .js, .gz, .html, .br]
 
 !public/template.html
+!public/img/
 
 # Secrets
 config.js

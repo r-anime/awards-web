@@ -36,6 +36,10 @@ module.exports = (sequelize, types) => {
 			type: types.STRING,
 			defaultValue: '',
 		},
+		watched: {
+			type: types.INTEGER,
+			defaultValue: 0,
+		},
 	});
 
 	noms.associate = models => {

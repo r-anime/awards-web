@@ -1,111 +1,101 @@
 <template>
-	<section class="hero has-background-dark">
-		<div class="hero-body">
-			<div class="container">
-				<div class="columns is-centered mt-10">
-					<div class="column is-4">
-						<img class="BFimage" :src="logo" />
+	<section class="has-background-dark">
+		<div class="container">
+			<div class="columns is-centered is-vcentered pt-6">
+				<div class="column is-two-thirds">
+					<div class="content has-text-light has-text-left p-5">
+						<div class="has-text-centered">
+							<h1 class="is-size-1">Welcome to the</h1>
+							<img class="BFimage" src="img/awards2021.png" />
+						</div>
+						<p class="is-size-5 py-5">
+							The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community.
+							Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer,
+							which are revealed in our livestream in February.
+						</p>
+						<div class="has-text-centered">
+							<button class="button is-primary is-large is-centered" href="results">View Results</button>
+						</div>
 					</div>
 				</div>
-				<div class="columns is-centered is-vcentered ">
-					<div class="column is-4-tablet is-4-desktop is-3-widescreen">
-						<img loading="lazy" :src="snooImage"/>
+				<div class="column is-one-third">
+					<img loading="lazy" src="img/snoo_hyeinlee.png"/>
+				</div>
+			</div>
+		</div>
+		<div class="has-background-dperiwinkle py-6">
+			<div class="container">
+				<div class="content has-text-light has-text-left p-5">
+					<div class="has-text-centered">
+						<h2 class="is-size-2 has-text-weight-bold mb-5">Categories</h2>
 					</div>
-					<div class="column is-centered has-text-white box has-background-dperiwinkle is-size-5 pl-40 pr-40 pt-40 pb-100">
-						<div v-if="ongoing">
-							<div class="has-text-centered">
-								<a v-if="voting" href="/vote/" class="button is-large is-platinum">Vote Now</a>
-								<a v-else-if="fvoting" href="/final-vote/" class="button is-large is-platinum">Vote Now</a>
-								<a v-else href="/apps/" class="button is-large is-platinum">Sign Up</a>
+					<p class="is-size-5 py-5">
+						In order to underline the breadth of shows each year has to offer, we've split our awards into 20+ categories, each with their own panel of jurors.
+						These categories are grouped into 4 sections to help highlight both the individual and combined strengths each show has to offer.
+					</p>
+					<nav class="homeIntroThingy level mt-40">
+						<div class="level-item has-text-centered">
+							<router-link to="/results/genre" >
+							<div>
+								<p class="heading has-text-gold">Genre</p>
+								<p class="title">
+									<fa-icon icon="book" size="3x" class="has-text-gold mb-20 mt-20" />
+								</p>
 							</div>
-							<br/><br/>
-							<p>
-							Welcome, one and all, to the 2021 /r/Anime Awards!
-							<br/><br/>
-							We're proud to announce that preparations for /r/Anime Awards 2021 have begun in earnest. In these Awards, users of /r/anime will pick their favourites of the year and the nominations and winners will be showcased on our website. The /r/anime Awards are divided into a public and jury award. The jury is made up of /r/anime users selected through an anonymous application. Jurors in the /r/anime Awards are expected to watch all nominated shows in their category and vote on a ranking that is displayed alongside the public ranking. For more information, please watch the following informational video!
-							</p>
-							<br/><br/>
-							<figure class="image is-16by9">
-								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/h5WSBY-RDrE" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
-							</figure>
-							<br/><br/>
-							<p>
-							If you want to participate, click the button below! If you want to check out past results, please use the past results link above.
-							</p>
-							<br/><br/>
-							<div class="has-text-centered">
-								<a v-if="voting" href="/vote/" class="button is-large is-platinum">Vote Now</a>
-								<a v-else-if="fvoting" href="/final-vote/" class="button is-large is-platinum">Vote Now</a>
-								<a v-else href="/apps/" class="button is-large is-platinum">Sign Up</a>
+							</router-link>
+						</div>
+						<div class="level-item has-text-centered">
+							<router-link to="/results/character" >
+							<div>
+								<p class="heading has-text-gold">Character</p>
+								<p class="title">
+									<fa-icon icon="user-friends" size="3x" class="has-text-gold mb-20 mt-20" />
+								</p>
 							</div>
+							</router-link>
 						</div>
-						<div v-else>
-							<nav class="homeIntroThingy level mt-40">
-								<div class="level-item has-text-centered">
-									<router-link to="/results/genre" >
-									<div>
-										<p class="heading has-text-gold">Genre</p>
-										<p class="title">
-											<fa-icon icon="book" size="3x" class="has-text-gold mb-20 mt-20" />
-										</p>
-									</div>
-									</router-link>
-								</div>
-								<div class="level-item has-text-centered">
-									<router-link to="/results/character" >
-									<div>
-										<p class="heading has-text-gold">Character</p>
-										<p class="title">
-											<fa-icon icon="user-friends" size="3x" class="has-text-gold mb-20 mt-20" />
-										</p>
-									</div>
-									</router-link>
-								</div>
-								<div class="level-item has-text-centered">
-									<router-link to="/results/production" >
-									<div>
-										<p class="heading has-text-gold">Production</p>
-										<p class="title">
-											<fa-icon icon="pencil-ruler" size="3x" class="has-text-gold mb-20 mt-20" />
-										</p>
-									</div>
-									</router-link>
-								</div>
-								<div class="level-item has-text-centered">
-									<router-link to="/results/main" >
-									<div>
-										<p class="heading has-text-gold">Main</p>
-										<p class="title">
-											<fa-icon icon="crown" size="3x" class="has-text-gold mb-20 mt-20" />
-										</p>
-									</div>
-									</router-link>
-								</div>
-							</nav>
-							<p>
-							Welcome, one and all, to the 2021 /r/Anime Awards results!
-							Over the past few months we've laid the groundwork for our annual selection of the best shows of the year.
-							We've recruited our jurors, cruelly subjected them to innumerable episodes of anime, and simultaneously opened it up to you, the community of /r/anime.
-							Every year we try to improve these awards to better showcase the shows and creators we love.
-							Now presenting an even bigger, better, and of course saltier, r/anime awards.
-							</p>
-							<figure class="image is-16by9">
-								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/h5WSBY-RDrE" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
-							</figure>
-							<br>
-							<p>
-							This site contains all of the info about the winners and rankings for the 24 award categories featured this year.
-							These are separated into over-arching category groups: genre awards, character awards, production awards, and main awards.
-							On each of these pages you will find the winner and runners-up for each category, as well as a toggle with which you can compare the results of the community vote to the rankings awarded by the category's jury.
-							For more detailed result statistics and other info, click the name of the award.
-							You can watch <a class="has-text-periwinkle" href="https://youtu.be/3J7pyPcAJgs" target="_blank">the full livestream here</a>.
-							The Winners Reel can be watched below:
-							</p>
-							<br>
-							<figure class="image is-16by9">
-								<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/Ssfcqm-O0eQ" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
-							</figure>
+						<div class="level-item has-text-centered">
+							<router-link to="/results/production" >
+							<div>
+								<p class="heading has-text-gold">Production</p>
+								<p class="title">
+									<fa-icon icon="pencil-ruler" size="3x" class="has-text-gold mb-20 mt-20" />
+								</p>
+							</div>
+							</router-link>
 						</div>
+						<div class="level-item has-text-centered">
+							<router-link to="/results/main" >
+							<div>
+								<p class="heading has-text-gold">Main</p>
+								<p class="title">
+									<fa-icon icon="crown" size="3x" class="has-text-gold mb-20 mt-20" />
+								</p>
+							</div>
+							</router-link>
+						</div>
+					</nav>
+				</div>
+			</div>
+		</div>
+		<div class="container pt-6 has-text-light">
+			<h2 class="has-text-centered is-size-2 has-text-weight-bold mb-6">Livestream</h2>
+			<figure class="image is-16by9">
+				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/Ssfcqm-O0eQ?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
+			</figure>
+			<div class="columns is-centered is-vcentered pt-6">
+				<div class="column is-one-third pb-0">
+					<img loading="lazy" src="img/snoo_naoyamorotomi.png"/>
+				</div>
+				<div class="column is-two-thirds">
+					<p class="is-size-5 p-5 mb-6">
+						Every year, to showcase the hard work of our community, our jurors, and our hosts, we hold a livestream to announce the results.
+						The livestream has a plethora of talented guests, consistenting of voice actors, animators, and community members,
+						who volunteer their time to offer their insights and opinions on our results. You can see the results reel above, or watch a recording of the livestream
+						by following the link below.
+					</p>
+					<div class="has-text-centered mb-6">
+						<button class="button is-primary is-large is-centered" href="results">Full Livestream</button>
 					</div>
 				</div>
 			</div>
@@ -115,15 +105,11 @@
 
 <script>
 import {mapState, mapGetters} from 'vuex';
-import logo from '../../../img/awards2021.png';
-import snoo from '../../../img/bannerSnooJump.png';
 
 export default {
 	data () {
 		return {
 			deleting: false,
-			snooImage: snoo,
-			logo,
 			ongoing: null,
 			voting: false,
 			fvoting: false,

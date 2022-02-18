@@ -63,6 +63,13 @@
                     </div>
                     <p class="help">Leave alone for unshared cat jury noms</p>
                 </div>
+                <div class="column is-narrow field">
+                    <label class="label">Watch Count</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="" v-model="nom.watched" @input="emitUpdate">
+                    </div>
+                    <p class="help">Leave alone for unshared cat jury noms</p>
+                </div>
             </div>
             <div class="columns">
                 <div class="column field">
