@@ -1,14 +1,17 @@
 <template>
     <div :id="slug" class="awardDisplay mb-100">
-		<div class="has-text-centered mb-30" @click="emitCatModal">
-			<h2 class="categoryHeader title is-3 has-text-gold has-text-centered mt-50 mb-10" >
-				{{category.name}}
-            </h2>
-			<button class="button is-small is-platinum is-outlined">
-				<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
-				Category Overview
+		<div class="mb-6" @click="emitCatModal">
+			<div class="is-pulled-left">
+				<h2 class="categoryHeader title is-2 has-text-light pl-5" >
+					{{category.name}}
+				</h2>
+			</div>
+			<button class="button is-platinum is-pulled-right mr-5 mt-3">
+				<span class="icon mr-4"><fa-icon icon="info-circle" /></span>
+				Read Category Info
 			</button>
 		</div>
+		<div class="is-clearfix my-3"></div>
         <award-winners v-if="nomPublicOrder[0] &&
             nomJuryOrder[0]"
             :pub="nomPublicOrder[0]"
@@ -18,52 +21,52 @@
             :category="category"
             @nomModal="emitNomModal"
         />
-        <section class="hero has-background-black-bis">
-            <div class="ranking-container">
-                <div class="container">
-					<h5 class="has-text-centered has-text-light is-size-5">Rankings</h5>
-                    <div class="tabs is-fullwidth has-text-centered has-text-grey">
-                        <ul >
-                            <li @click="juryOrder" class="is-gold" :class="{'is-active': focus === 'jury'}">
-                                Jury
-                            </li>
-                            <li @click="publicOrder" class="is-periwinkle" :class="{'is-active': focus === 'public'}">
-                                Public
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-							<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless">
-								<div class="categoryRankCard column" v-for="(nom, index) in nomCurrentOrder"
-								:key="nom.id" @click="emitNomModal(nom)">
-									<div class="categoryNominationItem" >
-										<category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
-									</div>
-									<div class="categoryRank has-text-platinum">{{nomPublicRankings[index]}}</div>
-									<button class="button is-small is-platinum is-outlined is-hidden-tablet mb-10">
-										<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
-										Read Nominee Writeup
-									</button>
-									<p v-html="markdownit(nom.writeup.substring(0, 69))" class="categoryNominationPreview has-text-light has-text-left"></p>
+		<div class="">
+			<div class="">
+				<h5 class="is-pulled-left has-text-light is-size-4 ml-2">Nominees</h5>
+				<div class="juryToggle is-pulled-right mr-2 is-inline-flex">
+					<img class="image mr-2" :src="juryIcon" width="42" height="34"/>
+					<label class="switch">
+						<input v-model="focus" type="checkbox">
+						<span class="slider round">
+						</span>
+					</label>
+					<img class="image" :src="publicIcon" width="42" height="34"/>
+				</div>
+			</div>
+			<div class="is-clearfix my-3"></div>
+			<div>
+					<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless is-mobile is-multiline">
+						<div class="categoryRankCard column is-half-mobile" v-for="(nom, index) in nomCurrentOrder"
+						:key="nom.id" @click="emitNomModal(nom)">
+							<div class="categoryNominationItem" >
+								<category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
+								<div class="nomineeTitle has-text-light is-size-5">
+									<nominee-name
+										:nominee="nom"
+										:anilistData="anilistData"
+										:data="data"
+										:category="category"
+									></nominee-name>
 								</div>
-							</transition-group>
-                    </div>
+							</div>
+							<div class="categoryRank has-text-gold">{{nomPublicRankings[index]}}</div>
+						</div>
+					</transition-group>
+					<small class="is-pulled-right has-text-light small mr-3">Click each nominee to read a detailed write-up.</small>
+					<div class="is-clearfix"></div>
+			</div>
+		</div>
+        <div class="awardHonorableMentions has-text-light has-text-centered my-6" v-if="category.hms && category.hms.length > 0">
+            <h5 class="is-pulled-left has-text-light is-size-4 ml-2">Honorable Mentions</h5>
+			<div class="is-clearfix mb-4"></div>
+            <div class="columns is-multiline mx-2 is-mobile">
+				<div class="column is-half-mobile is-one-quarter-tablet is-clickable" v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">
+					<div class="awardHonorableMention p-4">{{hm.name}}</div>
                 </div>
             </div>
-        </section>
-        <div class="awardHonorableMentions has-text-light has-text-centered mt-20" v-if="category.hms && category.hms.length > 0">
-            <h4 class="categoryHeader title has-text-light has-flaired-underline-thin pb-20">Honorable Mentions</h4>
-            <ul>
-				<li v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">
-					<div class="has-text-centered mb-30">
-						<div>{{hm.name}}</div>
-						<button v-if="hm.writeup !== ''" class="button is-small is-llperiwinkle is-outlined mt-10">
-							<span class="icon is-small mr-10"><fa-icon icon="info-circle" /></span>
-							Read Write-up
-						</button>
-					</div>
-                </li>
-            </ul>
+			<small class="is-pulled-right has-text-light small mr-3">Click each hm to read a detailed write-up.</small>
+			<div class="is-clearfix"></div>
         </div>
     </div>
 </template>
@@ -73,7 +76,10 @@ import {mapActions} from 'vuex';
 import util from '../../util';
 import AwardWinners from './ResultWinners';
 import CategoryItemImage from './ItemImage';
+import NomineeName from './NomineeName';
 import marked from 'marked';
+import juryIcon from '../../../img/jury.png';
+import publicIcon from '../../../img/public.png';
 
 export default {
 	props: [
@@ -86,10 +92,13 @@ export default {
 	components: {
 		AwardWinners,
 		CategoryItemImage,
+		NomineeName,
 	},
 	data () {
 		return {
-			focus: 'public',
+			focus: true,
+			juryIcon,
+			publicIcon,
 		};
 	},
 	computed: {
@@ -115,7 +124,7 @@ export default {
 			return ranking;
 		},
 		nomCurrentOrder () {
-			if (this.focus === 'public') {
+			if (this.focus) {
 				return this.nomPublicOrder;
 			}
 			return this.nomJuryOrder;

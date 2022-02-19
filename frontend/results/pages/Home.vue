@@ -1,5 +1,5 @@
 <template>
-	<section class="has-background-dark">
+	<section class="">
 		<div class="container">
 			<div class="columns is-centered is-vcentered pt-6">
 				<div class="column is-two-thirds">

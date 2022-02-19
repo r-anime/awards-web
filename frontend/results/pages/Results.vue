@@ -1,14 +1,9 @@
 <template>
-	<div class="has-background-dark">
+	<div class="">
 		<div class="container" >
 			<div class="columns is-centered" >
-				<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-tablet" >
-					<div class="columns is-centered mt-75 pl-30 pr-30">
-						<div class="column is-narrow">
-							<img class="BFimage" :src="logo" />
-						</div>
-					</div>
-					<section class="section has-background-dark" v-if="loaded">
+				<div class="column" >
+					<section class="" v-if="loaded">
 						<awards-section
 							v-for="(section, index) in resultSections"
 							:key="index"
@@ -21,11 +16,11 @@
 							>
 						</awards-section>
 					</section>
-					<section class="hero is-fullheight-with-navbar section has-background-dark" v-else>
+					<section class="hero is-fullheight-with-navbar section" v-else>
 						<div class="container">
 							<div class="columns is-desktop is-vcentered">
 								<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
-									<div class="section">
+									<div class="">
 										<div class="loader is-loading"></div>
 									</div>
 								</div>
@@ -214,7 +209,9 @@ export default {
 		logo () {
 			switch (this.year) {
 				case undefined:
-					return logo20;
+					return logo21;
+				case '2021':
+					return logo21;
 				case '2020':
 					return logo20;
 				case '2019':
@@ -226,7 +223,7 @@ export default {
 				case '2016':
 					return logo16;
 				default:
-					return logo20;
+					return logo21;
 			}
 		},
 	},

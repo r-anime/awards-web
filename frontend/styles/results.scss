@@ -41,11 +41,54 @@ html, body{
     width: 6rem;
     flex-shrink: 0;
     flex-basis: 6rem;
+    margin-right: -32px;
+    opacity: 30%;
+
+    z-index: -1;
     display: inline-block;
+}
+
+.sectionIconContainer {
+    position: relative;
+    margin-right: -64px;
+    opacity: 50%;
+    z-index: -10;
 }
 
 .awardSectionHeader, .categoryHeader{
     text-shadow: 0 4px 6px #000000;
+}
+
+.awardSectionHeader{
+    position: relative;
+    
+    &:after{
+        content: "";
+        position: absolute;
+        bottom: 12px;
+        left: calc(50% - 40px);
+        width: 80px;
+        height: 10px;
+        background-color: $light;
+        box-shadow: 0 4px 6px #000000;
+        z-index: -1;
+    }
+
+}
+
+.categoryHeader {
+    position: relative;
+
+    &:after{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background-color: $gold;
+        top: 36px;
+        left: 32px;
+        z-index: -5;
+    }
 }
 
 .awardsModal{
@@ -91,37 +134,40 @@ html, body{
 
 .categoryRank {
     position: relative;
+    pointer-events: none;
+    top: -60px;
+    margin-bottom: -40px;
+
+    width: 100%;
+    height: 40px;
+    font-size: 26px;
+    font-weight: bold;
+    background-image: url(../../img/laurels.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    z-index: 3;
 
 
     &:before {
         content: '';
         position: absolute;
-        right: 1.5rem;
-        top: 0.8rem;
-        height: 1px;
-        width: 1rem;
-        background-image: linear-gradient(to left, transparent, $platinum);
-    }
-    @include until($tablet){
-        &:before{
-            right: 5.5rem;
-            width: 3rem;
-        }
+        left: 2px;
+        top: 50%;
+        height: 3px;
+        width: calc(50% - 42px);
+        background: $gold;
+        // background-image: linear-gradient(to left, transparent, $platinum);
     }
     &:after {
         content: '';
         position: absolute;
-        left: 1.5rem;
-        top: 0.8rem;
-        height: 1px;
-        width: 1rem;
-        background-image: linear-gradient(to right, transparent, $platinum);
-    }
-    @include until($tablet){
-        &:after{
-            left: 5.5rem;
-            width: 3rem;
-        }
+        right: 2px;
+        top: 50%;
+        height: 3px;
+        width: calc(50% - 42px);
+        background: $gold;
     }
 }
 
@@ -157,16 +203,12 @@ html, body{
 }
 
 .categoryWinnerItem {
-    height: 32rem;
+    height: 36rem;
     overflow: hidden;
+
     @include until($tablet){
-        height: 15rem;
+        height: 20rem;
     }
-}
-
-.categoryItemImage {
-    height: 100%;
-
 }
 
 .categoryNominationCards {
@@ -176,9 +218,39 @@ html, body{
 }
 
 .categoryNominationItem {
+    position: relative;
     margin: 2px;
-    height: 132px;
+    height: 300px;
     overflow: hidden;
+
+    @include until($tablet){
+        height: 240px;
+    }
+
+    .nomineeTitle {
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 8px;
+        width: 100%;
+        height: 240px;
+        z-index: 4;
+        opacity: 100%;
+        transition: opacity 300ms;
+
+        @include until($tablet){
+            height: 200px;
+        }
+    }
+
+    &:hover .nomineeTitle{
+        opacity: 0;
+    }
 }
 
 .categoryNominationPreview{
@@ -226,18 +298,46 @@ html, body{
     transform-origin: center;
     transition: all 150ms;
 
-    /* z-index: -3000;*/
+    .categoryNominationItem &:after{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background:rgba(0, 0, 0, 0.7);
+
+        transition: all 500ms;
+    }
+
+    .categoryNominationItem &:hover:after{
+        content: '';
+        position: absolute;
+        bottom: 16px;
+        left: calc(50% - 40px);
+        width: 80px;
+        height: 80px;
+        border-radius: 40px;
+    }
 }
 
 .categoryNominationItem:hover .categoryItemImage,
-.categoryNominationItem:focus .categoryItemImage,
+.categoryNominationItem:focus .categoryItemImage {
+    transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -o-transform: scale(1.2);
+}
+
 .categoryWinnerItem:hover .categoryItemImage,
 .categoryWinnerItem:focus .categoryItemImage {
-    transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    -moz-transform: scale(1.1);
-    -webkit-transform: scale(1.1);
-    -o-transform: scale(1.1);
+    transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -moz-transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    -o-transform: scale(1.05);
 }
 
 .categorySubHeadItemTextTitle {
@@ -425,6 +525,17 @@ footer {
     }
 }
 
+.awardHonorableMention {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.3);
+    color: $white;
+    border-radius: 8px;
+    height: 100%;
+}
+
 //responsive tables
 @include until($tablet) {
     .table-responsive {
@@ -470,4 +581,91 @@ footer {
 }
 .nominees-leave-active {
     // position: absolute;
+}
+
+/* The switch - the box around the slider */
+.juryToggle {
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 70px;
+    height: 34px;
+  
+      .switch-inner-container{
+          position: absolute;
+          display: flex;
+  
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+  
+      .switch-inner {
+          flex: 1 1 auto;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+  
+          transition: color .3s ease;
+      }
+    }
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $gold;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: $llperiwinkle; // #E7A924;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #E7A924;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(36px);
+    -ms-transform: translateX(36px);
+    transform: translateX(36px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 13px;
+  }
+
 }

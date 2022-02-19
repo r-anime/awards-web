@@ -1,15 +1,19 @@
 <template>
-	<div :id="slug" class="awardSectionContainer">
+	<div :id="slug" class="awardSectionContainer py-6">
 		<div class="awardSectionHeader has-text-centered has-text-light">
-			<div class="sectionIconContainer">
-				<fa-icon :icon="icon" size="6x" class="has-text-gold mb-20 mt-20" />
+			<div class="is-flex is-justify-content-center is-align-items-center">
+				<div class="sectionIconContainer">
+					<fa-icon :icon="icon" size="7x" class="has-text-gold mb-20 mt-20" />
+				</div>
+				<div class="title-container">
+					<h2 class="is-size-1 title has-text-light">{{section.name}} Awards</h2>
+				</div>
 			</div>
-			<h2 class="sectionHeader title is-2 has-text-light pb-20 has-flaired-underline">{{section.name}} Awards</h2>
-				<div
+			<div
 				v-if="typeof section.blurb === 'string'"
 				class="awardSectionBlurb"
 				html="blurb"
-				/>
+			/>
 			<div v-else>
 				<div
 				v-for="(blurb, index) in section.blurb"

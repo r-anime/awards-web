@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="pub.id === jury.id" class="categoryWinnerContainer" >
-            <div class="columns is-gapless">
+            <div class="columns is-gapless is-mobile">
                 <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column is-paddingless" @click="emitNomModal(pub)">
                     <category-item-image
                         :nominee="pub"
@@ -11,7 +11,7 @@
             </div>
         </div>
         <div v-else class="categoryWinnerContainer" >
-            <div class="columns is-gapless">
+            <div class="columns is-gapless is-mobile">
                 <div class="categoryWinnerItem categoryWinnerJury column is-paddingless" @click="emitNomModal(jury)">
                     <category-item-image
                         :nominee="jury"
@@ -32,7 +32,7 @@
                         <img alt="laurels" :src="juryIcon" />
                     </div>
                     <div class="categorySubHeadItemText">
-                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
                             <nominee-name
                             :nominee="jury"
                             :anilistData="anilistData"
@@ -40,7 +40,7 @@
                             :category="category"
                             ></nominee-name>
                         </h3>
-                        <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                        <div class="categorySubHeadItemTextSubTitle has-text-llperiwinkle">
                             Jury Winner
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                         <img alt="laurels" :src="publicIcon" />
                     </div>
                     <div class="categorySubHeadItemText">
-                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle">
+                        <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
                             <nominee-name
                             :nominee="pub"
                             :anilistData="anilistData"
@@ -58,7 +58,7 @@
                             :category="category"
                             ></nominee-name>
                         </h3>
-                        <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                        <div class="categorySubHeadItemTextSubTitle has-text-llperiwinkle">
                             Public Winner
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                     <img alt="laurels" :src="consensusIcon" />
                 </div>
                 <div class="categorySubHeadItemText">
-                    <h3 class="categorySubHeadItemTextTitle title is-4 has-text-llperiwinkle">
+                    <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
                         <nominee-name
                         :nominee="pub"
                         :anilistData="anilistData"
@@ -78,7 +78,7 @@
                         :category="category"
                         ></nominee-name>
                     </h3>
-                    <div class="categorySubHeadItemTextSubTitle has-text-gold">
+                    <div class="categorySubHeadItemTextSubTitle has-text-llperiwinkle">
                         Consensus Winner
                     </div>
                 </div>

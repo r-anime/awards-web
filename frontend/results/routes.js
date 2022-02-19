@@ -68,8 +68,16 @@ const router = new VueRouter({
 						},
 						{
 							path: ':year',
+							redirect: ':year/all',
 							component: ResultsPage,
 							props: true,
+							children: [
+								{
+									path: ':slug',
+									component: ResultsPage,
+									props: true,
+								},
+							],
 						},
 					]
 				},
