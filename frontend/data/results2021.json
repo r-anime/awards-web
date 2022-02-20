@@ -1517,7 +1517,10 @@
         "name": "Cast",
         "entryType": "shows",
         "jurors": [
-         "aytin",
+          {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+          },
          "Mrtheliger",
          "Tehoncomingstorm97",
          "thyeggman",
@@ -1719,7 +1722,7 @@
           "support": 0.05822873082287308,
           "jury": 1,
           "percent": 0.1013607331296862,
-          "writeup": "*Kobayashi-san Chi no Maidragon S* is an illustrious showcase of animation at its best. Character movements range from well-executed [walk cycles](https://www.sakugabooru.com/post/show/165173) to [flowing fabric](https://www.sakugabooru.com/post/show/160808), [delicate hair brushing] (https://www.sakugabooru.com/post/show/156395), and [ruffling frills](https://www.sakugabooru.com/post/show/159009). These lavish movements facilitate characterization through delicate precision and accuracy.\n\n\nThere are various types of animation that are superbly executed, ranging from character acting to magical effects. [Ryo Miyagi's flames](https://www.sakugabooru.com/post/show/159088) exhibit strong shape, volume, and coloring; demonstrating the ferocity of Tohru's and Ilulu's clash. Character quirks showcase exaggeration through [smears](https://www.sakugabooru.com/post/show/160790) and [squash and stretch](https://www.sakugabooru.com/post/show/164457) for comedy, to more [subtle gestures](https://www.sakugabooru.com/post/show/165776) that convey a sense of realism and heightened emotion through their weight and timing. Each cut feels like a work of draftsmanship, given how strongly animators adhere to good fundamentals and cleanup work.\n\n\n*Maid Dragon S* offers incredibly resourceful magical animation through its use of effects. [Tatsuya Satou's spell chant](https://www.sakugabooru.com/post/show/159004) paired with an orb and good smoke work helps to elevate the “enchanting food's taste” maid cafe joke. Good linework and compositing aid [flame effects](https://www.sakugabooru.com/post/show/159007), [galvanizing waves and lightning](https://www.sakugabooru.com/post/show/161257) deliver on timing, shape and volume. [Smoke](https://www.sakugabooru.com/post/show/159512) can convey an explosive burst of energy. Working several of these elements in unison, [Tamami Tokuyama](https://www.sakugabooru.com/post/show/163857) brings us quite the spectacle to behold. \n\n\nIt goes without saying that it is the most consistently well-executed entry this year, and it never quite loses its steam or feels too conservatively produced. *Maid Dragon S* is a steady movement machine that encapsulates the spirit of the medium and its endeavors.",
+          "writeup": "*Kobayashi-san Chi no Maidragon S* is an illustrious showcase of animation at its best. Character movements range from well-executed [walk cycles](https://www.sakugabooru.com/post/show/165173) to [flowing fabric](https://www.sakugabooru.com/post/show/160808), [delicate hair brushing](https://www.sakugabooru.com/post/show/156395), and [ruffling frills](https://www.sakugabooru.com/post/show/159009). These lavish movements facilitate characterization through delicate precision and accuracy.\n\n\nThere are various types of animation that are superbly executed, ranging from character acting to magical effects. [Ryo Miyagi's flames](https://www.sakugabooru.com/post/show/159088) exhibit strong shape, volume, and coloring; demonstrating the ferocity of Tohru's and Ilulu's clash. Character quirks showcase exaggeration through [smears](https://www.sakugabooru.com/post/show/160790) and [squash and stretch](https://www.sakugabooru.com/post/show/164457) for comedy, to more [subtle gestures](https://www.sakugabooru.com/post/show/165776) that convey a sense of realism and heightened emotion through their weight and timing. Each cut feels like a work of draftsmanship, given how strongly animators adhere to good fundamentals and cleanup work.\n\n\n*Maid Dragon S* offers incredibly resourceful magical animation through its use of effects. [Tatsuya Satou's spell chant](https://www.sakugabooru.com/post/show/159004) paired with an orb and good smoke work helps to elevate the “enchanting food's taste” maid cafe joke. Good linework and compositing aid [flame effects](https://www.sakugabooru.com/post/show/159007), [galvanizing waves and lightning](https://www.sakugabooru.com/post/show/161257) deliver on timing, shape and volume. [Smoke](https://www.sakugabooru.com/post/show/159512) can convey an explosive burst of energy. Working several of these elements in unison, [Tamami Tokuyama](https://www.sakugabooru.com/post/show/163857) brings us quite the spectacle to behold. \n\n\nIt goes without saying that it is the most consistently well-executed entry this year, and it never quite loses its steam or feels too conservatively produced. *Maid Dragon S* is a steady movement machine that encapsulates the spirit of the medium and its endeavors.",
           "staff": "Kyoto Animation\n\nChief Animation Director: Nobuaki Maruki\n\nProminent Animators: Kunihiro Hane, Ryo Miyagi, Taichi Ishidate, Tamami Tokuyama, Tatsuya Satou, Yusuke Miyahara"
          },
          {
@@ -2480,7 +2483,8 @@
          "irvom",
          "DidacticDalek",
          "Arthrezz_23",
-         "Ghryms"
+         "Ghryms",
+         "Kenalskii"
         ],
         "blurb": "Good voice acting isn’t necessarily about speaking fast or generating over the top reactions, which Japanese voice acting has a tendency to do. Instead, we are looking for performances that enhance the role and convince us of the emotions that are transferred. The acting needs to contribute to the story and can’t just be as simple as reading some lines. Nevertheless, there have been some incredible performances this year. \n \n2021 put out a great number of phenomenal voice acting performances. With popular shows like *Shingeki no Kyojin* or *Re:Zero*, as well as smaller shows like *Bishounen Tanteidan* or *Heike Monogatari*, careful considerations were made to find the best performances. From the beginning, there were several strong contenders considered as possible nominees, like Asami Seto as Nobara Kugisaki or Masaaki Mizunakaas Diablo. While receiving mostly positive feedback, other performances like Nao Touyama as Rin Shima or Yoshimasa Hosoya as Joe seemed more likely to make the cut. Ultimately, only ten performances were nominated and all those mentioned above did not make it. \n \nAfter knowing all the nominations and watching all the required shows, the ninth and tenth places were quickly agreed on. The rankings of the remaining performances were broadly discussed. In order to find strengths and weaknesses, they were compared and ranked after that. In the end, Natsuki Hanae as Vanitas convinced the majority with his performance and secured first place.",
         "nominees": [
@@ -3263,7 +3267,10 @@
          "Zypker125",
          "NimitzH",
          "KoalaNugget",
-         "aytin",
+          {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+          },
          "mcadylons",
          "Ruhrgebietheld",
          "TheYummyBagel",
@@ -3413,7 +3420,10 @@
          "Zypker125",
          "NimitzH",
          "KoalaNugget",
-         "aytin",
+          {
+            "name": "ACasualViewer",
+            "link": "https://myanimelist.net/profile/ACasualViewer"
+          },
          "mcadylons",
          "Ruhrgebietheld",
          "TheYummyBagel",
