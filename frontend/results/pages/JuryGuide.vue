@@ -1,34 +1,25 @@
 <template>
-	<div class="has-background-dark">
-		<div class="container">
-			<div class="columns is-centered is-fullheight-with-navbar">
-				<div class="column is-10-fullhd is-11-widescreen is-12-desktop is-12-tablet">
-					<section class="section">
-						<h1 class="title is-2 has-text-gold has-text-centered has-flaired-underline pb-20">Jury Guide</h1>
-						<div v-if="locked" class="has-text-light has-text-centered">
-                            <section class="hero is-fullheight-with-navbar section has-background-dark">
-                                <h2 class="title is-3">You cannot see the jury guide at this time.</h2>
-                            </section>
-                        </div>
-						<section v-else-if="locked === false" class="hero is-fullheight-with-navbar section has-background-dark">
-							<iframe style="height: 100vh; width: 100%;" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
-						</section>
-						<section v-else class="hero is-fullheight-with-navbar section has-background-dark">
-                            <div class="container">
-                                <div class="columns is-desktop is-vcentered">
-                                    <div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
-                                        <div class="section">
-                                            <div class="loader is-loading"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-
-					</section>
+	<div class="container pt-6">
+		<h1 class="title is-2 has-text-gold has-text-centered pb-20">Jury Guide</h1>
+		<div v-if="locked" class="has-text-light has-text-centered">
+			<section class="hero is-fullheight-with-navbar section">
+				<h2 class="title is-3">You cannot see the jury guide at this time.</h2>
+			</section>
+		</div>
+		<section v-else-if="locked === false" class="is-flex is-align-items-center is-justify-content-center">
+			<iframe style="height: 75vh; width: 100%; max-width: 624px" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
+		</section>
+		<section v-else class="hero is-fullheight-with-navbar section">
+			<div class="container">
+				<div class="columns is-desktop is-vcentered">
+					<div class="column is-9-fullhd is-10-widescreen is-11-desktop is-12-mobile">
+						<div class="section">
+							<div class="loader is-loading"></div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</div>
 </template>
 

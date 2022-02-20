@@ -17,7 +17,7 @@
 			v-if="route"
 			:to="route.path"
 			:exact="!namedChildren"
-			class="navbar-link"
+			class="navbar-link has-text-light-touch"
 			active-class="is-active"
 		>
 			{{route.name}}
@@ -27,7 +27,7 @@
 			v-if="namedChildren && namedChildren.length"
 			class="navbar-dropdown"
 		>
-			<router-link class="navbar-item"
+			<router-link class="navbar-item has-text-light-touch"
 				v-for="childRoute in namedChildren"
 				:key="childRoute.path"
 				:to="childRoute.path"

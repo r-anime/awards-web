@@ -1,6 +1,6 @@
 <template>
 	<div>
-    <div class="has-background-dark">
+    <div class="">
         <div class="container">
             <div class="columns is-centered">
                 <div class="column is-10-fullhd is-11-widescreen is-12-desktop is-12-tablet">

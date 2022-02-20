@@ -6,6 +6,7 @@
 					{{category.name}}
 				</h2>
 			</div>
+			<br class="is-hidden-desktop" />
 			<button class="button is-platinum is-pulled-right mr-5 mt-3">
 				<span class="icon mr-4"><fa-icon icon="info-circle" /></span>
 				Read Category Info
@@ -41,7 +42,7 @@
 						:key="nom.id" @click="emitNomModal(nom)">
 							<div class="categoryNominationItem" >
 								<category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
-								<div class="nomineeTitle has-text-light is-size-5">
+								<div class="nomineeTitle has-text-light is-size-6">
 									<nominee-name
 										:nominee="nom"
 										:anilistData="anilistData"
@@ -65,7 +66,7 @@
 					<div class="awardHonorableMention p-4">{{hm.name}}</div>
                 </div>
             </div>
-			<small class="is-pulled-right has-text-light small mr-3">Click each hm to read a detailed write-up.</small>
+			<small class="is-pulled-right has-text-light small mr-3">Click each HM to read a detailed write-up (if available).</small>
 			<div class="is-clearfix"></div>
         </div>
     </div>
@@ -96,7 +97,7 @@ export default {
 	},
 	data () {
 		return {
-			focus: true,
+			focus: false,
 			juryIcon,
 			publicIcon,
 		};

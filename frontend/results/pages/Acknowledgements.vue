@@ -1,64 +1,108 @@
 <template>
-<div class="has-background-dark">
-    <section class="hero is-fullheight-with-navbar">
-        <div class="hero-body">
-            <div class="container">
-                <div class="columns is-centered">
-                    <div class="column is-two-thirds-desktop is-three-quarters-tablet is-four-fifths-mobile has-background-black-bis">
-                        <section class="section">
-                            <div class="container">
-                                <h1 class="title is-2 has-text-gold has-text-left has-flaired-underline pb-20">Acknowledgements</h1>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">The On-gaku Team</h1>
-                                <div class="has-text-centered has-text-periwinkle">
-                                    ありがとうございます！下記コメントになります。
-									<br/>
-									「on-gaku: our sound」を映画賞に選んでいただきありがとうございます。
-									<br/>
-									日本のアニメの中では特殊な作りの作品ですが、海外の方々にも評価していただけて、7年という長い制作期間でも諦めずに完成させることができて、改めて良かったなと思います。
-									<br/>
-                                </div>
-								<br/>
-								<div class="has-text-centered has-text-periwinkle">
-									Thank you very much for awarding “On-gaku: Our Sound” Movie of the Year. It may be somewhat unique compared to other Japanese anime, but to hear that it is being appreciated by fans both at home and abroad makes the long 7 years we spent tirelessly completing the film truly feel worth it.
-                                </div>
-								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Cindy Yamauchi</h1>
-								<div class="has-text-centered has-text-periwinkle">
-									Redditの2020年度アニメアワードで、『アクダマドライブ 』がアクション賞とキャラクターデザイン賞をいただけた事を大変嬉しく思います。ひとえに応援してくださる皆様のおかげです。まだディレクターズ・カット版も残っておりますので、引き続き何卒アクダマ達をよろしくお願い致します！
-                                </div>
-								<br/>
-								<div class="has-text-centered has-text-periwinkle">
-									I am very happy that Akudama Drive has been awarded the awards for Best Action and Best Character Design in the 2020 Reddit Anime Awards. This is thanks to the earnest support of all of you. There’s still a director’s cut yet to come, so please look forward to seeing the Akudamas again!
-                                </div>
-								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-overunder pt-20 pb-20">Jun Aoki</h1>
-								<div class="has-text-centered has-text-periwinkle">
-									『ギャルと恐竜』シリーズ構成・シリーズ監督の青木と申します。
-									この作品の『恐竜』は主役なのに全く喋らない珍しいキャラクターです。その実在感を表現するために音楽・音響スタッフと多くの苦労と試行錯誤を重ねました。
-									また『恐竜』の共演者である声優の皆さんは、そこに居ない存在と心を通わせるように演技してもらいました。通常のアニメ収録とは違う難しい挑戦だったと思います。
-									この度のサウンドデザイン賞の受賞で、私も監督としてこの試みが成功したという自信を深める事ができました。
-									この作品を視聴してくれたアニメファンとスタッフの皆さんに大いに感謝します。ありがとうございました。
-                                </div>
-								<br/>
-								<div class="has-text-centered has-text-periwinkle">
-									My name is Jun Aoki, I'm in charge of series composition and direction for "Gal and Dino." Even though he's in the leading role, the "dino" in this series is quite strange since he doesn't speak.  So with those circumstances, there's quite a bit of work and trial and error involved with the music and sound staff to really make it work. Furthermore, the voice actors in "dino" had to give it their all and pretend like they were working with something that wasn't there. I think it was a different set of challenges from the normal anime recording process. 
-									Though with this Sound Design award win, I think it really gave me more confidence as a director that this was the right move. I am very grateful to all anime fans and all the staff. Thank you very much.
-                                </div>
-								<br/>
-								<h1 class="title is-5 has-text-gold has-text-centered has-flaired-underline pb-20">Kevin Penkin</h1>
-                                <div class="has-text-centered has-text-periwinkle">
-                                    I’d like to thank the incredible reddit community for these amazing awards. Thank you for your passion and support throughout 2020, and I hope all of you keep well and safe during this difficult time. Much love, Kevin.
-                                </div>
-								<br/>
-								<figure class="image is-16by9">
-									<iframe class="has-ratio" width="950" height="650" src="https://www.youtube.com/embed/aub_B9KnvRY" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture" allowfullscreen></iframe>
-								</figure>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="">
+	<div class="container">
+		<section class="section">
+			<div class="container">
+				<h1 class="title is-2 has-text-gold has-text-left pb-20">Acknowledgements</h1>
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Yuichiro Fukushi (福士 裕一郎)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						Thank you for watching Sonny Boy. All the staff involved in production have been so pleased that so many people have watched it and given their thoughts. The staff poured their abilities and efforts into this anime, so it's truly an honour to see people praising all the different elements fo it. Thank you so much. I hope you all stay in good health.
+						<br/><br/>
+						Yuichiro Fukushi - Madhouse
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						アニメ『Sonny Boy』をご覧頂きましてありがとうございます
+						<br/><br/>
+						より多くの方に見て頂き、感想を頂けることは制作に携わったスタッフにとってとても嬉しいことです。
+						スタッフの才能と努力が詰まった作品ですので、複数の要素を評価頂けたことも光栄に思っています。
+						ありがとうございました。
+						<br/><br/>
+						皆様の健康を願っています。
+						<br/><br/>
+						マッドハウス　福士裕一郎
+					</div>
+				</div>
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Kouhei Kadowaki (門脇康平)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						It's nice to meet you. This is Kadowaki.
+						<br/><br/>
+						I am extremely pleased that the ED for Beastars Season 2 has been 
+						appreciated by receiving this award. This is a piece that I spent half a
+						year working on so that everything could be done to my preferences. I 
+						hope you will all continue to love this ED and its music video.
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						はじめまして。門脇です。
+						<br/><br/>
+						この度はビースターズ2期EDがこのような形で評価されて大変喜ばしく思います。半年かけて制作しただけあって、こだわりが詰まった一本です。これからもこのED及びMVを愛していただけたら幸いです。
+					</div>
+				</div>
+				
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Studio Clap (Ryoichiro Matsuo 松尾 亮一郎)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						Thank you for presenting us with the award for Best Movie.
+						<br/><br/>
+						We want to extend our thanks to everyone who supported Pompo: The 
+						Cinéphile.
+						<br/><br/>
+						This is the first award Pompo: The Cinéphile has won. Moreover, the fact
+						that both the director, Takayuki Hirao, and CLAP themselves have won an
+						award, is a great honour and we are extremely pleased.
+						<br/><br/>
+						From Spring onwards we plan to release the film in theatres in North 
+						America and other countries. We hope you'll go see it on the big screen!
+						<br/><br/>
+						Ryoichiro Matsuo - Pompo: The Cinéphile producer/CLAP representative
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						この度は映画賞を頂きありがとうございます！
+						<br/><br/>
+						「映画大好きポンポさん」を応援してくださった皆さまに感謝いたします。
+						<br/><br/>
+						「映画大好きポンポさん」では初めての賞となりました。加えて平尾監督とスタジオCLAPのダブル受賞、光栄ですし、大変嬉しく思います。
+						<br/><br/>
+						春から北米ほか海外での公開がスタートする予定です。ぜひ劇場でも御覧ください！
+						<br/><br/>
+						「映画大好きポンポさん」制作プロデューサー
+						<br/><br/>
+						CLAP 代表　松尾亮一郎
+					</div>
+				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Takayuki Hirao (平尾 隆之)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						Nice to meet you. This is the director of Pompo: The Cinéphile, Takayuki Hirao. It is a great honour to receive this award. I started making this movie with the hope that people would watch it and cheer for someone trying to step out into the world, who encourages people who are trying to chase their dreams. The fact that that hope, through the medium of film, has crossed the seas and reached people all over the world who speak different languages and have different cultures, makes me very happy. Thank you so much.
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						はじめまして、
+						『映画大好きポンポさん』監督の平尾隆之です。
+						<br/><br/>
+						映画賞をいただき、光栄です。
+						この映画は、夢を追う人の背中をそっと押せるような、一歩を踏み出そうとしている人を応援できるものになるといいなと思って作り始めました。
+						その思いが海を越えて、文化も言葉も違う世界の方々にも、映画を通じて届けられた気がして嬉しいです。
+						この度はまことにありがとうございました。
+					</div>
+				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Ryouchimo (りょーちも)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						I am extremely pleased to receive this award. It repays my courage of making a work that intended to transmit my feelings onto various people. It's so motivating. Warm feelings can move someone's heart. I'm grateful to the friends I was able to make this with. Thank you all so much.
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						今回賞を受けたことをとても嬉しく思っています。
+						一人の想いが色んな人に伝わって行く、そんな作品になれたのかなと勇気をもらいました。とても励みになります。
+						やさしい気持ちが人の心を動かす。
+						一緒に作ってれた仲間に感謝します。
+						本当にありがとうございます。"
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
 </template>

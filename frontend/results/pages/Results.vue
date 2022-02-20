@@ -105,7 +105,8 @@
 							<tr>
 								<th> Show </th>
 								<th> Votes </th>
-								<th v-if="chartData.pubnoms[0].finished !== -1"> Watched </th>
+								<th v-if="chartData.pubnoms[0].watched"> Watched </th>
+								<th v-else-if="chartData.pubnoms[0].finished > 0"> Watched </th>
 								<th v-if="(chartData.pubnoms[0].support*100).toFixed(2) > 0" class="is-hidden-mobile"> Support % </th>
 							</tr>
 						</thead>
@@ -118,11 +119,14 @@
 								<th>
 									{{chartData.pubnoms[index].public}} ({{(chartData.pubnoms[index].percent*100).toFixed(2)}}%)
 								</th>
-								<th v-if="chartData.pubnoms[index].finished !== -1">
+								<th v-if="chartData.pubnoms[index].watched">
+									{{chartData.pubnoms[index].watched}}
+								</th>
+								<th v-else-if="chartData.pubnoms[index].finished > 0">
 									{{chartData.pubnoms[index].finished}}
 								</th>
 								<th v-if="(chartData.pubnoms[index].support*100).toFixed(2) > 0" class="is-hidden-mobile">
-									{{(chartData.pubnoms[index].support*100).toFixed(2)}}
+									{{(chartData.pubnoms[index].support*100).toFixed(2)}} %
 								</th>
 							</tr>
 						</tbody>
@@ -410,7 +414,13 @@ export default {
 	mounted () {
 		switch (this.year) {
 			case undefined:
-				import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
+				import(/* webpackChunkName: "results21" */ '../../data/results2021.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+				break;
+			case '2021':
+				import(/* webpackChunkName: "results21" */ '../../data/results2021.json').then(data => {
 					this.results = Object.assign({}, data);
 					this.fetchAnilist();
 				});

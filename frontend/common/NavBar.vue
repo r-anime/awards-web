@@ -1,5 +1,5 @@
 <template>
-	<nav :class="['navbar', {vertical}]">
+	<nav :class="['navbar', 'is-fixed-top', {vertical}]">
 		<div :class="['container', {'is-fullwidth': fullwidth}]">
 			<div class="navbar-brand mr-20">
 				<a href="/"><img :src="logo" class="image pt-10 pb-10 pl-10 pr-10" style="height: 64px;"/></a>
@@ -15,9 +15,10 @@
 					<span aria-hidden="true"></span>
 				</a>
 			</div>
-			<div :class="['navbar-menu', {'is-active': expanded}]">
-				<div class="navbar-start">
+			<div :class="['navbar-menu', 'has-background-black-bis-touch', 'has-text-light', {'is-active': expanded}]">
+				<div class="navbar-end">
 					<nav-bar-link
+						class="has-text-light-touch"
 						v-for="route in namedRoutes"
 						:key="route.path"
 						:route="route"

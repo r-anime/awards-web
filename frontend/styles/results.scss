@@ -33,8 +33,34 @@ html, body{
     overflow-x: hidden;
 }
 
+.navbar-burger{
+    height: auto;
+}
+
+@include touch{
+    .navbar-menu {
+        display: block;
+        position: fixed;
+        top: 65px;
+        right: -300px;
+        left: unset !important;
+        height: calc(100vh - 65px);
+        width: 300px;
+
+        transition: transform 0.3s ease-in-out;
+
+        &.is-active {
+            transform: translateX(-300px);
+        }
+    }
+}
+
 .ranking-container{
     padding: 2rem;
+}
+
+.categorySubHeadItem.level-item{
+    flex-basis: 50%;
 }
 
 .sectionIcon, .categorySubHeadItemIcon{

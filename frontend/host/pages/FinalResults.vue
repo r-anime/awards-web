@@ -42,8 +42,8 @@
 										<br>
 										<div class="tags">
 											<small class="tag is-small">{{vote.vote_count}} votes</small>
-											<small class="tag is-small">{{vote.watched}} supp</small>
-											<small class="tag is-small">{{vote.totalwatched}} total</small>
+											<small v-if="vote.watched" class="tag is-small">{{vote.watched}} supp</small>
+											<small v-if="vote.totalwatched" class="tag is-small">{{vote.totalwatched}} total</small>
 										</div>
 									</li>
 								</ul>
@@ -332,6 +332,13 @@ export default {
 											watched: watched,
 											totalwatched: this.getShowWatchStats(vote.anilist_id),
 											name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
+										});
+									} else {
+										entries.push({
+											vote_count: vote.vote_count,
+											watched: watched,
+											totalwatched: this.getShowWatchStats(vote.anilist_id),
+											name: `${requiredShow.title.romaji}`,
 										});
 									}
 								} else if (category.entryType === 'shows') {

@@ -13,7 +13,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to start by thanking /u/commandersevan, /u/geo1088, /u/JoseiToAoiTori and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits, and last-minute requests. We would also like to thank them for their work on the website used for the nomination process as well as the internal site for the awards used by hosts and /r/anime moderators.
+                                    We’d like to start by thanking /u/commandersevan, /u/eritbh, /u/JoseiToAoiTori and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits, and last-minute requests. We would also like to thank them for their work on the website used for the nomination process as well as the internal site for the awards used by hosts and /r/anime moderators.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">

@@ -1,5 +1,5 @@
 <template>
-	<body>
+	<body class="has-navbar-fixed-top">
 		<canvas id="backgroundCanvas"></canvas>
 		<div v-if="loaded">
 			<nav-bar
@@ -66,10 +66,10 @@ export default {
 			this.routes = navbarRoutes.resultsRoutes;
 		}
 		if (guideLock.flag) {
-			this.routes.unshift({name: 'Jury Guide', path: '/juryguide'});
+			this.routes.push({name: 'Jury Guide', path: '/juryguide'});
 		}
 		if (allocLock.flag) {
-			this.routes.unshift({name: 'Allocations', path: '/allocations'});
+			this.routes.push({name: 'Allocations', path: '/allocations'});
 		}
 		this.loaded = true;
 
