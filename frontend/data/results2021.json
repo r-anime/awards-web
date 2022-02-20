@@ -170,7 +170,7 @@
      "125170": {
       "name": "Louis",
       "anime": "BEASTARS FINAL SEASON",
-      "va": ""
+      "va": "Yuuki Ono"
      },
      "125369": {
       "name": "Junk Dog",
@@ -2529,7 +2529,7 @@
          },
          {
           "id": 125170,
-          "altname": "",
+          "altname": "Louis",
           "altimg": "",
           "public": 273,
           "finished": 166,
@@ -2555,7 +2555,7 @@
          },
          {
           "id": 209903,
-          "altname": "Vivy (Atsumi Tanezaki)",
+          "altname": "Vivy",
           "altimg": "",
           "public": 598,
           "finished": 465,
@@ -2568,7 +2568,7 @@
          },
          {
           "id": 88348,
-          "altname": "Rudeus Greyrat (Tomokazu Sugita)",
+          "altname": "Rudeus Greyrat",
           "altimg": "https://i.imgur.com/xbBoG80.png",
           "public": 763,
           "finished": 750,
@@ -2607,7 +2607,7 @@
          },
          {
           "id": 40882,
-          "altname": "Eren Yeager (Yuuki Kaji)",
+          "altname": "",
           "altimg": "",
           "public": 1871,
           "finished": 1297,
@@ -2963,158 +2963,7 @@
       "blurb": "The anime of the year. The greatest of them all. These awards divide each anime from 2018 by format, and the very best among each one was awarded the title of best short, best movie, best original and the coveted best anime of the year.",
       "icon": "",
       "awards": [
-       {
-        "name": "Anime of the Year",
-        "entryType": "shows",
-        "jurors": [
-         "Schinco",
-         "Flayoret",
-         "sasalx",
-         "TheYummyBagel",
-         "KoalaNugget",
-         "Fircoal",
-         "thyeggman",
-         "Theleux",
-         "FrenziedHero",
-         "RIP_Hopscotch",
-         "Ruhrgebietheld"
-        ],
-        "blurb": "Anime as a medium is in constant growth and various studios work hard to create new experiences for viewers. 2021 was no different, with exquisite shows ranging from immersive character dramas to fantasy shows with real-life commentaries. Finding and ranking shows with such diversity was a challenge for us. \n \nThe jury sampled and discussed every show suggested by their peers to find the best of the best. Discussions were fierce as each suggestion excelled in at least one area. For example, *Odd Taxi* had strong character writing combined with intersecting storytelling, while *Fruits Basket: The Final* impressed with its compelling romance story and diverse cast. In the end, the jury made a consensus despite the limited number of slots. \n \nAmong all steps of the awards process, *Sonny Boy* and *Heike Monogatari* were the most discussed shows. Both offered immersive experiences by excelling in all areas, especially at script and other aspects of production such as background art. They were tied down until the end even but the jury ultimately appreciated the visual storytelling of *Sonny Boy* more, resulting in it becoming the best anime of 2021 for them.",
-        "nominees": [
-         {
-          "id": 113950,
-          "altname": "",
-          "altimg": "",
-          "public": 113,
-          "finished": 81,
-          "watched": 1086,
-          "support": 0.07458563535911603,
-          "jury": 3,
-          "percent": 0.014684860298895387,
-          "writeup": "A follow up to their 2018 series *SSSS.Gridman*, Akira Amemiya's Studio Trigger team did an exemplary job with *SSSS.Dynazenon*;  building on established ideas while forging a unique identity for the show. Expressive and flexible designs lead to some of the most memorable moments of animation this year. Static shots and an emphasis on integrating backgrounds into the visual language creates a tense atmosphere that lingers over the series. This is mirrored by the feelings of dissatisfaction and longing shared by the lively and likable cast— their individual arcs weaving together to create the thematic core at the heart of *SSSS.Dynazenon*. \n\n\n\nThe five main characters all explore grief and dysfunction in distinct and compelling manners, from Yume's uncertainty about her sister to Gauma's regrets of a past long gone. The cast's  tight chemistry spurns development, and these bonds form the basis of their growth. The Kaiju Eugenicists offer a collection of fun and varied personalities while undergoing meaningful arcs of their own.\n\n\n\n*SSSS.Dynazenon*'s presentation transitions from nuanced character drama to hot-blooded mecha-on-kaiju action at a moment's notice, flipping from subdued to bombastic seamlessly. Kai Ikarashi's episode 10 stands out from the myriad highlights of the show, brilliantly concluding character arcs with striking audiovisual presentation. A powerfully cathartic experience, the episode is one of the best in all of anime. All of *SSSS.Dynazenon*'s pieces come together to create one of the most cohesive and complete show's of the year, garnering a deserved third place.",
-          "staff": "Trigger\n\nDirected by Akira Amemiya"
-         },
-         {
-          "id": 109403,
-          "altname": "",
-          "altimg": "",
-          "public": 139,
-          "finished": 98,
-          "watched": 882,
-          "support": 0.1111111111111111,
-          "jury": 5,
-          "percent": 0.01806367771280052,
-          "writeup": "*Non Non Biyori Nonstop* picks up right where previous seasons left off, combining superb comedy and relaxing slice-of-life moments into a lovely package. Of course, simply repeating a formula isn't enough, and *Non Non Biyori Nonstop* meaningfully adds to its already successful recipe. New characters, particularly Shiori and Akane, add depth to existing characters, such as Renge's newfound older sister role. Needless to say, these additions don't detract from the series's hallmark strengths. Excellent cast chemistry and immaculate comedic timing continues with lighthearted, natural sounding dialogue. Renge is great as always, but her aforementioned dynamic with Shiori is truly a highlight. Side characters get increased emphasis, as Candy Store and Konomi have more frequent and varied skits.\n\n\n\nProduction is a mixed bag: the OST remains equal parts whimsical and atmospheric, the voice acting delivers childlike excitement to fuel comedic moments, and the bucolic backgrounds sell the laid-back atmosphere. Other production aspects, however, leave much to be desired, with animation offering the bare minimum and other visual production being similarly economical.\n\n\n\nGiven this is likely the final entry, fans may be satisfied with the show's typical fare,, but *Non Non Biyori Nonstop* changes as much as it maintains the status quo. Graduation and childbirth demarcate a newfound focus on endings and beginnings. Eventually things will change, even the idyllic world of *Non Non Biyori Nonstop* - but that's not necessarily bad. Renge put it best:\n\n\n\n>  “It's not the same route every day. When it's rainy or cloudy, it's a little bit different. That's what's fun.” \n\n\n\nSumming it all up, it's easy to see why this was a truly excellent work. ",
-          "staff": "Silver Link\n\nDirected by Shinya Kawatsura"
-         },
-         {
-          "id": 138714,
-          "altname": "",
-          "altimg": "",
-          "public": 157,
-          "finished": 100,
-          "watched": 581,
-          "support": 0.1721170395869191,
-          "jury": 2,
-          "percent": 0.020402858999350227,
-          "writeup": "Presenting a historical tale about the fall of the once mighty Taira clan during the Genpei War, *Heike Monogatari* emphasizes the Buddhist truth that all existence is impermanent. Reflecting on this idea about the ever-changing state of all things, the anime ambitiously explores the shortsightedness of a pursuit towards worldly power, the collective's relation to fluctuating social values, and the individual's necessity to accept the inevitable decay of all things they hold dear.\n\n\n\nDespite the grand stakes, the portrayal of the cast is endearingly human, from the joyously emotive animation to the lighthearted dialogue. Due to this great balance of very human characters with poetic fates, *Heike Monogatari* offers some of the best written characters of the year, while also providing emotionally resonant journeys with each of them.\n\n\n\nThe visuals triumph in elevating those emotions. Immersive sceneries, emotionally charged visual motifs, poignant compositions that guide viewers through the whole shot, harmonizing color schemes, and meticulous shot pacing all combine to produce impactful moments throughout the series.\n\n\n\nWhile the imitation of woodblock printing aesthetic evokes a sense of history, the incorporation of modern elements, like the OST's electronic instrumentals, create a daringly time-transcending work. This ties to the intriguing meta-awareness about retelling a tale repeated through centuries, embodied in the anime original protagonist Biwa, a biwahōshi storyteller aware of the story's ending since the beginning.\n\n\n\nAs an adaption of a Japanese classic epic filled with ambition and compassion, *Heike Monogatari* is a must-watch from 2021.",
-          "staff": "Science Saru\n\n\n\nDirected by Naoko Yamada"
-         },
-         {
-          "id": 107717,
-          "altname": "",
-          "altimg": "",
-          "public": 233,
-          "finished": 167,
-          "watched": 2868,
-          "support": 0.05822873082287308,
-          "jury": 6,
-          "percent": 0.03027940220922677,
-          "writeup": "*Kobayashi-san Chi no Maid Dragon S* continues on from where the original season left off with a large focus on community and making the mundane fun, backed by its impressively consistent production.\n\n\n\n*Maid Dragon* boasts some of the most impressive animation of the year with constantly fluid movement in both its fun slice of life scenes and its more action oriented moments involving battles between two majestic dragons. Every single gesture is filled with nuance and conveys the characters' respective emotions and personalities. The series constantly takes advantage of its near perfect production, using well-timed visual comedy with the movements of the cast. \n\n\n\nUnfortunately, the inconsistent cast  held back the show. Lucoa does get some appreciated development this season, but her relationship with Shouta and the comedy derived from it is still distasteful. Ilulu was a mixed bag: her design gives a bad impression before her strong character arc occurs, and her necessary dynamic with the rest of the household as the teenager of the family was notable.  \n\n\n\nTohru's relationship with Elma received significant screen time, and it was interesting to see the dragons before they came into contact with humans. Tohru's relationship with Kobayashi continued to get focus, thoughTohru's feelings have evolved to feel more genuine. Whilst *Maid Dragon* wasn't without its problems, its stronger moments earned it the title of the sixth  best anime of 2021.",
-          "staff": "Kyoto Animation\n\n\n\nSeries Directed by Yasuhiro Takemoto\n\n\n\nDirected by Tatsuya Ishihara"
-         },
-         {
-          "id": 132126,
-          "altname": "",
-          "altimg": "",
-          "public": 288,
-          "finished": 213,
-          "watched": 1953,
-          "support": 0.10906298003072197,
-          "jury": 1,
-          "percent": 0.03742690058479532,
-          "writeup": "No better word describes *Sonny Boy* than an \"experience\". The anime is a vibrant and personal venture through the worldview of its director, Shingo Natsume. With the ever present trend of the anime industry to push for the next big hit, rarely do such flexible and freeing productions for anime come to fruition. That isn't to say that being 'fresh' is commendable by itself - execution is a crucial factor, something in which the show evidently excels.\n\n\n\n*Sonny Boy* offers much intrigue through its storytelling, though it thrives further beyond its high school sci-fi and mystery premise. While largely a \"coming-of-age\" focus, the thematic strengths of the narrative tie the whole product together through empathizing the ideals of its characters. The show's relatively episodic structure and diverse cast offers many opportunities for the core cast to collaborate with each other, creating impressively emotive and understandable character developments throughout the series.\n\n\n\n*Sonny Boy*'s visual front is phenomenal - its crisp and clean drawings, carefully managed compositing, and its creative and sincere framing and storyboarding are all outstandingly executed. A facade of simplicity and minimalism complements the more thought-provoking and human sequences. Generous character animation conjures additional depth from expressions and movements, bringing the feelings of the cast to the forefront.\n\n\n\nThe show's soundscape is tremendous as well. *Sonny Boy*'s soundtrack and the utilization of it was among the best exhibited throughout the year. Individual tracks were intimate, refreshing, and varied in instrumentation, complementing the fluctuating tone of the series. An emphasis on silence throughout offered the strong seiyuu cast space to flavor the gaps, while the most impactful scenes were accompanied by excellent insert songs.  Its sound design was also noteworthy, bringing believable life to the bizarre worlds featured.\n\n\n\nThe factors above combine into a cohesive and shining entry, granting *Sonny Boy* the title of Anime of the Year for 2021.",
-          "staff": "Madhouse\n\n\n\nDirected by Shingo Natsume"
-         },
-         {
-          "id": 128546,
-          "altname": "",
-          "altimg": "",
-          "public": 518,
-          "finished": 389,
-          "watched": 1963,
-          "support": 0.19816607233825778,
-          "jury": 10,
-          "percent": 0.0673164392462638,
-          "writeup": "*Vivy: Fluorite Eye's Song* burst onto the scene this year as an original anime whose futuristic setting, frenetic fight scenes and android idol protagonist quickly gained it a large following despite starting off with little fanfare. Its focus on the “one-task directive” for its android characters provided an opportunity to explore the setting in a way rarely seen in previous sci-fi anime.\n\n\n\nThe series starts off strong, solidly establishing a distinct atmosphere with its dystopian portrayal of a robot uprising. The self-contained nature of subsequent arcs, however, led to a lack of cohesiveness in its overall narrative. This caused the worldbuilding of the series to be noticeably shallower than needed for its setting, with Archive's role in particular having a huge impact on the series while receiving little to no depth or exploration.\n\n\n\nThe production was a mixed bag, with elements such as the OST alternating between effective and forgettable. At certain points the visual production showcased eye-catching fight scenes, while at other times it stumbled, such as in the battle between Vivy and Kakitani in episode 9. The character designs read well throughout, but there were moments where the choice of backgrounds didn't mesh well with them.\n\n\n\nSlick fight choreography was one of the most consistently successful aspects of the series, as the battle scenes repeatedly showcased an engaging ebb and flow in their combat. In the end, the mix of intriguing premise with hit-or-miss execution led to a tenth place finish for the show. ",
-          "staff": "Wit Studio\n\n\n\nDirected by Shinpei Ezaki"
-         },
-         {
-          "id": 113415,
-          "altname": "",
-          "altimg": "",
-          "public": 826,
-          "finished": 606,
-          "watched": 4775,
-          "support": 0.1269109947643979,
-          "jury": 7,
-          "percent": 0.10734243014944769,
-          "writeup": "*Jujutsu Kaisen* is an eccentric entry imbued with bombastic fights and a darker focus on the ethereal. The show's distinct character designs, good sense of choreography communicated through its storyboards, and brisk narrative pacing accentuates its frequent brawls. Characters such as Yuji, Gojo, or Sukuna feel quite distinct - they have good vocal delivery and refreshing interactions with other members of the cast, rounding out those characters and the setting altogether.\n\n\n\nDue to the combative nature of the story, introducing a group of “special grade” curses as our primary antagonists has been a mixed decision. While it creates an interesting point in the plot due to the categorization itself becoming arbitrary, it also has led to a lack of urgency in the fights. These constant clashes remove much needed tension and their outcomes feel unrewarding. \n\n\n\nThe show has a garish art direction and mixed compositing that often harms its greater assets, namely seen in bad blending between characters and their background or thinning smoke. Occasionally weak visual cleanup on the animation either lessens the impact from blows or weakens the timing of character actions.\n\n\n\nThat being said, the fights themselves are executed well, with notable highlights including visual clarity, the retention of curse effects, and high caliber close-ups. Fight styles are unique for each character and the sound direction syncs the OST and fights in an evocative and memorable manner. ",
-          "staff": "MAPPA\n\n\n\nDirected by Seong-Hu Park"
-         },
-         {
-          "id": 110277,
-          "altname": "Shingeki no Kyojin: The Final Season Part 1",
-          "altimg": "",
-          "public": 1220,
-          "finished": 830,
-          "watched": 2647,
-          "support": 0.31356252361163583,
-          "jury": 8,
-          "percent": 0.1585445094217024,
-          "writeup": "*Shingeki no Kyojin* airdrops into its final arcs with another solid installment. This season gives a much-needed alternate perspective as it follows Reiner, Gabi, and Falco. Seeing them confront the propaganda that has shaped the lives and morals of his home country emphasizes how much he has changed since the beginning of the series. The characterization isn't limited to these characters, though; many have compelling development that reflects their experiences in previous seasons.\n\n\n\nThis season, Studio Mappa takes over for Studio Wit, and although the production is still satisfying, it has some shortcomings. The compositing is inconsistent and distracting. For example, the 3D titans don't blend with the grimy aesthetic of the show. Splitting the season in two also caused pacing problems: instead of a cohesive show, it feels like one that ended prematurely, with plotlines such as Mikasa's background being shoehorned in near the end. Still, the character designs portray the weight of time and trauma upon the characters, with dark resting expressions accentuated by additional linework.\n\n\n\n*Shingeki no Kyojin* never fails to engage with its action-packed fight scenes or jaw-dropping reveals. Fans of the series will continue to enjoy it, and anime enthusiasts can revel in a storytelling experience which few shows can match.  It is a worthy inclusion amongst this year's best, earning it eighth place.",
-          "staff": "MAPPA\n\n\n\nDirected by Yuuichiro Hayashi"
-         },
-         {
-          "id": 128547,
-          "altname": "",
-          "altimg": "",
-          "public": 1433,
-          "finished": 861,
-          "watched": 1833,
-          "support": 0.469721767594108,
-          "jury": 4,
-          "percent": 0.18622482131254062,
-          "writeup": "*Odd Taxi* provides a unique and distinctive experience that captivated audiences and stakes its claim as a contender in the 2021 anime landscape. The show features a tight narrative that weaves together many characters and storylines seamlessly. \n\n\n\n*Odd Taxi* shines with its varied and strong cast, each with compelling backgrounds and characterization that makes them charming to watch. Their interesting personalities combined with their realistic and uncovered issues makes for an appealing ensemble. Every character has their own role in the story, creating a large and balanced cast that has few weak points.\n\n\n\nWhile *Odd Taxi* excels in some areas, there are limitations to the work. Despite the compelling cast, many of the characters are tied to Odakawa's presence. While the show has a distinct visual style, its animation sometimes fail to provide as vivid a viewing experience as other entries from this year.\n\n\n\nThat said, *Odd Taxi* provides a unique and charming experience that makes it one of the top shows of the year. The script stands out as top notch. There is no time wasted and every detail ends up being important in the long run, rewarding the viewer for paying close attention and setting up a story that fits like a puzzle. These details create a satisfying sense of mystery for all viewers.",
-          "staff": "OLM\n\n\n\nDirected by Baku Kinoshita"
-         },
-         {
-          "id": 108465,
-          "altname": "Mushoku Tensei: Isekai Ittara Honki Dasu (Part 1 and Part 2)",
-          "altimg": "",
-          "public": 2768,
-          "finished": 2226,
-          "watched": 2734,
-          "support": 0.8141916605705926,
-          "jury": 9,
-          "percent": 0.3597141000649773,
-          "writeup": "Despite the controversy around it, *Mushoku Tensei* excels in several areas. The visuals are stunning, showcasing high-energy, well-choreographed fight animation that is incredible to watch. Its unique approach to opening sequences is noteworthy as well, utilizing them to explore each region and elevate the already strong world-building and story. This alternate reality of sword and sorcery may seem complex, but the narrative is cohesive and well-paced, providing numerous opportunities for characters to grow and their voice actors to shine.\n\n\n\nHowever, opportunity alone is not enough. *Mushoku Tensei* is a character study about Rudeus Greyrat, his initial flaws and his prospective growth, and the writing tries to balance between “absolute scum” and “someone the audience can cheer for”—Rudy leans too heavily into the former category. Despite developing in some ways, his treatment of women is consistently awful, and the tendency of other characters to turn a blind eye to his antics is awkward and off-putting, dragging them down with him. This massive flaw remaining unaddressed after 25 episodes is a massive detriment; Rudy comes across as too perverse to be redeemed. \n\n\n\nThe fact that *Mushoku Tensei* manages to accomplish so much despite this handicap is impressive. It's easy to see why the show is so beloved, and the energy put into the production is apparent. As that kind of passion is used to bring such a fascinating world to life, it's no wonder the series comes in at a well-deserved ninth place on the ranking for Anime of the Year.",
-          "staff": "Studio Bind\n\n\n\nDirected by Manabu Okamoto"
-         }
-        ],
-        "hms": []
-       },
-       {
+    {
         "name": "Movie of the Year",
         "entryType": "shows",
         "jurors": [
@@ -3535,6 +3384,157 @@
           "percent": 0.31041776837652035,
           "writeup": "*Star Wars: Visions* is an anthology of short films that departs from the traditional “Star Wars style” of previous works to create an innovative work of art for the franchise. With each episode helmed by a different director and studio (all given plenty of creative freedom), the individual stories feel like an exciting new tale while still tying into the iconic Star Wars mythology.\n\nEach episode features a different art style, ranging from the spectacular and sleek presentation of Hiroyuki Imaishi's “The Twins” to the gritty black-and-white aesthetic in Takanobu Mizuno's “The Duel.” There is also no shortage of audiovisual spectacle, such as the stunningly animated climax of ”Lop and Ocho” by Kai Igarashi, and creative ambition in the anthology, such as Eunyoung Choi's unique spin on a traditional Star Wars tragedy in ”Akakiri.”\n\nHowever, *Star Wars: Visions* is also the most divisive short, as it consists of varying strengths and weaknesses that spread across independent of each episode. For that, the episodes do not easily show which are the strongest and weakest, which is rather befitting for an anthology with creative voices targeting different niches in mind. Still, some episodes such as ”Akakiri” and ”The Village Bride” were more successful than other episodes like “Tattooine Rhapsody” due to differences in effectiveness of storytelling and such.\n\nOverall, *Star Wars: Visions*'s audiovisual marvels and artistic ambition lead the anthology to land at a respectable fourth.",
           "staff": "Kinema Citrus, Trigger, Kamikaze Douga, Geno Studio, Studio Colorido, Production I.G, Science SARU \n\nDirected by Takanobu Mizuno, Taku Kimura, Hiroyuki Imaishi, Hitoshi Haga, Kenji Kamiyama, Abel Gongora, Masahiko Ootsuka, Yuuki Igarashi, Eun-Yeong Choi"
+         }
+        ],
+        "hms": []
+       },
+       {
+        "name": "Anime of the Year",
+        "entryType": "shows",
+        "jurors": [
+         "Schinco",
+         "Flayoret",
+         "sasalx",
+         "TheYummyBagel",
+         "KoalaNugget",
+         "Fircoal",
+         "thyeggman",
+         "Theleux",
+         "FrenziedHero",
+         "RIP_Hopscotch",
+         "Ruhrgebietheld"
+        ],
+        "blurb": "Anime as a medium is in constant growth and various studios work hard to create new experiences for viewers. 2021 was no different, with exquisite shows ranging from immersive character dramas to fantasy shows with real-life commentaries. Finding and ranking shows with such diversity was a challenge for us. \n \nThe jury sampled and discussed every show suggested by their peers to find the best of the best. Discussions were fierce as each suggestion excelled in at least one area. For example, *Odd Taxi* had strong character writing combined with intersecting storytelling, while *Fruits Basket: The Final* impressed with its compelling romance story and diverse cast. In the end, the jury made a consensus despite the limited number of slots. \n \nAmong all steps of the awards process, *Sonny Boy* and *Heike Monogatari* were the most discussed shows. Both offered immersive experiences by excelling in all areas, especially at script and other aspects of production such as background art. They were tied down until the end even but the jury ultimately appreciated the visual storytelling of *Sonny Boy* more, resulting in it becoming the best anime of 2021 for them.",
+        "nominees": [
+         {
+          "id": 113950,
+          "altname": "",
+          "altimg": "",
+          "public": 113,
+          "finished": 81,
+          "watched": 1086,
+          "support": 0.07458563535911603,
+          "jury": 3,
+          "percent": 0.014684860298895387,
+          "writeup": "A follow up to their 2018 series *SSSS.Gridman*, Akira Amemiya's Studio Trigger team did an exemplary job with *SSSS.Dynazenon*;  building on established ideas while forging a unique identity for the show. Expressive and flexible designs lead to some of the most memorable moments of animation this year. Static shots and an emphasis on integrating backgrounds into the visual language creates a tense atmosphere that lingers over the series. This is mirrored by the feelings of dissatisfaction and longing shared by the lively and likable cast— their individual arcs weaving together to create the thematic core at the heart of *SSSS.Dynazenon*. \n\n\n\nThe five main characters all explore grief and dysfunction in distinct and compelling manners, from Yume's uncertainty about her sister to Gauma's regrets of a past long gone. The cast's  tight chemistry spurns development, and these bonds form the basis of their growth. The Kaiju Eugenicists offer a collection of fun and varied personalities while undergoing meaningful arcs of their own.\n\n\n\n*SSSS.Dynazenon*'s presentation transitions from nuanced character drama to hot-blooded mecha-on-kaiju action at a moment's notice, flipping from subdued to bombastic seamlessly. Kai Ikarashi's episode 10 stands out from the myriad highlights of the show, brilliantly concluding character arcs with striking audiovisual presentation. A powerfully cathartic experience, the episode is one of the best in all of anime. All of *SSSS.Dynazenon*'s pieces come together to create one of the most cohesive and complete show's of the year, garnering a deserved third place.",
+          "staff": "Trigger\n\nDirected by Akira Amemiya"
+         },
+         {
+          "id": 109403,
+          "altname": "",
+          "altimg": "",
+          "public": 139,
+          "finished": 98,
+          "watched": 882,
+          "support": 0.1111111111111111,
+          "jury": 5,
+          "percent": 0.01806367771280052,
+          "writeup": "*Non Non Biyori Nonstop* picks up right where previous seasons left off, combining superb comedy and relaxing slice-of-life moments into a lovely package. Of course, simply repeating a formula isn't enough, and *Non Non Biyori Nonstop* meaningfully adds to its already successful recipe. New characters, particularly Shiori and Akane, add depth to existing characters, such as Renge's newfound older sister role. Needless to say, these additions don't detract from the series's hallmark strengths. Excellent cast chemistry and immaculate comedic timing continues with lighthearted, natural sounding dialogue. Renge is great as always, but her aforementioned dynamic with Shiori is truly a highlight. Side characters get increased emphasis, as Candy Store and Konomi have more frequent and varied skits.\n\n\n\nProduction is a mixed bag: the OST remains equal parts whimsical and atmospheric, the voice acting delivers childlike excitement to fuel comedic moments, and the bucolic backgrounds sell the laid-back atmosphere. Other production aspects, however, leave much to be desired, with animation offering the bare minimum and other visual production being similarly economical.\n\n\n\nGiven this is likely the final entry, fans may be satisfied with the show's typical fare,, but *Non Non Biyori Nonstop* changes as much as it maintains the status quo. Graduation and childbirth demarcate a newfound focus on endings and beginnings. Eventually things will change, even the idyllic world of *Non Non Biyori Nonstop* - but that's not necessarily bad. Renge put it best:\n\n\n\n>  “It's not the same route every day. When it's rainy or cloudy, it's a little bit different. That's what's fun.” \n\n\n\nSumming it all up, it's easy to see why this was a truly excellent work. ",
+          "staff": "Silver Link\n\nDirected by Shinya Kawatsura"
+         },
+         {
+          "id": 138714,
+          "altname": "",
+          "altimg": "",
+          "public": 157,
+          "finished": 100,
+          "watched": 581,
+          "support": 0.1721170395869191,
+          "jury": 2,
+          "percent": 0.020402858999350227,
+          "writeup": "Presenting a historical tale about the fall of the once mighty Taira clan during the Genpei War, *Heike Monogatari* emphasizes the Buddhist truth that all existence is impermanent. Reflecting on this idea about the ever-changing state of all things, the anime ambitiously explores the shortsightedness of a pursuit towards worldly power, the collective's relation to fluctuating social values, and the individual's necessity to accept the inevitable decay of all things they hold dear.\n\n\n\nDespite the grand stakes, the portrayal of the cast is endearingly human, from the joyously emotive animation to the lighthearted dialogue. Due to this great balance of very human characters with poetic fates, *Heike Monogatari* offers some of the best written characters of the year, while also providing emotionally resonant journeys with each of them.\n\n\n\nThe visuals triumph in elevating those emotions. Immersive sceneries, emotionally charged visual motifs, poignant compositions that guide viewers through the whole shot, harmonizing color schemes, and meticulous shot pacing all combine to produce impactful moments throughout the series.\n\n\n\nWhile the imitation of woodblock printing aesthetic evokes a sense of history, the incorporation of modern elements, like the OST's electronic instrumentals, create a daringly time-transcending work. This ties to the intriguing meta-awareness about retelling a tale repeated through centuries, embodied in the anime original protagonist Biwa, a biwahōshi storyteller aware of the story's ending since the beginning.\n\n\n\nAs an adaption of a Japanese classic epic filled with ambition and compassion, *Heike Monogatari* is a must-watch from 2021.",
+          "staff": "Science Saru\n\n\n\nDirected by Naoko Yamada"
+         },
+         {
+          "id": 107717,
+          "altname": "",
+          "altimg": "",
+          "public": 233,
+          "finished": 167,
+          "watched": 2868,
+          "support": 0.05822873082287308,
+          "jury": 6,
+          "percent": 0.03027940220922677,
+          "writeup": "*Kobayashi-san Chi no Maid Dragon S* continues on from where the original season left off with a large focus on community and making the mundane fun, backed by its impressively consistent production.\n\n\n\n*Maid Dragon* boasts some of the most impressive animation of the year with constantly fluid movement in both its fun slice of life scenes and its more action oriented moments involving battles between two majestic dragons. Every single gesture is filled with nuance and conveys the characters' respective emotions and personalities. The series constantly takes advantage of its near perfect production, using well-timed visual comedy with the movements of the cast. \n\n\n\nUnfortunately, the inconsistent cast  held back the show. Lucoa does get some appreciated development this season, but her relationship with Shouta and the comedy derived from it is still distasteful. Ilulu was a mixed bag: her design gives a bad impression before her strong character arc occurs, and her necessary dynamic with the rest of the household as the teenager of the family was notable.  \n\n\n\nTohru's relationship with Elma received significant screen time, and it was interesting to see the dragons before they came into contact with humans. Tohru's relationship with Kobayashi continued to get focus, thoughTohru's feelings have evolved to feel more genuine. Whilst *Maid Dragon* wasn't without its problems, its stronger moments earned it the title of the sixth  best anime of 2021.",
+          "staff": "Kyoto Animation\n\n\n\nSeries Directed by Yasuhiro Takemoto\n\n\n\nDirected by Tatsuya Ishihara"
+         },
+         {
+          "id": 132126,
+          "altname": "",
+          "altimg": "",
+          "public": 288,
+          "finished": 213,
+          "watched": 1953,
+          "support": 0.10906298003072197,
+          "jury": 1,
+          "percent": 0.03742690058479532,
+          "writeup": "No better word describes *Sonny Boy* than an \"experience\". The anime is a vibrant and personal venture through the worldview of its director, Shingo Natsume. With the ever present trend of the anime industry to push for the next big hit, rarely do such flexible and freeing productions for anime come to fruition. That isn't to say that being 'fresh' is commendable by itself - execution is a crucial factor, something in which the show evidently excels.\n\n\n\n*Sonny Boy* offers much intrigue through its storytelling, though it thrives further beyond its high school sci-fi and mystery premise. While largely a \"coming-of-age\" focus, the thematic strengths of the narrative tie the whole product together through empathizing the ideals of its characters. The show's relatively episodic structure and diverse cast offers many opportunities for the core cast to collaborate with each other, creating impressively emotive and understandable character developments throughout the series.\n\n\n\n*Sonny Boy*'s visual front is phenomenal - its crisp and clean drawings, carefully managed compositing, and its creative and sincere framing and storyboarding are all outstandingly executed. A facade of simplicity and minimalism complements the more thought-provoking and human sequences. Generous character animation conjures additional depth from expressions and movements, bringing the feelings of the cast to the forefront.\n\n\n\nThe show's soundscape is tremendous as well. *Sonny Boy*'s soundtrack and the utilization of it was among the best exhibited throughout the year. Individual tracks were intimate, refreshing, and varied in instrumentation, complementing the fluctuating tone of the series. An emphasis on silence throughout offered the strong seiyuu cast space to flavor the gaps, while the most impactful scenes were accompanied by excellent insert songs.  Its sound design was also noteworthy, bringing believable life to the bizarre worlds featured.\n\n\n\nThe factors above combine into a cohesive and shining entry, granting *Sonny Boy* the title of Anime of the Year for 2021.",
+          "staff": "Madhouse\n\n\n\nDirected by Shingo Natsume"
+         },
+         {
+          "id": 128546,
+          "altname": "",
+          "altimg": "",
+          "public": 518,
+          "finished": 389,
+          "watched": 1963,
+          "support": 0.19816607233825778,
+          "jury": 10,
+          "percent": 0.0673164392462638,
+          "writeup": "*Vivy: Fluorite Eye's Song* burst onto the scene this year as an original anime whose futuristic setting, frenetic fight scenes and android idol protagonist quickly gained it a large following despite starting off with little fanfare. Its focus on the “one-task directive” for its android characters provided an opportunity to explore the setting in a way rarely seen in previous sci-fi anime.\n\n\n\nThe series starts off strong, solidly establishing a distinct atmosphere with its dystopian portrayal of a robot uprising. The self-contained nature of subsequent arcs, however, led to a lack of cohesiveness in its overall narrative. This caused the worldbuilding of the series to be noticeably shallower than needed for its setting, with Archive's role in particular having a huge impact on the series while receiving little to no depth or exploration.\n\n\n\nThe production was a mixed bag, with elements such as the OST alternating between effective and forgettable. At certain points the visual production showcased eye-catching fight scenes, while at other times it stumbled, such as in the battle between Vivy and Kakitani in episode 9. The character designs read well throughout, but there were moments where the choice of backgrounds didn't mesh well with them.\n\n\n\nSlick fight choreography was one of the most consistently successful aspects of the series, as the battle scenes repeatedly showcased an engaging ebb and flow in their combat. In the end, the mix of intriguing premise with hit-or-miss execution led to a tenth place finish for the show. ",
+          "staff": "Wit Studio\n\n\n\nDirected by Shinpei Ezaki"
+         },
+         {
+          "id": 113415,
+          "altname": "",
+          "altimg": "",
+          "public": 826,
+          "finished": 606,
+          "watched": 4775,
+          "support": 0.1269109947643979,
+          "jury": 7,
+          "percent": 0.10734243014944769,
+          "writeup": "*Jujutsu Kaisen* is an eccentric entry imbued with bombastic fights and a darker focus on the ethereal. The show's distinct character designs, good sense of choreography communicated through its storyboards, and brisk narrative pacing accentuates its frequent brawls. Characters such as Yuji, Gojo, or Sukuna feel quite distinct - they have good vocal delivery and refreshing interactions with other members of the cast, rounding out those characters and the setting altogether.\n\n\n\nDue to the combative nature of the story, introducing a group of “special grade” curses as our primary antagonists has been a mixed decision. While it creates an interesting point in the plot due to the categorization itself becoming arbitrary, it also has led to a lack of urgency in the fights. These constant clashes remove much needed tension and their outcomes feel unrewarding. \n\n\n\nThe show has a garish art direction and mixed compositing that often harms its greater assets, namely seen in bad blending between characters and their background or thinning smoke. Occasionally weak visual cleanup on the animation either lessens the impact from blows or weakens the timing of character actions.\n\n\n\nThat being said, the fights themselves are executed well, with notable highlights including visual clarity, the retention of curse effects, and high caliber close-ups. Fight styles are unique for each character and the sound direction syncs the OST and fights in an evocative and memorable manner. ",
+          "staff": "MAPPA\n\n\n\nDirected by Seong-Hu Park"
+         },
+         {
+          "id": 110277,
+          "altname": "Shingeki no Kyojin: The Final Season Part 1",
+          "altimg": "",
+          "public": 1220,
+          "finished": 830,
+          "watched": 2647,
+          "support": 0.31356252361163583,
+          "jury": 8,
+          "percent": 0.1585445094217024,
+          "writeup": "*Shingeki no Kyojin* airdrops into its final arcs with another solid installment. This season gives a much-needed alternate perspective as it follows Reiner, Gabi, and Falco. Seeing them confront the propaganda that has shaped the lives and morals of his home country emphasizes how much he has changed since the beginning of the series. The characterization isn't limited to these characters, though; many have compelling development that reflects their experiences in previous seasons.\n\n\n\nThis season, Studio Mappa takes over for Studio Wit, and although the production is still satisfying, it has some shortcomings. The compositing is inconsistent and distracting. For example, the 3D titans don't blend with the grimy aesthetic of the show. Splitting the season in two also caused pacing problems: instead of a cohesive show, it feels like one that ended prematurely, with plotlines such as Mikasa's background being shoehorned in near the end. Still, the character designs portray the weight of time and trauma upon the characters, with dark resting expressions accentuated by additional linework.\n\n\n\n*Shingeki no Kyojin* never fails to engage with its action-packed fight scenes or jaw-dropping reveals. Fans of the series will continue to enjoy it, and anime enthusiasts can revel in a storytelling experience which few shows can match.  It is a worthy inclusion amongst this year's best, earning it eighth place.",
+          "staff": "MAPPA\n\n\n\nDirected by Yuuichiro Hayashi"
+         },
+         {
+          "id": 128547,
+          "altname": "",
+          "altimg": "",
+          "public": 1433,
+          "finished": 861,
+          "watched": 1833,
+          "support": 0.469721767594108,
+          "jury": 4,
+          "percent": 0.18622482131254062,
+          "writeup": "*Odd Taxi* provides a unique and distinctive experience that captivated audiences and stakes its claim as a contender in the 2021 anime landscape. The show features a tight narrative that weaves together many characters and storylines seamlessly. \n\n\n\n*Odd Taxi* shines with its varied and strong cast, each with compelling backgrounds and characterization that makes them charming to watch. Their interesting personalities combined with their realistic and uncovered issues makes for an appealing ensemble. Every character has their own role in the story, creating a large and balanced cast that has few weak points.\n\n\n\nWhile *Odd Taxi* excels in some areas, there are limitations to the work. Despite the compelling cast, many of the characters are tied to Odakawa's presence. While the show has a distinct visual style, its animation sometimes fail to provide as vivid a viewing experience as other entries from this year.\n\n\n\nThat said, *Odd Taxi* provides a unique and charming experience that makes it one of the top shows of the year. The script stands out as top notch. There is no time wasted and every detail ends up being important in the long run, rewarding the viewer for paying close attention and setting up a story that fits like a puzzle. These details create a satisfying sense of mystery for all viewers.",
+          "staff": "OLM\n\n\n\nDirected by Baku Kinoshita"
+         },
+         {
+          "id": 108465,
+          "altname": "Mushoku Tensei: Isekai Ittara Honki Dasu (Part 1 and Part 2)",
+          "altimg": "",
+          "public": 2768,
+          "finished": 2226,
+          "watched": 2734,
+          "support": 0.8141916605705926,
+          "jury": 9,
+          "percent": 0.3597141000649773,
+          "writeup": "Despite the controversy around it, *Mushoku Tensei* excels in several areas. The visuals are stunning, showcasing high-energy, well-choreographed fight animation that is incredible to watch. Its unique approach to opening sequences is noteworthy as well, utilizing them to explore each region and elevate the already strong world-building and story. This alternate reality of sword and sorcery may seem complex, but the narrative is cohesive and well-paced, providing numerous opportunities for characters to grow and their voice actors to shine.\n\n\n\nHowever, opportunity alone is not enough. *Mushoku Tensei* is a character study about Rudeus Greyrat, his initial flaws and his prospective growth, and the writing tries to balance between “absolute scum” and “someone the audience can cheer for”—Rudy leans too heavily into the former category. Despite developing in some ways, his treatment of women is consistently awful, and the tendency of other characters to turn a blind eye to his antics is awkward and off-putting, dragging them down with him. This massive flaw remaining unaddressed after 25 episodes is a massive detriment; Rudy comes across as too perverse to be redeemed. \n\n\n\nThe fact that *Mushoku Tensei* manages to accomplish so much despite this handicap is impressive. It's easy to see why the show is so beloved, and the energy put into the production is apparent. As that kind of passion is used to bring such a fascinating world to life, it's no wonder the series comes in at a well-deserved ninth place on the ranking for Anime of the Year.",
+          "staff": "Studio Bind\n\n\n\nDirected by Manabu Okamoto"
          }
         ],
         "hms": []

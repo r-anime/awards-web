@@ -43,7 +43,11 @@
 							<div class="categoryNominationItem" >
 								<category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
 								<div class="nomineeTitle has-text-light is-size-6">
-									<nominee-name
+									<span v-if="category.entryType == 'vas' && data.characters[nom.id].va">
+										{{data.characters[nom.id].name}}
+										({{data.characters[nom.id].va}})
+									</span>
+									<nominee-name v-else
 										:nominee="nom"
 										:anilistData="anilistData"
 										:data="data"
