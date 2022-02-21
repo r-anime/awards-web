@@ -21,6 +21,9 @@
                     <router-link to="/acknowledgements20" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
                     </router-link>
+					<router-link to="/about20" style="color:inherit">
+                        <button class="button is-large is-platinum is-outlined mb-10">About/Credits</button>
+                    </router-link>
                 </div>
                 <h2 class="title is-size-3 has-text-gold has-text-centered has-flaired-underline pb-20">2019</h2>
                 <div class="control has-text-centered">
