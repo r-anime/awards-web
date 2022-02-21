@@ -22,7 +22,10 @@
 					</div>
 				</div>
 				<div class="column is-one-third">
-					<img loading="lazy" src="img/snoo_hyeinlee.png" height="820" width="432"/>
+					<picture loading="lazy">
+						<source type="image/webp" srcset="img/web4.webp" height="768" width="432"/>
+						<img src="img/snoo_hyeinlee.png" height="768" width="432"/>
+					</picture>
 				</div>
 			</div>
 		</div>
