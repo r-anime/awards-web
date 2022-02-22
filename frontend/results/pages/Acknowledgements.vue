@@ -7,7 +7,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Yuichiro Fukushi (福士 裕一郎)</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						Thank you for watching Sonny Boy. All the staff involved in production have been so pleased that so many people have watched it and given their thoughts. The staff poured their abilities and efforts into this anime, so it's truly an honour to see people praising all the different elements fo it. Thank you so much. I hope you all stay in good health.
+						Thank you for watching Sonny Boy. All the staff involved in production have been so pleased that so many people have watched it and given their thoughts. The staff poured their abilities and efforts into this anime, so it's truly an honour to see people praising all the different elements for it. Thank you so much. I hope you all stay in good health.
 						<br/><br/>
 						Yuichiro Fukushi - Madhouse
 					</div>
