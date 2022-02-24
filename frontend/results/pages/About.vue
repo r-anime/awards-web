@@ -61,7 +61,6 @@
 										<li>Rose Bridges</li>
 										<li>Yoshi Kirishima</li>
 										<li>FAR / Fede</li>
-										<li>ShaKing807</li>
                                         <li>PhenomSage</li>
                                         <li>Pause & Select</li>
                                         <li>MozillaFennekin</li>
