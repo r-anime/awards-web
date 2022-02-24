@@ -45,7 +45,6 @@
 								<div class="nomineeTitle has-text-light is-size-6">
 									<span v-if="category.entryType == 'vas' && data.characters[nom.id].va">
 										{{data.characters[nom.id].name}}
-										({{data.characters[nom.id].va}})
 									</span>
 									<nominee-name v-else
 										:nominee="nom"

@@ -65,6 +65,8 @@
                                         <li>PhenomSage</li>
                                         <li>Pause & Select</li>
                                         <li>MozillaFennekin</li>
+                                        <li>TheCanipaEffect</li>
+                                        <li>ShaKing & FateSteelTaylor</li>
                                    </ul>
                                 </div>
                                 <br/>
