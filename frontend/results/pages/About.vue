@@ -13,7 +13,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to start by thanking /u/commandersevan, /u/eritbh, /u/JoseiToAoiTori and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits, and last-minute requests. We would also like to thank them for their work on the websites for juror applications, initial voting, final voting and the internal website used by hosts and /r/anime moderators to manage the Awards and see results.
+                                    We’d like to start by thanking /u/commandersevan, /u/eritbh, /u/JoseiToAoiTori and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits and last-minute requests. We would also like to thank them for their work on the websites for juror applications, initial voting, final voting and the internal website used by hosts and /r/anime moderators to manage the Awards and see results.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -25,11 +25,11 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank all of the people who put work into the production of the livestream, especially /u/unprecedentedwolf for spearheading the process. Those being /u/paukshop, /u/DoctorWhoops, /u/Dogcartcat, /u/Shawn_Es-C, /u/clearandsweet, /u/Ralon17, /u/AdiMG, /u/RoiAnanas. We'd also like to thank /u/steamytomato for making the cute artwork of the anime awards snoo and /u/commandersevan for making the animations.
+                                    We’d like to thank all of the people who put work into the production of the livestream, especially /u/unprecedentedwolf for spearheading the process. Those being /u/AdiMG, /u/clearandsweet, /u/DoctorWhoops, /u/Dogcartcat, /u/paukshop, /u/Ralon17, /u/RoiAnanas, /u/Shawn_Es-C. We'd also like to thank /u/steamytomato for making the cute artwork of the anime awards snoo and /u/commandersevan for making the animations.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank all the people who volunteered to edit jury write-ups. Without them, they would be a much less pleasant read. Thanks to /u/schinco, /u/Krugo1, /u/jonlxh, /u/ocaria, /u/isrozzis, /u/DoctorWhoops, /u/Ralon17, /u/Dogcartcat, /u/RoiAnanas, /u/Totalenlo, /u/Shawn_Es-C, /u/KitKat1721, /u/Splitter_Triplets, /u/RandomRedditorWithNo, /u/tehoncomingstorm97, /u/Itz_Skiddlez.
+                                    We’d like to thank all the people who volunteered to edit jury write-ups. Without them, they would be a much less pleasant read. Thanks to /u/DoctorWhoops, /u/Dogcartcat, /u/isrozzis, /u/Itz_Skiddlez, /u/jonlxh, /u/KitKat1721, /u/Krugo1, /u/ocaria, /u/Ralon17, /u/RandomRedditorWithNo, /u/RoiAnanas, /u/schinco, /u/Shawn_Es-C, /u/Splitter_Triplets, /u/tehoncomingstorm97, /u/Totalenlo,.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
