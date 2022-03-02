@@ -47,9 +47,9 @@
                                 <div class="has-text-justified has-text-light">
                                    Finally we would also like to thank you, the public! Without your support these awards would not be able to come to fruition, and you are both the participants and the audience for whom these awards are run. We hope you join us on this journey again next year!
                                 </div>
-				<br/>
+				                <br/>
                                 <div class="has-text-justified has-text-light">
-				   If you're reading this and are interested in applying for the 2022 /r/anime awards, just put your name <b><a href="https://docs.google.com/forms/d/16XWcbaFV2Rvq4MpR-ghqWYKz0KFeJBpBMUSO7fT7mv4/edit">in this Awards interest form </a></b> and we'll let you know when the new awards cycle start so you can apply! 
+				                    If you're reading this and are interested in applying for the 2022 /r/anime awards, just put your name <b><a href="https://docs.google.com/forms/d/16XWcbaFV2Rvq4MpR-ghqWYKz0KFeJBpBMUSO7fT7mv4/edit">in this Awards interest form </a></b> and we'll let you know when the new awards cycle start so you can apply! 
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -57,14 +57,14 @@
                                 </div>
                                 <div class="content has-text-light">
                                    <ul>
-					<li>Replay Value</li>
-					<li>Ember Reviews</li>
-					<li>Shaybs</li>
-					<li>Sean Chiplock</li>
-					<li>Megan Shipman</li>
-					<li>Rose Bridges</li>
-					<li>Yoshi Kirishima</li>
-					<li>FAR / Fede</li>
+                                        <li>Replay Value</li>
+                                        <li>Ember Reviews</li>
+                                        <li>Shaybs</li>
+                                        <li>Sean Chiplock</li>
+                                        <li>Megan Shipman</li>
+                                        <li>Rose Bridges</li>
+                                        <li>Yoshi Kirishima</li>
+                                        <li>FAR / Fede</li>
                                         <li>PhenomSage</li>
                                         <li>Pause & Select</li>
                                         <li>MozillaFennekin</li>
@@ -91,13 +91,13 @@
                                     <br/>
                                     <a class="has-text-light is-size-5 mt-2 my-6"  href="https://twitter.com/fttuaa"> Futata </a>
                                 </div>
-				<h2 class="title is-4 has-text-llperiwinkle has-text-left">The Jury Process</h2>
-				<div class="has-text-justified has-text-light">
+				                <h2 class="title is-4 has-text-llperiwinkle has-text-left">The Jury Process</h2>
+				                <div class="has-text-justified has-text-light">
                                     Below is the process the jury took this year to decide their nominees, rankings and write-ups. This follows ~2 months of dedicated pre-planning, making these awards a near-exact 6 month undertaking! 
                                 </div>
-				<div class="hero is-fullheight-with-navbar section has-background-dark">
-					<iframe style="height: 100vh; width: 100%;" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
-                            	<div class="container">
+                                <div class="hero is-fullheight-with-navbar section has-background-dark">
+                                    <iframe style="height: 100vh; width: 100%;" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
+                                </div>
                             </div>
                         </section>
                     </div>
