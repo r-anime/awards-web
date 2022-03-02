@@ -21,7 +21,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank /u/drjwilson, /u/unprecedentedwolf, and /u/misterjaguar specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that he is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
+                                    We’d like to thank /u/DrJWilson, /u/unprecedentedwolf and /u/misterjaguar specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -33,11 +33,11 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                   We’re thankful to the moderators of r/anime for their support and in many cases active cooperation with something as involved as the awards.
+                                   We’re thankful to the moderators of r/anime for their support and in many cases active cooperation with something as involved as the awards. /u/DrJWilson, /u/FAN_ROTOM_IS_SCARY, /u/Gaporigo, /u/Mage_of_Shadows, /u/Miidas-92, /u/mpp00.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                   We’re also very appreciative of the users who committed to hosting this year.
+                                   We’re also very appreciative of the users who committed to immense task of hosting this year. /u/Animestuck, /u/ArcaneGarbageman, /u/ATargetFinderScrub, /u/BiochemRS, /u/Kaverik, /u/MetaSoshi9, /u/MisterJaguar, /u/pandavengerx, /u/Ralon17, /u/RoiAnanas, /u/rudygnuj, /u/rusticks, /u/TigerK3, /u/UnprecedentedWolf, /u/Vaxivop.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -47,25 +47,29 @@
                                 <div class="has-text-justified has-text-light">
                                    Finally we would also like to thank you, the public! Without your support these awards would not be able to come to fruition, and you are both the participants and the audience for whom these awards are run. We hope you join us on this journey again next year!
                                 </div>
+				<br/>
+                                <div class="has-text-justified has-text-light">
+				   If you're reading this and are interested in applying for the 2022 /r/anime awards, just put your name <b><a href="https://docs.google.com/forms/d/16XWcbaFV2Rvq4MpR-ghqWYKz0KFeJBpBMUSO7fT7mv4/edit">in this Awards interest form </a></b> and we'll let you know when the new awards cycle start so you can apply! 
+                                </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
                                    Complete Livestream Guest List (in order of appearance):
                                 </div>
                                 <div class="content has-text-light">
                                    <ul>
-										<li>Replay Value</li>
-										<li>Ember Reviews</li>
-										<li>Shaybs</li>
-										<li>Sean Chiplock</li>
-										<li>Megan Shipman</li>
-										<li>Rose Bridges</li>
-										<li>Yoshi Kirishima</li>
-										<li>FAR / Fede</li>
+					<li>Replay Value</li>
+					<li>Ember Reviews</li>
+					<li>Shaybs</li>
+					<li>Sean Chiplock</li>
+					<li>Megan Shipman</li>
+					<li>Rose Bridges</li>
+					<li>Yoshi Kirishima</li>
+					<li>FAR / Fede</li>
                                         <li>PhenomSage</li>
                                         <li>Pause & Select</li>
                                         <li>MozillaFennekin</li>
                                         <li>TheCanipaEffect</li>
-                                        <li>ShaKing & FateSteelTaylor</li>
+                                        <li>ShaKing and FateSteelTaylor</li>
                                    </ul>
                                 </div>
                                 <br/>
@@ -87,6 +91,13 @@
                                     <br/>
                                     <a class="has-text-light is-size-5 mt-2 my-6"  href="https://twitter.com/fttuaa"> Futata </a>
                                 </div>
+				<h2 class="title is-4 has-text-llperiwinkle has-text-left">The Jury Process</h2>
+				<div class="has-text-justified has-text-light">
+                                    Below is the process the jury took this year to decide their nominees, rankings and write-ups. This follows ~2 months of dedicated pre-planning, making these awards a near-exact 6 month undertaking! 
+                                </div>
+				<div class="hero is-fullheight-with-navbar section has-background-dark">
+					<iframe style="height: 100vh; width: 100%;" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
+                            	<div class="container">
                             </div>
                         </section>
                     </div>
