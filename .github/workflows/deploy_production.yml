@@ -19,10 +19,21 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/master'
     steps:
+
     - uses: actions/checkout@v1
+
     - uses: webfactory/ssh-agent@v0.4.1
       with:
         ssh-private-key: ${{ secrets.AWARDS_WEB_SSH_KEY }}
+
+    - name: Create GitHub deployment
+      uses: chrnorm/deployment-action@v1.2.0
+      id: deployment
+      with:
+        token: ${{ github.token }}
+        target_url: https://animeawards.moe
+        environment: production
+
     - run: |
         ssh -o StrictHostKeyChecking=no awards-web@134.209.0.181 /bin/bash << 'EOF'
           # report failure if any command fails
@@ -44,3 +55,19 @@ jobs:
           # restart server
           sudo systemctl restart awards-web.service
         EOF
+
+    - name: Update deployment status (success)
+      if: success()
+      uses: chrnorm/deployment-status@v1.2.0
+      with:
+        token: ${{ github.token }}
+        state: success
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+    - name: Update deployment status (failure)
+      if: failure()
+      uses: chrnorm/deployment-status@v1.2.0
+      with:
+        token: ${{ github.token }}
+        state: failure
+        deployment_id: ${{ steps.deployment.outputs.deployment_id }}
