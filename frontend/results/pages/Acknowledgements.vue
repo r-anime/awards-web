@@ -101,6 +101,50 @@
 						本当にありがとうございます。"
 					</div>
 				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Akira Amemiya (雨宮 哲)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						Thank you for awarding us the action and cinematography awards.
+						<br/><br/>
+						SSSS.DYNAZENON is an anime that was created in our small and isolated country of Japan, with a particularly narrow perspective. So it comes as a great surprise to us that it has managed to touch many people overseas. Of course, that surprise is a pleasant one.
+						<br/><br/>
+						For my future projects, I want to make anime that people from all around the world can watch. 
+						<br/><br/>
+						Akira Amemiya (SSSS.DYNAZENON Director)
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						この度は、アクション賞と撮影賞をいただき、ありがとうございます。
+						<br/><br/>
+						狭い日本の中で、さらに狭い視野で作られた『SSSS.DYNAZENON』というアニメが、海外の方々まで届いたことが何よりの驚きです。もちろん、嬉しい驚きです。
+						<br/><br/>
+						次回作以降も、世界中の人々に見てもらえるようなアニメを作りたいです。
+						<br/><br/>
+						雨宮 哲(『SSSS.DYNAZENON』監督)
+					</div>
+				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Shinsuke Shida (志太 駿介)</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						Thank you for choosing SSSS.DYNAZENON to be the recipient of the action and cinematography awards.
+						<br/><br/>
+						This anime is something that the staff all came together to make, so we're very happy to receive the award.
+						<br/><br/>
+						We're going to continue make more anime that you can enjoy, so please keep an eye out for future projects from TRIGGER.
+						<br/><br/>
+						Shinsuke Shida (SSSS.DYNAZENON Animation Producer)
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						この度はアクション賞と撮影賞に『SSSS.DYNAZENON』を選んでいただきありがとうございます。
+						<br/><br/>
+						スタッフ一丸となって制作した作品なので、受賞はとても嬉しいです。
+						<br/><br/>
+						また楽しんでもらえるアニメを作っていきますので、今後ともTRIGGERをよろしくお願い致します。
+						<br/><br/>
+						志太駿介（『SSSS.DYNAZENON』 アニメーションプロデューサー）
+					</div>
+				</div>
 			</div>
 		</section>
 	</div>
