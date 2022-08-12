@@ -7,7 +7,7 @@
                     <router-link to="/archive/2021" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
                     </router-link>
-                    <a target="_blank" href="https://youtu.be/3J7pyPcAJgs" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
+                    <a target="_blank" href="https://youtu.be/4wInZ-jcPHw" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
                     <router-link to="/acknowledgements" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
                     </router-link>
