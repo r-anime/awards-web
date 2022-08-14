@@ -11,4 +11,5 @@
     "dialect": "sqlite",
     "storage": "./awards.db"
   }
+  
 }
