@@ -1166,7 +1166,7 @@
         "nominees": [
          {
           "id": 144674,
-          "altname": "Yatora Yaguchi (Blue Period)",
+          "altname": "",
           "altimg": "",
           "public": 339,
           "finished": 352,
@@ -1179,7 +1179,7 @@
          },
          {
           "id": 199892,
-          "altname": "Ai Ohto (Wonder Egg Priority)",
+          "altname": "",
           "altimg": "",
           "public": 355,
           "finished": 640,
@@ -1192,7 +1192,7 @@
          },
          {
           "id": 125369,
-          "altname": "Joe (Nomad: Megalo Box 2)",
+          "altname": "Joe",
           "altimg": "",
           "public": 390,
           "finished": 310,
@@ -1205,7 +1205,7 @@
          },
          {
           "id": 89,
-          "altname": "Shinji Ikari (Shin Evangelion Movie:||)",
+          "altname": "",
           "altimg": "",
           "public": 411,
           "finished": 319,
@@ -1218,7 +1218,7 @@
          },
          {
           "id": 209903,
-          "altname": "Vivy (Vivy: Fluorite Eye's Song)",
+          "altname": "",
           "altimg": "",
           "public": 847,
           "finished": 782,
@@ -1231,7 +1231,7 @@
          },
          {
           "id": 204522,
-          "altname": "Hiroshi Odokawa (Odd Taxi)",
+          "altname": "",
           "altimg": "",
           "public": 1149,
           "finished": 644,
@@ -1244,7 +1244,7 @@
          },
          {
           "id": 88348,
-          "altname": "Rudeus Greyrat (Mushoku Tensei: Isekai Ittara Honki Dasu Part 1 and Part 2)",
+          "altname": "",
           "altimg": "",
           "public": 1772,
           "finished": 1445,
@@ -1257,7 +1257,7 @@
          },
          {
           "id": 40882,
-          "altname": "Eren Yeager (Shingeki no Kyojin: The Final Season Part 1)",
+          "altname": "",
           "altimg": "",
           "public": 2090,
           "finished": 1414,
@@ -1287,7 +1287,7 @@
         "nominees": [
          {
           "id": 179362,
-          "altname": "Kinji Ninomiya (Meikyuu Black Company)",
+          "altname": "",
           "altimg": "",
           "public": 290,
           "finished": 87,
@@ -1300,7 +1300,7 @@
          },
          {
           "id": 127650,
-          "altname": "Yamada Tae (Zombieland Saga: Revenge)",
+          "altname": "",
           "altimg": "",
           "public": 416,
           "finished": 330,
@@ -1313,7 +1313,7 @@
          },
          {
           "id": 54151,
-          "altname": "Renge Miyauchi (Non Non Biyori: Nonstop)",
+          "altname": "",
           "altimg": "",
           "public": 534,
           "finished": 336,
@@ -1326,7 +1326,7 @@
          },
          {
           "id": 129137,
-          "altname": "Katarina Claes (My Next Life as a Villainess: All Routes Lead to Doom! X)",
+          "altname": "",
           "altimg": "",
           "public": 600,
           "finished": 353,
@@ -1339,7 +1339,7 @@
          },
          {
           "id": 120970,
-          "altname": "Tooru (Kobayashi-san Chi no Maidragon S)",
+          "altname": "",
           "altimg": "",
           "public": 998,
           "finished": 751,
@@ -1352,7 +1352,7 @@
          },
          {
           "id": 121956,
-          "altname": "Shouko Komi (Komi-san wa, Komyushou desu.)",
+          "altname": "",
           "altimg": "",
           "public": 1007,
           "finished": 694,
@@ -1365,7 +1365,7 @@
          },
          {
           "id": 124696,
-          "altname": "Hayase Nagatoro (Ijiranaide, Nagatoro-san)",
+          "altname": "",
           "altimg": "",
           "public": 1125,
           "finished": 776,
@@ -1378,7 +1378,7 @@
          },
          {
           "id": 672,
-          "altname": "Gintoki Sakata (Gintama: THE FINAL)",
+          "altname": "",
           "altimg": "",
           "public": 1580,
           "finished": 505,
@@ -1408,7 +1408,7 @@
         "nominees": [
          {
           "id": 87833,
-          "altname": "Hikage Miyauchi (Non Non Biyori: Nonstop)",
+          "altname": "",
           "altimg": "",
           "public": 301,
           "finished": 178,
@@ -1421,7 +1421,7 @@
          },
          {
           "id": 21512,
-          "altname": "Mari Makinami Illustrious (Shin Evangelion Movie:||)",
+          "altname": "",
           "altimg": "",
           "public": 351,
           "finished": 211,
@@ -1434,7 +1434,7 @@
          },
          {
           "id": 150417,
-          "altname": "Ryuuji Ayakawa (Blue Period)",
+          "altname": "",
           "altimg": "",
           "public": 394,
           "finished": 252,
@@ -1447,7 +1447,7 @@
          },
          {
           "id": 209902,
-          "altname": "Matsumoto (Vivy: Fluorite Eye’s Song)",
+          "altname": "",
           "altimg": "",
           "public": 725,
           "finished": 583,
@@ -1460,7 +1460,7 @@
          },
          {
           "id": 204546,
-          "altname": "Hajime Tanaka (ODDTAXI)",
+          "altname": "",
           "altimg": "",
           "public": 876,
           "finished": 384,
@@ -1473,7 +1473,7 @@
          },
          {
           "id": 136554,
-          "altname": "Gugu (Fumetsu no Anata e)",
+          "altname": "",
           "altimg": "",
           "public": 1182,
           "finished": 945,
@@ -1486,7 +1486,7 @@
          },
          {
           "id": 124110,
-          "altname": "Otto Suwen (Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season Part 2)",
+          "altname": "",
           "altimg": "",
           "public": 1236,
           "finished": 937,
@@ -1499,7 +1499,7 @@
          },
          {
           "id": 88351,
-          "altname": "Ruijerd Superdia (Mushoku Tensei: Isekai Ittara Honki Dasu Part 1 and Part 2)",
+          "altname": "",
           "altimg": "",
           "public": 1956,
           "finished": 1566,
@@ -2529,7 +2529,7 @@
          },
          {
           "id": 125170,
-          "altname": "Louis",
+          "altname": "",
           "altimg": "",
           "public": 273,
           "finished": 166,
@@ -2568,7 +2568,7 @@
          },
          {
           "id": 88348,
-          "altname": "Rudeus Greyrat",
+          "altname": "",
           "altimg": "https://i.imgur.com/xbBoG80.png",
           "public": 763,
           "finished": 750,
@@ -2671,7 +2671,7 @@
         "nominees": [
          {
           "id": 361,
-          "altname": "Koukotsu Labyrinth - Sakugan",
+          "altname": "",
           "altimg": "https://i.imgur.com/EsB8sSa.png",
           "public": 52,
           "finished": 26,
@@ -2684,7 +2684,7 @@
          },
          {
           "id": 148,
-          "altname": "Hikaru Toki - Heike Monogatari",
+          "altname": "",
           "altimg": "https://i.imgur.com/M0A4ANL.png",
           "public": 225,
           "finished": 160,
@@ -2697,7 +2697,7 @@
          },
          {
           "id": 37,
-          "altname": "Shake & Shake - Bishounen Tanteidan",
+          "altname": "",
           "altimg": "https://i.imgur.com/pePDCBm.png",
           "public": 226,
           "finished": 136,
@@ -2710,7 +2710,7 @@
          },
          {
           "id": 589,
-          "altname": "Taiga yo Tomo ni Naite Kure - Zombie Land Saga: Revenge",
+          "altname": "",
           "altimg": "https://i.imgur.com/6HVPILw.png",
           "public": 377,
           "finished": 311,
@@ -2723,7 +2723,7 @@
          },
          {
           "id": 387,
-          "altname": "Annoying San San Week! - Senpai ga Uzai Kouhai no Hanashi",
+          "altname": "",
           "altimg": "https://i.imgur.com/vThanNH.jpeg",
           "public": 471,
           "finished": 321,
@@ -2736,7 +2736,7 @@
          },
          {
           "id": 230,
-          "altname": "Ai no Supreme - Kobayashi-san Chi no Maid Dragon S",
+          "altname": "",
           "altimg": "https://i.imgur.com/H3SgPWU.png",
           "public": 760,
           "finished": 563,
@@ -2749,7 +2749,7 @@
          },
          {
           "id": 236,
-          "altname": "Cinderella - Komi-san wa, Komyushou desu.",
+          "altname": "",
           "altimg": "https://i.imgur.com/eLZftts.png",
           "public": 810,
           "finished": 600,
@@ -2762,7 +2762,7 @@
          },
          {
           "id": 524,
-          "altname": "Sing My Pleasure - Vivy: Fluorite Eye’s Song",
+          "altname": "",
           "altimg": "https://i.imgur.com/CsP4Jqv.png",
           "public": 1300,
           "finished": 981,
@@ -2775,7 +2775,7 @@
          },
          {
           "id": 601,
-          "altname": "VIVID VICE - Jujutsu Kaisen",
+          "altname": "",
           "altimg": "https://i.imgur.com/c5OOrQA.png",
           "public": 1383,
           "finished": 1078,
@@ -2788,7 +2788,7 @@
          },
          {
           "id": 322,
-          "altname": "ODDTAXI - Odd Taxi",
+          "altname": "",
           "altimg": "https://i.imgur.com/oU3UMSE.png",
           "public": 1517,
           "finished": 897,
@@ -2824,7 +2824,7 @@
         "nominees": [
          {
           "id": 268,
-          "altname": "Lapis - Magia Record: Mahou Shoujo Madoka☆Magica Gaiden 2nd SEASON - Kakusei Zenya",
+          "altname": "",
           "altimg": "https://i.imgur.com/78SYUK7.png",
           "public": 100,
           "finished": 52,
@@ -2837,7 +2837,7 @@
          },
          {
           "id": 264,
-          "altname": "MILK TEA - Lupin III: Part VI",
+          "altname": "",
           "altimg": "https://i.imgur.com/ViBhW34.png",
           "public": 104,
           "finished": 40,
@@ -2850,7 +2850,7 @@
          },
          {
           "id": 253,
-          "altname": "Mirai wa Kaze no You ni - Love Live! Superstar!!",
+          "altname": "",
           "altimg": "https://i.imgur.com/A6YomS5.png",
           "public": 204,
           "finished": 132,
@@ -2863,7 +2863,7 @@
          },
          {
           "id": 32,
-          "altname": "Yasashii Suisei - BEASTARS 2",
+          "altname": "",
           "altimg": "https://i.imgur.com/gspk6vc.png",
           "public": 574,
           "finished": 322,
@@ -2876,7 +2876,7 @@
          },
          {
           "id": 299,
-          "altname": "Only - Mushoku Tensei: Isekai Ittara Honki Dasu",
+          "altname": "",
           "altimg": "https://i.imgur.com/OeeU2ov.png",
           "public": 616,
           "finished": 596,
@@ -2889,7 +2889,7 @@
          },
          {
           "id": 231,
-          "altname": "Maid with Dragons - Kobayashi-san Chi no Maidragon S",
+          "altname": "",
           "altimg": "https://i.imgur.com/HXs0QDl.png",
           "public": 626,
           "finished": 474,
@@ -2902,7 +2902,7 @@
          },
          {
           "id": 304,
-          "altname": "Kaze to Iku Michi - Mushoku Tensei: Isekai Ittara Honki Dasu Part 2",
+          "altname": "",
           "altimg": "https://i.imgur.com/AQ4Ui7b.png",
           "public": 716,
           "finished": 596,
@@ -2915,7 +2915,7 @@
          },
          {
           "id": 356,
-          "altname": "Believe in You - Re:Zero kara Hajimeru Isekai Seikatsu 2nd Season Part 2",
+          "altname": "",
           "altimg": "https://i.imgur.com/8swvYk7.png",
           "public": 1044,
           "finished": 733,
@@ -2928,7 +2928,7 @@
          },
          {
           "id": 395,
-          "altname": "Nai Nai - Shadows House",
+          "altname": "",
           "altimg": "https://i.imgur.com/fKQvOEE.png",
           "public": 1057,
           "finished": 708,
@@ -2941,7 +2941,7 @@
          },
          {
           "id": 602,
-          "altname": "Give it Back - Jujutsu Kaisen",
+          "altname": "",
           "altimg": "https://i.imgur.com/RHYGgUc.png",
           "public": 1509,
           "finished": 1214,

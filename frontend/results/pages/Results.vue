@@ -43,7 +43,10 @@
 					<div class="column is-7">
 						<div class="awardsModal has-text-light has-background-dark content">
 							<h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
-								<nominee-name
+								<span v-if="modalCat.entryType==='themes'">
+								{{results.themes[modalNom.id].split(/ - /gm)[1]}} ({{results.themes[modalNom.id].split(/ - /gm)[0]}})
+								</span>
+								<nominee-name v-else
 								:nominee="modalNom"
 								:anilistData="anilistData"
 								:data="results"
@@ -54,9 +57,6 @@
 								</span>
 								<span v-if="modalCat.entryType==='vas'">
 									({{results.characters[modalNom.id].va}})
-								</span>
-								<span v-if="modalCat.entryType==='themes'">
-									({{results.themes[modalNom.id].split(/ - /gm)[0]}})
 								</span>
 							</h3>
 							<div class="is-marginless">
