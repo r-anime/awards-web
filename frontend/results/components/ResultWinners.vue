@@ -33,12 +33,21 @@
                     </div>
                     <div class="categorySubHeadItemText">
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
-                            <nominee-name
+                            <span v-if="category.entryType==='themes'">
+							{{data.themes[jury.id].split(/ - /gm)[1]}} ({{data.themes[jury.id].split(/ - /gm)[0]}})
+							</span>
+                            <nominee-name v-else
                             :nominee="jury"
                             :anilistData="anilistData"
                             :data="data"
                             :category="category"
                             ></nominee-name>
+                            <span v-if="category.entryType==='characters'">
+							({{data.characters[jury.id].anime}})
+							</span>
+							<span v-if="category.entryType==='vas'">
+							({{data.characters[jury.id].va}})
+							</span>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-llperiwinkle">
                             Jury Winner
@@ -51,12 +60,21 @@
                     </div>
                     <div class="categorySubHeadItemText">
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
-                            <nominee-name
+                            <span v-if="category.entryType==='themes'">
+							{{data.themes[pub.id].split(/ - /gm)[1]}} ({{data.themes[pub.id].split(/ - /gm)[0]}})
+							</span>
+                            <nominee-name v-else
                             :nominee="pub"
                             :anilistData="anilistData"
                             :data="data"
                             :category="category"
                             ></nominee-name>
+                            <span v-if="category.entryType==='characters'">
+							({{data.characters[pub.id].anime}})
+							</span>
+							<span v-if="category.entryType==='vas'">
+							({{data.characters[pub.id].va}})
+							</span>
                         </h3>
                         <div class="categorySubHeadItemTextSubTitle has-text-llperiwinkle">
                             Public Winner

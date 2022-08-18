@@ -12,7 +12,7 @@ export default {
 				return this.nominee.altname;
 			}
 			if (this.category.entryType === 'themes') {
-				return this.data.themes[this.nominee.id].split(/ - /gm)[0];
+				return this.data.themes[this.nominee.id].split(/ OP| ED/)[0];
 			} else if (this.category.entryType === 'vas') {
 				return `${this.data.characters[this.nominee.id].name}`;
 			} else if (this.category.entryType === 'characters') {
