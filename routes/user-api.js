@@ -51,7 +51,9 @@ apiApp.get('/all', async (request, response) => {
 		return response.json(401, {error: 'You do not have permission to retrieve the user list'});
 	}
 	try {
-		response.json(await Users.findAll());
+		response.json(await Users.findAll({
+			order: [['level', 'DESC']]
+		}));
 	} catch (error) {
 		response.error(error);
 	}

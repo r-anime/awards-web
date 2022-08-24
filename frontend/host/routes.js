@@ -20,7 +20,7 @@ import AllCategories from './pages/AllCategories';
 import CategorySort from './pages/CategorySort';
 import AdminPanel from './pages/AdminPanel';
 import Applications from './pages/Applications';
-import ManageEntries from './pages/ManageEntries';
+import ManageItems from './pages/ManageItems';
 import AllApplications from './pages/AllApplications';
 import Allocations from './pages/Allocations';
 
@@ -266,10 +266,10 @@ export default new VueRouter({
 					},
 				},
 				{
-					path: 'entries',
-					component: ManageEntries,
+					path: 'items',
+					component: ManageItems,
 					meta: {
-						title: 'Entries',
+						title: 'Items',
 					},
 				},
 				{
