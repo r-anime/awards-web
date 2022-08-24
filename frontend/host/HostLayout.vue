@@ -57,7 +57,7 @@ export default {
 					{name: 'Nominations', path: '/host/results'},
 					{name: 'Final', path: '/host/final-results'}
 				]},
-				{name: 'Entries', path: '/host/entries'}
+				{name: 'Entries', path: '/host/items'}
 				,
 			].filter(s => s);
 		},
