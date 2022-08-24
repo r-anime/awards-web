@@ -218,7 +218,8 @@ export default {
 					return (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter))
 				});
 			}
-			return items.slice(0, 50);
+			return items;
+			//return items.slice(0, 50);
 		},
 		animeItems(){
 			return this.items.filter(item => item.type === 'anime');
