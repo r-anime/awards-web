@@ -41,7 +41,8 @@
 						<div class="categoryRankCard column is-half-mobile" v-for="(nom, index) in nomCurrentOrder"
 						:key="nom.id" @click="emitNomModal(nom)">
 							<div class="categoryNominationItem" >
-								<category-item-image :nominee="nom" :anilistData="anilistData" :data="data" />
+								<div class="categoryItemImage" :title="nom.id" :style="itemImage(nom)">
+    						</div>
 								<div class="nomineeTitle has-text-light is-size-6">
 									<nominee-name
 										:nominee="nom"
@@ -76,7 +77,6 @@
 import {mapActions} from 'vuex';
 import util from '../../util';
 import AwardWinners from './ResultWinners';
-import CategoryItemImage from './ItemImage';
 import NomineeName from './NomineeName';
 import marked from 'marked';
 import juryIcon from '../../../img/jury.png';
@@ -92,7 +92,6 @@ export default {
 	],
 	components: {
 		AwardWinners,
-		CategoryItemImage,
 		NomineeName,
 	},
 	data () {
@@ -175,6 +174,31 @@ export default {
 			el.style.top = `${el.offsetTop - parseFloat(marginTop, 10)}px`;
 			el.style.width = width;
 			el.style.height = height;
+		},
+		itemImage (nom) {
+			if (this.anilistData) {
+				if (nom.altimg !== '') {
+					return `background-image: url(${nom.altimg})`;
+				}
+				const found = this.anilistData.find(el => el.id === nom.id);
+				if (found && found.image) {
+					if (found.image.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.image.large) {
+						return `background-image: url(${found.image.large})`;
+					}
+				}
+				if (found && found.coverImage) {
+					if (found.coverImage.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.coverImage.large) {
+						return `background-image: url(${found.coverImage.large})`;
+					}
+				}
+			}
+			return 'background-image: none';
 		},
 	},
 };
