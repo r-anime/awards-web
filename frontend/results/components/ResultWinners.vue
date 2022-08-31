@@ -13,16 +13,12 @@
         <div v-else class="categoryWinnerContainer" >
             <div class="columns is-gapless is-mobile">
                 <div class="categoryWinnerItem categoryWinnerJury column is-paddingless" @click="emitNomModal(jury)">
-                    <category-item-image
-                        :nominee="jury"
-                        :anilistData="anilistData"
-                    />
+                    <div class="categoryItemImage" :title="jury.id" :style="itemImage(jury)">
+    				</div>
                 </div>
                 <div class="categoryWinnerItem categoryWinnerPublic column is-paddingless" @click="emitNomModal(pub)">
-                    <category-item-image
-                        :nominee="pub"
-                        :anilistData="anilistData"
-                    />
+                    <div class="categoryItemImage" :title="pub.id" :style="itemImage(pub)">
+    				</div>
                 </div>
             </div>
         </div>
@@ -105,7 +101,6 @@
     </div>
 </template>
 <script>
-import CategoryItemImage from './ItemImage';
 import NomineeName from './NomineeName';
 
 import laurels from '../../../img/laurels.png';
@@ -116,12 +111,36 @@ import consensusIcon from '../../../img/pubjury.png';
 export default {
 	props: ['pub', 'jury', 'anilistData', 'data', 'category'],
 	components: {
-		CategoryItemImage,
 		NomineeName,
 	},
 	methods: {
 		emitNomModal (nom) {
 			this.$emit('nomModal', nom);
+		},
+        itemImage (nom) {
+			if (this.anilistData) {
+				if (nom.altimg !== '') {
+					return `background-image: url(${nom.altimg})`;
+				}
+				const found = this.anilistData.find(el => el.id === nom.id);
+				if (found && found.image) {
+					if (found.image.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.image.large) {
+						return `background-image: url(${found.image.large})`;
+					}
+				}
+				if (found && found.coverImage) {
+					if (found.coverImage.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.coverImage.large) {
+						return `background-image: url(${found.coverImage.large})`;
+					}
+				}
+			}
+			return 'background-image: none';
 		},
 	},
 	data () {

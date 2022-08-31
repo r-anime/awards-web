@@ -35,10 +35,8 @@
 			<div class="modal-content">
 				<div class="columns is-gapless">
 					<div class="awardsImage column is-5">
-						<item-image
-							:nominee="modalNom"
-							:anilistData="anilistData"
-						/>
+						<div class="categoryItemImage" :title="modalNom.id" :style="itemImage(modalNom)">
+    				</div>
 					</div>
 					<div class="column is-7">
 						<div class="awardsModal has-text-light has-background-dark content">
@@ -155,7 +153,6 @@
 /* eslint-disable no-alert */
 import AwardsSection from '../components/ResultSection';
 import NomineeName from '../components/NomineeName';
-import ItemImage from '../components/ItemImage';
 import juryIcon from '../../../img/jury.png';
 import publicIcon from '../../../img/public.png';
 import logo21 from '../../../img/awards2021.png';
@@ -174,7 +171,6 @@ export default {
 	props: ['slug', 'year'],
 	components: {
 		AwardsSection,
-		ItemImage,
 		NomineeName,
 	},
 	data () {
@@ -409,6 +405,31 @@ export default {
 			Promise.all([showPromise, charPromise]).then(() => {
 				this.loaded = true;
 			});
+		},
+		itemImage (nom) {
+			if (this.anilistData) {
+				if (nom.altimg !== '') {
+					return `background-image: url(${nom.altimg})`;
+				}
+				const found = this.anilistData.find(el => el.id === nom.id);
+				if (found && found.image) {
+					if (found.image.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.image.large) {
+						return `background-image: url(${found.image.large})`;
+					}
+				}
+				if (found && found.coverImage) {
+					if (found.coverImage.extraLarge) {
+						return `background-image: url(${found.coverImage.extraLarge})`;
+					}
+					if (found.coverImage.large) {
+						return `background-image: url(${found.coverImage.large})`;
+					}
+				}
+			}
+			return 'background-image: none';
 		},
 	},
 	mounted () {
