@@ -32,12 +32,9 @@
                             <span v-if="category.entryType==='themes'">
 							{{data.themes[jury.id].split(/ - /gm)[1]}} ({{data.themes[jury.id].split(/ - /gm)[0]}})
 							</span>
-                            <nominee-name v-else
-                            :nominee="jury"
-                            :anilistData="anilistData"
-                            :data="data"
-                            :category="category"
-                            ></nominee-name>
+                            <span v-else>
+                            {{nomineeName(jury)}}
+                            </span>
                             <span v-if="category.entryType==='characters'">
 							({{data.characters[jury.id].anime}})
 							</span>
@@ -59,12 +56,9 @@
                             <span v-if="category.entryType==='themes'">
 							{{data.themes[pub.id].split(/ - /gm)[1]}} ({{data.themes[pub.id].split(/ - /gm)[0]}})
 							</span>
-                            <nominee-name v-else
-                            :nominee="pub"
-                            :anilistData="anilistData"
-                            :data="data"
-                            :category="category"
-                            ></nominee-name>
+                            <span v-else>
+                            {{nomineeName(pub)}}
+                            </span>
                             <span v-if="category.entryType==='characters'">
 							({{data.characters[pub.id].anime}})
 							</span>
@@ -101,7 +95,6 @@
     </div>
 </template>
 <script>
-import NomineeName from './NomineeName';
 
 import laurels from '../../../img/laurels.png';
 import juryIcon from '../../../img/jury.png';
@@ -111,7 +104,6 @@ import consensusIcon from '../../../img/pubjury.png';
 export default {
 	props: ['pub', 'jury', 'anilistData', 'data', 'category'],
 	components: {
-		NomineeName,
 	},
 	methods: {
 		emitNomModal (nom) {
@@ -141,6 +133,28 @@ export default {
 				}
 			}
 			return 'background-image: none';
+		},
+        nomineeName (nom) {
+			if (nom.altname !== '') {
+				return nom.altname;
+			}
+			if (this.category.entryType === 'themes') {
+				return this.data.themes[nom.id].split(/ OP| ED/)[0];
+			} else if (this.category.entryType === 'vas') {
+				return `${this.data.characters[nom.id].name}`;
+			} else if (this.category.entryType === 'characters') {
+				return `${this.data.characters[nom.id].name}`;
+			}
+
+			const found = this.anilistData.find(el => el.id === nom.id);
+
+			if (found && found.title) {
+				return found.title.romaji || found.title.english;
+			}
+			if (found && found.name) {
+				return found.name.full;
+			}
+			return 'ERROR';
 		},
 	},
 	data () {
