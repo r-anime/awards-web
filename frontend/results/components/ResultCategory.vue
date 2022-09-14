@@ -44,12 +44,9 @@
 								<div class="categoryItemImage" :title="nom.id" :style="itemImage(nom)">
     						</div>
 								<div class="nomineeTitle has-text-light is-size-6">
-									<nominee-name
-										:nominee="nom"
-										:anilistData="anilistData"
-										:data="data"
-										:category="category"
-									></nominee-name>
+									<span>
+                  {{nomineeName(nom)}}
+                  </span>
 								</div>
 							</div>
 							<div class="categoryRank has-text-gold">{{nomPublicRankings[index]}}</div>
@@ -77,7 +74,6 @@
 import {mapActions} from 'vuex';
 import util from '../../util';
 import AwardWinners from './ResultWinners';
-import NomineeName from './NomineeName';
 import marked from 'marked';
 import juryIcon from '../../../img/jury.png';
 import publicIcon from '../../../img/public.png';
@@ -92,7 +88,6 @@ export default {
 	],
 	components: {
 		AwardWinners,
-		NomineeName,
 	},
 	data () {
 		return {
@@ -199,6 +194,28 @@ export default {
 				}
 			}
 			return 'background-image: none';
+		},
+		nomineeName (nom) {
+			if (nom.altname !== '') {
+				return nom.altname;
+			}
+			if (this.category.entryType === 'themes') {
+				return this.data.themes[nom.id].split(/ OP| ED/)[0];
+			} else if (this.category.entryType === 'vas') {
+				return `${this.data.characters[nom.id].name}`;
+			} else if (this.category.entryType === 'characters') {
+				return `${this.data.characters[nom.id].name}`;
+			}
+
+			const found = this.anilistData.find(el => el.id === nom.id);
+
+			if (found && found.title) {
+				return found.title.romaji || found.title.english;
+			}
+			if (found && found.name) {
+				return found.name.full;
+			}
+			return 'ERROR';
 		},
 	},
 };
