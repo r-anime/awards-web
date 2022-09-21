@@ -3,10 +3,8 @@
         <div v-if="pub.id === jury.id" class="categoryWinnerContainer" >
             <div class="columns is-gapless is-mobile">
                 <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column is-paddingless" @click="emitNomModal(pub)">
-                    <category-item-image
-                        :nominee="pub"
-                        :anilistData="anilistData"
-                    />
+                    <div class="categoryItemImage" :title="pub.id" :style="itemImage(pub)">
+    				</div>
                 </div>
             </div>
         </div>
@@ -79,12 +77,9 @@
                 </div>
                 <div class="categorySubHeadItemText">
                     <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
-                        <nominee-name
-                        :nominee="pub"
-                        :anilistData="anilistData"
-                        :data="data"
-                        :category="category"
-                        ></nominee-name>
+                        <span>
+                            {{nomineeName(pub)}}
+                        </span>
                     </h3>
                     <div class="categorySubHeadItemTextSubTitle has-text-llperiwinkle">
                         Consensus Winner
