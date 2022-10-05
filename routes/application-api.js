@@ -171,6 +171,7 @@ apiApp.post('/question-group', async (request, response) => {
 			order: questionGroup.order,
 			weight: questionGroup.weight,
 			app_id: questionGroup.app_id,
+			subgrades: questionGroup.subgrades,
 		});
 		questionGroup = await QuestionGroups.findOne({
 			where: {
@@ -419,7 +420,16 @@ apiApp.get('/random-answer/:questionID', async (request, response) => {
 				},
 			],
 		});
-		answers = answers.filter(answer => answer.scores.length < 5 && !answer.scores.find(score => score.host_name === auth));
+		answers = answers.filter((answer) => {
+			const subgrades = answer.question.subgrades.replace(' ', '').split();
+			let allsubgrades = true;
+
+			for (const subgrade of subgrades){
+				allsubgrades = allsubgrades && !answer.scores.find(score => score.host_name === auth && score.subgrade === subgrade);
+			}
+
+			return allsubgrades;
+		});
 		if (answers.length) {
 			response.json(answers[Math.floor(Math.random() * answers.length)]);
 		} else {
@@ -877,11 +887,11 @@ apiApp.get('/allocations', async (request, response) => {
 			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
 			const allocationInstance = new Allocations(promiseArr[0], validApps);
 			
-			// allocationInstance.vaxiDraft(2.6, 3.0);
-			allocationInstance.vaxiDraft(1.6, 2.0);
-			if (allocationInstance.catsNeedFill()) {
+			allocationInstance.vaxiDraft(2.6, 3.0);
+			// allocationInstance.vaxiDraft(1.6, 2.0);
+			/*if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.6, 2.0, true);
-			}
+			}*/
 			/*
 			if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.0, 2.0, true);

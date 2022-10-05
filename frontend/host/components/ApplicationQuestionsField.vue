@@ -47,7 +47,7 @@
 				<div v-else>
 					<label class="label">Question Text</label>
 					<div class="control">
-						<input class="textarea" type="text" rows="1" v-model="question.question" @input="emitUpdate">
+						<input class="textarea" type="text" rows="3" v-model="question.question" @input="emitUpdate">
 					</div>
 				</div>
 				<div class="columns is-multiline">
@@ -65,6 +65,12 @@
 								<option value="choice">Multiple Choice</option>
 								<option value="preference">Preference</option>
 							</select>
+						</div>
+					</div>
+					<div class="column is-narrow field">
+						<label class="label">Applicable Categories</label>
+						<div class="control">
+							<input class="textarea" type="text" rows="1" v-model="question.subgrades" @input="emitUpdate">
 						</div>
 					</div>
 				</div>
@@ -113,6 +119,7 @@ export default {
 			this.questionGroup.questions.push({
 				question: '',
 				type: 'essay',
+				subgrades: '',
 				order: -1,
 				group_id: this.questionGroup.id,
 			});
