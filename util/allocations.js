@@ -37,7 +37,8 @@ class ApplicationJuror {
 		this.genreScore = -1;
 		this.characterScore = -1;
 		this.visualScore = -1;
-		this.audioScore = -1;
+		this.vaScore = -1;
+		this.ostScore = -1;
 		this.opedScore = -1;
 		this.mainScore = -1;
 		this.weightedScore = -1;
@@ -81,9 +82,14 @@ class ApplicationJuror {
 						this.visualScore = score.score;
 					}
 				}
-				else if (score.subgrade === 'audio'){
-					if (score.score > this.audioScore){
-						this.audioScore = score.score;
+				else if (score.subgrade === 'va'){
+					if (score.score > this.vaScore){
+						this.vaScore = score.score;
+					}
+				}
+				else if (score.subgrade === 'ost'){
+					if (score.score > this.ostScore){
+						this.ostScore = score.score;
 					}
 				}
 				else if (score.subgrade === 'oped'){
@@ -142,8 +148,10 @@ class ApplicationJuror {
 				return 0;
 			}
 
-			if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
-				return this.audioScore;
+			if (category.name.match(/OST|Original Sound Track/gm)) {
+				return this.ostScore;
+			} else if (category.name.match(/Voice Actor|Voice Acting/gm)) {
+				return this.vaScore;
 			} else if (category.name.match(/OP|ED|Opening|Ending/gm)) {
 				return this.opedScore;
 			} else if (category.awardsGroup === 'production') {
@@ -169,7 +177,7 @@ class ApplicationJuror {
 			return [];
 		}
 	}
-
+R
 	catPref(catid){
 		try{
 			let returnval = this.prefs.indexOf(catid);
