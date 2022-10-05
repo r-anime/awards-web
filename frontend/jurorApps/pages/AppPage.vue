@@ -36,6 +36,11 @@
 									<br/>
 									<br/>
 								</p>
+								<p v-if="multipleChoiceQuestion(q.question).includes('Open Juror')" >
+									Open jurors are a new category of juror who are chosen to participate in our special awards: a more casual and laid back awards experience. While not being invited to a normal category, open jurors will be able to participate in all of the juror-wide activities such as our special categories, influencing channels, and replacing jurors in regular categories if any spaces become available.
+									<br/>
+									<br/>
+								</p>
 								<div v-for="(choice, c_index) in multipleChoiceAnswers(q.question)" :key="c_index" class="app-radio">
 									<input type="radio" :name="`mc-${q.id}`" :id="`questionmc-${q.id}-${c_index}`" :value="choice" v-model="answers[q.id]" @change="handleMCInput(q.id)">
 									<label :for="`questionmc-${q.id}-${c_index}`"> {{choice}} </label>
