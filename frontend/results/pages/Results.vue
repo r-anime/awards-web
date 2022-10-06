@@ -45,7 +45,7 @@
 								{{results.themes[modalNom.id].split(/ - /gm)[1]}} ({{results.themes[modalNom.id].split(/ - /gm)[0]}})
 								</span>
 								<span>
-                  {{nomineeName(modalNom)}}
+                  {{nomineeName(modalNom, this.modalCat)}}
                 </span>
 								<span v-if="modalCat.entryType==='characters'">
 									({{results.characters[modalNom.id].anime}})
@@ -426,19 +426,19 @@ export default {
 			}
 			return 'background-image: none';
 		},
-		nomineeName (nom) {
+		nomineeName (nom, cat) {
 			if (nom.altname !== '') {
 				return nom.altname;
 			}
-			if (this.category.entryType === 'themes') {
-				return this.data.themes[nom.id].split(/ OP| ED/)[0];
-			} else if (this.category.entryType === 'vas') {
-				return `${this.data.characters[nom.id].name}`;
-			} else if (this.category.entryType === 'characters') {
-				return `${this.data.characters[nom.id].name}`;
+			if (cat.entryType === 'themes') {
+				return this.results.themes[nom.id].split(/ OP| ED/)[0];
+			} else if (cat.entryType === 'vas') {
+				return `${this.results.characters[nom.id].name}`;
+			} else if (cat.entryType === 'characters') {
+				return `${this.results.characters[nom.id].name}`;
 			}
 
-			const found = this.anilistData.find(el => el.id === nom.id);
+			const found = this.showData.find(el => el.id === nom.id);
 
 			if (found && found.title) {
 				return found.title.romaji || found.title.english;
