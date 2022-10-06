@@ -19,14 +19,14 @@ jobs:
           # manually source nvm since bashrc exits early unless session is interactive
           source "$HOME/.nvm/nvm.sh"
           
-          # upgrade to current node version
-          nvm install --latest-npm
-
           # checkout changes
           cd "$HOME/apps/awards-web"
           git fetch --all
           git reset --hard origin/master
           
+          # upgrade to current node version
+          nvm install --latest-npm
+
           # update deps, rebuild
           yarn
           yarn migrate
