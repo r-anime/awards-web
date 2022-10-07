@@ -86,7 +86,7 @@ apiApp.post('/application', async (request, response) => {
 });
 
 apiApp.patch('/application', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to modify juror apps.'});
 	}

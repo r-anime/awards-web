@@ -27,7 +27,8 @@
 							:key="q_index">
 							<div v-if="q.type == 'essay'">
 								<h3 class="question-header" v-html="markdownit(q.question)"></h3>
-								<small>Applies to: {{q.subgrades}}</small>
+								<p>Applies to: {{subgradesNiceName(q.subgrades)}} Categories</p>
+								<br/>
 								<Editor initialEditType="wysiwyg" :options="editorOptions" :ref="`editor-${q.id}`" :initialValue="answers[q.id]" @focus="changed = true" @change="handleInput(q.id)"/>
 							</div>
 							<div v-else-if="q.type == 'choice'">
@@ -38,7 +39,7 @@
 									<br/>
 								</p>
 								<p v-if="multipleChoiceQuestion(q.question).includes('Open Juror')" >
-									Open jurors are a new category of juror who are chosen to participate in our special awards: a more casual and laid back awards experience. While not being invited to a normal category, open jurors will be able to participate in all of the juror-wide activities such as our special categories, influencing channels, and replacing jurors in regular categories if any spaces become available.
+									Open jurors are a new category of juror who are chosen to participate in a more casual and laid back awards experience. While not being invited to a normal category, open jurors will be able to participate in all of the juror-wide activities such as our special categories, influencing channels, and replacing jurors in regular categories if any spaces become available.
 									<br/>
 									<br/>
 								</p>
@@ -374,6 +375,10 @@ export default {
 		nextSample () {
 			this.sampleIndex = (this.sampleIndex + 1) % this.samples.length;
 		},
+		subgradesNiceName(str){
+			return str.replace("genre", "Genre").replace("char", "Character").replace("visual", "Visual Production").replace("va", "Voice Acting").replace("oped", "OP/ED").replace(',', ', ');
+
+		}
 	},
 	mounted () {
 		Promise.all([this.locks ? Promise.resolve() : this.getLocks(), this.me ? Promise.resolve() : this.getMe()]).then(() => {

@@ -273,6 +273,9 @@ sequelize.sync().then(async () => {
 	yuuko.once('ready', () => {
 		log.success('Connected to Discord');
 	});
+	yuuko.on('error', (e, id) => {
+		log.error('Error ' + id + ': ' + e);
+	})
 
 	if (config.https) {
 		// If we're using HTTPS, create an HTTPS server
