@@ -376,8 +376,7 @@ export default {
 			this.sampleIndex = (this.sampleIndex + 1) % this.samples.length;
 		},
 		subgradesNiceName(str){
-			return str.replace("genre", "Genre").replace("char", "Character").replace("visual", "Visual Production").replace("va", "Voice Acting").replace("oped", "OP/ED").replace(',', ', ');
-
+			return str.replace("genre", "Genre").replace("char", "Character").replace("visual", "Visual Production").replace("va", "Voice Acting").replace("oped", "OP/ED").replace("ost", "OST").replaceAll(',', ', ');
 		}
 	},
 	mounted () {
