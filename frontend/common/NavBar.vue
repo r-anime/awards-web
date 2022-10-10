@@ -31,7 +31,7 @@
 
 <script>
 import NavBarLink from './NavBarLink';
-import logo from '../../img/awards2021.png';
+import logo from '../../img/awards2022.png';
 
 export default {
 	components: {
