@@ -44,6 +44,7 @@
 							</div>
                         </div>
 						<br/><br/>
+						<!--
 						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Jury Suggestions</h1>
 						<div v-if="categories" class="has-text-light has-text-centered">
 							<section class="section has-background-dark">
@@ -82,6 +83,7 @@
 							</div>
 							</section>
 						</div>
+						-->
 					</section>
 				</div>
 			</div>
