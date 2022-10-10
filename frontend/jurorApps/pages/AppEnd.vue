@@ -11,7 +11,7 @@
 				</div>
 				<div class="message-body">
 					<div class="pl-5 pr-5">
-						Thank you for applying for the r/anime awards! You may review and change your application any time until the <b>19th of October</b> by navigating back to the application page. You will be contacted on Reddit the <b>1st of November</b> about the outcome.
+						Thank you for applying for the r/anime awards! You may review and change your application any time until the <b>24th of October</b> by navigating back to the application page. You will be contacted on Reddit the <b>2nd of November</b> about the outcome.
 						<br><br>
 						Once again, thank you for applying and we hope to see you soon!
 					</div>
@@ -29,7 +29,7 @@
 <script>
 import 'codemirror/lib/codemirror.css';
 import {mapState, mapActions} from 'vuex';
-import logo2020 from '../../../img/awards2020.png';
+import logo2022 from '../../../img/awards2022.png';
 
 export default {
 	computed: {
@@ -39,7 +39,7 @@ export default {
 	},
 	data () {
 		return {
-			logo: logo2020,
+			logo: logo2022,
 		};
 	},
 	methods: {
