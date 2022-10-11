@@ -564,7 +564,19 @@ apiApp.post('/score', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	try {
-		score = await Scores.create(score);
+		//This is an upsert
+		score = await Scores.findOne({
+			where: {
+				answer_id: score.answer_id,
+				host_name: score.host_name,
+				subgrade: score.subgrade
+			}
+		}).then((obj) => {
+			if (obj){
+				return obj.update(score);
+			}
+			return Scores.create(score);
+		});
 		const answer = await Answers.findOne({
 			where: {
 				id: score.answer_id,
