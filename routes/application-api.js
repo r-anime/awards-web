@@ -421,14 +421,15 @@ apiApp.get('/random-answer/:questionID', async (request, response) => {
 			],
 		});
 		answers = answers.filter((answer) => {
-			const subgrades = answer.question.subgrades.replace(' ', '').split();
-			let allsubgrades = true;
+			const subgrades = answer.question.subgrades.replace(' ', '').split(',');
 
 			for (const subgrade of subgrades){
-				allsubgrades = allsubgrades && !answer.scores.find(score => score.host_name === auth && score.subgrade === subgrade);
+				if (!answer.scores.some(score => score.host_name === auth && score.subgrade === subgrade)){
+					return true;
+				}
 			}
 
-			return allsubgrades;
+			return false;
 		});
 		if (answers.length) {
 			response.json(answers[Math.floor(Math.random() * answers.length)]);
