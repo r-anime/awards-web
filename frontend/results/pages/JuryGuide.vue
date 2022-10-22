@@ -7,7 +7,7 @@
 			</section>
 		</div>
 		<section v-else-if="locked === false" class="is-flex is-align-items-center is-justify-content-center">
-			<iframe style="height: 75vh; width: 100%; max-width: 624px" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
+			<iframe style="height: 75vh; width: 100%; max-width: 624px" src="https://docs.google.com/document/d/e/2PACX-1vS2qIX21V-9yU4FUwAbMGrF-VSNBkCAzmGsZBwhzhFAw_8gPO3oakyX3_uzmESoxw/pub?embedded=true"></iframe>
 		</section>
 		<section v-else class="hero is-fullheight-with-navbar section">
 			<div class="container">

@@ -86,7 +86,7 @@ apiApp.post('/application', async (request, response) => {
 });
 
 apiApp.patch('/application', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
 		return response.json(401, {error: 'You must be an admin to modify juror apps.'});
 	}
@@ -171,6 +171,7 @@ apiApp.post('/question-group', async (request, response) => {
 			order: questionGroup.order,
 			weight: questionGroup.weight,
 			app_id: questionGroup.app_id,
+			subgrades: questionGroup.subgrades,
 		});
 		questionGroup = await QuestionGroups.findOne({
 			where: {
@@ -419,7 +420,17 @@ apiApp.get('/random-answer/:questionID', async (request, response) => {
 				},
 			],
 		});
-		answers = answers.filter(answer => answer.scores.length < 5 && !answer.scores.find(score => score.host_name === auth));
+		answers = answers.filter((answer) => {
+			const subgrades = answer.question.subgrades.replace(' ', '').split(',');
+
+			for (const subgrade of subgrades){
+				if (!answer.scores.some(score => score.host_name === auth && score.subgrade === subgrade)){
+					return true;
+				}
+			}
+
+			return false;
+		});
 		if (answers.length) {
 			response.json(answers[Math.floor(Math.random() * answers.length)]);
 		} else {
@@ -554,7 +565,19 @@ apiApp.post('/score', async (request, response) => {
 		return response.json({error: 'Invalid JSON'});
 	}
 	try {
-		score = await Scores.create(score);
+		//This is an upsert
+		score = await Scores.findOne({
+			where: {
+				answer_id: score.answer_id,
+				host_name: score.host_name,
+				subgrade: score.subgrade
+			}
+		}).then((obj) => {
+			if (obj){
+				return obj.update(score);
+			}
+			return Scores.create(score);
+		});
 		const answer = await Answers.findOne({
 			where: {
 				id: score.answer_id,
@@ -877,11 +900,11 @@ apiApp.get('/allocations', async (request, response) => {
 			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
 			const allocationInstance = new Allocations(promiseArr[0], validApps);
 			
-			// allocationInstance.vaxiDraft(2.6, 3.0);
-			allocationInstance.vaxiDraft(1.6, 2.0);
-			if (allocationInstance.catsNeedFill()) {
+			allocationInstance.vaxiDraft(2.6, 3.0);
+			// allocationInstance.vaxiDraft(1.6, 2.0);
+			/*if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.6, 2.0, true);
-			}
+			}*/
 			/*
 			if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.0, 2.0, true);

@@ -26,7 +26,14 @@
 					<tr v-for="answer in filteredAnswers" :key="answer.id">
 						<td><router-link :to="`/host/applications/${application.id}/applicant/${answer.applicant.id}`">{{showNames && answer.applicant.user ? answer.applicant.user.reddit : answer.applicant.id}}</router-link></td>
 						<td v-for="(host, index) in hosts" :key="index">
-							{{answer.scores.find(score => score.host_name === host) ? answer.scores.find(score => score.host_name === host).score : 'N/A'}}
+							<span v-if="answer.scores.find(score => score.host_name === host)">
+								<span v-for="(score, index) in answer.scores.filter(score => score.host_name === host)" :key="index">
+									({{score.score}} - {{score.subgrade}})
+								</span>
+							</span>
+							<span v-else>
+								N/A
+							</span>
 						</td>
 					</tr>
 				</tbody>

@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull: false,
 			defaultValue: true,
 		},
+		subgrades: {
+			type: DataTypes.STRING,
+			allowNull: true,
+			defaultValue: '',
+		}
 	});
 
 	questions.associate = models => {

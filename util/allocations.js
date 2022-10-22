@@ -3,8 +3,8 @@ const {yuuko} = require('../bot/index');
 
 const JUROR_MIN = 7;
 const FILL_MAX = 11;
-const JUROR_MAX = 13;
-const AOTY_MAX = 15;
+const JUROR_MAX = 11;
+const AOTY_MAX = 11;
 
 function shuffle (array) {
 	let currentIndex = array.length; let temporaryValue; let randomIndex;
@@ -37,7 +37,8 @@ class ApplicationJuror {
 		this.genreScore = -1;
 		this.characterScore = -1;
 		this.visualScore = -1;
-		this.audioScore = -1;
+		this.vaScore = -1;
+		this.ostScore = -1;
 		this.opedScore = -1;
 		this.mainScore = -1;
 		this.weightedScore = -1;
@@ -62,42 +63,50 @@ class ApplicationJuror {
 	}
 
 	calcScores(){
-		// This is "kinda" hard coded and needs to be changed if application categories get changed
-		const audioqs = this.answers.filter(answer => answer.question.question_group.name == 'Audio Production' && answer.question.type === 'essay');
-		const opedqs = this.answers.filter(answer => answer.question.question_group.name == 'OP / ED' && answer.question.type === 'essay');
-		const visualqs = this.answers.filter(answer => answer.question.question_group.name == 'Visual Production' && answer.question.type === 'essay');		
-		const genreqs = this.answers.filter(answer => answer.question.question_group.name == 'Genre' && answer.question.type === 'essay');
-		const chareqs = this.answers.filter(answer => answer.question.question_group.name == 'Character' && answer.question.type === 'essay');
+		let totalavg = 0;
+		let totalavgcount = 0;
+		for (let answer of this.answers){
+			for (let score of answer.score){
+				if (score.subgrade === 'genre'){
+					if (score.score > this.genreScore){
+						this.genreScore = score.score;
+					}
+				}
+				else if (score.subgrade === 'char'){
+					if (score.score > this.characterScore){
+						this.characterScore = score.score;
+					}
+				}
+				else if (score.subgrade === 'visual'){
+					if (score.score > this.visualScore){
+						this.visualScore = score.score;
+					}
+				}
+				else if (score.subgrade === 'va'){
+					if (score.score > this.vaScore){
+						this.vaScore = score.score;
+					}
+				}
+				else if (score.subgrade === 'ost'){
+					if (score.score > this.ostScore){
+						this.ostScore = score.score;
+					}
+				}
+				else if (score.subgrade === 'oped'){
+					if (score.score > this.opedScore){
+						this.opedScore = score.score;
+					}
+				}
+				if (score.score > this.highestScore){
+					this.highestScore = score.score;
+				}
 
-		let weight = 0;
-		const scoresreducer = (accumulator, b) => {
-			return accumulator + (b.score?b.score:0);
-		};
-		const questionreducer = (accumulator, b) => {
-			let asum = accumulator;
-			let bsum = (b && b!=0 && b.scores.length > 0)?(b.scores.reduce(scoresreducer, 0)/b.scores.length):0;
-
-			return asum + bsum;
-		};
-		this.genreScore = genreqs.reduce(questionreducer, 0) / (genreqs.length);
-		if (!this.genreScore){this.genreScore = 0;} if (this.genreScore >= 1) {weight++;}
-		this.characterScore = chareqs.reduce(questionreducer, 0) / (chareqs.length);
-		if (!this.characterScore){this.characterScore = 0;} if (this.characterScore >= 1) {weight++;}
-		this.audioScore = audioqs.reduce(questionreducer, 0) / (audioqs.length);
-		if (!this.audioScore){this.audioScore = 0;} if (this.audioScore >= 1) {weight++;}
-		this.visualScore = visualqs.reduce(questionreducer, 0) / (visualqs.length);
-		if (!this.visualScore){this.visualScore = 0;} if (this.visualScore >= 1) {weight++;}
-		this.opedScore = opedqs.reduce(questionreducer, 0) / (opedqs.length);
-		if (!this.opedScore){this.opedScore = 0;} // if (this.opedScore >= 1) {weight++;}
-
-		this.mainScore = (this.genreScore + this.characterScore + this.visualScore + this.audioScore) / 4;
-		if (weight > 0){
-			this.weightedScore = (this.genreScore + this.characterScore + this.visualScore + this.audioScore) / weight;
-		} else {
-			this.weightedScore = 0;
+				totalavg += score.score;
+				totalavgcount++;
+			}
 		}
-
-		this.highestScore = Math.max(this.visualScore, this.audioScore, this.characterScore, this.genreScore, this.opedScore, 0);
+		this.mainScore = totalavg / totalavgcount;
+		this.weightedScore = this.mainScore;
 	}
 
 	calcPrefs(){
@@ -139,9 +148,11 @@ class ApplicationJuror {
 				return 0;
 			}
 
-			if (category.name.match(/Sound Design|OST|Voice Actor/gm)) {
-				return this.audioScore;
-			} else if (category.name.match(/OP|ED/gm)) {
+			if (category.name.match(/OST|Original Sound Track/gm)) {
+				return this.ostScore;
+			} else if (category.name.match(/Voice Actor|Voice Acting/gm)) {
+				return this.vaScore;
+			} else if (category.name.match(/OP|ED|Opening|Ending/gm)) {
 				return this.opedScore;
 			} else if (category.awardsGroup === 'production') {
 				return this.visualScore;
@@ -166,7 +177,7 @@ class ApplicationJuror {
 			return [];
 		}
 	}
-
+R
 	catPref(catid){
 		try{
 			let returnval = this.prefs.indexOf(catid);

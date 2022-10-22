@@ -96,7 +96,7 @@
                                     Below is the process the jury took this year to decide their nominees, rankings and write-ups. This follows ~2 months of dedicated pre-planning, making these awards a near-exact 6 month undertaking! 
                                 </div>
                                 <div class="hero is-fullheight-with-navbar section has-background-dark">
-                                    <iframe style="height: 100vh; width: 100%;" src="https://docs.google.com/document/d/e/2PACX-1vQstHe5JE1BGCAZwCcpxJeEH7nsfAuYcL3u9F0299UIpSQ0oSPOuQB_exsYVIp57Q/pub?embedded=true"></iframe>
+                                    <iframe style="height: 100vh; width: 100%;" src="https://docs.google.com/document/d/e/2PACX-1vS2qIX21V-9yU4FUwAbMGrF-VSNBkCAzmGsZBwhzhFAw_8gPO3oakyX3_uzmESoxw/pub?embedded=true"></iframe>
                                 </div>
                             </div>
                         </section>

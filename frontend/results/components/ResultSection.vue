@@ -24,14 +24,14 @@
 			</div>
 		</div>
 		<awards-category
-		v-for="(category, index) in section.awards"
-		:key="index"
-		:category="category"
-		:data="data"
-		:anilistData="(category.entryType === 'shows' || category.entryType === 'themes') ? showData : charData"
-		@nomModal="emitNomModal"
-		@hmModal="emitHMModal"
-		@catModal="emitCatModal"
+			v-for="(category, index) in section.awards"
+			:key="index"
+			:category="category"
+			:data="data"
+			:anilistData="(category.entryType === 'shows' || category.entryType === 'themes') ? showData : charData"
+			@nomModal="emitNomModal"
+			@hmModal="emitHMModal"
+			@catModal="emitCatModal"
 		/>
 	</div>
 </template>

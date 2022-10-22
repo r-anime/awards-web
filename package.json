@@ -9,7 +9,6 @@
     "build": "webpack",
     "build-prod": "webpack -p",
     "migrate": "sequelize-cli db:migrate",
-    "postinstall": "patch-package",
     "serve": "node index.js"
   },
   "license": "MIT",
@@ -25,8 +24,6 @@
     "eslint-plugin-vue": "^7.0.0-beta.2",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
-    "node-sass": "^7.0.0",
-    "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
     "sass": "^1.26.10",
     "sass-loader": "^10.0.1",

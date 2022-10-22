@@ -16,6 +16,11 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull: true,
 		},
+		subgrade: {
+			type: DataTypes.STRING,
+			allowNull: false,
+			defaultValue: '',
+		},
 	});
 
 	scores.associate = models => {

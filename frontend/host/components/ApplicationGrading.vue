@@ -50,30 +50,36 @@
 						<Viewer :initialValue="currentAnswer.answer"/>
 					</div>
 				</div>
-				<div v-if="currentAnswer.scores.length" class="field">
-					<h2 class="title is-4">Notes From Other Hosts</h2>
-					<div class="control">
-						<li v-for="score in currentAnswer.scores" :key="score.id">
-							{{score.host_name}}: <b>{{score.score}}</b>{{score.note ? ` (${score.note})` : ''}}
-						</li>
+				<div v-for="(subgrade, index) in currentQuestionSubgrades" :key="index">
+					<h2 class="title is-4">{{subgrade}}</h2>
+					<div v-if="currentAnswer.scores.length" class="field">
+						<h2 class="title is-4">Notes From Other Hosts</h2>
+						<div class="control">
+							<li v-for="score in currentAnswer.scores" :key="score.id">
+								<span v-if="score.subgrade === subgrade">
+									{{score.host_name}}: <b>{{score.score}}</b>{{score.note ? ` (${score.note})` : ''}}
+								</span>
+							</li>
+						</div>
 					</div>
-				</div>
-				<div class="field">
-					<h2 class="title is-4">Your Score</h2>
-					<div class="control">
-						<input type="text" class="input" v-model="score" placeholder="Value between 0 and 4"/>
+					<div class="field">
+						<h2 class="title is-6">Your Score</h2>
+						<div class="control">
+							<input type="text" class="input" v-model="score[subgrade]" placeholder="Value between 0 and 4"/>
+						</div>
 					</div>
-				</div>
-				<div class="field">
-					<h2 class="title is-4">Your Notes</h2>
-					<div class="control">
-						<input type="text" class="input" v-model="note" placeholder="Notes for other hosts"/>
+					<div class="field">
+						<h2 class="title is-6">Your Notes</h2>
+						<div class="control">
+							<input type="text" class="input" v-model="note[subgrade]" placeholder="Notes for other hosts"/>
+						</div>
 					</div>
-				</div>
-				<div class="field">
-					<div class="control">
-						<button @click="submitScore" class="button is-primary" :class="{'is-loading': submitting}">Confirm score</button>
+					<div class="field">
+						<div class="control">
+							<button @click="submitScore(subgrade)" class="button is-primary" :class="{'is-loading': submitting}">Confirm score</button>
+						</div>
 					</div>
+					<br/>
 				</div>
 			</div>
 		</div>
@@ -104,8 +110,8 @@ export default {
 			locked: null,
 			selectedQuestionID: '-1',
 			currentAnswer: null,
-			score: '',
-			note: '',
+			score: [],
+			note: [],
 			filteredQuestionGroups: null,
 			submitting: false,
 			fetching: false,
@@ -122,6 +128,15 @@ export default {
 			}
 			return arr;
 		},
+		currentQuestionSubgrades () {
+			for (const questionGroup of this.filteredQuestionGroups) {
+				for (const question of questionGroup.questions) {
+					if (question.id == this.selectedQuestionID){
+						return question.subgrades.replace(' ', '').split(',');
+					}
+				}
+			}
+		}
 	},
 	methods: {
 		...mapActions(['getMe', 'getQuestionGroups', 'getLocks']),
@@ -136,21 +151,24 @@ export default {
 				if (response.status === 204) {
 					this.currentAnswer = null;
 				} else {
+					this.score = [];
+					this.note = [];
 					this.currentAnswer = await response.json();
 				}
 			}
 			this.fetching = false;
 		},
-		async submitScore () {
-			let submitedScore = parseInt(this.score, 10);
-			if (submitedScore === submitedScore && submitedScore >= 0 && submitedScore <= 4 && this.note.length) {
+		async submitScore (subgrade) {
+			let submitedScore = parseInt(this.score[subgrade], 10);
+			if (submitedScore === submitedScore && submitedScore >= 0 && submitedScore <= 4 && this.note[subgrade].length) {
 				this.submitting = true;
 				const score = await fetch('/api/juror-apps/score', {
 					method: 'POST',
 					body: JSON.stringify({
 						answer_id: this.currentAnswer.id,
-						score: parseInt(this.score, 10),
-						note: this.note,
+						score: parseInt(this.score[subgrade], 10),
+						note: this.note[subgrade],
+						subgrade: subgrade,
 						host_name: this.me.reddit.name,
 					}),
 				});
@@ -159,9 +177,7 @@ export default {
 					alert('Something went wrong submitting the score.');
 				}
 				this.submitting = false;
-				this.score = '';
-				this.note = '';
-				this.randomAnswer();
+				// this.randomAnswer();
 			} else {
 				// eslint-disable-next-line no-alert
 				alert('Please enter a valid score and a note.');
