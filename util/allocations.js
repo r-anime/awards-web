@@ -71,11 +71,15 @@ class ApplicationJuror {
 					if (score.score > this.genreScore){
 						this.genreScore = score.score;
 					}
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'char'){
 					if (score.score > this.characterScore){
 						this.characterScore = score.score;
 					}
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'visual'){
 					if (score.score > this.visualScore){
@@ -100,9 +104,6 @@ class ApplicationJuror {
 				if (score.score > this.highestScore){
 					this.highestScore = score.score;
 				}
-
-				totalavg += score.score;
-				totalavgcount++;
 			}
 		}
 		this.mainScore = totalavg / totalavgcount;
