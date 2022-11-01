@@ -30,7 +30,7 @@ class ApplicationJuror {
 		this.answers = answers;
 		this.prefs = new Array();
 
-		this.wantedCats = 3;
+		this.wantedCats = 5;
 		this.additionalCats = 0;
 		this.willingToFill = true;
 		this.immunity = 0;
