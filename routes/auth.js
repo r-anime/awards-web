@@ -15,19 +15,15 @@ authApp.get('/reddit/callback', async (request, response) => {
 	const {error, state, code} = request.query;
 	if (error) return response.end(error);
 	if (state !== request.session.redditState) return response.end('Invalid state');
-	try {
-		const data = await superagent.post('https://www.reddit.com/api/v1/access_token')
-			.auth(config.reddit.clientId, config.reddit.clientSecret)
-			.query({
-				grant_type: 'authorization_code',
-				code,
-				redirect_uri: `${config.host}/auth/reddit/callback`,
-			})
-			.then(tokenResponse => tokenResponse.body);
-		if (data.error) return response.end(data.error);
-	} catch (e){
-		response.end(error);
-	}
+	const data = await superagent.post('https://www.reddit.com/api/v1/access_token')
+		.auth(config.reddit.clientId, config.reddit.clientSecret)
+		.query({
+			grant_type: 'authorization_code',
+			code,
+			redirect_uri: `${config.host}/auth/reddit/callback`,
+		})
+		.then(tokenResponse => tokenResponse.body);
+	if (data.error) return response.end(data.error);
 	
 	request.session.redditAccessToken = data.access_token;
 	request.session.redditRefreshToken = data.refresh_token;
