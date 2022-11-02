@@ -929,7 +929,7 @@ apiApp.get('/allocations', async (request, response) => {
 			Promise.all(jurorPromiseArr).then(async () => {
 				await t.commit();
 				response.json(allocationInstance.allocatedJurors);
-				yuuko.createMessage(config.discord.auditChannel, {
+				/*yuuko.createMessage(config.discord.auditChannel, {
 					embed: {
 						title: 'Jurors rolled',
 						description: `Jurors were rolled by **${auth}**.`,
