@@ -66,7 +66,7 @@ class ApplicationJuror {
 		let totalavg = 0;
 		let totalavgcount = 0;
 		for (let answer of this.answers){
-			for (let score of answer.score){
+			for (let score of answer.scores){
 				if (score.subgrade === 'genre'){
 					if (score.score > this.genreScore){
 						this.genreScore = score.score;
