@@ -900,8 +900,8 @@ apiApp.get('/allocations', async (request, response) => {
 			const validApps = applicants.filter(applicant => applicant.application.year == (new Date().getFullYear()));
 			const allocationInstance = new Allocations(promiseArr[0], validApps);
 			
-			allocationInstance.vaxiDraft(2.6, 3.0);
-			// allocationInstance.vaxiDraft(1.6, 2.0);
+			allocationInstance.vaxiDraft(2.2, 2.6);
+			// allocationInstance.vaxiDraft(1.8, 2.4);
 			/*if (allocationInstance.catsNeedFill()) {
 				allocationInstance.pandaDraft(1.6, 2.0, true);
 			}*/

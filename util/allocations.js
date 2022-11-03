@@ -107,6 +107,10 @@ class ApplicationJuror {
 			if (chartotal/charcount > this.characterScore){
 				this.characterScore = chartotal/charcount ;
 			}
+			/* Test */
+			this.genreScore = Math.max(this.genreScore, this.characterScore);
+			this.characterScore = Math.max(this.genreScore, this.characterScore);
+			
 			if (visualtotal/visualcount > this.visualScore){
 				this.visualScore = visualtotal/visualcount;
 			}
