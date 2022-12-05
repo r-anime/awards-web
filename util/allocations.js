@@ -65,6 +65,8 @@ class ApplicationJuror {
 	calcScores(){
 		let totalavg = 0;
 		let totalavgcount = 0;
+		let oldtotalavg = 0;
+		let oldtotalavgcount = 0;
 
 		// Loop Question
 		for (let answer of this.answers){
@@ -73,16 +75,20 @@ class ApplicationJuror {
 
 			// Loop Individual Host Scores
 			for (let score of answer.scores){
-				totalavg += score.score;
-				totalavgcount++;
+				oldtotalavg += score.score;
+				oldtotalavgcount++;
 
 				if (score.subgrade === 'genre'){
 					genretotal += score.score;
 					genrecount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'char'){
 					chartotal += score.score;
 					charcount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'visual'){
 					visualtotal += score.score;
@@ -99,6 +105,8 @@ class ApplicationJuror {
 				else if (score.subgrade === 'oped'){
 					opedtotal += score.score;
 					opedcount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 			}
 			if (genretotal/genrecount > this.genreScore){
@@ -124,11 +132,12 @@ class ApplicationJuror {
 				this.opedScore = opedtotal/opedcount;
 			}
 		}
-		console.log(this.genreScore, this.characterScore, this.visualScore, this.vaScore, this.ostScore, this.opedScore);
-
+		if (totalavgcount > 0) {
+			console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
+		}
 
 		this.mainScore = totalavg / totalavgcount;
-		this.weightedScore = this.mainScore;		
+		this.weightedScore = this.mainScore;
 	}
 
 	calcPrefs(){
