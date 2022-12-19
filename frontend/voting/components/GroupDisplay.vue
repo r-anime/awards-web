@@ -1,18 +1,8 @@
 <template>
-	<div class="voting-page-content" >
+	<div class="voting-page-content has-background-anti-spotify" >
 		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
-				<div class="has-background-dark has-text-light">
-					<transition name="slide-fade">
-						<div v-if="pickerScroll <= 0" class="progress-container container pt-4">
-							<h1 class="title is-size-3 is-hidden-touch has-text-light mt-4 mb-0">{{selectedCategory.name}}</h1>
-							<h2 v-if="selectedCategory.description && selectedCategory.description.length" class="subtitle has-text-light is-hidden-touch">{{selectedCategory.description}}</h2>
-							<br/>
-							<progress class="progress is-success" :value="Math.round(progress / categories.length * 100)" max="100"></progress>
-							<p class="text is-light has-text-centered is-hidden-mobile">{{progress}}/{{categories.length}} Categories Voted In</p>
-						</div>
-					</transition>
-					<br />
-					<div class="tab-container container is-dark">
+				<div class="has-text-light">
+					<div class="tab-container container">
 						<CategoryGroupTabBar v-model="selectedTab" :tabs="categories"/>
 					</div>
 				</div>
@@ -23,14 +13,7 @@
 					<!-- it's okay this is exactly how i did it last year too lol -->
 					<!-- I hate both of you -->
 					<div class="columns is-multiline">
-						<div class="selection-column column is-2-widescreen is-12" :class="{toggle: toggleSelection}">
-							<div class="mobile-selection-toggle">
-								<button class="button is-primary is-rounded" :class="{'is-hidden': !toggleSelection}" @click.prevent="toggle">X</button>
-							</div>
-							<nav class="panel is-platinum has-background-white">
-								<h2 class="panel-heading">Selections ({{selections[selectedCategory.id].length}}/10)</h2>
-								<Selection v-for="selection in selections[selectedCategory.id]" :key="selection.id" :selection="selection" :selectedCategory="selectedCategory" @action="removeSelection(selection)"/>
-							</nav>
+						<div class="selection-column column is-2-widescreen is-12">
 						</div>
 						<div class="column is-10-widescreen is-12">
 							<VAPicker v-if="selectedCategory.entryType === 'vas'" :entries="computedEntries" :category="selectedCategory" :value="selections" @scroll-picker="handleScrollPicker" />
@@ -234,6 +217,10 @@ export default {
 .progress-container {
 	max-height: 50vh;
 	overflow-y: hidden;
+}
+
+.has-background-anti-spotify {
+	background: linear-gradient(360deg, rgba(107, 156, 232, 0.35) 0%, rgba(45, 56, 83, 0) 76.46%), #1B1E25;
 }
 
 .slide-fade-enter-active {

@@ -1,23 +1,17 @@
 <template>
 	<div>
-		<div class="mobile-select">
-			<div class="field has-addons has-addons-centered is-centered has-text-centered">
-				<div class="control">
-					<p class="button is-small is-platinum is-static"> Category </p>
-				</div>
-				<div class="control">
-					<div class="select is-small">
-						<select @change="emitChange($event)">
-							<option
-								v-for="tab in tabs"
-								:key="tab.id"
-								:value="tab.id"
-								v-bind:selected="tab.id === selectedTab">
-							{{tab.name}}
-							</option>
-						</select>
-					</div>
-				</div>
+		<div class="mobile-select has-background-dark">
+			<div class="mobile-select-container">
+				<a
+					class="sidebar-item"
+					:class="{ 'current-tab' : tab.id==selectedTab }"
+					v-for="tab in tabs"
+					:key="tab.id"
+					:value="tab.id"
+					v-on:click="emitChange(tab.id)"
+				>
+				{{tab.name}}
+				</a>
 			</div>
 		</div>
 	</div>
@@ -34,15 +28,55 @@ export default {
 		selectedTab: Number,
 	},
 	methods: {
-		emitChange (event) {
-			const _tabval = parseInt(event.target.value, 10);
+		emitChange (id) {
+			const _tabval = parseInt(id, 10);
 			this.$emit('change', _tabval);
 		},
 	},
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .mobile-select {
-	padding-bottom: 1rem;
+	position: fixed;
+	top: 65px;
+	left: 0px;
+	height: calc(100vh - 65px);
+	padding: 0;
+	padding-top: 20px;
+	width: 220px;
+	overflow-y: auto;
+	z-index: 9999;
+
+	.sidebar-item {
+		display: block;
+		padding: 10px 20px;
+		font-size: 12px;
+		color: #B7B7B7;
+		background: rgba(87,150,255, 0);
+		width: 100%;
+		transition: background-color 0.2s;
+
+		&:hover {
+			background: rgba(87,150,255, 0.15);
+		}
+
+		&.current-tab{
+			background: rgba(87,150,255, 0.3);
+		}
+	}
+
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+	
+	&::-webkit-scrollbar-thumb {
+		background: #2D3853;
+		border-radius: 20px;
+	}
+	
+	&::-webkit-scrollbar-track {
+		background: transparent;
+		border-radius: 20px;
+	}
 }
 </style>

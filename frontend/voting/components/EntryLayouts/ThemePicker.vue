@@ -13,18 +13,10 @@
 							placeholder="Search by title..."
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left">
+						<span class="icon is-medium is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
-					<div class="control">
-						<span
-							class="button is-medium non-interactive is-primary"
-							:class="{'is-loading': !loaded}"
-						>
-							{{total}} theme{{total === 1 ? '' : 's'}}
-						</span>
-					</div>
 				</div>
 			</div>
 
@@ -344,61 +336,3 @@ export default {
 	},
 };
 </script>
-
-<style lang="scss">
-.tabs.show-picker-tabs {
-	margin-bottom: 0 !important;
-}
-
-.show-picker-overflow-wrap::-webkit-scrollbar {
-    width: 8px;
-}
-
-.show-picker-overflow-wrap::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 20px;
-}
-
-.show-picker-overflow-wrap::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 20px;
-}
-
-.show-picker-search-bar {
-	margin: 0 auto;
-	max-width: 500px;
-	padding: 0.75rem 0.75rem 0;
-}
-
-.show-picker-entries {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0.375rem;
-}
-.show-picker-entry {
-	padding: 0.375rem;
-
-	> div {
-		height: 100%;
-	}
-}
-
-.show-picker-text {
-	flex: 0 1 100%;
-	padding: 0.75rem;
-	text-align: center;
-}
-
-@media (max-width: 1215.999px) {
-	.show-picker-entry {
-		flex: 1 1 calc(100%/3);
-	}
-}
-
-@media (max-width: 767px) {
-	.show-picker-entry {
-		flex: 1 1 100%;
-	}
-}
-
-</style>

@@ -5,9 +5,11 @@
     overflow-y: hidden;
 
     .voting-page-content-container{
+        padding-top: 64px;
         display: flex;
         flex-direction: column;
         flex: 1 1 auto;
+        height: 100vh;
         overflow-y: hidden;
 
         progress {
@@ -67,7 +69,7 @@
 }
 
 .show-picker-entries::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.7);
+    background: #6B9CE8;
     border-radius: 20px;
 }
 
@@ -88,7 +90,7 @@
 }
 .show-picker-entry {
 	flex: 0 0 calc(100% / 4);
-	padding: 0.375rem;
+	padding: 0.75rem;
 
 	> div {
 		height: 100%;
@@ -110,4 +112,42 @@
 	.show-picker-entry {
 		flex: 1 1 100%;
 	}
+}
+
+.show-picker-entry .box {
+    display: flex;
+    flex-direction: column;
+    background-color: #2D3853;
+    color: #FFFFFF;
+
+    transition: background-color 0.3s, opacity 0.3s;
+
+    strong {
+        color: #FFFFFF;
+    }
+
+    &:hover {
+        background-color: #405d8b;
+    }
+
+    &.highlighted {
+        background-color: #00d2b4;
+    }
+
+    .float-bottom{
+        padding-top: 10px;
+        margin-top: auto;
+
+        a {
+            margin: 0 5px;
+        }
+    }
+}
+
+.item-picker-entry-cb{
+    display: none;
+}
+
+.hero {
+    height: 100vh;
 }
