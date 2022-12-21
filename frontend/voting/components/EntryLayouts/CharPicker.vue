@@ -11,18 +11,10 @@
 							placeholder="Search by title..."
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left">
+						<span class="icon is-medium is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
-					<div class="control">
-						<span
-							class="button is-medium non-interactive is-primary"
-							:class="{'is-loading': !loaded}"
-						>
-							{{filteredShows.length}} show{{filteredShows.length === 1 ? '' : 's'}}
-						</span>
-					</div>
 				</div>
 			</div>
 

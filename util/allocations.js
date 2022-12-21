@@ -30,7 +30,7 @@ class ApplicationJuror {
 		this.answers = answers;
 		this.prefs = new Array();
 
-		this.wantedCats = 3;
+		this.wantedCats = 5;
 		this.additionalCats = 0;
 		this.willingToFill = true;
 		this.immunity = 0;
@@ -53,58 +53,89 @@ class ApplicationJuror {
 		const many = this.answers.filter(answer => answer.question.question.startsWith('How many categories') && answer.question.type === 'choice');
 		if (many.length > 0) {
 			this.wantedCats = parseInt(many[0].answer);
-			if (this.wantedCats > 3){
-				this.additionalCats = this.wantedCats - 3;
-				this.wantedCats = 3;
+			if (this.wantedCats > 5){
+				this.additionalCats = this.wantedCats - 5;
+				this.wantedCats = 5;
 			}
 		} else {
-			this.wantedCats = 3;
+			this.wantedCats = 5;
 		}
 	}
 
 	calcScores(){
 		let totalavg = 0;
 		let totalavgcount = 0;
+		let oldtotalavg = 0;
+		let oldtotalavgcount = 0;
+
+		// Loop Question
 		for (let answer of this.answers){
-			for (let score of answer.score){
+			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0;
+			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0;
+
+			// Loop Individual Host Scores
+			for (let score of answer.scores){
+				oldtotalavg += score.score;
+				oldtotalavgcount++;
+
 				if (score.subgrade === 'genre'){
-					if (score.score > this.genreScore){
-						this.genreScore = score.score;
-					}
+					genretotal += score.score;
+					genrecount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'char'){
-					if (score.score > this.characterScore){
-						this.characterScore = score.score;
-					}
+					chartotal += score.score;
+					charcount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'visual'){
-					if (score.score > this.visualScore){
-						this.visualScore = score.score;
-					}
+					visualtotal += score.score;
+					visualcount++;
 				}
 				else if (score.subgrade === 'va'){
-					if (score.score > this.vaScore){
-						this.vaScore = score.score;
-					}
+					vatotal += score.score;
+					vacount++;
 				}
 				else if (score.subgrade === 'ost'){
-					if (score.score > this.ostScore){
-						this.ostScore = score.score;
-					}
+					osttotal += score.score;
+					ostcount++;
 				}
 				else if (score.subgrade === 'oped'){
-					if (score.score > this.opedScore){
-						this.opedScore = score.score;
-					}
+					opedtotal += score.score;
+					opedcount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
-				if (score.score > this.highestScore){
-					this.highestScore = score.score;
-				}
-
-				totalavg += score.score;
-				totalavgcount++;
+			}
+			if (genretotal/genrecount > this.genreScore){
+				this.genreScore = genretotal/genrecount;
+			}
+			if (chartotal/charcount > this.characterScore){
+				this.characterScore = chartotal/charcount ;
+			}
+			/* Test */
+			this.genreScore = Math.max(this.genreScore, this.characterScore);
+			this.characterScore = Math.max(this.genreScore, this.characterScore);
+			
+			if (visualtotal/visualcount > this.visualScore){
+				this.visualScore = visualtotal/visualcount;
+			}
+			if (vatotal/vacount > this.vaScore){
+				this.vaScore = vatotal/vacount;
+			}
+			if (osttotal/ostcount > this.ostScore){
+				this.ostScore = osttotal/ostcount;
+			}
+			if (opedtotal/opedcount> this.opedScore){
+				this.opedScore = opedtotal/opedcount;
 			}
 		}
+		if (totalavgcount > 0) {
+			console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
+		}
+
 		this.mainScore = totalavg / totalavgcount;
 		this.weightedScore = this.mainScore;
 	}

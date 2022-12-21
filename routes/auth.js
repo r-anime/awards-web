@@ -24,6 +24,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 		})
 		.then(tokenResponse => tokenResponse.body);
 	if (data.error) return response.end(data.error);
+	
 	request.session.redditAccessToken = data.access_token;
 	request.session.redditRefreshToken = data.refresh_token;
 
