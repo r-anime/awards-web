@@ -109,6 +109,7 @@ apiApp.post('/update/bulk', async (request, response) => {
 					await Items.update(item, {where: {id: item.id}});
 					resolve();
 				} catch (error) {
+					// console.log(error);
 					// response.error(error);
 					reject(error);
 				}

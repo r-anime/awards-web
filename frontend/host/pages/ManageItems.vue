@@ -608,11 +608,13 @@ export default {
 
 				for (const result of results.results){
 					const _id = (_this.animeItems.find(i => (i.anilistID == result.id && i.type == 'anime'))).id;
-					if (_id && _id !== -1){
+					const _idmal = (result.idMal)?result.idMal:-1;
+					console.log(_idmal);
+					if (_id && result.id !== -1){
 						this.pulledEntries.push({
 							id: _id,
 							anilistID: result.id,
-							idMal: result.idMal,
+							idMal: _idmal,
 							english: result.title.english,
 							romanji: result.title.romaji,
 							year: 2022,
