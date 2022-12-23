@@ -80,6 +80,14 @@
 		</div>
 		<div class="field">
 			<div class="field">
+				<label class="label">MAL ID</label>
+				<div class="control">
+					<input class="input" type="text" v-model="form.idMal">
+				</div>
+			</div>
+		</div>
+		<div class="field">
+			<div class="field">
 				<label class="label">English</label>
 				<div class="control">
 					<input class="input" type="text" v-model="form.english">
@@ -191,6 +199,7 @@ export default {
 			},
 			form: {
 				anilistID: -1,
+				idMal: -1,
 				english: "",
 				romanji: "",
 				names: "",
@@ -267,6 +276,7 @@ export default {
 				console.log(this.formItem);
 				if (formItem){
 					this.form.anilistID = formItem.anilistID;
+					this.form.idMal = formItem.idMal;
 					this.form.english = formItem.english;
 					this.form.romanji = formItem.romanji;
 					this.form.year = formItem.year;
@@ -279,6 +289,7 @@ export default {
 				}
 			} else {
 				this.form.anilistID = -1;
+				this.form.idMal = -1;
 				this.form.english = "";
 				this.form.romanji = "";
 				this.form.year = 2022;
@@ -298,6 +309,7 @@ export default {
 				const itemForAdding = [
 					{
 						anilistID: this.form.anilistID,
+						idMal: this.form.idMal,
 						english: this.form.english,
 						romanji: this.form.romanji,
 						year: this.form.year,
@@ -317,6 +329,7 @@ export default {
 				const itemForUpdate = {
 					id: this.editing,
 					anilistID: this.form.anilistID,
+					idMal: this.form.idMal,
 					english: this.form.english,
 					romanji: this.form.romanji,
 					year: this.form.year,
@@ -411,6 +424,7 @@ export default {
 					} else {
 						this.pulledEntries.push({
 							anilistID: result.id,
+							idMal: result.idMal,
 							english: result.title.english,
 							romanji: result.title.romaji,
 							year: 2022,
@@ -468,6 +482,7 @@ export default {
 					} else {
 						this.pulledEntries.push({
 							anilistID: result.id,
+							idMal: result.idMal,
 							english: result.title.english,
 							romanji: result.title.romaji,
 							year: 2022,
@@ -593,10 +608,11 @@ export default {
 
 				for (const result of results.results){
 					const _id = (_this.animeItems.find(i => (i.anilistID == result.id && i.type == 'anime'))).id;
-					if (_id){
+					if (_id && _id !== -1){
 						this.pulledEntries.push({
 							id: _id,
 							anilistID: result.id,
+							idMal: result.idMal,
 							english: result.title.english,
 							romanji: result.title.romaji,
 							year: 2022,

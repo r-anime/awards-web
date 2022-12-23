@@ -88,6 +88,7 @@ export default {
 				})
 			} else {
 				items = this.items.filter (item => item.type == 'char');
+				items = items.sort((item) => _this.showSelected(item)?-1:1);
 			}
 
 			return items.filter(i => {

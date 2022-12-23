@@ -144,6 +144,7 @@ export default {
 			const fuse = new Fuse(entries, options);
 			this.shows = fuse.search(this.search);
 			this.shows = this.shows.map(show => show.item);
+			this.shows = this.shows.sort((item) => _this.showSelected(item)?-1:1);
 			this.total = this.shows.length;
 			this.loaded = true;
 		},

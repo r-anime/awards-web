@@ -93,6 +93,7 @@ export default {
 			let items = [];
 			if (this.search == ""){
 				items = this.categoryItems;
+				items = items.sort((item) => _this.showSelected(item)?-1:1);
 			}
 			else {
 				const _filter = this.search.toLowerCase();
@@ -101,8 +102,7 @@ export default {
 					return filter;
 				});
 			}
-			return items;
-			// return items.slice(0, 200);
+			return items.slice(0, 100);
 		}
 	},
 	methods: {

@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   items.init({
     anilistID: DataTypes.INTEGER,
+    idMal: DataTypes.INTEGER,
     english: DataTypes.STRING,
     romanji: DataTypes.STRING,
     year: DataTypes.INTEGER,
