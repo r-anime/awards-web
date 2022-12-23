@@ -49,7 +49,9 @@
 			</div>
 		</section>
 		<div class="mobile-selection-toggle">
-			<button class="button is-primary is-rounded" :class="{'is-hidden': toggleSelection}" @click.prevent="toggle">My Votes</button>
+		<router-link to="./myVotes" custom v-slot="{ navigate }">
+  		<button class="button is-primary is-rounded" @click="navigate" role="link" :class="{'is-hidden': toggleSelection}">My Votes</button>
+		</router-link>
 		</div>
 	</div>
 </template>
@@ -245,18 +247,17 @@ export default {
 	padding: 5px;
 }
 .mobile-selection-toggle{
-	display: none;
 }
-.selection-column {
-	margin-top: 2rem;
-}
-@media (max-width: 1215.999px) {
-	.mobile-selection-toggle, .mobile-selection-close{
+.mobile-selection-toggle, .mobile-selection-close{
 		display: block;
 		position: fixed;
 		bottom: 2.5rem;
 		right: 1.5rem;
 	}
+.selection-column {
+	margin-top: 2rem;
+}
+@media (max-width: 1215.999px) {
 	.selection-column {
 		position: fixed;
 		top: 9999px;

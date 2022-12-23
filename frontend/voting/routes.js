@@ -11,6 +11,7 @@ import Profile from '../common/Profile';
 import Voting from './pages/Voting';
 import Instructions from './pages/Instructions';
 
+import myVotes from "./components/myVotes";
 import GroupDisplay from './components/GroupDisplay';
 
 
@@ -32,6 +33,11 @@ export default new VueRouter({
 					path: 'profile',
 					component: Profile,
 					name: 'Profile',
+				},
+				{
+					path: 'myVotes',
+					component: myVotes,
+					name: 'myVotes',
 				},
 				{
 					path: ':group',
