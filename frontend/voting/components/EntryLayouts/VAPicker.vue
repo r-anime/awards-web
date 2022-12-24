@@ -5,13 +5,13 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium"
+							class="input is-primary is-small"
 							type="text"
 							v-model="search"
-							placeholder="Search by title..."
+							placeholder="Search..."
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left has-text-platinum">
+						<span class="icon is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
@@ -73,7 +73,7 @@ export default {
 			return this.entries.map(show => show.anilist_id);
 		},
 		maxNoms () {
-			return this.value[this.category.id].length >= 10;
+			return this.value[this.category.id].length >= 5;
 		},
 		isLoading () {
 			return this.loading.includes(true);

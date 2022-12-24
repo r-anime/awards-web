@@ -193,7 +193,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.locks ? Promise.resolve() : this.getLocks(),
 			this.me ? Promise.resolve() : this.getMe(),
-			(this.items && this.items.length > 0) ? Promise.resolve() : this.getItems(),
+			this.items ? Promise.resolve() : this.getItems(),
 		]).then(async () => {
 			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
 			if (voteLock.flag || this.me.level > voteLock.level) {

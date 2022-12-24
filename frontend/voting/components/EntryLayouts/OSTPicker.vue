@@ -74,7 +74,7 @@ export default {
 			return this.entries.map(show => show.anilist_id);
 		},
 		maxNoms () {
-			return this.value[this.category.id].length >= 10;
+			return this.value[this.category.id].length >= 5;
 		},
 		isLoading () {
 			return this.loading.includes(true);

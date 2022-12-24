@@ -6,14 +6,14 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium"
+							class="input is-primary is-small"
 							type="text"
 							:value="search"
 							@input="handleInput($event)"
-							placeholder="Search by title..."
+							placeholder="Search"
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left has-text-platinum">
+						<span class="icon is-small is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
@@ -51,24 +51,27 @@ import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
 
 const showPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
-  Page(page: $page, perPage: $perPage) {
-    pageInfo {
-      lastPage
-    }
-    results: media(type: ANIME, id_in: $id) {
-      id
-      title {
-        romaji
-        english
-      }
-      coverImage {
-        large
-      }
-      siteUrl
-      idMal
-    }
-  }
-}`;
+	Page(page: $page, perPage: $perPage) {
+	  pageInfo {
+		currentPage
+		lastPage
+	  }
+	  results: media(type: ANIME, id_in: $id) {
+		id
+		format
+		title {
+		  romaji
+		  english
+		}
+		synonyms
+		coverImage {
+		  large
+		}
+		siteUrl
+		idMal
+	  }
+	}
+  }`;
 
 const options = {
 	shouldSort: true,
@@ -100,7 +103,7 @@ export default {
 			return this.themes.filter(theme => theme.themeType.toUpperCase() === this.category.name).map(show => show.anilistID);
 		},
 		maxNoms () {
-			return this.value[this.category.id].length >= 10;
+			return this.value[this.category.id].length >= 5;
 		},
 		isLoading () {
 			return this.loading.includes(true);
@@ -247,20 +250,23 @@ export default {
 		if (this.showIDs) {
 			let page = 1;
 			const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
+			// console.log(someData);
 			showData = [...showData, ...someData.data.Page.results];
-			const lastPage = someData.data.Page.pageInfo.lastPage;
-			page = 2;
-			while (page <= lastPage) {
+			// let lastPage = someData.data.Page.pageInfo.lastPage;
+
+			while (page <= (Math.ceil(this.showIDs.length / 50))) {
 				// eslint-disable-next-line no-loop-func
 				promiseArray.push(new Promise(async (resolve, reject) => {
 					try {
 						const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
 						resolve(returnData.data.Page.results);
+						page++;
+
+						// console.log(page, lastPage);
 					} catch (error) {
 						reject(error);
 					}
-				}));
-				page++;
+				}));		
 			}
 			Promise.all(promiseArray).then(finalData => {
 				for (const data of finalData) {
