@@ -202,3 +202,7 @@
 .hero {
     height: 100vh;
 }
+
+progress::-webkit-progress-value {
+    transition: width .3s ease;
+}
