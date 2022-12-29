@@ -1,36 +1,21 @@
 <template>
-	<div class="voting-page-content-container" v-if="loaded && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
+	<div class="my-votes-content-container" v-if="loaded && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
 		<ol :key="category.id" v-for="category in categories">
 			{{ category.name }}
+			
+			<li v-for="selection in selections[category.id]">
+				{{ selection.romanji || selection.english }}
+			</li>
 		</ol>
 		</div>
 </template>
 
 <script>
 import {mapActions, mapState, mapGetters} from 'vuex';
-import CategoryGroupTabBar from './CategoryGroupTabBar';
-
-// Import all the entry components here, there's a better way to do this but fuck that
-import CharPicker from './EntryLayouts/CharPicker';
-import ThemePicker from './EntryLayouts/ThemePicker';
-import VAPicker from './EntryLayouts/VAPicker';
-import ShowPicker from './EntryLayouts/ShowPicker';
-import OSTPicker from './EntryLayouts/OSTPicker';
-import Selection from './Selection';
 
 import snoo from '../../../img/bannerSnooJump.png';
 
 export default {
-	components: {
-		CategoryGroupTabBar,
-		CharPicker,
-		ThemePicker,
-		VAPicker,
-		ShowPicker,
-		OSTPicker,
-		Selection,
-	},
-	props: ['group'],
 	data () {
 		return {
 			selectedTab: null,
@@ -78,18 +63,6 @@ export default {
 		},
 		snooImage () {
 			return snoo;
-		},
-		progress () {
-			return Object.entries(this.selections).filter(([_key, value]) => value.length).length;
-		},
-	},
-	watch: {
-		group: {
-			handler (newGroup) {
-				this.getVotingCategories(newGroup);
-				this.selectedTab = this.categories[0].id;
-				this.selectedTabName = this.categories[0].name;
-			},
 		},
 	},
 	methods: {
@@ -158,7 +131,27 @@ export default {
 			// console.log(this.loaded);
 			// console.log(this.locked);
 			console.log(this.categories);
+			console.log(this.categories[0].id);
+			console.log(this.selections);
+			console.log(this.selections[`39`]);
 		});
 	},
 };
 </script>
+
+<style lang="scss" scoped>
+.my-votes-content-container {
+	min-height: 100vh;
+	padding-top: 64px;
+	color: white;
+	background: linear-gradient(360deg, rgba(107, 156, 232, 0.35) 0%, rgba(45, 56, 83, 0) 76.46%), #1B1E25;
+}
+
+ol {
+	font-size: 2rem;
+}
+
+li {
+	font-size: 1rem;
+}
+</style>
