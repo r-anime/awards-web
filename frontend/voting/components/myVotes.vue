@@ -3,9 +3,15 @@
 		<ol :key="category.id" v-for="category in categories">
 			{{ category.name }}
 			
-			<li v-for="selection in selections[category.id]">
-				{{ selection.romanji || selection.english }}
-			</li>
+			<div class="my-votes-cards-container">
+				<li v-for="selection in selections[category.id]">
+					<div class="my-votes-selection-card"
+						:style="{ backgroundImage: `url(${selection.image})` }"
+					>
+					{{ selection.romanji || selection.english }}
+					</div>
+				</li>
+			</div>
 		</ol>
 		</div>
 </template>
@@ -131,9 +137,7 @@ export default {
 			// console.log(this.loaded);
 			// console.log(this.locked);
 			console.log(this.categories);
-			console.log(this.categories[0].id);
 			console.log(this.selections);
-			console.log(this.selections[`39`]);
 		});
 	},
 };
@@ -149,9 +153,20 @@ export default {
 
 ol {
 	font-size: 2rem;
+	list-style: none;
 }
 
-li {
+.my-votes-cards-container {
+	display: flex;
+	margin: 10px;
+	gap: 10px;
+}
+
+.my-votes-selection-card {
+	height: 200px;
+	width: 150px;
+	border-radius: 10px;
+	background-size: auto;
 	font-size: 1rem;
 }
 </style>
