@@ -1,6 +1,6 @@
 <template>
 	<label class="show-picker-entry">
-		<div class="box">
+		<div class="box" :class="{'highlighted': selected}">
 			<div class="media">
 				<div class="media-left">
 					<figure class="image is-hidden-mobile show-cover">
