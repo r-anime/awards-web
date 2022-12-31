@@ -3,7 +3,7 @@
 		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
 				<div class="has-text-light">
 					<div class="tab-container container">
-						<CategoryGroupTabBar v-model="selectedTab" :tabs="categories"/>
+						<CategoryGroupTabBar v-model="selectedTab" :tabs="categories" :progress="progress" />
 					</div>
 				</div>
 			<div class="container">
@@ -49,7 +49,7 @@
 			</div>
 		</section>
 		<div class="mobile-selection-toggle">
-			<button class="button is-primary is-rounded" :class="{'is-hidden': toggleSelection}" @click.prevent="toggle">My Votes</button>
+			<button class="button is-primary is-rounded" :class="{'is-hidden': toggleSelection}">My Votes</button>
 		</div>
 	</div>
 </template>
@@ -193,7 +193,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.locks ? Promise.resolve() : this.getLocks(),
 			this.me ? Promise.resolve() : this.getMe(),
-			(this.items && this.items.length > 0) ? Promise.resolve() : this.getItems(),
+			this.items ? Promise.resolve() : this.getItems(),
 		]).then(async () => {
 			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
 			if (voteLock.flag || this.me.level > voteLock.level) {
@@ -204,6 +204,7 @@ export default {
 			} else {
 				this.locked = true;
 			}
+			// console.log(this.selections);
 			this.loaded = true;
 			// console.log(this.loaded);
 			// console.log(this.locked);
@@ -214,10 +215,6 @@ export default {
 
 <style lang="scss">
 @import "../../styles/voting";
-.progress-container {
-	max-height: 50vh;
-	overflow-y: hidden;
-}
 
 .has-background-anti-spotify {
 	background: linear-gradient(360deg, rgba(107, 156, 232, 0.35) 0%, rgba(45, 56, 83, 0) 76.46%), #1B1E25;
@@ -244,19 +241,17 @@ export default {
 	text-align: center;
 	padding: 5px;
 }
-.mobile-selection-toggle{
-	display: none;
+.mobile-selection-toggle, .mobile-selection-close{
+	display: block;
+	position: fixed;
+	bottom: 2.5rem;
+	right: 1.5rem;
 }
 .selection-column {
 	margin-top: 2rem;
 }
 @media (max-width: 1215.999px) {
-	.mobile-selection-toggle, .mobile-selection-close{
-		display: block;
-		position: fixed;
-		bottom: 2.5rem;
-		right: 1.5rem;
-	}
+	
 	.selection-column {
 		position: fixed;
 		top: 9999px;

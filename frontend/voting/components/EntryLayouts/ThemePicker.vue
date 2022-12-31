@@ -6,14 +6,14 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium"
+							class="input is-primary is-small"
 							type="text"
 							:value="search"
 							@input="handleInput($event)"
-							placeholder="Search by title..."
+							placeholder="Search"
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left has-text-platinum">
+						<span class="icon is-small is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
@@ -30,10 +30,10 @@
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
-			<div v-else-if="loaded" class="show-picker-text">
+			<div v-else-if="loaded" class="show-picker-text has-text-light">
 				{{search ? 'No results :(' : ''}}
 			</div>
-			<div v-else class="show-picker-text">
+			<div v-else class="show-picker-text has-text-light">
 				Loading...
 			</div>
 		</div>
@@ -51,24 +51,27 @@ import Fuse from 'fuse.js/dist/fuse.basic.min';
 const util = require('../../../util');
 
 const showPaginatedQuery = `query ($id: [Int], $page: Int, $perPage: Int) {
-  Page(page: $page, perPage: $perPage) {
-    pageInfo {
-      lastPage
-    }
-    results: media(type: ANIME, id_in: $id) {
-      id
-      title {
-        romaji
-        english
-      }
-      coverImage {
-        large
-      }
-      siteUrl
-      idMal
-    }
-  }
-}`;
+	Page(page: $page, perPage: $perPage) {
+	  pageInfo {
+		currentPage
+		lastPage
+	  }
+	  results: media(type: ANIME, id_in: $id) {
+		id
+		format
+		title {
+		  romaji
+		  english
+		}
+		synonyms
+		coverImage {
+		  large
+		}
+		siteUrl
+		idMal
+	  }
+	}
+  }`;
 
 const options = {
 	shouldSort: true,
@@ -97,10 +100,10 @@ export default {
 			'selections',
 		]),
 		showIDs () {
-			return this.themes.filter(theme => theme.themeType.toUpperCase() === this.category.name).map(show => show.anilistID);
+			return this.themes.filter(theme => theme.themeType.toUpperCase() == this.category.name).map(show => show.anilistID);
 		},
 		maxNoms () {
-			return this.value[this.category.id].length >= 10;
+			return this.value[this.category.id].length >= 5;
 		},
 		isLoading () {
 			return this.loading.includes(true);
@@ -144,6 +147,7 @@ export default {
 			const fuse = new Fuse(entries, options);
 			this.shows = fuse.search(this.search);
 			this.shows = this.shows.map(show => show.item);
+			this.shows = this.shows.sort((item) => _this.showSelected(item)?-1:1);
 			this.total = this.shows.length;
 			this.loaded = true;
 		},
@@ -158,7 +162,7 @@ export default {
 					return;
 				}
 				// Limit number of nominations
-				if (this.value[this.category.id].length >= 10) {
+				if (this.value[this.category.id].length >= 5) {
 					alert('You cannot vote for any more entries.');
 					Vue.set(this.loading, show.id, false);
 					return;
@@ -246,37 +250,33 @@ export default {
 		if (this.showIDs) {
 			let page = 1;
 			const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
+			// console.log(someData);
 			showData = [...showData, ...someData.data.Page.results];
-			const lastPage = someData.data.Page.pageInfo.lastPage;
-			page = 2;
-			while (page <= lastPage) {
-				// eslint-disable-next-line no-loop-func
-				promiseArray.push(new Promise(async (resolve, reject) => {
-					try {
-						const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
-						resolve(returnData.data.Page.results);
-					} catch (error) {
-						reject(error);
-					}
-				}));
-				page++;
-			}
-			Promise.all(promiseArray).then(finalData => {
-				for (const data of finalData) {
-					showData = [...showData, ...data];
+			let lastPage = someData.data.Page.pageInfo.lastPage;
+
+			while (page < lastPage) {
+				try {
+					page++;
+					const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
+					showData = [...showData, ...returnData.data.Page.results];
+					lastPage = parseInt(returnData.data.Page.pageInfo.lastPage, 10);
+					// console.log(page, lastPage)
+					await new Promise(resolve => setTimeout(resolve, 75));
+				} catch (error) {
+					reject(error);
 				}
-				this.themes.forEach(element => {
-					if (element.themeType.toUpperCase().includes(this.category.name)) {
-						const requiredShow = showData.find(show => show.id === element.anilistID);
-						this.backup.push({...requiredShow, ...element});
-					}
-				});
-				this.backup = util.shuffle(this.backup);
-				this.shows = this.backup;
-				this.total = this.shows.length;
-				this.loaded = true;
-				this.lockSearch = false;
+			}
+			this.themes.forEach(element => {
+				if (element.themeType.toUpperCase().includes(this.category.name)) {
+					const requiredShow = showData.find(show => show.id == element.anilistID);
+					this.backup.push({...requiredShow, ...element});
+				}
 			});
+			this.backup = util.shuffle(this.backup);
+			this.shows = this.backup;
+			this.total = this.shows.length;
+			this.loaded = true;
+			this.lockSearch = false;
 		} else {
 			this.loaded = true;
 			this.lockSearch = false;
@@ -297,37 +297,33 @@ export default {
 			if (this.showIDs) {
 				let page = 1;
 				const someData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
+				// console.log(someData);
 				showData = [...showData, ...someData.data.Page.results];
-				const lastPage = someData.data.Page.pageInfo.lastPage;
-				page = 2;
-				while (page <= lastPage) {
-					// eslint-disable-next-line no-loop-func
-					promiseArray.push(new Promise(async (resolve, reject) => {
-						try {
-							const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
-							resolve(returnData.data.Page.results);
-						} catch (error) {
-							reject(error);
-						}
-					}));
-					page++;
-				}
-				Promise.all(promiseArray).then(finalData => {
-					for (const data of finalData) {
-						showData = [...showData, ...data];
+				let lastPage = someData.data.Page.pageInfo.lastPage;
+
+				while (page < lastPage) {
+					try {
+						page++;
+						const returnData = await util.paginatedQuery(showPaginatedQuery, this.showIDs, page);
+						showData = [...showData, ...returnData.data.Page.results];
+						lastPage = parseInt(returnData.data.Page.pageInfo.lastPage, 10);
+						// console.log(page, lastPage)
+						await new Promise(resolve => setTimeout(resolve, 75));
+					} catch (error) {
+						reject(error);
 					}
-					this.themes.forEach(element => {
-						if (element.themeType.toUpperCase() === this.category.name) {
-							const requiredShow = showData.find(show => show.id === element.anilistID);
-							this.backup.push({...requiredShow, ...element});
-						}
-					});
-					this.backup = util.shuffle(this.backup);
-					this.shows = this.backup;
-					this.total = this.shows.length;
-					this.loaded = true;
-					this.lockSearch = false;
+				}
+				this.themes.forEach(element => {
+					if (element.themeType.toUpperCase().includes(this.category.name)) {
+						const requiredShow = showData.find(show => show.id == element.anilistID);
+						this.backup.push({...requiredShow, ...element});
+					}
 				});
+				this.backup = util.shuffle(this.backup);
+				this.shows = this.backup;
+				this.total = this.shows.length;
+				this.loaded = true;
+				this.lockSearch = false;
 			} else {
 				this.loaded = true;
 				this.lockSearch = false;

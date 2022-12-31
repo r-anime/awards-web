@@ -39,6 +39,8 @@ export default new VueRouter({
 					name: 'GroupDisplay',
 					props: true,
 				},
+				//HERE
+				
 			],
 		},
 

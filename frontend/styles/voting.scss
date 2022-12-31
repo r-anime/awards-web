@@ -51,6 +51,7 @@
 
                 .show-picker-entries {
                     overflow-y: auto;
+                    overflow-x: hidden;
                 }
             }
         }
@@ -65,7 +66,7 @@
 }
 
 .show-picker-entries::-webkit-scrollbar {
-    width: 8px;
+    width: 8px !important;
 }
 
 .show-picker-entries::-webkit-scrollbar-thumb {
@@ -81,8 +82,39 @@
 .show-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;
-	padding: 0.75rem 0.75rem 0;
+    padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
+
+    .is-small.input {
+        border-radius: 30px;
+        padding: 0.75rem 1rem;     
+        font-size: 1rem;
+    }
+
+    .control.has-icons-left .input{
+        padding-left: 4rem;
+    }
+
+    .control.has-icons-left .icon.is-left{
+        left: 12px;
+        top: 6px;
+    }
 }
+
+@media (max-width: 1215.999px) {
+    .show-picker-search-bar {
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+    }
+}
+
+.show-cover {
+    max-width: 100px;
+    // margin-right: 0.4rem;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
 .show-picker-entries {
 	display: flex;
 	flex-wrap: wrap;
@@ -102,23 +134,12 @@
 	text-align: center;
 }
 
-@media (max-width: 1215.999px) {
-	.show-picker-entry {
-		flex: 1 1 calc(100%/3);
-	}
-}
-
-@media (max-width: 767px) {
-	.show-picker-entry {
-		flex: 1 1 100%;
-	}
-}
-
 .show-picker-entry .box {
     display: flex;
     flex-direction: column;
     background-color: #2D3853;
     color: #FFFFFF;
+    cursor: pointer;
 
     transition: background-color 0.3s, opacity 0.3s;
 
@@ -142,6 +163,36 @@
             margin: 0 5px;
         }
     }
+
+    .show-info{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .media{
+        flex: 0 0 auto;
+        .media-left{
+            margin-right: 0;
+        }
+    }
+}
+
+@media (max-width: 1215.999px) {
+	.show-picker-entry {
+		flex: 1 1 calc(100%/3);
+
+        .box {
+            flex-direction: row;
+        }
+	}
+}
+
+@media (max-width: 767px) {
+	.show-picker-entry {
+		flex: 1 1 100%;
+	}
 }
 
 .item-picker-entry-cb{
@@ -150,4 +201,8 @@
 
 .hero {
     height: 100vh;
+}
+
+progress::-webkit-progress-value {
+    transition: width .3s ease;
 }

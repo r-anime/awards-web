@@ -58,7 +58,7 @@ async function readThemes(file) {
                 skip_empty_lines: true,
             }, function (error,output) {
                 if (error) throw error;
-                idGetter(output);
+                // idGetter(output);
                 objectOut = objectify(output);
                 resolve(objectOut);
             });

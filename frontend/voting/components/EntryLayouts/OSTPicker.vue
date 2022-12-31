@@ -28,10 +28,10 @@
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
-			<div v-else-if="loaded" class="show-picker-text">
+			<div v-else-if="loaded" class="show-picker-text has-text-light">
 				{{search ? 'No results :(' : ''}}
 			</div>
-			<div v-else class="show-picker-text">
+			<div v-else class="show-picker-text has-text-light">
 				Loading...
 			</div>
 		</div>
@@ -74,7 +74,7 @@ export default {
 			return this.entries.map(show => show.anilist_id);
 		},
 		maxNoms () {
-			return this.value[this.category.id].length >= 10;
+			return this.value[this.category.id].length >= 5;
 		},
 		isLoading () {
 			return this.loading.includes(true);
@@ -93,6 +93,7 @@ export default {
 			let items = [];
 			if (this.search == ""){
 				items = this.categoryItems;
+				items = items.sort((item) => _this.showSelected(item)?-1:1);
 			}
 			else {
 				const _filter = this.search.toLowerCase();
@@ -101,8 +102,7 @@ export default {
 					return filter;
 				});
 			}
-			return items;
-			// return items.slice(0, 200);
+			return items.slice(0, 100);
 		}
 	},
 	methods: {

@@ -1,6 +1,6 @@
 const apiApp = require('polka')();
 const sequelize = require('../models').sequelize;
-const {Op} = require('sequelize');
+const {Op, QueryTypes} = require('sequelize');
 
 // Sequelize models to avoid redundancy
 const Items = sequelize.model('items');
@@ -109,6 +109,7 @@ apiApp.post('/update/bulk', async (request, response) => {
 					await Items.update(item, {where: {id: item.id}});
 					resolve();
 				} catch (error) {
+					// console.log(error);
 					// response.error(error);
 					reject(error);
 				}
@@ -150,22 +151,121 @@ apiApp.get('/', async (request, response) => {
 apiApp.get('/page/:page', async (request, response) => {
 	try {
 		const page = request.params.page;
-		const offset = 1000*page;
+		const offset = 500*page;
 		
-		response.json(await Items.findAndCountAll({
-			include: [{
-				model: Items,
-				as: 'parent',
-				include: [
-					{
-						model: Items,
-						as: 'parent',
-					},
-				],
-			},],
-			offset: offset,
-			limit: 1000,
-		}));
+		/*
+		(SELECT va.id           AS `id`,
+			va.anilistid    AS `anilistID`,
+			va.english      AS `english`,
+			va.romanji      AS `romanji`,
+			va.year         AS `year`,
+			va.image        AS `image`,
+			va.type         AS `type`,
+			va.parentid     AS `parentID`,
+			va.internal     AS `internal`,
+			va.mediatype    AS `mediatype`,
+			va.names        AS `names`,
+			va.idmal        AS `idMal`,
+			CHAR.id         AS `parent.id`,
+			CHAR.anilistid  AS `parent.anilistID`,
+			CHAR.english    AS `parent.english`,
+			CHAR.romanji    AS `parent.romanji`,
+			CHAR.type       AS `parent.type`,
+			CHAR.mediatype  AS `parent.mediatype`,
+			CHAR.internal   AS `parent.internal`,
+			ANIME.id         AS `parent.parent.id`,
+			ANIME.anilistid  AS `parent.parent.anilistID`,
+			ANIME.english    AS `parent.parent.english`,
+			ANIME.romanji    AS `parent.parent.romanji`,
+			ANIME.type       AS `parent.parent.type`,
+			ANIME.mediatype  AS `parent.parent.mediatype`,
+			ANIME.internal   AS `parent.parent.internal`
+		FROM   items AS va
+			LEFT JOIN items AS CHAR
+					ON va.parentid = CHAR.anilistid
+						AND CHAR.type = "char"
+			LEFT JOIN items AS ANIME
+					ON CHAR.parentid = ANIME.anilistid
+						AND ANIME.type = "anime"
+		WHERE  va.type = "va"
+		UNION
+		SELECT CHAR.id         AS `id`,
+			CHAR.anilistid  AS `anilistID`,
+			CHAR.english    AS `english`,
+			CHAR.romanji    AS `romanji`,
+			CHAR.year       AS `year`,
+			CHAR.image      AS `image`,
+			CHAR.type       AS `type`,
+			CHAR.parentid   AS `parentID`,
+			CHAR.internal   AS `internal`,
+			CHAR.mediatype  AS `mediatype`,
+			CHAR.names      AS `names`,
+			CHAR.idmal      AS `idMal`,
+			ANIME.id         AS `parent.id`,
+			ANIME.anilistid  AS `parent.anilistID`,
+			ANIME.english    AS `parent.english`,
+			ANIME.romanji    AS `parent.romanji`,
+			ANIME.type       AS `parent.type`,
+			ANIME.mediatype  AS `parent.mediatype`,
+			ANIME.internal   AS `parent.internal`,
+			NULL             AS `parent.parent.id`,
+			NULL				AS `parent.parent.anilistID`,
+			NULL			    AS `parent.parent.english`,
+			NULL  			AS `parent.parent.romanji`,
+			NULL       		AS `parent.parent.type`,
+			NULL 			AS `parent.parent.mediatype`,
+			NULL 			AS `parent.parent.internal`
+		FROM   items AS CHAR
+			LEFT JOIN items AS `ANIME`
+					ON CHAR.parentid = ANIME.anilistid
+						AND ANIME.type = "anime"
+		WHERE  CHAR.type = "char"
+		UNION
+		SELECT ANIME.id         AS `id`,
+			ANIME.anilistid  AS `anilistID`,
+			ANIME.english    AS `english`,
+			ANIME.romanji    AS `romanji`,
+			ANIME.year       AS `year`,
+			ANIME.image      AS `image`,
+			ANIME.type       AS `type`,
+			ANIME.parentid   AS `parentID`,
+			ANIME.internal   AS `internal`,
+			ANIME.mediatype  AS `mediatype`,
+			ANIME.names      AS `names`,
+			ANIME.idmal      AS `idMal`,
+			NULL   		    AS `parent.id`,
+			NULL				AS `parent.anilistID`,
+			NULL  			AS `parent.english`,
+			NULL			    AS `parent.romanji`,
+			NULL  		    AS `parent.type`,
+			NULL			    AS `parent.mediatype`,
+			NULL 			AS `parent.internal`,
+			NULL             AS `parent.parent.id`,
+			NULL				AS `parent.parent.anilistID`,
+			NULL			    AS `parent.parent.english`,
+			NULL  			AS `parent.parent.romanji`,
+			NULL       		AS `parent.parent.type`,
+			NULL 			AS `parent.parent.mediatype`,
+			NULL 			AS `parent.parent.internal`
+		FROM   items AS ANIME
+		WHERE  ANIME.type = "anime")
+
+		*/
+
+		const [results, metadata] = await sequelize.query(
+			'SELECT * FROM ( SELECT va.id AS `id`, va.anilistid AS `anilistID`, va.english AS `english`, va.romanji AS `romanji`, va.year AS `year`, va.image AS `image`, va.type AS `type`, va.parentid AS `parentID`, va.internal AS `internal`, va.mediatype AS `mediatype`, va.names AS `names`, va.idmal AS `idMal`, CHAR.id AS `parent.id`, CHAR.anilistid AS `parent.anilistID`, CHAR.english AS `parent.english`, CHAR.romanji AS `parent.romanji`, CHAR.type AS `parent.type`, CHAR.mediatype AS `parent.mediatype`, CHAR.internal AS `parent.internal`, ANIME.id AS `parent.parent.id`, ANIME.anilistid AS `parent.parent.anilistID`, ANIME.english AS `parent.parent.english`, ANIME.romanji AS `parent.parent.romanji`, ANIME.type AS `parent.parent.type`, ANIME.mediatype AS `parent.parent.mediatype`, ANIME.internal AS `parent.parent.internal` FROM items AS va LEFT JOIN items AS CHAR ON va.parentid = CHAR.anilistid AND CHAR.type = "char" LEFT JOIN items AS ANIME ON CHAR.parentid = ANIME.anilistid AND ANIME.type = "anime" WHERE va.type = "va" UNION SELECT CHAR.id AS `id`, CHAR.anilistid AS `anilistID`, CHAR.english AS `english`, CHAR.romanji AS `romanji`, CHAR.year AS `year`, CHAR.image AS `image`, CHAR.type AS `type`, CHAR.parentid AS `parentID`, CHAR.internal AS `internal`, CHAR.mediatype AS `mediatype`, CHAR.names AS `names`, CHAR.idmal AS `idMal`, ANIME.id AS `parent.id`, ANIME.anilistid AS `parent.anilistID`, ANIME.english AS `parent.english`, ANIME.romanji AS `parent.romanji`, ANIME.type AS `parent.type`, ANIME.mediatype AS `parent.mediatype`, ANIME.internal AS `parent.internal`, NULL AS `parent.parent.id`, NULL AS `parent.parent.anilistID`, NULL AS `parent.parent.english`, NULL AS `parent.parent.romanji`, NULL AS `parent.parent.type`, NULL AS `parent.parent.mediatype`, NULL AS `parent.parent.internal` FROM items AS CHAR LEFT JOIN items AS `ANIME` ON CHAR.parentid = ANIME.anilistid AND ANIME.type = "anime" WHERE CHAR.type = "char" UNION SELECT ANIME.id AS `id`, ANIME.anilistid AS `anilistID`, ANIME.english AS `english`, ANIME.romanji AS `romanji`, ANIME.year AS `year`, ANIME.image AS `image`, ANIME.type AS `type`, ANIME.parentid AS `parentID`, ANIME.internal AS `internal`, ANIME.mediatype AS `mediatype`, ANIME.names AS `names`, ANIME.idmal AS `idMal`, NULL AS `parent.id`, NULL AS `parent.anilistID`, NULL AS `parent.english`, NULL AS `parent.romanji`, NULL AS `parent.type`, NULL AS `parent.mediatype`, NULL AS `parent.internal`, NULL AS `parent.parent.id`, NULL AS `parent.parent.anilistID`, NULL AS `parent.parent.english`, NULL AS `parent.parent.romanji`, NULL AS `parent.parent.type`, NULL AS `parent.parent.mediatype`, NULL AS `parent.parent.internal` FROM items AS ANIME WHERE ANIME.type = "anime" ) ORDER BY id LIMIT $limit OFFSET $page',
+			{
+				bind: { limit: 500, page: offset},
+				type: QueryTypes.select
+			}
+		);
+
+		const count = await Items.count();
+
+		response.json({
+			rows: results,
+			count: count
+		});
 	} catch (error) {
 		response.error(error);
 	}

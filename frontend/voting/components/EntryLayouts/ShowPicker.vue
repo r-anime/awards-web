@@ -5,13 +5,13 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium"
+							class="input is-primary is-small"
 							type="text"
 							v-model="search"
 							placeholder="Search by title..."
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left has-text-platinum">
+						<span class="icon is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
@@ -28,10 +28,10 @@
 					@action="toggleShow(show, $event)"
 				/>
 			</div>
-			<div v-else-if="loaded" class="show-picker-text">
+			<div v-else-if="loaded" class="show-picker-text has-text-light">
 				{{search ? 'No results :(' : ''}}
 			</div>
-			<div v-else class="show-picker-text">
+			<div v-else class="show-picker-text has-text-light">
 				Loading...
 			</div>
 		</div>
@@ -74,7 +74,7 @@ export default {
 			return this.entries.map(show => show.anilist_id);
 		},
 		maxNoms () {
-			return this.value[this.category.id].length >= 10;
+			return this.value[this.category.id].length >= 5;
 		},
 		isLoading () {
 			return this.loading.includes(true);
@@ -94,9 +94,11 @@ export default {
 			return items;
 		},
 		filteredShows () {
+			const _this = this;
 			let items = [];
 			if (this.search == ""){
 				items = this.categoryItems;
+				items = items.sort((item) => _this.showSelected(item)?-1:1);
 			}
 			else {
 				const _filter = this.search.toLowerCase();
@@ -105,8 +107,8 @@ export default {
 					return filter;
 				});
 			}
-			return items;
-			// return items.slice(0, 200);
+			// return items;
+			return items.slice(0, 100);
 		}
 	},
 	methods: {
@@ -118,7 +120,7 @@ export default {
 			this.$emit('scroll-picker', event.target.scrollTop);
 		},
 		showSelected (show) {
-			console.log(show);
+			// console.log(show);
 			return this.value[this.category.id].some(s => (s.id === show.id));
 		},
 		async toggleShow (show, select = true) {
