@@ -8,7 +8,9 @@
 					<div class="my-votes-selection-card"
 						:style="{ backgroundImage: `url(${selection.image})` }"
 					>
-					{{ selection.romanji || selection.english }}
+						<div class="my-votes-cards-title">
+						{{ selection.romanji || selection.english || selection.anime || "default" }}
+						</div>
 					</div>
 				</li>
 			</div>
@@ -138,6 +140,7 @@ export default {
 			// console.log(this.locked);
 			console.log(this.categories);
 			console.log(this.selections);
+			console.log(this.selections[52]);
 		});
 	},
 };
@@ -146,6 +149,7 @@ export default {
 <style lang="scss" scoped>
 .my-votes-content-container {
 	min-height: 100vh;
+	overflow-y: auto;
 	padding-top: 64px;
 	color: white;
 	background: linear-gradient(360deg, rgba(107, 156, 232, 0.35) 0%, rgba(45, 56, 83, 0) 76.46%), #1B1E25;
@@ -158,15 +162,25 @@ ol {
 
 .my-votes-cards-container {
 	display: flex;
+	flex-wrap: wrap;
 	margin: 10px;
 	gap: 10px;
 }
 
 .my-votes-selection-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
 	height: 200px;
 	width: 150px;
 	border-radius: 10px;
-	background-size: auto;
-	font-size: 1rem;
+	background-size: cover;
+}
+
+.my-votes-cards-title {
+	background-color: rgba(0,0,0,0.7);
+	font-size: 0.9rem;
+	border-radius: 0px 0px 10px 10px;
+	padding: 10px;
 }
 </style>
