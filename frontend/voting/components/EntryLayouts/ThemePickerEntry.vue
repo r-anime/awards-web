@@ -41,12 +41,12 @@
 					</a>
 				</div>
 				<a
-					class="has-text-light"
+					class="button is-primary is-rounded"
 					@click.stop
 					target="_blank"
 					:href="themeLink"
 				>
-					Open Video in a New Tab
+					Watch
 				</a>
 			</div>
 		</div>
