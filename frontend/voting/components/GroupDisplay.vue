@@ -35,14 +35,14 @@
 		<section v-else class="hero">
 			<div class="hero-body">
 				<div class="columns is-centered">
-					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
-						<div v-if="locked && loaded" class="loading-text">
+					<div class="column is-5-tablet is-4-desktop is-3-widescreen pt-5">
+						<div v-if="locked && loaded" class="loading-text has-text-light">
 						Public voting is not open at this time.
 						</div>
-						<div v-else-if="!accountOldEnough && loaded" class="loading-text">
+						<div v-else-if="!accountOldEnough && loaded" class="loading-text has-text-light">
 						Your account is not old enough to vote in the Awards.
 						</div>
-						<div v-else class="loading-text">
+						<div v-else class="loading-text has-text-light">
 							Please wait while your selections are being initialized. Thank you for your patience.
 							<h3>{{loadingprogress.curr}}/{{loadingprogress.max}}</h3>
 							<progress class="progress is-primary" :value="loadingprogress.curr" :max="loadingprogress.max">{{loadingprogress.curr}}/{{loadingprogress.max}}</progress>
