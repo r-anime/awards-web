@@ -424,7 +424,7 @@ export default {
 					} else {
 						this.pulledEntries.push({
 							anilistID: result.id,
-							idMal: result.idMal,
+							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
 							romanji: result.title.romaji,
 							year: 2022,
