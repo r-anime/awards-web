@@ -17,7 +17,7 @@
 				</strong>
 				<br />
 				{{anime}}
-				<div class="float-bottom">
+				<div class="float-bottom is-hidden-touch">
 					<a
 						class=""
 						@click.stop
@@ -51,8 +51,8 @@ export default {
 			return this.char.year;
 		},
 		anime () {
-			if (this.char.parent) {
-				return this.char.parent.romanji || this.char.parent.english;
+			if (this.char) {
+				return this.char["parent.romanji"] || this.char["parent.english"];
 			} else {
 				return "";
 			}

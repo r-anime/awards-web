@@ -17,6 +17,8 @@
 					</p>
 				</div>
 			</div>
+			
+			<small class="has-text-light mx-4 mb-1">You may vote up to 5 times per category.</small>
 
 			<div v-if="loaded && filteredShows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<char-picker-entry
@@ -125,7 +127,7 @@ export default {
 			this.$emit('scroll-picker', event.target.scrollTop);
 		},
 		showSelected (show) {
-			console.log(show);
+			// console.log(show);
 			return this.value[this.category.id].some(s => (s.id === show.id));
 		},
 		async toggleShow (show, select = true) {

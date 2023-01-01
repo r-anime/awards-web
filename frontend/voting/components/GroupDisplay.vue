@@ -3,7 +3,7 @@
 		<div class="voting-page-content-container" v-if="loaded && !locked && accountOldEnough && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
 				<div class="has-text-light">
 					<div class="tab-container container">
-						<CategoryGroupTabBar v-model="selectedTab" :tabs="categories" :progress="progress" />
+						<CategoryGroupTabBar v-model="selectedTab" :tabs="categories" :progress="progress" :selections="voted" />
 					</div>
 				</div>
 			<div class="container">
@@ -25,6 +25,11 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="mobile-selection-toggle">
+				<router-link to="myvotes">
+					<button class="button is-primary is-rounded" role="link">My Votes</button>
+				</router-link>
 			</div>
 		</div>
 		<section v-else class="hero">
@@ -48,11 +53,7 @@
 				</div>
 			</div>
 		</section>
-		<div class="mobile-selection-toggle">
-		<router-link to="./myVotes" custom v-slot="{ navigate }">
-  		<button class="button is-primary is-rounded" @click="navigate" role="link" :class="{'is-hidden': toggleSelection}">My Votes</button>
-		</router-link>
-		</div>
+		
 	</div>
 </template>
 
@@ -132,6 +133,11 @@ export default {
 		progress () {
 			return Object.entries(this.selections).filter(([_key, value]) => value.length).length;
 		},
+		voted () {
+			let voted = new Map();
+			Object.entries(this.selections).forEach(([_key, value]) => voted.set(_key, value.length > 0));
+			return voted;
+		}
 	},
 	watch: {
 		group: {

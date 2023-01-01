@@ -20,7 +20,7 @@
 				</strong>
 				<br />
 				{{anime}}
-				<div class="float-bottom">
+				<div class="float-bottom is-hidden-touch">
 					<a
 						class=""
 						@click.stop
@@ -47,8 +47,8 @@ export default {
 	},
 	computed: {
 		name () {
-			if (this.va && this.va.parent) {
-				return this.va.parent.romanji || this.va.parent.english;
+			if (this.va) {
+				return this.va["parent.romanji"] || this.va["parent.english"];
 			} else {
 				return "";
 			}
@@ -60,10 +60,8 @@ export default {
 			return this.va.year;
 		},
 		anime () {
-			if (this.va && this.va.parent) {
-				if (this.va.parent.parent) {
-					return this.va.parent.parent.romanji || this.va.parent.parent.english;
-				}
+			if (this.va) {
+				return this.va["parent.parent.romanji"] || this.va["parent.parent.english"];
 			}
 			return "";
 		},

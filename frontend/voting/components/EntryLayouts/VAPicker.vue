@@ -17,7 +17,7 @@
 					</p>
 				</div>
 			</div>
-
+			<small class="has-text-light mx-4 mb-1">You may vote up to 5 times per category.</small>
 			<div v-if="loaded && filteredShows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<VAPickerEntry
 					v-for="show in filteredShows"
@@ -91,7 +91,7 @@ export default {
 				items = items.sort((item) => _this.showSelected(item)?-1:1);
 			}
 
-			return items.filter(i => {
+			items = items.filter(i => {
 				let r = true;
 				if (i.parent){
 					if (i.parent.parent){
@@ -102,6 +102,8 @@ export default {
 				}
 				return r;
 			});
+
+			return items.slice(0, 100);
 		},
 		filteredShows () {
 			let items = [];

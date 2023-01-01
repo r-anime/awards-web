@@ -134,9 +134,10 @@ const store = new Vuex.Store({
 			if (!voteLock.flag && state.me.level < voteLock.level) {
 				return commit('UPDATE_SELECTIONS', selections);
 			}
-			const votes = await makeRequest('/api/votes/get');
+			let votes = await makeRequest('/api/votes/get');
+			// console.log(votes);
 			// Check if user has voted
-			if (votes.length === 0) {
+			if (!votes || (Object.keys(votes).length === 0 && votes.constructor === Object)) {
 				commit('UPDATE_SELECTIONS', selections);
 			} else {
 				// Big fucking messy code that I will surely end myself after writing

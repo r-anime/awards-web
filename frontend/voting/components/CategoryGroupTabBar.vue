@@ -5,7 +5,7 @@
 			<div class="mobile-select-container">
 				<a
 					class="sidebar-item"
-					:class="{ 'current-tab' : tab.id==selectedTab }"
+					:class="{ 'current-tab' : tab.id==selectedTab, 'voted' : selections.get(('' + tab.id)) }"
 					v-for="tab in tabs"
 					:key="tab.id"
 					:value="tab.id"
@@ -26,6 +26,7 @@ export default {
 	},
 	props: {
 		tabs: Array,
+		selections: Map,
 		progress: Number,
 		selectedTab: Number,
 	},
@@ -34,11 +35,28 @@ export default {
 			const _tabval = parseInt(id, 10);
 			this.$emit('change', _tabval);
 		},
+		processScroll(event){
+			console.log(event);
+		}
 	},
 	mounted (){
 		let current = this.$refs.catnav.querySelector('.current-tab');
+		const _this = this;
 
-		console.log(this.$refs.catnav);
+		// console.log(this.$refs.catnav);
+		this.$refs.catnav.addEventListener("wheel", function (e) {
+			if (window.innerWidth >= 1216){
+				return false;
+			}
+			if (e.deltaY > 0) {
+				_this.$refs.catnav.scrollLeft += 80;
+				e.preventDefault();
+			}
+			else {
+				_this.$refs.catnav.scrollLeft -= 80;
+				e.preventDefault();
+			}
+		});
 
 		this.$refs.catnav.scrollLeft = current.offsetLeft;
 		this.$refs.catnav.scrollTop = current.offsetTop;
@@ -60,10 +78,12 @@ export default {
     white-space: nowrap;
 
 	.progress.is-tiny {
-		height: 2px;
+		height: 3px;
+		width: 100%;
 		position: fixed;
-		left: 10%;
-		top: 66px;
+		left: 0;
+		top: 53px;
+		border-radius: 0 !important;
 	}
 
 	.progress::-webkit-progress-value {
@@ -77,7 +97,7 @@ export default {
 		font-size: 12px;
 		color: #fff;
 		background: rgba(87,150,255, 0);
-		border: #00D1B2 1px solid;
+		border: #7EAEFF 1px solid;
 		border-radius: 30px;
 		transition: background-color 0.2s;
 		cursor: pointer;
@@ -86,8 +106,13 @@ export default {
 			background: rgba(0, 209, 178, 0.3);
 		}
 
+		&.voted{
+			border: #00D1B2 1px solid;
+		}
+
 		&.current-tab{
 			background: #00D1B2;
+			border: #00D1B2 1px solid;
 		}
 	}
 
@@ -107,6 +132,17 @@ export default {
 		border-radius: 20px;
 	}
 }
+@media (min-width: 768px) {
+	.mobile-select {
+
+		.progress.is-tiny {
+			top: 65px;
+		}
+
+	}
+
+}
+
 @media (min-width: 1216px) {
 	.mobile-select {
 		position: fixed;
@@ -123,7 +159,6 @@ export default {
 
 		.progress.is-tiny {
 			height: 6px;
-			position: static;
 		}
 
 		.sidebar-item {
@@ -132,8 +167,8 @@ export default {
 			margin: 0;
 			font-size: 12px;
 			color: #B7B7B7;
-			background: rgba(87,150,255, 0);
-			border: 0;
+			background: rgba(87,150,255, 0);			
+			border: 0 transparent solid !important;
 			border-radius: 0;
 			width: 100%;
 			transition: background-color 0.2s;
@@ -144,6 +179,10 @@ export default {
 
 			&.current-tab{
 				background: rgba(87,150,255, 0.3);
+			}
+
+			&.voted{
+				color: #00D1B2;
 			}
 		}
 

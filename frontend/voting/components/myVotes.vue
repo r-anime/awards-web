@@ -1,21 +1,51 @@
 <template>
-	<div class="my-votes-content-container" v-if="loaded && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
-		<ol :key="category.id" v-for="category in categories">
-			{{ category.name }}
-			
-			<div class="my-votes-cards-container">
-				<li v-for="selection in selections[category.id]">
-					<div class="my-votes-selection-card"
-						:style="{ backgroundImage: `url(${selection.image})` }"
-					>
-						<div class="my-votes-cards-title">
-						{{ selection.romanji || selection.english || selection.anime || "default" }}
-						</div>
+	<div class="voting-page-content has-background-anti-spotify" >
+		<div class="my-votes-content-container" v-if="loaded && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
+			<div class="container">
+				<ol :key="category.id" v-for="category in categories">
+					{{ category.name }}
+					
+					<div class="my-votes-cards-container">
+						<li :key="selection.id" v-for="selection in selections[category.id]">
+							<div class="my-votes-selection-card"
+								:style="{ backgroundImage: `url(${selection.image})` }"
+							>
+								<div class="my-votes-cards-title">
+								{{ selection.romanji || selection.english || selection.anime || "default" }}
+								</div>
+							</div>
+						</li>
 					</div>
-				</li>
+				</ol>
+				<div class="mobile-selection-toggle">
+					<router-link to="/vote">
+						<button class="button is-primary is-rounded" role="link">Back</button>
+					</router-link>
+				</div>
 			</div>
-		</ol>
 		</div>
+		<section v-else class="hero">
+			<div class="hero-body">
+				<div class="columns is-centered">
+					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
+						<div v-if="locked && loaded" class="loading-text">
+						Public voting is not open at this time.
+						</div>
+						<div v-else-if="!accountOldEnough && loaded" class="loading-text">
+						Your account is not old enough to vote in the Awards.
+						</div>
+						<div v-else class="loading-text">
+							Please wait while your selections are being initialized. Thank you for your patience.
+							<h3>{{loadingprogress.curr}}/{{loadingprogress.max}}</h3>
+							<progress class="progress is-primary" :value="loadingprogress.curr" :max="loadingprogress.max">{{loadingprogress.curr}}/{{loadingprogress.max}}</progress>
+							<br/>
+						</div>
+						<img loading="lazy" :src="snooImage"/>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 </template>
 
 <script>
@@ -126,7 +156,7 @@ export default {
 			this.categories ? Promise.resolve() : this.getCategories(),
 			this.locks ? Promise.resolve() : this.getLocks(),
 			this.me ? Promise.resolve() : this.getMe(),
-			(this.items && this.items.length > 0) ? Promise.resolve() : this.getItems(),
+			this.items ? Promise.resolve() : this.getItems(),
 		]).then(async () => {
 			const voteLock = this.locks.find(aLock => aLock.name === 'voting');
 			if (voteLock.flag || this.me.level > voteLock.level) {
@@ -138,9 +168,9 @@ export default {
 			this.loaded = true;
 			// console.log(this.loaded);
 			// console.log(this.locked);
-			console.log(this.categories);
-			console.log(this.selections);
-			console.log(this.selections[52]);
+			// console.log(this.categories);
+			// console.log(this.selections);
+			// console.log(this.selections[52]);
 		});
 	},
 };

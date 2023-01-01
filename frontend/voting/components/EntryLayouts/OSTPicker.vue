@@ -5,19 +5,19 @@
 				<div class="field has-addons">
 					<p class="control has-icons-left is-expanded">
 						<input
-							class="input is-primary is-medium"
+							class="input is-primary is-small"
 							type="text"
 							v-model="search"
 							placeholder="Search by title..."
 							:disabled="lockSearch"
 						/>
-						<span class="icon is-medium is-left has-text-platinum">
+						<span class="icon is-small is-left has-text-platinum">
 							<i class="fas fa-search"/>
 						</span>
 					</p>
 				</div>
 			</div>
-
+			<small class="has-text-light mx-4 mb-1">You may vote up to 5 times per category.</small>
 			<div v-if="loaded && filteredShows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<show-picker-entry
 					v-for="show in filteredShows"
@@ -91,6 +91,7 @@ export default {
 		},
 		filteredShows () {
 			let items = [];
+			const _this = this;
 			if (this.search == ""){
 				items = this.categoryItems;
 				items = items.sort((item) => _this.showSelected(item)?-1:1);

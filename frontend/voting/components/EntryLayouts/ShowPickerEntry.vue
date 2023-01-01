@@ -16,7 +16,10 @@
 				<strong class="show-title">
 					{{name}}
 				</strong>
-				<div class="float-bottom">
+				<span class="show-title">
+					{{altname}}
+				</span>
+				<div class="float-bottom is-hidden-touch">
 					<a
 						class=""
 						@click.stop
@@ -64,6 +67,9 @@ export default {
 	computed: {
 		name () {
 			return this.show.romanji || this.show.english;
+		},
+		altname () {
+			return this.show.romanji? this.show.english:'';
 		},
 		year () {
 			return this.show.year;

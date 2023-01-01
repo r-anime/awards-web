@@ -17,7 +17,7 @@
 				</strong>
 				<br/>
 				{{show.title}}
-				<div class="float-bottom">
+				<div class="float-bottom is-hidden-touch">
 					<a
 						class=""
 						@click.stop
