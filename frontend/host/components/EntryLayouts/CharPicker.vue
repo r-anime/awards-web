@@ -269,11 +269,6 @@ export default {
 .tabs.show-picker-tabs {
 	margin-bottom: 0 !important;
 }
-.show-picker-overflow-wrap {
-	/* TODO hardcode bad */
-	height: calc(100vh - 141px - 46px);
-	overflow-y: auto;
-}
 .show-picker-search-bar {
 	margin: 0 auto;
 	max-width: 500px;

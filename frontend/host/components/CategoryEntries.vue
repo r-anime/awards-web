@@ -100,3 +100,29 @@ export default {
 	},
 };
 </script>
+<style lang="scss">
+.show-picker-overflow-wrap{
+	overflow: hidden;
+}
+.show-picker-entries{
+	display: flex;
+	flex-wrap: wrap;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 70vh;
+
+	.show-picker-entry {
+		flex: 0 0 calc(100%/4);
+
+		.box {
+			flex-direction: row;
+		}
+	}
+}
+.show-cover {
+    max-width: 100px;
+    // margin-right: 0.4rem;
+    border-radius: 3px;
+    overflow: hidden;
+}
+</style>
