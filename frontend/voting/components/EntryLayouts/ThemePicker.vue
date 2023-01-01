@@ -138,6 +138,7 @@ export default {
 			}, 750);
 		},
 		searchThemes () {
+			const _this = this;
 			if (!this.search) {
 				this.shows = this.backup;
 				this.total = this.shows.length;
