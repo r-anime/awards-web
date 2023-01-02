@@ -93,17 +93,13 @@ export default {
 
 			items = items.filter(i => {
 				let r = true;
-				if (i.parent){
-					if (i.parent.parent){
-						r = r && i.parent.parent.type == 'anime';
-						r = r && !(String(i.parent.parent.mediatype) == 'MOVIE' || String(i.parent.parent.mediatype) == 'ONA' || String(i.parent.parent.mediatype) == 'MUSIC');
-					}
-					r = r && i.parent.type == 'char';
+				if (i.parentID){
+					r = r && !(String(i["parent.parent.mediatype"]) === 'MOVIE' || String(i["parent.parent.mediatype"]) === 'ONA' || String(i["parent.parent.mediatype"]) === 'MUSIC');
 				}
 				return r;
 			});
 
-			return items.slice(0, 100);
+			return items;
 		},
 		filteredShows () {
 			let items = [];
@@ -114,17 +110,15 @@ export default {
 				const _filter = this.search.toLowerCase();
 				items = this.categoryItems.filter((item) => {
 					let filter = (String(item.english).toLowerCase().includes(_filter) || String(item.romanji).toLowerCase().includes(_filter)  || String(item.names).toLowerCase().includes(_filter));
-					if (item.parent) {
-						filter = filter || (String(item.parent.english).toLowerCase().includes(_filter) || String(item.parent.romanji).toLowerCase().includes(_filter)  || String(item.parent.names).toLowerCase().includes(_filter));
-						if (item.parent.parent) {
-							filter = filter || (String(item.parent.parent.english).toLowerCase().includes(_filter) || String(item.parent.parent.romanji).toLowerCase().includes(_filter)  || String(item.parent.parent.names).toLowerCase().includes(_filter));
-						}
+					if (item.parentID) {
+						filter = filter || (String(item["parent.english"]).toLowerCase().includes(_filter) || String(item["parent.romanji"]).toLowerCase().includes(_filter)  || String(item["parent.names"]).toLowerCase().includes(_filter));
+						filter = filter || (String(item["parent.parent.english"]).toLowerCase().includes(_filter) || String(item["parent.parent.romanji"]).toLowerCase().includes(_filter)  || String(item["parent.parent.names"]).toLowerCase().includes(_filter));
 					}
 					return filter;
 				});
 			}
-			return items;
-			// return items.slice(0, 200);
+			// return items;
+			return items.slice(0, 200);
 		}
 	},
 	methods: {
@@ -136,7 +130,7 @@ export default {
 			this.$emit('scroll-picker', event.target.scrollTop);
 		},
 		showSelected (show) {
-			console.log(show);
+			// console.log(show);
 			return this.value[this.category.id].some(s => (s.id === show.id));
 		},
 		async toggleShow (show, select = true) {
