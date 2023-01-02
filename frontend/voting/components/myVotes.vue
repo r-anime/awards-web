@@ -16,7 +16,7 @@
 								:style="{ backgroundImage: `url(${selection.image})` }"
 							>
 								<div class="my-votes-cards-title">
-								{{ selection.romanji || selection.english || selection.anime || "default" }}
+								{{ selection.theme_name || selection.romanji || selection.english || selection.anime || "default" }}
 								</div>
 							</div>
 						</li>
