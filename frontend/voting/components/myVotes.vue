@@ -125,6 +125,7 @@ export default {
 			const _this = this;
 			let clipboard = "";
 			this.categories.forEach(element => {
+				/*
 				clipboard += element.name + "\n\n";
 
 				_this.selections[element.id].forEach(selection => {
@@ -137,13 +138,36 @@ export default {
 					} else if (element.entryType == "vas"){
 						clipboard += " - "
 							+ (selection.romanji || selection.english || selection.anime || selection.id)
-							+ " as " + (selection["parent.romanji"] || selection["parent.english"] || "idk");
+							+ " as " + (selection["parent.romanji"] || selection["parent.english"] || "idk") + "\n";
 					} else {
 						clipboard += " - "
 							+ (selection.romanji || selection.english || selection.anime || selection.id) + "\n";
 					}
 					
 				});
+				clipboard += "\n";
+				*/
+				clipboard += " - **" + element.name + "**: ";
+
+				_this.selections[element.id].forEach(selection => {
+
+					if (element.entryType == "themes"){
+						clipboard += ""
+							+ (selection.romanji || selection.english || selection.anime || selection.id)
+							+ " " + (selection.themeNo || selection.themeType || "theme")
+							+ " - " + (selection.title || "") + ", ";
+					} else if (element.entryType == "vas"){
+						clipboard += ""
+							+ (selection.romanji || selection.english || selection.anime || selection.id)
+							+ " as " + (selection["parent.romanji"] || selection["parent.english"] || "idk") + ", ";
+					} else {
+						clipboard += ""
+							+ (selection.romanji || selection.english || selection.anime || selection.id) + ", ";
+					}
+				});
+				if (_this.selections[element.id].length > 0){
+					clipboard = clipboard.slice(0, -2);
+				}
 				clipboard += "\n";
 			});
 
