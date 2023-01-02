@@ -16,7 +16,7 @@
 								:style="{ backgroundImage: `url(${selection.image})` }"
 							>
 								<div class="my-votes-cards-title">
-								{{ selection.theme_name || selection.romanji || selection.english || selection.anime || "default" }}
+								{{ selection.title || selection.romanji || selection.english || selection.anime || "default" }}
 								</div>
 							</div>
 						</li>
@@ -128,8 +128,17 @@ export default {
 				clipboard += element.name + "\n\n";
 
 				_this.selections[element.id].forEach(selection => {
-					clipboard += " - "
-						+ (selection.romanji || selection.english || selection.anime || selection.id) + " " + (selection.theme_name || "") + "\n";
+
+					if (element.entryType == "themes"){
+						clipboard += " - "
+							+ (selection.romanji || selection.english || selection.anime || selection.id) + 
+							+ " " + (selection.themeNo || selection.themeType || "theme") +
+							+ " - " + (selection.title || "") + "\n";
+					} else {
+						clipboard += " - "
+							+ (selection.romanji || selection.english || selection.anime || selection.id) + "\n";
+					}
+					
 				});
 				clipboard += "\n";
 			});
