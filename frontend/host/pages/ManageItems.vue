@@ -540,6 +540,7 @@ export default {
 						console.log("Added", result.node.name.full);
 						this.pulledEntries.push({
 							anilistID: result.node.id,
+							idMal: -1,
 							english: result.node.name.full,
 							romanji: result.node.name.full,
 							year: 2022,
@@ -550,12 +551,13 @@ export default {
 						});
 					}
 					for (const va of result.voiceActors){
-						if (this.items.filter(e => e.anilistID === va.id && e.type == 'va' && e.parentID == result.node.id ).length > 0){
+						if (this.items.filter(e => e.anilistID === va.id && e.type == 'va' && e.['parent.id'] == result.node.id ).length > 0){
 							console.log("Skipped", va.name.full);
 						} else {
 							console.log("Added " +  va.name.full + " - " + result.node.name.full);
 							this.pulledEntries.push({
 								anilistID: va.id,
+								idMal: -1,
 								english: va.name.full,
 								romanji: va.name.full,
 								year: 2022,
