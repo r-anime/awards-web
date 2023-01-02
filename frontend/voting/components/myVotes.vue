@@ -134,6 +134,10 @@ export default {
 							+ (selection.romanji || selection.english || selection.anime || selection.id)
 							+ " " + (selection.themeNo || selection.themeType || "theme")
 							+ " - " + (selection.title || "") + "\n";
+					} else if (element.entryType == "vas"){
+						clipboard += " - "
+							+ (selection.romanji || selection.english || selection.anime || selection.id)
+							+ " as " + (selection["parent.romanji"] || selection["parent.english"] || "idk");
 					} else {
 						clipboard += " - "
 							+ (selection.romanji || selection.english || selection.anime || selection.id) + "\n";
