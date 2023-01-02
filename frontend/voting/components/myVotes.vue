@@ -125,11 +125,11 @@ export default {
 			const _this = this;
 			let clipboard = "";
 			this.categories.forEach(element => {
-				clipboard += element.name + "\n";
+				clipboard += element.name + "\n\n";
 
 				_this.selections[element.id].forEach(selection => {
 					clipboard += " - "
-						+ (selection.romanji || selection.english || selection.anime || selection.id) + "\n";
+						+ (selection.romanji || selection.english || selection.anime || selection.id) + " " + (selection.theme_name || "") + "\n";
 				});
 				clipboard += "\n";
 			});
