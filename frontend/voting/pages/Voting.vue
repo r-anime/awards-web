@@ -1,7 +1,7 @@
 <template>
 	<body>
 		<nav-bar
-			class="is-dperiwinkle has-periwinkle-underline is-fixed-top"
+			class="is-dperiwinkle is-fixed-top"
 			:routes="[]"
 			fullwidth
 			vote

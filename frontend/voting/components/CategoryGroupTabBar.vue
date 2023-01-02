@@ -70,20 +70,47 @@ export default {
 	left: initial;
 	height: 50px;
 	padding: 0;
+	padding-left: 100px;
+	padding-right: 100px;
 	width: 100%;
-	margin-top: 10px;
+	padding-top: 5px;
 	overflow-x: auto;
 	overflow-y: hidden;
-	z-index: 9999;
+	z-index: 9998;
     white-space: nowrap;
+
+	&:before{
+		content: '';
+		display: block;
+		position: fixed;
+		height: 60px;
+		width: 100px;
+		top: 52px;
+		left: 0;
+		background-image:  linear-gradient(to right, #1B1E25, transparent 70%);
+		pointer-events: none;
+	}
+
+	&:after{
+		content: '';
+		display: block;
+		position: fixed;
+		height: 60px;
+		width: 100px;
+		top: 52px;
+		right: 0;
+		background-image:  linear-gradient(to left, #1B1E25, transparent 70%);
+		pointer-events: none;
+	}
 
 	.progress.is-tiny {
 		height: 3px;
 		width: 100%;
 		position: fixed;
 		left: 0;
-		top: 53px;
+		top: 52px;
 		border-radius: 0 !important;
+		z-index: 9999;
 	}
 
 	.progress::-webkit-progress-value {
@@ -136,11 +163,22 @@ export default {
 	.mobile-select {
 
 		.progress.is-tiny {
-			top: 65px;
+			top: 64px;
 		}
 
 	}
+}
 
+@media (min-width: 1024px) {
+	.mobile-select {
+		&:before{
+			display: none;
+		}
+
+		&:after{
+			display: none;
+		}
+	}
 }
 
 @media (min-width: 1216px) {
@@ -158,7 +196,7 @@ export default {
 		margin-top: 0;
 
 		.progress.is-tiny {
-			height: 6px;
+			height: 8px;
 		}
 
 		.sidebar-item {

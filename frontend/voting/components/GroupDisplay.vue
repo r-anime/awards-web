@@ -34,7 +34,7 @@
 		</div>
 		<section v-else class="hero">
 			<div class="hero-body">
-				<div class="columns is-centered">
+				<div class="columns is-centered pt-5">
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen pt-5">
 						<div v-if="locked && loaded" class="loading-text has-text-light">
 						Public voting is not open at this time.

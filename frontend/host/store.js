@@ -413,14 +413,14 @@ const store = new Vuex.Store({
 			const req = await makeRequest(`/api/items/page/0`, 'GET');
 			let page = 0;
 			const items = [...req.rows];
-			while (page < Math.floor(req.count/500)){
+			while (page < Math.floor(req.count/1000)){
 				page += 1;
 				await new Promise(resolve => setTimeout(resolve, 25));
 				const reqp = await makeRequest(`/api/items/page/${page}`, 'GET');
 				items.push(...reqp.rows);
 				commit('SET_LOADING', {
 					curr: page,
-					max: Math.floor(req.count/500)}
+					max: Math.floor(req.count/1000)}
 				);
 			}
 			commit('SET_ITEMS', items);

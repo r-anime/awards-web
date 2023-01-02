@@ -126,9 +126,26 @@
 
 .show-cover {
     max-width: 100px;
+    max-height: 100px;
     // margin-right: 0.4rem;
     border-radius: 3px;
     overflow: hidden;
+
+    img {
+        width: 100px;
+        height: 100px;
+
+        object-fit: cover;
+    }
+}
+@media (min-width: 1216px ) {
+    .show-cover {
+        max-height: 100%;
+    
+        img {
+            height: auto;
+        }
+    }
 }
 
 .show-picker-entries {
@@ -189,6 +206,10 @@
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
+
+        .button {
+            width: 125px;
+        }
     }
 
     .media{
@@ -233,6 +254,12 @@
     height: 100vh;
 }
 
-progress::-webkit-progress-value {
-    transition: width .3s ease;
+progress {
+    &::-webkit-progress-value {
+        transition: width .3s ease;
+    }
+
+    &::-webkit-progress-bar {
+        background-color: #4F4F4F !important;
+    }
 }

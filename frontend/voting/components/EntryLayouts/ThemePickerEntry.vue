@@ -15,7 +15,6 @@
 				<strong class="show-title">
 					{{anime}} {{show.themeNo || ''}}
 				</strong>
-				<br/>
 				{{show.title}}
 				<div class="float-bottom is-hidden-touch">
 					<a
@@ -40,8 +39,9 @@
 						</svg>
 					</a>
 				</div>
+				<br/>
 				<a
-					class="button is-primary is-rounded"
+					class="button is-periwinkle is-rounded is-small"
 					@click.stop
 					target="_blank"
 					:href="themeLink"
@@ -50,6 +50,7 @@
 				</a>
 			</div>
 		</div>
+		
 	</label>
 </template>
 

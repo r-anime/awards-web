@@ -23,7 +23,7 @@
 			<small class="has-text-light mx-4 mb-1">You may vote up to 5 times per category.</small>
 			<div v-if="loaded && shows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<ThemePickerEntry
-					v-for="show in shows"
+					v-for="show in sortedShows"
 					:key="show.id"
 					:show="show"
 					:selected="showSelected(show)"
@@ -109,6 +109,10 @@ export default {
 		isLoading () {
 			return this.loading.includes(true);
 		},
+		sortedShows (){
+			const _this = this;
+			return this.shows.sort((item) => _this.showSelected(item)?-1:1);
+		},
 	},
 	data () {
 		return {
@@ -149,10 +153,10 @@ export default {
 			const fuse = new Fuse(entries, options);
 			this.shows = fuse.search(this.search);
 			this.shows = this.shows.map(show => show.item);
-			this.shows = this.shows.sort((item) => _this.showSelected(item)?-1:1);
 			this.total = this.shows.length;
 			this.loaded = true;
 		},
+		
 		showSelected (show) {
 			return this.value[this.category.id].some(s => s.id === show.id);
 		},
