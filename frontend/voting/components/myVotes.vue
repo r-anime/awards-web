@@ -131,8 +131,8 @@ export default {
 
 					if (element.entryType == "themes"){
 						clipboard += " - "
-							+ (selection.romanji || selection.english || selection.anime || selection.id) + 
-							+ " " + (selection.themeNo || selection.themeType || "theme") +
+							+ (selection.romanji || selection.english || selection.anime || selection.id)
+							+ " " + (selection.themeNo || selection.themeType || "theme")
 							+ " - " + (selection.title || "") + "\n";
 					} else {
 						clipboard += " - "
