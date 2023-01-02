@@ -2,6 +2,11 @@
 	<div class="voting-page-content has-background-anti-spotify" >
 		<div class="my-votes-content-container" v-if="loaded && (loadingprogress.curr == loadingprogress.max && loadingprogress.max > 0)">
 			<div class="container">
+				<div class="is-pulled-right mt-3">
+					<button class="button is-primary is-rounded" @click="clipboard">Copy To Clipboard</button>
+				</div>
+				<div class="is-clearfix mt-5 mb-5">
+				</div>
 				<ol :key="category.id" v-for="category in categories">
 					{{ category.name }}
 					
@@ -27,7 +32,7 @@
 		<section v-else class="hero">
 			<div class="hero-body">
 				<div class="columns is-centered">
-					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
+					<div class="column is-5-tablet is-4-desktop is-3-widescreen has-text-light">
 						<div v-if="locked && loaded" class="loading-text">
 						Public voting is not open at this time.
 						</div>
@@ -115,6 +120,25 @@ export default {
 		]),
 		toggle () {
 			this.toggleSelection = !this.toggleSelection;
+		},
+		clipboard (){
+			const _this = this;
+			let clipboard = "";
+			this.categories.forEach(element => {
+				clipboard += element.name + "\n";
+
+				_this.selections[element.id].forEach(selection => {
+					clipboard += " - "
+						+ (selection.romanji || selection.english || selection.anime || selection.id) + "\n";
+				});
+				clipboard += "\n";
+			});
+
+			navigator.clipboard.writeText(clipboard).then(
+				() => {
+					alert("Your votes have been copied to your clipboard!");
+				}
+			);
 		},
 		async removeSelection (selection) {
 			let json;
