@@ -551,7 +551,7 @@ export default {
 						});
 					}
 					for (const va of result.voiceActors){
-						if (this.items.filter(e => e.anilistID === va.id && e.type == 'va' && e.['parent.id'] == result.node.id ).length > 0){
+						if (this.items.filter(e => e.anilistID === va.id && e.type == 'va' && e['parent.id'] == result.node.id ).length > 0){
 							console.log("Skipped", va.name.full);
 						} else {
 							console.log("Added " +  va.name.full + " - " + result.node.name.full);
