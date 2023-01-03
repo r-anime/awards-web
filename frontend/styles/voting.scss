@@ -262,4 +262,5 @@ progress {
     &::-webkit-progress-bar {
         background-color: #4F4F4F !important;
     }
+    pointer-events: none !important;
 }
