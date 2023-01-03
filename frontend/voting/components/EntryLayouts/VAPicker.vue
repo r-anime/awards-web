@@ -91,13 +91,13 @@ export default {
 				items = items.sort((item) => _this.showSelected(item)?-1:1);
 			}
 
-			items = items.filter(i => {
+			/*items = items.filter(i => {
 				let r = true;
 				if (i.parentID){
-					r = r && !(String(i["parent.parent.mediatype"]) === 'MOVIE' || String(i["parent.parent.mediatype"]) === 'ONA' || String(i["parent.parent.mediatype"]) === 'MUSIC');
+					r = r;// && !(String(i["parent.parent.mediatype"]) === 'MOVIE' || String(i["parent.parent.mediatype"]) === 'ONA' || String(i["parent.parent.mediatype"]) === 'MUSIC');
 				}
 				return r;
-			});
+			});*/
 
 			return items;
 		},
