@@ -317,14 +317,16 @@ export default {
 								allVotes = this.voteTotals.filter(vote => vote.category_id === category.id);
 							}
 							const entries = [];
+							console.log(this.showData);
 							for (const vote of allVotes) {
 								if (category.entryType === 'themes') {
-									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-									const requiredTheme = this.themes.find(theme => theme.id === vote.entry_id);
+									const requiredTheme = this.themes.find(theme => theme.id == vote.entry_id);
+									const requiredShow = this.items.find(show => show.anilistID == requiredTheme.anilistID);
+									
 									if (requiredShow && requiredTheme) {
 										entries.push({
 											vote_count: vote.vote_count,
-											name: `${requiredShow.title.romaji} - ${requiredTheme.title} ${requiredTheme.themeNo}`,
+											name: `${requiredShow.romaji || requiredShow.english} - ${vote.theme_name} ${requiredTheme.themeNo}`,
 										});
 									}
 								} else if (category.entryType === 'shows') {
@@ -346,8 +348,8 @@ export default {
 									if (requiredChar) {
 										const name = requiredChar.english || requiredChar.romanji;
 										let show = "";
-										if (requiredChar.parent){
-											show = requiredChar.parent.english || requiredChar.parent.romanji;
+										if (requiredChar){
+											show = requiredChar["parent.english"] || requiredChar["parent.romanji"];
 										}
 										entries.push({
 											vote_count: vote.vote_count,
@@ -364,8 +366,8 @@ export default {
 									if (requiredChar) {
 										const name = requiredChar.english || requiredChar.romanji;
 										let char = "";
-										if (requiredChar.parent){
-											char = requiredChar.parent.english || requiredChar.parent.romanji;
+										if (requiredChar){
+											char = requiredChar["parent.english"] || requiredChar["parent.romanji"];
 										}
 										entries.push({
 											vote_count: vote.vote_count,
