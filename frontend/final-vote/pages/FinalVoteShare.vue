@@ -20,13 +20,13 @@
 										{{getName(getVoteFromCat(cat), cat)}}
 									</div>
 								</div>
-								<a class="fv-watch-button" v-if="getVoteFromCat(cat).themeId" :href="getTheme(getVoteFromCat(cat).themeId).link" target="_blank">
-									Watch<span class="is-hidden-mobile"> on {{extractRootDomain(getTheme(getVoteFromCat(cat).themeId).link)}} </span>
-								</a>
-								<a class="fv-watch-button" v-if="getVoteFromCat(cat).link" :href="getVoteFromCat(cat).link" target="_blank">
-									Watch<span class="is-hidden-mobile"> on {{extractRootDomain(getVoteFromCat(cat).link)}} </span>
-								</a>
 							</div>
+							<a class="fv-watch-button" v-if="getVoteFromCat(cat).themeId" :href="getTheme(getVoteFromCat(cat).themeId).link" target="_blank">
+								Watch<span class="is-hidden-mobile"> on {{extractRootDomain(getTheme(getVoteFromCat(cat).themeId).link)}} </span>
+							</a>
+							<a class="fv-watch-button" v-if="getVoteFromCat(cat).link" :href="getVoteFromCat(cat).link" target="_blank">
+								Watch<span class="is-hidden-mobile"> on {{extractRootDomain(getVoteFromCat(cat).link)}} </span>
+							</a>
 						</div>
 					</div>
 				</div>
