@@ -8,7 +8,7 @@ import router from './routes';
 
 router.beforeEach(async (to, from, next) => {
 	// We must have the user info loaded before we can route
-	if (to.path.startsWith('/final-vote')) {
+	if (to.path.startsWith('/final-vote') && !to.path.startsWith('/final-vote/share')) {
 		// Fetch user data
 		if (!store.state.me) await store.dispatch('getMe');
 		if (!store.state.me) {
