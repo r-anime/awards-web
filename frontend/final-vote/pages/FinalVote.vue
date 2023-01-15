@@ -1,36 +1,22 @@
 <template>
 	<section class="section has-background-dark pb-0 pt-0" v-if="loaded.page && !allLocked">
 		<div class="container application-container pt-30 pb-30 mt-0 mb-0">
-			<div class="is-centered">
-				<img :src="logo" class="image" style="height: 96px; margin: 0 auto;"/>
-			</div>
-			<h1 class="title is-3 has-text-light has-text-centered mb-50">Vote For Your Favourites!</h1>
-			<h4 class="has-text-centered has-text-light">Language</h4>
-			<div class="is-centered has-text-centered mx-auto">
-				<label class="switch">
-					<input v-model="romaji" type="checkbox">
-					<span class="slider round">
-					</span>
-					<div class="switch-inner-container">
-						<span class="switch-inner">
-							English
-						</span>
-						<span class="switch-inner">
-							Romaji
-						</span>
-					</div>
-				</label>
-			</div>
-			<h6 class="smol is-centered mx-auto has-text-centered has-text-light">
-				Nominees will be sorted in alphabetical order.
-			</h6>
-			<br/>
 			<h4 class="has-text-centered has-text-gold">You've voted on {{votes.length}}/{{categories.length}} Categories</h4>
 			<progress class="progress is-gold" :value="votes.length" :max="categories.length">{{categories.length}}</progress>
 			<h6 class="smol is-centered mx-auto has-text-centered has-text-light">
 				Your votes are automatically saved and submitted when you select them.
 			</h6>
 			<br/>
+			<div class="mb-2">
+				<div class="field has-addons">
+					<div class="control">
+						<a class="button is-primary" @click="shareSubmit()">Share My Votes</a>
+					</div>
+					<div class="control is-expanded" v-if="shareurl != ''">
+						<input class="input has-text-dark" type="text" placeholder="Find a repository" :value="shareurl" ref="shareurl">
+					</div>					
+				</div>
+			</div>
 			<div class="mobile-buttons is-hidden-tablet">
 				<button class="button is-dperiwinkle fv-prev-nav" @click="shiftCat(-1)">Prev</button>
 				<button class="button is-dperiwinkle fv-next-nav" @click="shiftCat()">Next</button>
@@ -122,6 +108,25 @@
 					</div>
 				</div>
 			</div>
+			<div class="has-text-centered">
+				<h4 class="has-text-light">Language</h4>
+				<label class="switch">
+					<input v-model="romaji" type="checkbox">
+					<span class="slider round">
+					</span>
+					<div class="switch-inner-container">
+						<span class="switch-inner">
+							English
+						</span>
+						<span class="switch-inner">
+							Romaji
+						</span>
+					</div>
+				</label>
+				<h6 class="smol has-text-light">
+					Nominees will be sorted in alphabetical order.
+				</h6>
+			</div>
 		</div>
 	</section>
 	<div class="section" v-else-if="loaded.page && allLocked">
@@ -143,7 +148,7 @@
 <script>
 /* eslint-disable no-await-in-loop */
 import {mapState, mapActions} from 'vuex';
-import logo2020 from '../../../img/awards2021.png';
+import logo2020 from '../../../img/awards2022.png';
 import anilistQueries from '../queries';
 import marked from 'marked';
 const util = require('../../util');
@@ -243,12 +248,13 @@ export default {
 				cat: 0,
 			},
 			username: "",
+			shareurl: "",
 			romaji: true,
 			status: ['Not Seen', 'Watched', 'Completed'],
 		};
 	},
 	methods: {
-		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote', 'getSurvey', 'submitSurvey']),
+		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote', 'submitVoteDelete', 'getSurvey', 'submitSurvey', 'generateUUID']),
 		isWatched (nom) {
 			const _show = this.survey.find(entry => entry.status == 1 && ((entry.anilist_id == nom.anilist_id && entry.anilist_id != -1) || (entry.anilist_id == -1 && entry.name == nom.alt_name && nom.alt_name !== "")));
 			return _show;
@@ -271,6 +277,7 @@ export default {
 		getName (nom) {
 			if (this.currentCat.entryType === 'shows' || this.vote.cat >= this.categories.length ) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
+				// console.log(_show);
 				if (this.romaji) {
 					return nom.alt_name || _show.title.romaji || _show.title.english;
 				}
@@ -315,10 +322,7 @@ export default {
 			}
 		},
 		async voteSubmit (cat, nom) {
-			const _lastCat = this.votes.length === this.categories.length - 1;
-			if (this.currentSelection == nom.id) {
-				return false;
-			}
+			// const _lastCat = this.votes.length === this.categories.length - 1;
 			if (this.loaded.voting) {
 				this.loaded.voting = false;
 				let payload;
@@ -335,7 +339,11 @@ export default {
 						anilist_id: nom.character_id,
 					};
 				}
-				await this.submitVote(payload);
+				if (this.currentSelection == nom.id) {
+					await this.submitVoteDelete(payload);
+				} else {
+					await this.submitVote(payload);
+				}
 			}
 			if (this.votes.length < this.categories.length) {
 				await new Promise(resolve => setTimeout(resolve, 800));
@@ -346,6 +354,22 @@ export default {
 			// 	this.vote.cat = this.nextEmptyCat(this.vote.cat);
 			// }
 			this.loaded.voting = true;
+		},
+		async shareSubmit () {
+			if (this.me.uuid){
+				// this.$router.push({name: 'share', params: {uuid: this.me.uuid}});
+				this.shareurl = window.location.origin + "/final-vote/share/" + this.me.uuid;
+				await new Promise(resolve => setTimeout(resolve, 10));
+				this.$refs.shareurl.select();
+			} else {
+				this.loaded.voting = false;
+				await this.generateUUID();
+				// this.$router.push({name: 'share', params: {uuid: this.me.uuid}});
+				this.shareurl = window.location.origin + "/final-vote/share/" + this.me.uuid;
+				await new Promise(resolve => setTimeout(resolve, 10));
+				this.$refs.shareurl.select();
+				this.loaded.voting = true;
+			}
 		},
 		async suverySubmit (nom) {
 			if (this.loaded.voting) {

@@ -56,7 +56,12 @@ const store = new Vuex.Store({
 		},
 		UPDATE_SURVEY (state, survey) {
 			state.survey = survey;
-		}
+		},
+		UPDATE_UUID (state, uuid) {
+			if (state.me){
+				state.me.uuid = uuid;
+			}
+		},
 	},
 	actions: {
 		async getMe ({commit}) {
@@ -64,6 +69,12 @@ const store = new Vuex.Store({
 			if (!response.ok) return;
 			const me = await response.json();
 			commit('GET_ME', me);
+		},
+		async generateUUID ({commit}) {
+			const response = await makeRequest('/api/user/create-uuid', 'POST');
+			if (!response.ok) return;
+			const res = await response.json();
+			commit('UPDATE_UUID', res.uuid);
 		},
 		async getLocks ({commit}) {
 			const locks = await makeRequest('/api/locks/all');
@@ -98,6 +109,10 @@ const store = new Vuex.Store({
 		},
 		async submitVote ({commit}, data) {
 			const votes = await makeRequest('/api/final/submit', 'POST', data);
+			commit('UPDATE_VOTES', votes);
+		},
+		async submitVoteDelete ({commit}, data) {
+			const votes = await makeRequest('/api/final/submit/delete', 'POST', data);
 			commit('UPDATE_VOTES', votes);
 		},
 		async getSurvey ({commit, state, dispatch}) {

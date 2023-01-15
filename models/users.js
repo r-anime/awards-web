@@ -14,4 +14,8 @@ module.exports = (sequelize, types) => sequelize.define('users', {
 		allowNull: false,
 		defaultValue: 0,
 	},
+	uuid: {
+		allowNull: true,
+		type: types.STRING,
+	},
 });

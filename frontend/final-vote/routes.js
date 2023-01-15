@@ -8,6 +8,7 @@ Vue.use(VueRouter);
 import MainLayout from './pages/MainLayout';
 import FinalVote from './pages/FinalVote';
 import FinalVoteEnd from './pages/FinalVoteEnd';
+import FinalVoteShare from './pages/FinalVoteShare';
 
 import NotFound from '../common/NotFound';
 import Profile from '../common/Profile';
@@ -37,6 +38,12 @@ export default new VueRouter({
 					path: 'profile',
 					component: Profile,
 				},
+				{
+					path: 'share/:uuid',
+					component: FinalVoteShare,
+					name: 'share',
+					props: true,
+				}
 			],
 		},
 		// 404 route - keep last

@@ -2,6 +2,7 @@ const log = require('another-logger');
 const apiApp = require('polka')();
 const superagent = require('superagent');
 const sequelize = require('../models').sequelize;
+const uuid = require('uuid');
 
 // Sequelize models to avoid redundancy
 const Users = sequelize.model('users');
@@ -39,6 +40,7 @@ apiApp.get('/me', async (request, response) => {
 				},
 				level: user.level,
 				flags: user.flags,
+				uuid: user.uuid,
 			});
 		});
 	} catch (error) {
@@ -174,6 +176,43 @@ apiApp.post('/deleteaccount', async (request, response) => {
 		});
 	} catch (error) {
 		response.error(error);
+	}
+});
+
+apiApp.post('/create-uuid', async (request, response) => {
+	if (!request.session.redditAccessToken) {
+		return response.json(401);
+	}
+	let redditorInfo;
+	try {
+		redditorInfo = (await request.reddit().get('/api/v1/me')).body;
+	} catch (error) {
+		return response.error(error);
+	}
+	try {
+		Users.findOne({
+			where: {
+				reddit: redditorInfo.name,
+			},
+		}).then(async (user) => {
+			if (user.uuid){
+				return response.json({
+					uuid: user.uuid,
+					message: "Unique ID already exists for this user."
+				})
+			} else {
+				const newuuid = uuid.v4();
+				await user.update({
+					uuid: newuuid,
+				});
+				return response.json({
+					uuid: newuuid,
+					message: "Unique ID created."
+				})
+			}
+		});
+	} catch (error) {
+		return response.error(error);
 	}
 });
 

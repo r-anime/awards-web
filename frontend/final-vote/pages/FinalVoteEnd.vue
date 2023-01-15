@@ -24,7 +24,7 @@
 <script>
 import 'codemirror/lib/codemirror.css';
 import {mapState, mapActions} from 'vuex';
-import logo2020 from '../../../img/awards2020.png';
+import logo2020 from '../../../img/awards2022.png';
 
 export default {
 	computed: {
