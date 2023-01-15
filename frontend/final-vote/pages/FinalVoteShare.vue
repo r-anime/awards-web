@@ -8,7 +8,7 @@
 					<div class="columns is-multiline">
 						<div
 							class="column is-half-desktop is-full"
-							v-for="(cat, index) in categories"
+							v-for="(cat, index) in votedCats"
 							:key="index"
 						>
 							<div v-if="getVoteFromCat(cat)" class="fv-show">
@@ -89,6 +89,9 @@ export default {
 		allLocked () {
 			return false;
 		},
+		votedCats () {
+			return this.categories.filter(cat => this.uuidvotes.findIndex(vote => cat.id == vote.category_id) > -1);
+		}
 	},
 	props: ['uuid'],
 	data () {
