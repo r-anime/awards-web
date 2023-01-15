@@ -254,7 +254,7 @@ export default {
 		};
 	},
 	methods: {
-		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote', 'submitVoteDelete', 'getSurvey', 'submitSurvey', 'generateUUID']),
+		...mapActions(['getLocks', 'getCategories', 'getMe', 'getNominations', 'getThemes', 'getVotes', 'submitVote', 'submitVoteDelete', 'getSurvey', 'submitSurvey']),
 		isWatched (nom) {
 			const _show = this.survey.find(entry => entry.status == 1 && ((entry.anilist_id == nom.anilist_id && entry.anilist_id != -1) || (entry.anilist_id == -1 && entry.name == nom.alt_name && nom.alt_name !== "")));
 			return _show;
@@ -363,12 +363,16 @@ export default {
 				this.$refs.shareurl.select();
 			} else {
 				this.loaded.voting = false;
-				await this.generateUUID();
+				const promise = await fetch('/api/user/create-uuid', {method: 'POST'});
+				const response = await promise.json();
+
 				// this.$router.push({name: 'share', params: {uuid: this.me.uuid}});
-				this.shareurl = window.location.origin + "/final-vote/share/" + this.me.uuid;
-				await new Promise(resolve => setTimeout(resolve, 10));
-				this.$refs.shareurl.select();
-				this.loaded.voting = true;
+				if (response){
+					this.shareurl = window.location.origin + "/final-vote/share/" + response.uuid;
+					await new Promise(resolve => setTimeout(resolve, 10));
+					this.$refs.shareurl.select();
+					this.loaded.voting = true;
+				}
 			}
 		},
 		async suverySubmit (nom) {
