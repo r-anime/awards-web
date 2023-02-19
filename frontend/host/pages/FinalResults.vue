@@ -375,7 +375,9 @@ export default {
 									}
 								} else if (category.entryType === 'characters') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
-									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id && perc.category_id === vote.category_id);
+									const requiredNom = this.allNoms.find(nom => nom.id = vote.nom_id);
+									const requiredPercent = this.finalVotesPercent.find(nom => nom.nom_id == vote.nom_id);
+									console.log(requiredPercent);
 									let watched = 0;
 									if (requiredPercent) {
 										watched = requiredPercent.vote_count;
@@ -384,7 +386,7 @@ export default {
 										entries.push({
 											vote_count: vote.vote_count,
 											watched: watched,
-											totalwatched: 0,
+											totalwatched: this.getShowWatchStats(requiredNom.anilist_id),
 											name: `${requiredChar.name.full}`,
 										});
 									} else {
@@ -397,7 +399,8 @@ export default {
 									}
 								} else if (category.entryType === 'vas') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
-									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id && perc.category_id === vote.category_id);
+									const requiredNom = this.allNoms.find(nom => nom.id = vote.nom_id);
+									const requiredPercent = this.finalVotesPercent.find(nom => nom.nom_id == vote.nom_id);
 									let watched = 0;
 									if (requiredPercent) {
 										watched = requiredPercent.vote_count;
@@ -408,7 +411,7 @@ export default {
 												entries.push({
 													vote_count: vote.vote_count,
 													watched: watched,
-													totalwatched: 0,
+													totalwatched: this.getShowWatchStats(requiredNom.anilist_id),
 													name: `${requiredChar.name.full} (${requiredChar.media.edges[0].voiceActors[0].name.full})`,
 												});
 											} else {

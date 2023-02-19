@@ -196,7 +196,7 @@ apiApp.get('/watched', async (request, response) => {
 		return response.json(401, {error: 'You must be a host to view vote summary.'});
 	}
 	try {
-		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` FROM `finalvotes` INNER JOIN `WatchVotes` ON `finalvotes`.`reddit_user` = `WatchVotes`.`reddit_user` AND `finalvotes`.`anilist_id` = `WatchVotes`.`anilist_id` WHERE `WatchVotes`.`status` = 1 GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
+		const [res] = await sequelize.query('SELECT COUNT(*) as `vote_count`, `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id`, `nominations`.`character_id` FROM `finalvotes` LEFT JOIN `nominations` ON `finalvotes`.`nom_id` = `nominations`.`id` LEFT JOIN `WatchVotes` ON `finalvotes`.`reddit_user` = `WatchVotes`.`reddit_user` AND (`finalvotes`.`anilist_id` = `WatchVotes`.`anilist_id` OR `nominations`.`anilist_id` = `WatchVotes`.`anilist_id`) WHERE `WatchVotes`.`status` = 1 GROUP BY `finalvotes`.`category_id`, `finalvotes`.`nom_id`, `finalvotes`.`anilist_id` ORDER BY `finalvotes`.`category_id` ASC, `vote_count` DESC');
 		response.json(res);
 	} catch (error) {
 		response.error(error);
