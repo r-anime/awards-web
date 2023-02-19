@@ -343,7 +343,7 @@ export default {
 									}
 								} else if (category.entryType === 'shows') {
 									const requiredShow = this.showData.find(show => show.id === vote.anilist_id);
-									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id && perc.category_id === vote.category_id);
 									let watched = 0;
 									if (requiredPercent) {
 										watched = requiredPercent.vote_count;
@@ -375,7 +375,7 @@ export default {
 									}
 								} else if (category.entryType === 'characters') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
-									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id && perc.category_id === vote.category_id);
 									let watched = 0;
 									if (requiredPercent) {
 										watched = requiredPercent.vote_count;
@@ -397,7 +397,7 @@ export default {
 									}
 								} else if (category.entryType === 'vas') {
 									const requiredChar = this.charData.find(char => char.id === vote.anilist_id);
-									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id);
+									const requiredPercent = this.finalVotesPercent.find(perc => perc.anilist_id === vote.anilist_id && perc.category_id === vote.category_id);
 									let watched = 0;
 									if (requiredPercent) {
 										watched = requiredPercent.vote_count;

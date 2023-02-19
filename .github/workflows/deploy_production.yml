@@ -14,24 +14,24 @@ jobs:
     - run: |
         ssh -o StrictHostKeyChecking=no awards-web@143.110.146.244 /bin/bash << 'EOF'
           # report failure if any command fails
-          set -e
+          # set -e
           
           # manually source nvm since bashrc exits early unless session is interactive
-          source "$HOME/.nvm/nvm.sh"
+          # source "$HOME/.nvm/nvm.sh"
           
           # checkout changes
-          cd "$HOME/apps/awards-web"
-          git fetch --all
-          git reset --hard origin/master
+          # cd "$HOME/apps/awards-web"
+          # git fetch --all
+          # git reset --hard origin/master
           
           # upgrade to current node version
-          nvm install --latest-npm
+          # nvm install --latest-npm
 
           # update deps, rebuild
-          yarn
-          yarn migrate
-          yarn build-prod
+          # yarn
+          # yarn migrate
+          # yarn build-prod
           
           # restart server
-          pm2 restart awards-web
+          # pm2 restart awards-web
         EOF
