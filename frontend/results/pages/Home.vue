@@ -87,7 +87,7 @@
 		<div class="container pt-6 has-text-light">
 			<h2 class="has-text-centered is-size-2 has-text-weight-bold mb-6">Livestream</h2>
 			<figure class="image is-16by9">
-				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/Ssfcqm-O0eQ?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
+				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/WW8xpu7-UTE?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
 			</figure>
 			<div class="columns is-centered is-vcentered pt-6">
 				<div class="column is-one-third pb-0">
