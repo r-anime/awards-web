@@ -11,12 +11,12 @@
 						<p class="is-size-5 py-5">
 							The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community.
 							Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer,
-							which are revealed in our livestream in February.
+							which are revealed in our livestream at twitch.tv/animeawards on February at 10pm UTC / 5pm EST.
 						</p>
 						<div class="has-text-centered">
 							<a v-if="voting" href="/vote/" class="button is-primary is-large is-centered">Vote Now</a>
 							<a v-else-if="fvoting" href="/final-vote/" class="button is-primary is-large is-centered">Vote Now</a>
-							<a v-else-if="ongoing" href="/apps/" class="button is-primary is-large is-centered">Sign Up</a>
+							<a v-else-if="ongoing" href="https://www.twitch.tv/animeawards" class="button is-primary is-large is-centered">Watch</a>
 							<a v-else href="/results/" class="button is-primary is-large is-centered">View Results</a>
 						</div>
 					</div>
