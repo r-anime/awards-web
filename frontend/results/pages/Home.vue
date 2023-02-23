@@ -11,7 +11,7 @@
 						<p class="is-size-5 py-5">
 							The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community.
 							Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer,
-							which are revealed in our livestream at twitch.tv/animeawards on February at 10pm UTC / 5pm EST.
+							which are revealed in our livestream at twitch.tv/animeawards on February 25th at 10pm UTC / 5pm EST.
 						</p>
 						<div class="has-text-centered">
 							<a v-if="voting" href="/vote/" class="button is-primary is-large is-centered">Vote Now</a>
@@ -97,11 +97,11 @@
 					<p class="is-size-5 p-5 mb-6">
 						Every year, to showcase the hard work of our community, our jurors, and our hosts, we hold a livestream to announce the results.
 						The livestream has a plethora of talented guests, consistenting of voice actors, animators, and community members,
-						who volunteer their time to offer their insights and opinions on our results. You can see the results reel above, or watch a recording of the livestream
+						who volunteer their time to offer their insights and opinions on our results. You can watch a recording of the livestream
 						by following the link below.
 					</p>
 					<div class="has-text-centered mb-6">
-						<a class="button is-primary is-large is-centered" target="_blank" href="https://youtu.be/3J7pyPcAJgs">Full Livestream</a>
+						<a class="button is-primary is-large is-centered" target="_blank" href="https://youtu.be/4wInZ-jcPHw">Full Livestream</a>
 					</div>
 				</div>
 			</div>
