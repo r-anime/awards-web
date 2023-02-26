@@ -13,7 +13,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to start by thanking /u/chonpalm, /u/eritbh, /u/hauntmeagain, /u/JoseiToAoiTori and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits and last-minute requests. We would also like to thank them for their work on the websites for juror applications, initial voting, final voting and the internal website used by hosts and /r/anime moderators to manage the Awards and see results.
+                                    We’d like to start by thanking /u/chonpalm, /u/eritbh, /u/hauntmeagain, /u/JoseiToAoiTori, and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits and last-minute requests. We would also like to thank them for their work on the websites for juror applications, initial voting, final voting and the internal website used by hosts and /r/anime moderators to manage the Awards and see results.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -21,7 +21,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank /u/DrJWilson, /u/unprecedentedwolf and /u/misterjaguar specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
+                                    We’d like to thank /u/DrJWilson, /u/paukshop, /u/unprecedentedwolf, and /u/misterjaguar specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -70,7 +70,7 @@
                                         <li>Replay Value</li>
                                         <li>The Cynic Clinic and GilLiesHere</li>
                                         <li>PhenomSage</li>
-                                        <li>Mozilla Fennekin and Sinrus</li>
+                                        <li>Mozilla Fennekin and Sinrus (Tokyo Podfathers)</li>
                                    </ul>
                                 </div>
                                 <br/>
