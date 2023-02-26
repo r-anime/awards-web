@@ -47,10 +47,10 @@
 								<span>
                   {{nomineeName(modalNom, this.modalCat)}}
                 </span>
-								<span v-if="modalCat.entryType==='characters'">
+								<span v-if="modalCat.entryType==='characters' && !modalNom.altname">
 									({{results.characters[modalNom.id].anime}})
 								</span>
-								<span v-if="modalCat.entryType==='vas'">
+								<span v-if="modalCat.entryType==='vas' && !modalNom.altname">
 									({{results.characters[modalNom.id].va}})
 								</span>
 							</h3>
@@ -230,8 +230,11 @@ export default {
 	},
 	methods: {
 		markdownit (it) {
-			console.log(it);
-			return marked(it);
+			if (it){
+				return marked(it);
+			} else {
+				return "";
+			}
 		},
 		prettifyRank (n) {
 			const rank = ['Winner', '2nd Place', '3rd Place'];
