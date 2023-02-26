@@ -69,8 +69,8 @@
                                         <li>Megan Shipman</li>
                                         <li>Replay Value</li>
                                         <li>The Cynic Clinic and GilLiesHere</li>
-                                        <li>Replay Value</li>
-                                        <li>Replay Value</li>
+                                        <li>PhenomSage</li>
+                                        <li>Mozilla Fennekin and Sinrus</li>
                                    </ul>
                                 </div>
                                 <br/>
