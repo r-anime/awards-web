@@ -21,7 +21,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank /u/DrJWilson, /u/paukshop, /u/unprecedentedwolf, and /u/misterjaguar specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
+                                    We’d like to thank /u/DrJWilson, /u/paukshop, /u/misterjaguar, /u/MyrnaMountWeazel, and /u/unprecedentedwolf specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
