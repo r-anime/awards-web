@@ -154,6 +154,7 @@
 import AwardsSection from '../components/ResultSection';
 import juryIcon from '../../../img/jury.png';
 import publicIcon from '../../../img/public.png';
+import logo22 from '../../../img/awards2022.png';
 import logo21 from '../../../img/awards2021.png';
 import logo20 from '../../../img/awards2020.png';
 import logo19 from '../../../img/awards2019.png';
@@ -207,7 +208,9 @@ export default {
 		logo () {
 			switch (this.year) {
 				case undefined:
-					return logo21;
+					return logo22;
+				case '2022':
+					return logo22;
 				case '2021':
 					return logo21;
 				case '2020':
@@ -227,6 +230,7 @@ export default {
 	},
 	methods: {
 		markdownit (it) {
+			console.log(it);
 			return marked(it);
 		},
 		prettifyRank (n) {
@@ -455,11 +459,17 @@ export default {
 	mounted () {
 		switch (this.year) {
 			case undefined:
-				import(/* webpackChunkName: "results21" */ '../../data/results2021.json').then(data => {
+				import(/* webpackChunkName: "results21" */ '../../data/results2022.json').then(data => {
 					this.results = Object.assign({}, data);
 					this.fetchAnilist();
 				});
 				break;
+			case '2022':
+				import(/* webpackChunkName: "results21" */ '../../data/results2022.json').then(data => {
+					this.results = Object.assign({}, data);
+					this.fetchAnilist();
+				});
+			break;
 			case '2021':
 				import(/* webpackChunkName: "results21" */ '../../data/results2021.json').then(data => {
 					this.results = Object.assign({}, data);

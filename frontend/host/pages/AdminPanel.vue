@@ -345,7 +345,7 @@ export default {
 								name: cat.name,
 								entryType: cat.entryType,
 								jurors,
-								blurb: '',
+								blurb: cat.description,
 								nominees,
 								hms: this.hms.filter(hm => hm.categoryId === cat.id),
 							});
