@@ -28,8 +28,8 @@ import Acknowledgements19 from './archived-pages/Acknowledgements19';
 import About19 from './archived-pages/About19';
 import Acknowledgements20 from './archived-pages/Acknowledgements20';
 import About20 from './archived-pages/About20';
-import Acknowledgements20 from './archived-pages/Acknowledgements21';
-import About20 from './archived-pages/About21';
+import Acknowledgements21 from './archived-pages/Acknowledgements21';
+import About21 from './archived-pages/About21';
 
 const router = new VueRouter({
 	mode: 'history',
