@@ -8,8 +8,11 @@
                         <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
                     </router-link>
                     <a target="_blank" href="https://youtu.be/4wInZ-jcPHw" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
-                    <router-link to="/acknowledgements" style="color:inherit">
+                    <router-link to="/acknowledgements21" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
+                    </router-link>
+                    <router-link to="/about21" style="color:inherit">
+                        <button class="button is-large is-platinum is-outlined mb-10">About/Credits</button>
                     </router-link>
                 </div>
                 <h2 class="title is-size-3 has-text-gold has-text-centered pb-20">2020</h2>
