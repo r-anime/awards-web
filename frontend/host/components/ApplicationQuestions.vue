@@ -28,7 +28,7 @@
 
 	<modal-generic v-model="createQuestionGroupOpen">
       <h3 class="title">Create Question Group</h3>
-      <form v-if="isAdmin" @submit.prevent="submitCreateQuestionGroup">
+      <form @submit.prevent="submitCreateQuestionGroup">
 		<div class="field">
           <label class="label">Name</label>
           <div class="control">
