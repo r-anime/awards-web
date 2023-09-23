@@ -1,6 +1,6 @@
 <template>
 	<div v-if="loaded">
-		<div v-if="isAdmin" class="section">
+		<div class="section">
 			<div class="level title-margin">
 				<div class="level-left">
 					<div class="level-item">

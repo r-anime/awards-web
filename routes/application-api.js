@@ -88,7 +88,7 @@ apiApp.post('/application', async (request, response) => {
 apiApp.patch('/application', async (request, response) => {
 	const auth = await request.authenticate({level: 2});
 	if (!auth) {
-		return response.json(401, {error: 'You must be an admin to modify juror apps.'});
+		return response.json(401, {error: 'You must be an host to modify juror apps.'});
 	}
 	let application;
 	try {
@@ -148,9 +148,9 @@ apiApp.get('/question-groups', async (request, response) => {
 });
 
 apiApp.post('/question-group', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
-		return response.json(401, {error: 'You must be an admin to create a question group'});
+		return response.json(401, {error: 'You must be an host to create a question group'});
 	}
 	let questionGroup;
 	try {
@@ -197,9 +197,9 @@ apiApp.post('/question-group', async (request, response) => {
 });
 
 apiApp.delete('/question-group/:id', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
-		return response.json(401, {error: 'You must be an admin to delete a question group'});
+		return response.json(401, {error: 'You must be an host to delete a question group'});
 	}
 	try {
 		yuuko.createMessage(config.discord.auditChannel, {
@@ -218,9 +218,9 @@ apiApp.delete('/question-group/:id', async (request, response) => {
 });
 
 apiApp.patch('/question-group/:id', async (request, response) => {
-	const auth = await request.authenticate({level: 4});
+	const auth = await request.authenticate({level: 2});
 	if (!auth) {
-		return response.json(401, {error: 'You must be an admin to modify a question group'});
+		return response.json(401, {error: 'You must be an host to modify a question group'});
 	}
 	let questionGroup;
 	try {
