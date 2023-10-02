@@ -37,6 +37,7 @@ class ApplicationJuror {
 		this.genreScore = -1;
 		this.characterScore = -1;
 		this.visualScore = -1;
+		this.prodScore = -1;
 		this.vaScore = -1;
 		this.ostScore = -1;
 		this.opedScore = -1;
@@ -70,8 +71,8 @@ class ApplicationJuror {
 
 		// Loop Question
 		for (let answer of this.answers){
-			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0;
-			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0;
+			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0, prodtotal;
+			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0, prodcount;
 
 			// Loop Individual Host Scores
 			for (let score of answer.scores){
@@ -93,14 +94,20 @@ class ApplicationJuror {
 				else if (score.subgrade === 'visual'){
 					visualtotal += score.score;
 					visualcount++;
+					prodtotal += score.score;
+					prodcount++;
 				}
 				else if (score.subgrade === 'va'){
 					vatotal += score.score;
 					vacount++;
+					prodtotal += score.score;
+					prodcount++;
 				}
 				else if (score.subgrade === 'ost'){
 					osttotal += score.score;
 					ostcount++;
+					prodtotal += score.score;
+					prodcount++;
 				}
 				else if (score.subgrade === 'oped'){
 					opedtotal += score.score;
@@ -130,6 +137,9 @@ class ApplicationJuror {
 			}
 			if (opedtotal/opedcount> this.opedScore){
 				this.opedScore = opedtotal/opedcount;
+			}
+			if (prodtotal/prodcount> this.prodScore){
+				this.prodScore = prodtotal/prodcount;
 			}
 		}
 		if (totalavgcount > 0) {
@@ -179,14 +189,15 @@ class ApplicationJuror {
 				return 0;
 			}
 
-			if (category.name.match(/OST|Original Sound Track/gm)) {
+			/*if (category.name.match(/OST|Original Sound Track/gm)) {
 				return this.ostScore;
 			} else if (category.name.match(/Voice Actor|Voice Acting/gm)) {
 				return this.vaScore;
 			} else if (category.name.match(/OP|ED|Opening|Ending/gm)) {
 				return this.opedScore;
-			} else if (category.awardsGroup === 'production') {
-				return this.visualScore;
+			} else */ if (category.awardsGroup === 'production') {
+				//return this.visualScore;
+				return this.prodScore;
 			} else if (category.awardsGroup === 'main') {
 				return this.mainScore;
 			} else if (category.awardsGroup === 'character'){
