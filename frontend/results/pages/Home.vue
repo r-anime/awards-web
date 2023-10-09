@@ -15,7 +15,7 @@
 						<div class="has-text-centered">
 							<a v-if="voting" href="/vote/" class="button is-primary is-large is-centered">Vote Now</a>
 							<a v-else-if="fvoting" href="/final-vote/" class="button is-primary is-large is-centered">Vote Now</a>
-							<a v-else-if="ongoing" href="https://www.twitch.tv/animeawards" class="button is-primary is-large is-centered">Watch</a>
+							<a v-else-if="ongoing" href="/apps/" class="button is-primary is-large is-centered">Apply</a>
 							<a v-else href="/results/" class="button is-primary is-large is-centered">View Results</a>
 						</div>
 					</div>
