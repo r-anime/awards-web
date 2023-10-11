@@ -54,6 +54,4 @@ For each applicant, we will have the resulting information: Their category score
 
 * Step 5: Repeat steps 1 to 4 for the next preference, i.e. #2, then #3, then #4.
 
-This is then repeated for every category.
-
 And that's it! If you want to know more about the nitty gritty details you can read the commented code [here](https://github.com/r-anime/awards-web/blob/master/util/allocations.js).
