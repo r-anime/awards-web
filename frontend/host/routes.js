@@ -182,7 +182,7 @@ export default new VueRouter({
 								title ({$store, $route}) {
 									if (!$store.state.applications) return '...';
 									// eslint-disable-next-line eqeqeq
-									const application = $store.state.applications.find(app => `${app.id}` == $route.params.appID);
+									const application = $store.state.applications.find(app => `${app.id}` == parseInt($route.params.appID));
 									return application ? application.year : '(Unknown application)';
 								},
 							},
