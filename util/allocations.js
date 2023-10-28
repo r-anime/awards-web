@@ -3,7 +3,7 @@ const {yuuko} = require('../bot/index');
 
 const JUROR_MIN = 11;
 const FILL_MAX = 11;
-const JUROR_MAX = 11;
+const JUROR_MAX = 7;
 const AOTY_MAX = 11;
 
 function shuffle (array) {
@@ -220,7 +220,7 @@ class ApplicationJuror {
 			return [];
 		}
 	}
-R
+
 	catPref(catid){
 		try{
 			let returnval = this.prefs.indexOf(catid);
@@ -236,7 +236,7 @@ R
 
 	vaxinnate(){
 		this.immunity++;
-		console.log(this.name + " was vaxxinated")
+		// console.log(this.name + " was vaxxinated")
 		/*try {
 			yuuko.createMessage(config.discord.auditChannel, {
 				embed: {
@@ -400,11 +400,11 @@ class Allocations {
 				catJurors = catJurors.filter(juror => juror.catPref(cat.id) == draft);
 
 				catJurors.sort((a, b) => {
-					if (a.catPref(cat.id) == b.catPref(cat.id)){
-						if (a.qualifyingScore(cat.id) == b.qualifyingScore(cat.id)){
+					if (parseInt(a.catPref(cat.id)) == parseInt(b.catPref(cat.id))){
+						if (Number(a.qualifyingScore(eligibleCats, cat.id)) == Number(b.qualifyingScore(eligibleCats, cat.id))){
 							return a.immunity - b.immunity;
 						}
-						return a.qualifyingScore(cat.id) - b.qualifyingScore(cat.id)
+						return Number(b.qualifyingScore(eligibleCats, cat.id)) - Number(a.qualifyingScore(eligibleCats, cat.id));
 					}
 					return b.catPref(cat.id) - a.catPref(cat.id)
 				});
@@ -428,7 +428,7 @@ class Allocations {
 					let unluckyJurors = catJurors.filter(juror => (juror.catPref(cat.id) <= lastAllocatedJuror.catPref(cat.id) && !this.jurorIsFull(juror)));
 					for (let juror of unluckyJurors){
 						// This literally just increments immunity, but I liked the pun
-						console.log(cat.name);
+						// console.log(cat.name);
 						juror.vaxinnate();
 					}
 				}
