@@ -404,7 +404,7 @@ class Allocations {
 						if (a.qualifyingScore(cat.id) == b.qualifyingScore(cat.id)){
 							return a.immunity - b.immunity;
 						}
-						return b.qualifyingScore(cat.id) - a.qualifyingScore(cat.id)
+						return a.qualifyingScore(cat.id) - b.qualifyingScore(cat.id)
 					}
 					return b.catPref(cat.id) - a.catPref(cat.id)
 				});
