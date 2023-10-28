@@ -71,8 +71,8 @@ class ApplicationJuror {
 
 		// Loop Question
 		for (let answer of this.answers){
-			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0, prodtotal;
-			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0, prodcount;
+			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0, prodtotal = 0;
+			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0, prodcount = 0;
 
 			// Loop Individual Host Scores
 			for (let score of answer.scores){
@@ -123,8 +123,8 @@ class ApplicationJuror {
 				this.characterScore = chartotal/charcount ;
 			}
 			/* Test */
-			this.genreScore = Math.max(this.genreScore, this.characterScore);
-			this.characterScore = Math.max(this.genreScore, this.characterScore);
+			// this.genreScore = Math.max(this.genreScore, this.characterScore);
+			// this.characterScore = Math.max(this.genreScore, this.characterScore);
 			
 			if (visualtotal/visualcount > this.visualScore){
 				this.visualScore = visualtotal/visualcount;
@@ -138,12 +138,14 @@ class ApplicationJuror {
 			if (opedtotal/opedcount> this.opedScore){
 				this.opedScore = opedtotal/opedcount;
 			}
-			if (prodtotal/prodcount> this.prodScore){
+			if (prodtotal/prodcount > this.prodScore){
 				this.prodScore = prodtotal/prodcount;
+				// console.log(this.prodScore);
 			}
 		}
+		// console.log(this.prodScore);
 		if (totalavgcount > 0) {
-			console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
+			// console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
 		}
 
 		this.mainScore = totalavg / totalavgcount;
@@ -185,19 +187,24 @@ class ApplicationJuror {
 			let category = cats.find(cat => cat.id == catid);
 
 			if (category === undefined){
-				// console.log(`cant find ${catid}`)
+				console.log(`cant find ${catid}`)
 				return 0;
 			}
 
-			/*if (category.name.match(/OST|Original Sound Track/gm)) {
-				return this.ostScore;
+			if (category.name.match(/OST|Original Sound Track/gm)) {
+				return this.visualScore;
+				//return this.ostScore;
+				//return this.prodScore;
 			} else if (category.name.match(/Voice Actor|Voice Acting/gm)) {
-				return this.vaScore;
+				return this.visualScore;
+				// return this.vaScore;
+				// return this.prodScore;
 			} else if (category.name.match(/OP|ED|Opening|Ending/gm)) {
+				// return this.visualScore;
 				return this.opedScore;
-			} else */ if (category.awardsGroup === 'production') {
-				//return this.visualScore;
-				return this.prodScore;
+			} else if (category.awardsGroup === 'production') {
+				return this.visualScore;
+				//return this.prodScore;
 			} else if (category.awardsGroup === 'main') {
 				return this.mainScore;
 			} else if (category.awardsGroup === 'character'){
