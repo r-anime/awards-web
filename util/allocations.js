@@ -1,9 +1,9 @@
 const { all } = require("../routes/complain");
 const {yuuko} = require('../bot/index');
 
-const JUROR_MIN = 7;
+const JUROR_MIN = 11;
 const FILL_MAX = 11;
-const JUROR_MAX = 7;
+const JUROR_MAX = 11;
 const AOTY_MAX = 11;
 
 function shuffle (array) {
@@ -94,22 +94,16 @@ class ApplicationJuror {
 				else if (score.subgrade === 'visual'){
 					visualtotal += score.score;
 					visualcount++;
-					prodtotal += score.score;
-					prodcount++;
 					totalavg += score.score;
 					totalavgcount++;
 				}
 				else if (score.subgrade === 'va'){
 					vatotal += score.score;
 					vacount++;
-					prodtotal += score.score;
-					prodcount++;
 				}
 				else if (score.subgrade === 'ost'){
 					osttotal += score.score;
 					ostcount++;
-					prodtotal += score.score;
-					prodcount++;
 				}
 				else if (score.subgrade === 'oped'){
 					opedtotal += score.score;
@@ -242,7 +236,8 @@ R
 
 	vaxinnate(){
 		this.immunity++;
-		try {
+		console.log(this.name + " was vaxxinated")
+		/*try {
 			yuuko.createMessage(config.discord.auditChannel, {
 				embed: {
 					title: 'RNG was used',
@@ -252,7 +247,7 @@ R
 			});
 		} catch (error) {
 			response.error(error);
-		}
+		}*/
 	}
 }
 
@@ -402,24 +397,30 @@ class Allocations {
 					catJurors = this.getEligibleJurors(cat.id, low, fill);
 				}
 				// Get catJurors of increasing breadth of preference as the draft increases
-				catJurors = catJurors.filter(juror => juror.catPref(cat.id) <= draft);
+				catJurors = catJurors.filter(juror => juror.catPref(cat.id) == draft);
 
-				// By sorting by immunity -> score -> preference, we actually end up with a list where the reverse is prioritized
-				// Thus we end up with a juror list that is sorted by preference, then score as a tiebreaker, then immunity as a tiebreaker
-				catJurors.sort((a, b) => b.immunity - a.immunity);
-				catJurors.sort((a, b) => Math.round(b.qualifyingScore(cat.id)) - Math.round(a.qualifyingScore(cat.id)));
-				catJurors.sort((a, b) => a.catPref(cat.id) - b.catPref(cat.id));
+				catJurors.sort((a, b) => {
+					if (a.catPref(cat.id) == b.catPref(cat.id)){
+						if (a.qualifyingScore(cat.id) == b.qualifyingScore(cat.id)){
+							return a.immunity - b.immunity;
+						}
+						return b.qualifyingScore(cat.id) - a.qualifyingScore(cat.id)
+					}
+					return b.catPref(cat.id) - a.catPref(cat.id)
+				});
 				
 				let lastAllocatedJuror = null; // this is important for determining category immunity
 				// Loop through the jurors while we have space and jurors
 				while (!this.catIsFull(cat.id) && catJurors.length > 0){
 					// console.log(catJurors.length);
 					// Get the first juror in the list and attempt to allocate them
+					
 					let juror = catJurors.shift();
 					if (this.jurorIsFull(juror)){
 						continue;
 					}
 					this.allocateJuror(juror, cat.id);
+					lastAllocatedJuror = juror;
 				}
 
 				// If we allocated a juror, we need distribute immunity points to everyone who had the same or somehow higher preference
@@ -427,6 +428,7 @@ class Allocations {
 					let unluckyJurors = catJurors.filter(juror => (juror.catPref(cat.id) <= lastAllocatedJuror.catPref(cat.id) && !this.jurorIsFull(juror)));
 					for (let juror of unluckyJurors){
 						// This literally just increments immunity, but I liked the pun
+						console.log(cat.name);
 						juror.vaxinnate();
 					}
 				}
