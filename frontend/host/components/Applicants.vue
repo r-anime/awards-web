@@ -78,9 +78,7 @@ export default {
 		},
 	},
 	async mounted () {
-		if (!this.applicants) {
-			await this.getApplicantsByApp(this.application.id);
-		}
+		await this.getApplicantsByApp(this.application.id);
 		if (!this.answerCount) {
 			await this.getAnswerCount(this.application.id);
 		}
