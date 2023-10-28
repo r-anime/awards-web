@@ -73,7 +73,7 @@
 										</span>
 										<br>
 										<div class="tags">
-											<small class="tag is-small">Score: {{juror.score}} Pref: {{juror.preference}}</small>
+											<small class="tag is-small">Score: {{parseFloat(juror.score).toFixed(3)}} Pref: {{juror.preference}}</small>
 										</div>
 									</li>
 								</ul>
