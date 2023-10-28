@@ -85,7 +85,7 @@ apiApp.post('/', async (request, response) => {
 	try {
 		redditResponse = await superagent.get(`https://www.reddit.com/user/${encodeURI(user.reddit)}/about.json`).set('User-Agent', config.reddit.userAgent);
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return response.json(400, {error: 'That user does not have a Reddit account'});
 	}
 	// replace the name with the one from reddit in case the capitalization is different
