@@ -3,7 +3,7 @@ const {yuuko} = require('../bot/index');
 
 const JUROR_MIN = 7;
 const FILL_MAX = 11;
-const JUROR_MAX = 11;
+const JUROR_MAX = 7;
 const AOTY_MAX = 11;
 
 function shuffle (array) {
@@ -96,6 +96,8 @@ class ApplicationJuror {
 					visualcount++;
 					prodtotal += score.score;
 					prodcount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'va'){
 					vatotal += score.score;
@@ -112,8 +114,6 @@ class ApplicationJuror {
 				else if (score.subgrade === 'oped'){
 					opedtotal += score.score;
 					opedcount++;
-					totalavg += score.score;
-					totalavgcount++;
 				}
 			}
 			if (genretotal/genrecount > this.genreScore){
