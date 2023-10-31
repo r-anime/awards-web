@@ -3,7 +3,7 @@ const {yuuko} = require('../bot/index');
 
 const JUROR_MIN = 11;
 const FILL_MAX = 11;
-const JUROR_MAX = 7;
+const JUROR_MAX = 11;
 const AOTY_MAX = 11;
 
 function shuffle (array) {
