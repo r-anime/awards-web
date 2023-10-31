@@ -667,6 +667,120 @@ apiApp.get('/applicants/:appid', async (request, response) => {
 	}
 });
 
+apiApp.get('/user-key', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be host to retrieve eligible users.'});
+	}
+	try {
+		response.json(await Applicants.findAll({
+			where: {
+				app_id: 4,
+				active: true,
+			},
+			attributes: [
+				'user_id'
+			],
+			include: [
+				{
+					model: Users,
+					as: 'user',
+					attributes: ['reddit'],
+				},
+			],
+			order: [
+				'user_id'
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+
+});
+
+apiApp.get('/preferences', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be host to retrieve applicants and their preferences.'});
+	}
+	try {
+		response.json(await Applicants.findAll({
+			where: {
+				active: true,
+			},
+			attributes: [
+				'user_id'
+			],
+			include: [
+				{
+					model:Answers,
+					as: 'answers',
+					attributes: ['answer'],
+					where: {'question_id': 42}
+				},
+			],	
+			order: [
+				'user_id'
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+
+});
+
+
+
+apiApp.get('/category-jurors', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be host to retrieve allocated jurors.'});
+	}
+	try {
+		response.json(await Jurors.findAll({
+			where: {
+				active: true,
+			},
+			attributes: [
+				'name', 'preference'
+			],
+			include: [
+				{
+					model: Categories,
+					as: 'category',
+					attributes: ['name']
+				},
+			],
+			order: [
+				'name'
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+
+});
+
+apiApp.get('/category-key', async (request, response) => {
+	const auth = await request.authenticate({level: 2});
+	if (!auth) {
+		return response.json(401, {error: 'You must be host to retrieve category information.'});
+	}
+	try {
+		response.json(await Categories.findAll({
+			where: {
+				active: true,
+			},
+			attributes: [
+				'id', 'name'
+			],
+		}));
+	} catch (error) {
+		response.error(error);
+	}
+
+});
+
 apiApp.delete('/applicant/:id', async (request, response) => {
 	const auth = await request.authenticate({level: 4});
 	if (!auth) {
