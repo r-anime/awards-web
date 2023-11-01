@@ -794,7 +794,7 @@ apiApp.delete('/applicant/:id', async (request, response) => {
 			},
 			{
 				where: {
-					applicant_id: request.params.id,
+					applicant_id: parseInt(request.params.id),
 				},
 			},
 		);

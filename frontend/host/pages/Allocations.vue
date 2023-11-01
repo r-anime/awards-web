@@ -231,7 +231,7 @@ export default {
 			await this.getAnswers();
 		}
 		if (!this.applicants) {
-			await this.getApplicantsByApp();
+			await this.getApplicantsByApp(4);
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
 		if (this.jurors.length > 0) {
