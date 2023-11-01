@@ -1,7 +1,7 @@
 const { all } = require("../routes/complain");
 const {yuuko} = require('../bot/index');
 
-const JUROR_MIN = 7;
+const JUROR_MIN = 11;
 const FILL_MAX = 11;
 const JUROR_MAX = 11;
 const AOTY_MAX = 11;
@@ -37,6 +37,7 @@ class ApplicationJuror {
 		this.genreScore = -1;
 		this.characterScore = -1;
 		this.visualScore = -1;
+		this.prodScore = -1;
 		this.vaScore = -1;
 		this.ostScore = -1;
 		this.opedScore = -1;
@@ -70,8 +71,8 @@ class ApplicationJuror {
 
 		// Loop Question
 		for (let answer of this.answers){
-			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0;
-			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0;
+			let genretotal = 0, chartotal = 0, visualtotal = 0, vatotal = 0, osttotal = 0, opedtotal = 0, prodtotal = 0;
+			let genrecount = 0, charcount = 0, visualcount = 0, vacount = 0, ostcount = 0, opedcount = 0, prodcount = 0;
 
 			// Loop Individual Host Scores
 			for (let score of answer.scores){
@@ -93,6 +94,8 @@ class ApplicationJuror {
 				else if (score.subgrade === 'visual'){
 					visualtotal += score.score;
 					visualcount++;
+					totalavg += score.score;
+					totalavgcount++;
 				}
 				else if (score.subgrade === 'va'){
 					vatotal += score.score;
@@ -105,8 +108,6 @@ class ApplicationJuror {
 				else if (score.subgrade === 'oped'){
 					opedtotal += score.score;
 					opedcount++;
-					totalavg += score.score;
-					totalavgcount++;
 				}
 			}
 			if (genretotal/genrecount > this.genreScore){
@@ -116,8 +117,8 @@ class ApplicationJuror {
 				this.characterScore = chartotal/charcount ;
 			}
 			/* Test */
-			this.genreScore = Math.max(this.genreScore, this.characterScore);
-			this.characterScore = Math.max(this.genreScore, this.characterScore);
+			// this.genreScore = Math.max(this.genreScore, this.characterScore);
+			// this.characterScore = Math.max(this.genreScore, this.characterScore);
 			
 			if (visualtotal/visualcount > this.visualScore){
 				this.visualScore = visualtotal/visualcount;
@@ -131,9 +132,14 @@ class ApplicationJuror {
 			if (opedtotal/opedcount> this.opedScore){
 				this.opedScore = opedtotal/opedcount;
 			}
+			if (prodtotal/prodcount > this.prodScore){
+				this.prodScore = prodtotal/prodcount;
+				// console.log(this.prodScore);
+			}
 		}
+		// console.log(this.prodScore);
 		if (totalavgcount > 0) {
-			console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
+			// console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
 		}
 
 		this.mainScore = totalavg / totalavgcount;
@@ -175,18 +181,24 @@ class ApplicationJuror {
 			let category = cats.find(cat => cat.id == catid);
 
 			if (category === undefined){
-				// console.log(`cant find ${catid}`)
+				console.log(`cant find ${catid}`)
 				return 0;
 			}
 
 			if (category.name.match(/OST|Original Sound Track/gm)) {
-				return this.ostScore;
+				return this.visualScore;
+				//return this.ostScore;
+				//return this.prodScore;
 			} else if (category.name.match(/Voice Actor|Voice Acting/gm)) {
-				return this.vaScore;
+				return this.visualScore;
+				// return this.vaScore;
+				// return this.prodScore;
 			} else if (category.name.match(/OP|ED|Opening|Ending/gm)) {
+				// return this.visualScore;
 				return this.opedScore;
 			} else if (category.awardsGroup === 'production') {
 				return this.visualScore;
+				//return this.prodScore;
 			} else if (category.awardsGroup === 'main') {
 				return this.mainScore;
 			} else if (category.awardsGroup === 'character'){
@@ -208,7 +220,7 @@ class ApplicationJuror {
 			return [];
 		}
 	}
-R
+
 	catPref(catid){
 		try{
 			let returnval = this.prefs.indexOf(catid);
@@ -224,7 +236,8 @@ R
 
 	vaxinnate(){
 		this.immunity++;
-		try {
+		// console.log(this.name + " was vaxxinated")
+		/*try {
 			yuuko.createMessage(config.discord.auditChannel, {
 				embed: {
 					title: 'RNG was used',
@@ -234,7 +247,7 @@ R
 			});
 		} catch (error) {
 			response.error(error);
-		}
+		}*/
 	}
 }
 
@@ -384,24 +397,30 @@ class Allocations {
 					catJurors = this.getEligibleJurors(cat.id, low, fill);
 				}
 				// Get catJurors of increasing breadth of preference as the draft increases
-				catJurors = catJurors.filter(juror => juror.catPref(cat.id) <= draft);
+				catJurors = catJurors.filter(juror => juror.catPref(cat.id) == draft);
 
-				// By sorting by immunity -> score -> preference, we actually end up with a list where the reverse is prioritized
-				// Thus we end up with a juror list that is sorted by preference, then score as a tiebreaker, then immunity as a tiebreaker
-				catJurors.sort((a, b) => b.immunity - a.immunity);
-				catJurors.sort((a, b) => Math.round(b.qualifyingScore(cat.id)) - Math.round(a.qualifyingScore(cat.id)));
-				catJurors.sort((a, b) => a.catPref(cat.id) - b.catPref(cat.id));
+				catJurors.sort((a, b) => {
+					if (parseInt(a.catPref(cat.id)) == parseInt(b.catPref(cat.id))){
+						if (Number(a.qualifyingScore(eligibleCats, cat.id)) == Number(b.qualifyingScore(eligibleCats, cat.id))){
+							return a.immunity - b.immunity;
+						}
+						return Number(b.qualifyingScore(eligibleCats, cat.id)) - Number(a.qualifyingScore(eligibleCats, cat.id));
+					}
+					return b.catPref(cat.id) - a.catPref(cat.id)
+				});
 				
 				let lastAllocatedJuror = null; // this is important for determining category immunity
 				// Loop through the jurors while we have space and jurors
 				while (!this.catIsFull(cat.id) && catJurors.length > 0){
 					// console.log(catJurors.length);
 					// Get the first juror in the list and attempt to allocate them
+					
 					let juror = catJurors.shift();
 					if (this.jurorIsFull(juror)){
 						continue;
 					}
 					this.allocateJuror(juror, cat.id);
+					lastAllocatedJuror = juror;
 				}
 
 				// If we allocated a juror, we need distribute immunity points to everyone who had the same or somehow higher preference
@@ -409,6 +428,7 @@ class Allocations {
 					let unluckyJurors = catJurors.filter(juror => (juror.catPref(cat.id) <= lastAllocatedJuror.catPref(cat.id) && !this.jurorIsFull(juror)));
 					for (let juror of unluckyJurors){
 						// This literally just increments immunity, but I liked the pun
+						// console.log(cat.name);
 						juror.vaxinnate();
 					}
 				}

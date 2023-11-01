@@ -17,6 +17,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 	if (state !== request.session.redditState) return response.end('Invalid state');
 	const data = await superagent.post('https://www.reddit.com/api/v1/access_token')
 		.auth(config.reddit.clientId, config.reddit.clientSecret)
+		.set('User-Agent', config.reddit.userAgent)
 		.query({
 			grant_type: 'authorization_code',
 			code,

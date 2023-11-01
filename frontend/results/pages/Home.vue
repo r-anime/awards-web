@@ -10,13 +10,12 @@
 						</div>
 						<p class="is-size-5 py-5">
 							The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community.
-							Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer,
-							which are revealed in our livestream at twitch.tv/animeawards on February 25th at 10pm UTC / 5pm EST.
+							Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer.
 						</p>
 						<div class="has-text-centered">
 							<a v-if="voting" href="/vote/" class="button is-primary is-large is-centered">Vote Now</a>
 							<a v-else-if="fvoting" href="/final-vote/" class="button is-primary is-large is-centered">Vote Now</a>
-							<a v-else-if="ongoing" href="https://www.twitch.tv/animeawards" class="button is-primary is-large is-centered">Watch</a>
+							<a v-else-if="ongoing" href="/apps/" class="button is-primary is-large is-centered">Apply</a>
 							<a v-else href="/results/" class="button is-primary is-large is-centered">View Results</a>
 						</div>
 					</div>
@@ -87,7 +86,7 @@
 		<div class="container pt-6 has-text-light">
 			<h2 class="has-text-centered is-size-2 has-text-weight-bold mb-6">Livestream</h2>
 			<figure class="image is-16by9">
-				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/WW8xpu7-UTE?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
+				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/7dAmr9nV2_I?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
 			</figure>
 			<div class="columns is-centered is-vcentered pt-6">
 				<div class="column is-one-third pb-0">
@@ -101,7 +100,7 @@
 						by following the link below.
 					</p>
 					<div class="has-text-centered mb-6">
-						<a class="button is-primary is-large is-centered" target="_blank" href="https://youtu.be/4wInZ-jcPHw">Full Livestream</a>
+						<a class="button is-primary is-large is-centered" target="_blank" href="https://www.youtube.com/watch?v=7dAmr9nV2_I">Full Livestream</a>
 					</div>
 				</div>
 			</div>

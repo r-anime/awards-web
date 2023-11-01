@@ -73,7 +73,7 @@
 										</span>
 										<br>
 										<div class="tags">
-											<small class="tag is-small">Score: {{juror.score}} Pref: {{juror.preference}}</small>
+											<small class="tag is-small">Score: {{parseFloat(juror.score).toFixed(3)}} Pref: {{juror.preference}}</small>
 										</div>
 									</li>
 								</ul>
@@ -231,7 +231,7 @@ export default {
 			await this.getAnswers();
 		}
 		if (!this.applicants) {
-			await this.getApplicantsByApp(3);
+			await this.getApplicantsByApp(4);
 		}
 		// Check if any jurors are allocated. If so, simply render them out.
 		if (this.jurors.length > 0) {

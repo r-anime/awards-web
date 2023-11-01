@@ -24,7 +24,7 @@
 				<div class="box">
 					<h3 class="title is-4">
 						<router-link
-							:to="{name: 'applicant', params: {applicantID: applicant.id}}"
+							:to="{name: 'applicant', params: {applicantID: ('' + applicant.id)}}"
 							class="has-text-dark"
 						>{{linkText(applicant)}}</router-link>
 					</h3>
@@ -78,9 +78,7 @@ export default {
 		},
 	},
 	async mounted () {
-		if (!this.applicants) {
-			await this.getApplicantsByApp(this.application.id);
-		}
+		await this.getApplicantsByApp(this.application.id);
 		if (!this.answerCount) {
 			await this.getAnswerCount(this.application.id);
 		}

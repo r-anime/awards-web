@@ -13,7 +13,7 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to start by thanking /u/commandersevan, /u/eritbh, /u/JoseiToAoiTori and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits and last-minute requests. We would also like to thank them for their work on the websites for juror applications, initial voting, final voting and the internal website used by hosts and /r/anime moderators to manage the Awards and see results.
+                                    We’d like to start by thanking /u/chonpalm, /u/eritbh, /u/hauntmeagain, /u/JoseiToAoiTori, and /u/PandavengerX for their work in creating this website and for putting up with unending changes, edits and last-minute requests. We would also like to thank them for their work on the websites for juror applications, initial voting, final voting and the internal website used by hosts and /r/anime moderators to manage the Awards and see results.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -21,23 +21,23 @@
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank /u/DrJWilson, /u/unprecedentedwolf and /u/misterjaguar specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
+                                    We’d like to thank /u/DrJWilson, /u/paukshop, /u/misterjaguar, /u/MyrnaMountWeazel, and /u/unprecedentedwolf specifically for being willing to take up the monumental task of livestream host, along with all of the coordinating, behind-the-scenes work, and stamina that the role involves. The fact that Wilson is also rumored to be the WORLD FAMOUS YOUTUBER KAMIMASHITA is just icing on the cake.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank all of the people who put work into the production of the livestream, especially /u/unprecedentedwolf for spearheading the process. Those being /u/AdiMG, /u/clearandsweet, /u/DoctorWhoops, /u/Dogcartcat, /u/paukshop, /u/Ralon17, /u/RoiAnanas, /u/Shawn_Es-C. We'd also like to thank /u/steamytomato for making the cute artwork of the anime awards snoo and /u/commandersevan for making the animations.
+                                    We’d like to thank all of the people who put work into the production of the livestream:
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                    We’d like to thank all the people who volunteered to edit jury write-ups. Without them, they would be a much less pleasant read. Thanks to /u/DoctorWhoops, /u/Dogcartcat, /u/isrozzis, /u/Itz_Skiddlez, /u/jonlxh, /u/KitKat1721, /u/Krugo1, /u/ocaria, /u/Ralon17, /u/RandomRedditorWithNo, /u/RoiAnanas, /u/schinco, /u/Shawn_Es-C, /u/Splitter_Triplets, /u/tehoncomingstorm97, /u/Totalenlo,.
+                                    We’d like to thank all the people who volunteered to edit jury write-ups:
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                   We’re thankful to the moderators of r/anime for their support and in many cases active cooperation with something as involved as the awards. /u/DrJWilson, /u/FAN_ROTOM_IS_SCARY, /u/Gaporigo, /u/Mage_of_Shadows, /u/Miidas-92, /u/mpp00.
+                                   We’re thankful to the moderators of r/anime for their support and in many cases active cooperation with something as involved as the awards.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
-                                   We’re also very appreciative of the users who committed to immense task of hosting this year. /u/Animestuck, /u/ArcaneGarbageman, /u/ATargetFinderScrub, /u/BiochemRS, /u/Kaverik, /u/MetaSoshi9, /u/MisterJaguar, /u/pandavengerx, /u/Ralon17, /u/RoiAnanas, /u/rudygnuj, /u/rusticks, /u/TigerK3, /u/UnprecedentedWolf, /u/Vaxivop.
+                                   We’re also very appreciative of the users who committed to immense task of hosting this year.
                                 </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
@@ -47,29 +47,30 @@
                                 <div class="has-text-justified has-text-light">
                                    Finally we would also like to thank you, the public! Without your support these awards would not be able to come to fruition, and you are both the participants and the audience for whom these awards are run. We hope you join us on this journey again next year!
                                 </div>
-				                <br/>
-                                <div class="has-text-justified has-text-light">
-				                    If you're reading this and are interested in applying for the 2022 /r/anime awards, just put your name <b><a href="https://docs.google.com/forms/d/16XWcbaFV2Rvq4MpR-ghqWYKz0KFeJBpBMUSO7fT7mv4/edit">in this Awards interest form </a></b> and we'll let you know when the new awards cycle start so you can apply! 
-                                </div>
                                 <br/>
                                 <div class="has-text-justified has-text-light">
                                    Complete Livestream Guest List (in order of appearance):
                                 </div>
                                 <div class="content has-text-light">
                                    <ul>
-                                        <li>Replay Value</li>
-                                        <li>Ember Reviews</li>
+                                        <li>Anime Addicts Anonymous</li>
+                                        <li>Inakyu</li>
+                                        <li>Spilling the Milk (Kor and Jackisboy)</li>
+                                        <li>Pause and Select</li>
+                                        <li>Shaking807 and FateSteelTaylor</li>
+                                        <li>Frog-kun</li>
+                                        <li>KevinNyaa</li>
+                                        <li>EmberReviews</li>
+                                        <li>Red Bard</li>
+                                        <li>The Canipa Effect</li>
+                                        <li>ultimatemegax</li>
                                         <li>Shaybs</li>
-                                        <li>Sean Chiplock</li>
+                                        <li>Anime Music Podcast (Kor and Shabu)</li>
                                         <li>Megan Shipman</li>
-                                        <li>Rose Bridges</li>
-                                        <li>Yoshi Kirishima</li>
-                                        <li>FAR / Fede</li>
+                                        <li>Replay Value</li>
+                                        <li>The Cynic Clinic and GilLiesHere</li>
                                         <li>PhenomSage</li>
-                                        <li>Pause & Select</li>
-                                        <li>MozillaFennekin</li>
-                                        <li>TheCanipaEffect</li>
-                                        <li>ShaKing and FateSteelTaylor</li>
+                                        <li>Mozilla Fennekin and Sinrus (Tokyo Podfathers)</li>
                                    </ul>
                                 </div>
                                 <br/>

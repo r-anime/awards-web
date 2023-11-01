@@ -33,10 +33,10 @@
                             <span v-else>
                             {{nomineeName(jury)}}
                             </span>
-                            <span v-if="category.entryType==='characters'">
+                            <span v-if="category.entryType==='characters' && jury.altName==''">
 							({{data.characters[jury.id].anime}})
 							</span>
-							<span v-if="category.entryType==='vas'">
+							<span v-if="category.entryType==='vas' && jury.altName==''">
 							({{data.characters[jury.id].va}})
 							</span>
                         </h3>
@@ -57,10 +57,10 @@
                             <span v-else>
                             {{nomineeName(pub)}}
                             </span>
-                            <span v-if="category.entryType==='characters'">
+                            <span v-if="category.entryType==='characters' && pub.altname==''">
 							({{data.characters[pub.id].anime}})
 							</span>
-							<span v-if="category.entryType==='vas'">
+							<span v-if="category.entryType==='vas' && !pub.altname==''">
 							({{data.characters[pub.id].va}})
 							</span>
                         </h3>

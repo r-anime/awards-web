@@ -34,12 +34,12 @@
 							<div v-else-if="q.type == 'choice'">
 								<h3 class="question-header">{{multipleChoiceQuestion(q.question)}}</h3>
 								<p v-if="multipleChoiceQuestion(q.question).startsWith('How many categories')" >
-									Note: The 4th and 5th category spots are reserved for categories with a low amount of interest. If you are assigned one, expect them to be categories that are lower on your preference list.
+									<!--Note: The 4th and 5th category spots are reserved for categories with a low amount of interest. If you are assigned one, expect them to be categories that are lower on your preference list.-->
 									<br/>
 									<br/>
 								</p>
 								<p v-if="multipleChoiceQuestion(q.question).includes('Open Juror')" >
-									Open jurors are a new category of juror who are chosen to participate in a more casual and laid back awards experience. While not being invited to a normal category, open jurors will be able to participate in all of the juror-wide activities such as our special categories, influencing channels, and replacing jurors in regular categories if any spaces become available.
+									Open jurors are a category of juror who are chosen to participate in a more casual and laid back awards experience. While not being invited to a normal category, open jurors will be able to participate in all of the juror-wide activities such as our special categories, influencing channels, and replacing jurors in regular categories if any spaces become available.
 									<br/>
 									<br/>
 								</p>
@@ -194,7 +194,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import {Viewer, Editor} from '@toast-ui/vue-editor';
 import marked from 'marked';
 import {mapState, mapActions} from 'vuex';
-import logo from '../../../img/awards2022.png';
+import logo from '../../../img/awards2023.png';
 import draggable from 'vuedraggable';
 
 export default {
@@ -376,7 +376,7 @@ export default {
 			this.sampleIndex = (this.sampleIndex + 1) % this.samples.length;
 		},
 		subgradesNiceName(str){
-			return str.replace("genre", "Genre").replace("char", "Character").replace("visual", "Visual Production").replace("va", "Voice Acting").replace("oped", "OP/ED").replace("ost", "OST").replaceAll(',', ', ');
+			return str.replace("genre", "Genre").replace("char", "Character").replace("visual", "Production").replace("va", "Voice Acting").replace("oped", "OP/ED").replace("ost", "OST").replaceAll(',', ', ');
 		}
 	},
 	mounted () {

@@ -1,6 +1,6 @@
 <template>
 	<div v-if="loaded">
-		<div v-if="isAdmin" class="section">
+		<div class="section">
 			<div class="level title-margin">
 				<div class="level-left">
 					<div class="level-item">
@@ -28,7 +28,7 @@
 
 	<modal-generic v-model="createQuestionGroupOpen">
       <h3 class="title">Create Question Group</h3>
-      <form v-if="isAdmin" @submit.prevent="submitCreateQuestionGroup">
+      <form @submit.prevent="submitCreateQuestionGroup">
 		<div class="field">
           <label class="label">Name</label>
           <div class="control">
