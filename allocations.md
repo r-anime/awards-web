@@ -42,7 +42,7 @@ For each applicant, we will have the resulting information: Their category score
 
   * Have this category as their #1 preference.
 
-  * Have a score in that category (e.g. their Genre score for Action) above 2.5, corresponding to at minimum two 3s and one 2 from three Hosts.
+  * Have a score in that category (e.g. their Genre score for Action) above 2.2, corresponding to at minimum one 3 and two 2s from three Hosts. For Anime of the Year, this is increased to 2.6, corresponding to two 3s and one 2 from three Hosts.
 
   * Have not yet reached 5 categories or their maximum amount of wanted categories, whichever is lowest.
 
