@@ -742,7 +742,7 @@ apiApp.get('/category-jurors', async (request, response) => {
 				active: true,
 			},
 			attributes: [
-				'name', 'preference'
+				'name', 'score', 'preference'
 			],
 			include: [
 				{
