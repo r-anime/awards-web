@@ -52,6 +52,14 @@
 							Applicants
 						</router-link>
 					</li>
+					<li>
+						<router-link 
+							:to="applicationPageLink('preferences')" 
+							active-class="is-active"
+						>
+							Preferences
+						</router-link>
+					</li>
 				</ul>
 			</div>
 		</aside>
