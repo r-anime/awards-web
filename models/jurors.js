@@ -33,7 +33,7 @@ module.exports = (sequelize, types) => {
 		jurors.belongsTo(models.categories, {foreignKey: 'categoryId', as: 'category'});
 		// models.categories.hasMany(jurors);
 
-		jurors.belongsTo(models.users, {foreignKey: 'name', as: 'user'});
+		jurors.belongsTo(models.users, {foreignKey: 'name', targetKey: 'reddit', as: 'user'});
 		// models.users.hasMany(jurors);
 	};
 
