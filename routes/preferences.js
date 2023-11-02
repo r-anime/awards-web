@@ -164,9 +164,9 @@ apiApp.get('/', async (request, response) => {
         //Initialize no cats as juror, scores 0, no prefs for each category, 
 		prefTable.forEach((user, userId) => {
 			user['jurorIn'] = [];
-			user['scores'] = { 'genre': 0, 'visual': 0, 'oped': 0, 'char': 0, 'aoty': 0 }
+			user['scores'] = { 'genre': 0, 'visual': 0, 'oped': 0, 'char': 0, 'main': 0 }
 			catMap.forEach((catName, catId) => {
-				user[catName] = null
+				user[catName] = 999
 			});
 		});
 
@@ -203,7 +203,7 @@ apiApp.get('/', async (request, response) => {
 				const user = prefTable.get(obj.answer.applicant['user_id']);
 				user.scores[obj.subgrade] += (obj.score / 3);
 				if (obj.subgrade != 'oped')
-					user.scores['aoty'] += (obj.score / 9);
+					user.scores['main'] += (obj.score / 9);
 			}
 		});
 
