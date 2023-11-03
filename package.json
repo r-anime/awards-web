@@ -60,6 +60,7 @@
     "sequelize": "^6.3.4",
     "sqlite3": "^5.1.5",
     "superagent": "^6.0.0",
+    "vue-good-table": "^2.21.11",
     "vue-plausible": "^1.1.2",
     "vuedraggable": "^2.24.3",
     "vuex": "^3.5.1",

@@ -39,6 +39,7 @@ import Applicants from './components/Applicants';
 import SingleApplicant from './components/SingleApplicant';
 import ApplicationGradingTable from './components/ApplicationGradingTable';
 import ApplicantRanking from './components/ApplicantRanking';
+import Preferences from './components/Preferences';
 
 import NotFound from '../common/NotFound';
 
@@ -232,6 +233,13 @@ export default new VueRouter({
 										title: 'Applicants',
 									},
 									component: Applicants,
+								},
+								{
+									path: 'preferences',
+									meta: {
+										title: 'Preferences',
+									},
+									component: Preferences,
 								},
 								{
 									name: 'applicant',

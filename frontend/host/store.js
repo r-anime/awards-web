@@ -54,7 +54,8 @@ const store = new Vuex.Store({
 		loadingprogress: {
 			curr: 0,
 			max: 0,
-		}
+		},
+		preferences: [],
 	},
 	getters: {
 		isHost (state) {
@@ -209,6 +210,9 @@ const store = new Vuex.Store({
 		SET_LOADING (state, data) {
 			state.loadingprogress.curr = data.curr;
 			state.loadingprogress.max = data.max;
+		},
+		GET_PREFERENCES (state, preferences) {
+			state.preferences = preferences;
 		}
 	},
 	actions: {
@@ -455,6 +459,10 @@ const store = new Vuex.Store({
 			const items = await makeRequest(`/api/items/update/parents`, 'POST', data);
 			store.dispatch('getItems');
 		},
+		async getPreferences ({commit}) {
+			const preferences = await makeRequest('/api/preferences');
+			commit('GET_PREFERENCES', preferences)
+		}
 	},
 });
 
