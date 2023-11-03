@@ -1,6 +1,7 @@
 <template>
 	<vue-good-table 
 		v-bind="$data"
+		styleClass="vgt-table table is-hoverable is-fullwidth"
 		:sort-options="{
     	enabled: true,
 		multipleColumns: true,
