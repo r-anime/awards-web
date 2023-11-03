@@ -55,6 +55,11 @@ export default {
 			field: 'jurorIn'
 		},
 		{
+			label: 'Open Juror pref',
+			field: 'openJuror',
+			firstSortType: 'desc',
+		},
+		{
 			label: 'Genre',
 			field: 'scores.genre',
 			type: 'number',
@@ -105,6 +110,10 @@ export default {
 			field: 'jurorIn'
 		},
 		{
+			label: 'Open Juror pref',
+			field: 'openJuror'
+		},
+		{
 			label: subcat+' score',
 			field: 'scores.'+subcat,
 			sortable: 'true',
@@ -132,7 +141,9 @@ export default {
 			return true;
 		// console.log('Checked, failed')
 		return false;
-
+	},
+	truncate(score) {
+		return Math.round(score*1000)/1000; 
 	}
   },
   async mounted() {
@@ -146,10 +157,16 @@ export default {
 		arr.forEach(cat => {
 			pref.jurorIn += cat + ', ';
 		});
+		// Truncate scores
+		pref.scores.genre = this.truncate(pref.scores.genre);
+		pref.scores.visual = this.truncate(pref.scores.visual);
+		pref.scores.char = this.truncate(pref.scores.char);
+		pref.scores.oped = this.truncate(pref.scores.oped);
+		pref.scores.main = this.truncate(pref.scores.main);
 	})
 	this.jurorMap = jurorMap;
 	this.rows = this.preferences;
-	this.genre = ['Action', 'Adventure', 'Drama', 'Romance', 'Comedy', 'Slice of Life', 'Suspense'];
+		this.genre = ['Action', 'Adventure', 'Drama', 'Romance', 'Comedy', 'Slice of Life', 'Suspense'];
 	this.char = ['Dramatic Character', 'Comedic Character', 'Cast'];
 	this.visual = ['Animation', 'Background Art', 'Character Design', 'Cinematography', 'OST', 'Voice Actor'];
 	this.oped = ['OP', 'ED'];

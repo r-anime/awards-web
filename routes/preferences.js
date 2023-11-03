@@ -84,6 +84,27 @@ async function fetchNumberOfCats() {
 	})
 }
 
+async function fetchOpenJurorPref() {
+	return await Applicants.findAll({
+		where: {
+			active: true,
+		},
+		attributes: [
+			'user_id'
+		],
+		include: [
+			{
+				model: Answers,
+				as: 'answers',
+				attributes: ['answer'],
+				where: { 'question_id': 43 }
+			},
+		],
+		order: [
+			'user_id'
+		],
+	})
+}
 
 async function fetchCategoryJurors() {
 	return await Jurors.findAll({
@@ -156,6 +177,7 @@ apiApp.get('/', async (request, response) => {
 		const prefTable = await fetchUserMap();
 		const preferences = await fetchPreferences();
         const numberOfCats = await fetchNumberOfCats();
+		const openJurorPref = await fetchOpenJurorPref();
 		const categoryJurors = await fetchCategoryJurors();
 		const catMap = await fetchCategoryMap();
 		const scores = await fetchScores();
@@ -174,6 +196,12 @@ apiApp.get('/', async (request, response) => {
         numberOfCats.forEach(obj => {
             if (obj['user_id']!=null) {
                 prefTable.get(obj['user_id']).numberOfCats=obj.answers[0].answer;
+            }
+        })
+
+		openJurorPref.forEach(obj => {
+            if (obj['user_id']!=null) {
+                prefTable.get(obj['user_id']).openJuror=obj.answers[0].answer;
             }
         })
 
@@ -211,7 +239,11 @@ apiApp.get('/', async (request, response) => {
 
         // Convert to an array and send
 		const data = [];
-		prefTable.forEach(obj => data.push(obj));
+		prefTable.forEach(obj => {
+			// Filter out people with 0 scores across the board
+			if(obj.scores.main!=0 || obj.scores.oped!=0)
+				data.push(obj)
+		});
 		response.json(data);
 
 	} catch (error) {
