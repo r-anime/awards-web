@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: webfactory/ssh-agent@v0.4.1
       with:
-        ssh-private-key: ${{ secrets.AWARDSWEB_SSH_KEY }}
+        ssh-private-key: ${{ secrets.AWARDS_WEB_SSH_KEY }}
     - run: |
         ssh -o StrictHostKeyChecking=no awards-web@143.110.146.244 /bin/bash << 'EOF'
           # report failure if any command fails
