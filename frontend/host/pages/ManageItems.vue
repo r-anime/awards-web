@@ -493,7 +493,7 @@ export default {
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
 					await new Promise(resolve => setTimeout(resolve, 750));
-					await _this.importAnime(results.pageInfo.currentPage+1, 20220101, 20230110);
+					await _this.importAnime(results.pageInfo.currentPage+1, 20230101, 20240110);
 				} else {
 					await this.addItems(this.pulledEntries);
 					this.submitting = false;
