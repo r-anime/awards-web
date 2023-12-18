@@ -203,7 +203,7 @@ export default {
 				english: "",
 				romanji: "",
 				names: "",
-				year: 2022,
+				year: 2023,
 				image: "",
 				type: "anime",
 				mediatype: "",
@@ -292,7 +292,7 @@ export default {
 				this.form.idMal = -1;
 				this.form.english = "";
 				this.form.romanji = "";
-				this.form.year = 2022;
+				this.form.year = 2023;
 				this.form.image = "";
 				this.form.type = "anime";
 				this.form.mediatype = "";
@@ -427,7 +427,7 @@ export default {
 							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2022,
+							year: 2023,
 							image: result.coverImage.large,
 							type: 'anime',
 						});
@@ -485,7 +485,7 @@ export default {
 							idMal: result.idMal,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2022,
+							year: 2023,
 							image: result.coverImage.large,
 							type: 'anime',
 						});
@@ -543,7 +543,7 @@ export default {
 							idMal: -1,
 							english: result.node.name.full,
 							romanji: result.node.name.full,
-							year: 2022,
+							year: 2023,
 							image: result.node.image.large,
 							type: 'char',
 							parentID: _id,
@@ -560,7 +560,7 @@ export default {
 								idMal: -1,
 								english: va.name.full,
 								romanji: va.name.full,
-								year: 2022,
+								year: 2023,
 								image: va.image.large,
 								type: 'va',
 								parentID: result.node.id,
@@ -619,7 +619,7 @@ export default {
 							idMal: _idmal,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2022,
+							year: 2023,
 							image: result.coverImage.large,
 							type: 'anime',
 							mediatype: result.format,
