@@ -501,7 +501,7 @@ export default {
 					await this.addItems(importPage);
 					await new Promise(resolve => setTimeout(resolve, 750));
 					importPage.splice(0);
-					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
+					await _this.importAnime(results.pageInfo.currentPage+1, 20230101, 20240110);
 				} else {
 					// await this.addItems(this.pulledEntries);
 					this.submitting = false;
