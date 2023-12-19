@@ -409,6 +409,7 @@ export default {
 			};
 
 			const _this = this;
+			let importPage = new Array();
 
 			await fetch(url, options).then(response => response.json().then(function (json) {
 				return response.ok ? json : Promise.reject(json);
@@ -422,7 +423,7 @@ export default {
 					if (this.items.filter(e => e.anilistID === result.id).length > 0) {
 						console.log("Skipped", result.id);
 					} else {
-						this.pulledEntries.push({
+						importPage.push({
 							anilistID: result.id,
 							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
@@ -431,13 +432,16 @@ export default {
 							image: result.coverImage.large,
 							type: 'anime',
 						});
+						this.pulledEntries.push(...importPage);
 					}
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
+					await this.addItems(importPage);
 					await new Promise(resolve => setTimeout(resolve, 750));
+					importPage.splice(0);
 					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
 				} else {
-					await this.addItems(this.pulledEntries);
+					// await this.addItems(this.pulledEntries);
 					this.submitting = false;
 					this.pulledEntries.splice(0);
 					this.progCurrValue = 0;
