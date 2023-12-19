@@ -346,7 +346,7 @@ export default {
 		async submitImportAnime () {
 			this.submitting = true;
 			this.animeimporting = true;
-			await this.importAnime(1, 20220101, 20230110);	
+			await this.importAnime(1, 20230101, 20240110);
 		},
 		async submitImportCharacters () {
 			this.submitting = true;
