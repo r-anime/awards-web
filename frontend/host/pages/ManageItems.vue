@@ -441,7 +441,9 @@ export default {
 					importPage.splice(0);
 					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
 				} else {
-					// await this.addItems(this.pulledEntries);
+					await this.addItems(importPage);
+					importPage.splice(0);
+					
 					this.submitting = false;
 					this.pulledEntries.splice(0);
 					this.progCurrValue = 0;
