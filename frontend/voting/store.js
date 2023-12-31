@@ -154,7 +154,7 @@ const store = new Vuex.Store({
 						} else if (vote.theme_name) {
 							// Theme category so we're gonna push the whole theme and SQUASH this shit later
 							const theme = state.themes.find(themeData => themeData.id === vote.entry_id);
-							if (theme && theme.themeType){
+							if (theme){
 								themeObject[theme.themeType].push(theme);
 							}
 						} else if (category.entryType === 'characters' || category.entryType === 'vas') {
