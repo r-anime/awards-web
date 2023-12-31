@@ -58,7 +58,7 @@ export default new VueRouter({
 				{path: '', component: Login},
 				{path: 'profile', component: Profile},
 				{
-					path: 'redirect/:next/:token',
+					path: 'redirect/:next',
 					props: true,
 					component: LoginRedirect
 				},
