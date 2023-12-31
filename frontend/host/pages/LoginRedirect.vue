@@ -8,7 +8,7 @@
 					</div>
 					<div class="column is-5-tablet is-4-desktop is-3-widescreen">
 						<div class="content has-text-centered">
-							<h3>Redirecting After 5 Seconds</h3>
+							<h3>Redirecting</h3>
 							<p>
 								<a :href="'/' + next" class="button is-platinum is-large">
 									Click here to go to {{next}} if page does not redirect.
@@ -47,8 +47,10 @@ export default {
 		}
 	},
 	mounted(){
-		localStorage.user = this.token;
-		setTimeout( () => window.location.href = "/" + this.next, 5000);
+		try {
+			localStorage.user = this.token;
+		} catch (e) {}
+		setTimeout( () => window.location.href = "/" + this.next, 100);
     }
 };
 </script>
