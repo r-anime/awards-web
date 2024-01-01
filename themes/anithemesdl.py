@@ -49,21 +49,25 @@ if __name__ == "__main__":
             anilist = anime["resources"][0]["external_id"]
             for themes in anime["animethemes"]:
                 oped = themes["type"]
+                sequence = themes["sequence"]
                 songname = themes["song"].get("title") if themes["song"] else None
                 for entries in themes["animethemeentries"]:
                     version, episodes = entries["version"], entries["episodes"]
                     for videos in entries["videos"]:
                         link = videos["link"]
                         if "NCBD1080" not in link:
+                            ver = ""
+                            if (str(sequence) != "None"):
+                                ver = str(sequence)
                             anime_list.append(
                                 {
                                     "name": name,
-                                    "anilist": anilist,
                                     "songname": songname,
-                                    "season": season,
-                                    "type": oped,
-                                    "version": version,
-                                    "episodes": episodes,
+                                    "anilist": anilist,
+                                    "type": str(oped) + ver,
+                                    #"season": season,
+                                    #"version": ,
+                                    #"episodes": episodes,
                                     "link": link,
                                 }
                             )
