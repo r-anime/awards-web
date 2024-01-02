@@ -326,7 +326,7 @@ export default {
 									if (requiredTheme) {
 										entries.push({
 											vote_count: vote.vote_count,
-											name: `${theme.anime} - ${vote.theme_name} ${requiredTheme.themeNo}`,
+											name: `${requiredTheme.anime} - ${requiredTheme.theme_name} ${requiredTheme.themeNo}`,
 										});
 									}
 								} else if (category.entryType === 'shows') {
