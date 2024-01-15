@@ -6,7 +6,7 @@
 					<div class="content has-text-light has-text-left p-5">
 						<div class="has-text-centered">
 							<h1 class="is-size-1">Welcome to the</h1>
-							<img class="BFimage" src="img/awards2022.png" />
+							<img class="BFimage" src="img/awards2023.png" />
 						</div>
 						<p class="is-size-5 py-5">
 							The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community.
