@@ -3,7 +3,11 @@
 		<form @submit.prevent="saveNoms">
 			<div class="section columns is-multiline">
 				<nominations-field v-for="(nom,index) in nomdata" :key="index"
-					:nom="nom" :category="category" :themes="themes"
+					:nom="nom"
+					:category="category"
+					:themes="themes"
+					:entries="computedEntries"
+					:items="items"
 					@toggle="updateData(index, $event)" @delete="deleteNom(index)">
 				</nominations-field>
 			</div>
@@ -33,6 +37,7 @@ export default {
 	data () {
 		return {
 			nomdata: [],
+			computedEntries: [],
 			submitting: false,
 			loaded: false,
 		};
@@ -41,6 +46,8 @@ export default {
 		...mapState([
 			'nominations',
 			'themes',
+			'entries',
+			'items',
 		]),
 	},
 	methods: {
@@ -49,6 +56,8 @@ export default {
 			'deleteNominations',
 			'getNominations',
 			'getThemes',
+			'getEntries',
+			'getItems',
 		]),
 		insertField () {
 			// fuck lenlo
@@ -102,7 +111,26 @@ export default {
 				reject(err);
 			}
 		});
-		Promise.all([nomPromise, themePromise]).then(() => {
+		const entryPromise = new Promise(async (resolve, reject) => {
+			try {
+				await this.getEntries(this.category.id);
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		const itemPromise = new Promise(async (resolve, reject) => {
+			try {
+				if (this.items.length <= 0){
+					await this.getItems();
+				}
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+		Promise.all([nomPromise, themePromise, entryPromise, itemPromise]).then(() => {
+			this.computedEntries = this.entries.filter(entry => entry.categoryId === this.category.id);
 			for (const nom of this.nominations) {
 				if (nom.themeId == null) nom.themeId = -1;
 				this.nomdata.push({
