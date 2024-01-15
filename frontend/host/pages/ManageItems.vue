@@ -203,7 +203,7 @@ export default {
 				english: "",
 				romanji: "",
 				names: "",
-				year: 2022,
+				year: 2023,
 				image: "",
 				type: "anime",
 				mediatype: "",
@@ -292,7 +292,7 @@ export default {
 				this.form.idMal = -1;
 				this.form.english = "";
 				this.form.romanji = "";
-				this.form.year = 2022;
+				this.form.year = 2023;
 				this.form.image = "";
 				this.form.type = "anime";
 				this.form.mediatype = "";
@@ -346,7 +346,7 @@ export default {
 		async submitImportAnime () {
 			this.submitting = true;
 			this.animeimporting = true;
-			await this.importAnime(1, 20220101, 20230110);	
+			await this.importAnime(1, 20230101, 20240110);
 		},
 		async submitImportCharacters () {
 			this.submitting = true;
@@ -409,6 +409,7 @@ export default {
 			};
 
 			const _this = this;
+			let importPage = new Array();
 
 			await fetch(url, options).then(response => response.json().then(function (json) {
 				return response.ok ? json : Promise.reject(json);
@@ -422,22 +423,27 @@ export default {
 					if (this.items.filter(e => e.anilistID === result.id).length > 0) {
 						console.log("Skipped", result.id);
 					} else {
-						this.pulledEntries.push({
+						importPage.push({
 							anilistID: result.id,
 							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2022,
+							year: 2023,
 							image: result.coverImage.large,
 							type: 'anime',
 						});
+						this.pulledEntries.push(...importPage);
 					}
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
+					await this.addItems(importPage);
 					await new Promise(resolve => setTimeout(resolve, 750));
+					importPage.splice(0);
 					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
 				} else {
-					await this.addItems(this.pulledEntries);
+					await this.addItems(importPage);
+					importPage.splice(0);
+					
 					this.submitting = false;
 					this.pulledEntries.splice(0);
 					this.progCurrValue = 0;
@@ -467,6 +473,7 @@ export default {
 			};
 
 			const _this = this;
+			let importPage = new Array();
 
 			await fetch(url, options).then(response => response.json().then(function (json) {
 				return response.ok ? json : Promise.reject(json);
@@ -480,22 +487,25 @@ export default {
 					if (this.items.filter(e => e.anilistID === result.id).length > 0) {
 						console.log("Skipped", result.id);
 					} else {
-						this.pulledEntries.push({
+						importPage.push({
 							anilistID: result.id,
-							idMal: result.idMal,
+							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2022,
+							year: 2023,
 							image: result.coverImage.large,
 							type: 'anime',
 						});
+						this.pulledEntries.push(...importPage);
 					}
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
+					await this.addItems(importPage);
 					await new Promise(resolve => setTimeout(resolve, 750));
-					await _this.importAnime(results.pageInfo.currentPage+1, 20220101, 20230110);
+					importPage.splice(0);
+					await _this.importAnime(results.pageInfo.currentPage+1, 20230101, 20240110);
 				} else {
-					await this.addItems(this.pulledEntries);
+					// await this.addItems(this.pulledEntries);
 					this.submitting = false;
 					this.animeimporting = false;
 					this.pulledEntries.splice(0);
@@ -543,7 +553,7 @@ export default {
 							idMal: -1,
 							english: result.node.name.full,
 							romanji: result.node.name.full,
-							year: 2022,
+							year: 2023,
 							image: result.node.image.large,
 							type: 'char',
 							parentID: _id,
@@ -560,7 +570,7 @@ export default {
 								idMal: -1,
 								english: va.name.full,
 								romanji: va.name.full,
-								year: 2022,
+								year: 2023,
 								image: va.image.large,
 								type: 'va',
 								parentID: result.node.id,
@@ -619,7 +629,7 @@ export default {
 							idMal: _idmal,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2022,
+							year: 2023,
 							image: result.coverImage.large,
 							type: 'anime',
 							mediatype: result.format,

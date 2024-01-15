@@ -85,15 +85,25 @@ const requestHelpers = {
 	async authenticate ({level, name, oldEnough, lock}, redditSession = null) {
 		let lockStatus;
 		let redditInfo;
-		if (redditSession) {
-			redditInfo = redditSession;
-		} else {
+		const originalRequest = this;
+
+		try {
+			const decodedjwt = jwt.verify(originalRequest.session.jwtToken, config.private_key);
+			redditInfo = decodedjwt.reddit;
+		}
+		catch (error){
 			try {
 				redditInfo = (await this.reddit().get('/api/v1/me')).body;
+				const token = jwt.sign({
+					reddit: redditInfo
+				}, config.private_key, { expiresIn: '14d' });
+				originalRequest.session.jwtToken = token;
 			} catch (error) {
+				console.log(error);
 				return false;
 			}
 		}
+
 		const userInfo = await sequelize.model('users').findOne({where: {reddit: redditInfo.name}});
 		if (lock) {
 			// get the lock row

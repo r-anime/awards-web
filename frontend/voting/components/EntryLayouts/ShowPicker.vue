@@ -107,8 +107,8 @@ export default {
 					return filter;
 				});
 			}
-			// return items;
-			return items.slice(0, 100);
+			return items;
+			// return items.slice(0, 100);
 		}
 	},
 	methods: {

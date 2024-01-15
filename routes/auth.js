@@ -73,10 +73,7 @@ authApp.get('/reddit/callback', async (request, response) => {
 				});
 			}
 		}
-		const token = jwt.sign({
-			reddit: name
-		}, config.private_key);
-		response.redirect(`/login/redirect/${next}/${token}`);
+		response.redirect(`/login/redirect/${next}`);
 	} catch (responseError) {
 		response.error(responseError);
 	}

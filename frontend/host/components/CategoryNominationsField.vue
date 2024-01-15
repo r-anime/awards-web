@@ -23,7 +23,7 @@
                         <input v-if="entries.length<=0 || category.entryType=='themes'" ref="anilist_idfield" class="input" :readonly="category.entryType=='themes'" type="text" placeholder="" v-model="nom.anilist_id" @input="emitUpdate">
                         <select class="input" v-else v-model="nom.anilist_id" @input="emitUpdate">
                             <option value="-1">Select A Show</option>
-                            <option v-for="(entry, index) in entries" :key="index" :value="entry.id">{{entry.title.romaji}}</option>
+                            <option v-for="(entry, index) in entries" :key="index" :value="entry.anilist_id">{{getItemById(entry.anilist_id)}}</option>
                         </select>
                     </div>
                 </div>
@@ -107,6 +107,8 @@ export default {
 		nom: Object,
 		category: Object,
 		themes: Array,
+        entries: Array,
+        items: Array,
 	},
 	methods: {
 		emitUpdate () {
@@ -120,11 +122,16 @@ export default {
    			this.nom.anilist_id = this.themes.find(el => el.id == event.target.value).anilistID;
 			this.emitUpdate();
 		},
+        getItemById(iid){
+            if (iid==-1) return -1;
+            try {
+                return this.items.find(n => n.anilistID == iid).romanji;
+            } catch {
+                return iid;
+            }
+        }
 	},
 	computed: {
-		entries () {
-			return this.category.entries ? JSON.parse(this.category.entries) : [];
-		},
 		alphathemes () {
 			function compare (a, b) {
 				const textA = a.title.toUpperCase();

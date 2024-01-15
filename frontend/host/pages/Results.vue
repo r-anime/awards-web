@@ -321,12 +321,12 @@ export default {
 							for (const vote of allVotes) {
 								if (category.entryType === 'themes') {
 									const requiredTheme = this.themes.find(theme => theme.id == vote.entry_id);
-									const requiredShow = this.items.find(show => show.anilistID == requiredTheme.anilistID);
+									// const requiredShow = this.items.find(show => show.anilistID == requiredTheme.anilistID);
 									
-									if (requiredShow && requiredTheme) {
+									if (requiredTheme) {
 										entries.push({
 											vote_count: vote.vote_count,
-											name: `${requiredShow.romaji || requiredShow.english} - ${vote.theme_name} ${requiredTheme.themeNo}`,
+											name: `${requiredTheme.anime} - ${requiredTheme.theme_name} ${requiredTheme.themeNo}`,
 										});
 									}
 								} else if (category.entryType === 'shows') {
