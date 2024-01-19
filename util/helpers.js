@@ -116,7 +116,8 @@ const requestHelpers = {
 		}
 		if (level && (!userInfo || userInfo.level < level)) return false;
 		if (name && redditInfo.name !== name) return false;
-		if (oldEnough && redditInfo.created_utc >= constants.maxAccountDate) return false;
+		// console.log(name);
+		if (oldEnough && redditInfo.created_utc >= constants.maxAccountDate && !constants.specialAccounts.includes(name)) return false;
 		return redditInfo.name;
 	},
 };

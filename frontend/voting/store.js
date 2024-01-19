@@ -48,7 +48,7 @@ const store = new Vuex.Store({
 	},
 	getters: {
 		accountOldEnough (state) {
-			return state.me && state.me.reddit && state.me.reddit.created < constants.maxAccountDate;
+			return state.me && state.me.reddit && (state.me.reddit.created < constants.maxAccountDate || constants.specialAccounts.includes(state.me.reddit.name));
 		},
 	},
 	mutations: {
