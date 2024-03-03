@@ -49,7 +49,8 @@
                   </span>
 								</div>
 							</div>
-							<div class="categoryRank has-text-gold">{{nomPublicRankings[index]}}</div>
+							<div v-if="focus" class="categoryRank has-text-gold">{{nomPublicRankings[index]}}</div>
+							<div v-else class="categoryRank has-text-gold">{{nom.jury}}</div>
 						</div>
 					</transition-group>
 					<small class="is-pulled-right has-text-light small mr-3">Click each nominee to read a detailed write-up.</small>
