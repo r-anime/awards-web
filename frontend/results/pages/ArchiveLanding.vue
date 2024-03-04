@@ -4,7 +4,7 @@
             <div class="container">
                 <h2 class="title is-size-3 has-text-gold has-text-centered has-flaired-underline pb-20">2022</h2>
                 <div class="control has-text-centered">
-                    <router-link to="/results/2023" style="color:inherit">
+                    <router-link to="/archive/2022" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
                     </router-link>
                     <a target="_blank" href="https://www.youtube.com/watch?v=7dAmr9nV2_I" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
