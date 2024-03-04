@@ -342,13 +342,16 @@ html, body{
     }
 
     .categoryNominationItem &:hover:after{
-        content: '';
+        /*content: '';
         position: absolute;
         bottom: 16px;
         left: calc(50% - 40px);
         width: 80px;
         height: 80px;
         border-radius: 40px;
+        */
+
+        background:rgba(0, 0, 0, 0.3);
     }
 }
 

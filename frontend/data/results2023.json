@@ -1403,7 +1403,7 @@
           "watched": 157,
           "support": 0.25477707006,
           "jury": 6,
-          "percent": 0.00016046213093709883,
+          "percent": 0.015046213093709883,
           "writeup": "*Bungou Stray Dogs Season 4* and *Season 5* are faithful continuations of the franchise in relation to its established cast. Shifting the focus of prior seasons away from Dazai allows other members of the Armed Detective Agency (ADA) to shine and provides room for the tactful introduction of the new characters in the Hunting Dogs. \n\n\nThe story in these seasons focuses on finding appropriate moments to bring attention to character backstories alongside key plot developments. The Hunting Dogs play a key antagonistic role as a foreshadowed “gifted” task force to be reckoned with, introduced alongside the new terrorist group the “Decay of the Angels”. Member identity reveals in each of these new groups particularly revolve around Oochi Fukuchi and his military service and history with Fukuzawa. Despite sharing in the same upbringing, their differing battlefields and choices placed them in leadership positions matching their ideals, which have further been instilled in their followers. \n\n\nDuring the seasons, ADA members are separated from each other, allowing a greater individual focus on them and their pasts - from prior season's events and newly shown material - as rivalries and allegiances are tested to the limits in the face of overwhelming opponents. These seasons of *BSD* manage a large number of character developments through mirroring microcosms of the grander conflict with individual struggles. Despite being easier to process, it can feel like too much ground is covered in too little time. The series nonetheless holds true to the characteristic action and suspense elements it is regarded for.",
           "staff": ""
          },
@@ -1715,8 +1715,8 @@
          },
          {
           "id": 215,
-          "name": "One Piece #1075",
-          "writeup": "One Piece #1075\n\nEpisode Direction & Storyboard: Yasunori Koyama\n\nAnimation Direction: Yong-Ce Tu, Masahiro Kitazaki\n\n\n*One Piece*'s team closes out the long ongoing Wano arc with some all-timers, both in terms of the action spectacles as well as the dramatic moments alike. From strong direction to jaw-dropping animation feats, these episodes were not only highlights from the series, but the insane talent and creative expression elevate them to impressive experiences for the year overall. Movie-quality quite literally applies for this spread of episodes, and hopefully more to come in the future from this wonderful and passionate team!\n",
+          "name": "One Piece #1062, #1072, #1074, #1075",
+          "writeup": "One Piece #1062\n\nStoryboard: Katsumi Ishizuka\n\nEpisode Direction & Storyboard: Ryosuke Tanaka\n\nAnimation Direction: Keita Saito, Midori Matsuda, Katsumi Ishizuka\n\n\nOne Piece #1072\n\nStoryboard: Megumi Ishitani, Bahi JD, Yong-Ce Tu, Takeshi Maenami \n\nEpisode Direction & Storyboard: Tasuku Shimaya\n\nAnimation Direction: Nobuyuki Iwai, Masami Mori, Hirotaka Ito, Shigefumi Shingaki\n\n\nOne Piece #1074\n\nStoryboard: Masahiro Hosoda\n\nEpisode Direction: Nanami Michibata \n\nStoryboard & Animation Direction: Honehone\n\nAnimation Direction: Kazuya Hisada, Shuu Sugita\n\n\nOne Piece #1075\n\nEpisode Direction & Storyboard: Yasunori Koyama\n\nAnimation Direction: Yong-Ce Tu, Masahiro Kitazaki",
           "active": true,
           "createdAt": "2024-03-02T23:50:25.884Z",
           "updatedAt": "2024-03-02T23:50:25.884Z",
@@ -2254,6 +2254,15 @@
           "createdAt": "2024-03-03T00:23:09.565Z",
           "updatedAt": "2024-03-03T00:23:09.565Z",
           "categoryId": 49
+         },
+         {
+           "id": 217,
+           "name": "Onimai",
+           "writeup": "Studio Bind, founded in 2018, has swiftly made a name for itself with Mushoku Tensei, an adaptation well known for its fanservice. Their latest series, Oniichan wa Oshimai!, continues this trend with a notable commitment to cinematography, well deserving of recognition. Mundane scenes are infused with suggestive undertones, adding intrigue [1](https://imgur.com/a/qgAuCUx), while more sexualized scenes are crafted with creative shot compositions, maximizing the visual appeal of the characters and providing animators ample room to showcase their talents [2](https://imgur.com/a/HgjbN60).  Although fanservice may not be to some viewers’ taste, director Shingo Fujii and the team adopt a bold and distinct approach, distinguishing this aspect of character framing from the anime landscape and the already high standard of cinematography within the show.",
+           "active": true,
+           "createdAt": "2024-03-03T00:23:09.551Z",
+           "updatedAt": "2024-03-03T00:23:09.551Z",
+           "categoryId": 49
          }
         ]
        },
