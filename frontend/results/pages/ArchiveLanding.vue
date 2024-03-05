@@ -2,13 +2,26 @@
     <div class="container">
         <section class="section">
             <div class="container">
+                <h2 class="title is-size-3 has-text-gold has-text-centered has-flaired-underline pb-20">2023</h2>
+                <div class="control has-text-centered">
+                    <router-link to="/results/all" style="color:inherit">
+                        <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
+                    </router-link>
+                    <a target="_blank" href="https://www.youtube.com/watch?v=nNWIMcRFHX0" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
+                    <router-link to="/acknowledgements" style="color:inherit">
+                        <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
+                    </router-link>
+                    <router-link to="/about" style="color:inherit">
+                        <button class="button is-large is-platinum is-outlined mb-10">About/Credits</button>
+                    </router-link>
+                </div>
                 <h2 class="title is-size-3 has-text-gold has-text-centered has-flaired-underline pb-20">2022</h2>
                 <div class="control has-text-centered">
                     <router-link to="/archive/2022" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Full Results</button>
                     </router-link>
                     <a target="_blank" href="https://www.youtube.com/watch?v=7dAmr9nV2_I" class="button is-large is-platinum is-outlined mb-10">Livestream</a>
-                    <router-link to="/acknowledgements" style="color:inherit">
+                    <router-link to="/acknowledgements22" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
                     </router-link>
                     <router-link to="/about" style="color:inherit">

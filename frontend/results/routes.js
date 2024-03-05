@@ -29,6 +29,7 @@ import About19 from './archived-pages/About19';
 import Acknowledgements20 from './archived-pages/Acknowledgements20';
 import About20 from './archived-pages/About20';
 import Acknowledgements21 from './archived-pages/Acknowledgements21';
+import Acknowledgements22 from './archived-pages/Acknowledgements22';
 import About21 from './archived-pages/About21';
 
 const router = new VueRouter({
@@ -90,6 +91,7 @@ const router = new VueRouter({
 				{path: '/acknowledgements19', component: Acknowledgements19},
 				{path: '/acknowledgements20', component: Acknowledgements20},
 				{path: '/acknowledgements21', component: Acknowledgements21},
+				{path: '/acknowledgements22', component: Acknowledgements22},
 				{path: '/about19', component: About19},
 				{path: '/about20', component: About20},
 				{path: '/about21', component: About21},
