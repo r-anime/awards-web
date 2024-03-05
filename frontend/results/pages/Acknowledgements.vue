@@ -60,7 +60,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Genki Kawamura (川村元気) - Producer for Suzume no Tojimari on Adventure win</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						(translated by the awards team)<br/>
+						(translated by FAN (FAN_ROTOM_IS_SCARY))<br/>
 						We are so happy to know that our film, put together by assembling a cast and crew that represent the pinnacle of Japanese talent, with director Makoto Shinkai at its center, has reached people all over the world.
 						<br/>
 						We hope that audiences all over the world will enjoy our next work too.
@@ -104,7 +104,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Ryuichi Kimura (木村隆一 ) director for Aikatsu! 10th STORY: Mirai e no STARWAY (2023) on Movie win.</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						(translated by the awards team)<br/>
+						(translated by FAN (FAN_ROTOM_IS_SCARY))<br/>
 						I am honored that Aikatsu! 10th STORY~STARWAY To The Future~ has received the award for Movie of the Year and Best Slice of Life.
 						<br/>
 						Aikatsu! is an anime made for children, but I am overjoyed by the love it has received from so many people, and that we were able to present all the fans with a movie to celebrate its tenth anniversary.
@@ -132,7 +132,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Manga author for Vinland Saga Makoto Yukimura (幸村誠) on Drama and Anime of the Year wins</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						(translated by the awards team)<br/>
+						(translated by FAN (FAN_ROTOM_IS_SCARY))<br/>
 						This is Yukimura, the writer and artist of the Vinland Saga manga, which the anime is based on. In receiving this award, I'm once again feeling how much power the field of contemporary anime holds, and how strong it is in its ability to reach people and spread across the world. With just my manga alone, I doubt I would have been able to make as many people aware of Vinland Saga as there are today. Amidst all the anime that came out this year, thank you so much for paying attention to our work. This award is only possible thanks to the honest work of Director Yabuta and all the staff who worked on the show. I am so happy that the fruits of their serious work has been properly valued. Thank you. And to Director Yabuta, and everyone on the anime staff, congratulations!!
 					</div>
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
@@ -149,7 +149,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Director Shuuhei Yabuta (薮田修平) on VINLAND SAGA SEASON 2 Drama and Anime of the Year wins</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						(translated by the awards team)<br/>
+						(translated by FAN (FAN_ROTOM_IS_SCARY))<br/>
 						To /r/anime, and the entire community that has supported us. I am truly thankful to have received this brilliant award. Vinland Saga is a work that shows Yukimura-sensei's frank outlook as he confronts the theme of violence. Even in the current day, over 1000 years on from the era depicted in the series, we believe that the strong messaging in the series is thought-provoking, and that is precisely why it has resonated with so many people. We cannot contain our joy at how far it has reached. This is all thanks to nothing other than the understanding and passion showed by the community that has emerged from all of you. It is an honor to have been able to provide some small help to Yukimura-sensei in bringing his story to so many people.
 					</div>
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
@@ -166,7 +166,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Yuuichi Fukushima (福島祐一) Animation Producer at CloverWorks for SPY×FAMILY Season 2 win in Comedy</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						(translated by the awards team)<br/>
+						(translated by FAN (FAN_ROTOM_IS_SCARY))<br/>
 						Thank you for watching Spy x Family Season 2 and giving us this award!<br/>
 						It is a great honor to receive the award for Best Comedy.<br/>
 						On behalf of all the staff, I would like to give you my thanks.<br/>
@@ -203,7 +203,7 @@
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Shingo Fujii (藤井慎吾) Director for Onii-chan wa Oshimai! on Animation and Character Design win</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						(translated by the awards team)<br/>
+						(translated by FAN (FAN_ROTOM_IS_SCARY)<br/>
 						Thank you for giving us the award for Best Animation and Best Character Design.<br/>
 						The fantastic design is thanks to the character designer Imamura-kun, who was able to balance ease of movement with visual appeal. <br/>
 						In the animation, we tried to convey the warm world of the *Oniichan wa Oshimai!* manga and its charm by strongly focusing on softness and cuteness, so I'm truly thankful that that has been appreciated by you all.<br/>
