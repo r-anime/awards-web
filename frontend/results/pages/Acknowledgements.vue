@@ -31,6 +31,31 @@
 					</div>
 				</div>
 
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">バンドリ！ BanG Dream! 公式 Official Twitter</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						r/anime Awardsにて<br/>
+						TVアニメ「BanG Dream! It's MyGO!!!!!」が<br/>
+						Anime of the Year awardを受賞いたしました🎊✨<br/>
+						<br/><br/>
+						応援していただいた皆様、ありがとうございます❣<br/>
+						今後も #バンドリアニメMyGO をよろしくお願いします🧭<br/>
+						<br/><br/>
+						#バンドリ
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						The TV anime 'BanG Dream! It's MyGO!!!!!' has been honored with the Anime of the Year award!<br/>
+						Thank you to everyone who supported us!<br/>
+						Please continue supporting TV anime 'BanG Dream! It's MyGO!!!!!' in the future.<br/>
+					</div>
+					
+				</div>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						<span> <a href="https://twitter.com/bang_dream_info/status/1764614663252373900"> https://twitter.com/bang_dream_info/status/1764614663252373900</a> </span>
+					</div>
+				</div>
+
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Genki Kawamura (川村元気) - Producer for Suzume no Tojimari on Adventure win</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
