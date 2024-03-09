@@ -31,6 +31,7 @@ import About20 from './archived-pages/About20';
 import Acknowledgements21 from './archived-pages/Acknowledgements21';
 import Acknowledgements22 from './archived-pages/Acknowledgements22';
 import About21 from './archived-pages/About21';
+import About22 from './archived-pages/About22';
 
 const router = new VueRouter({
 	mode: 'history',
@@ -95,6 +96,7 @@ const router = new VueRouter({
 				{path: '/about19', component: About19},
 				{path: '/about20', component: About20},
 				{path: '/about21', component: About21},
+				{path: '/about22', component: About22},
 			],
 		},
 

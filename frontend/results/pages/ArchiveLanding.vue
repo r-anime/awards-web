@@ -24,7 +24,7 @@
                     <router-link to="/acknowledgements22" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">Acknowledgements</button>
                     </router-link>
-                    <router-link to="/about" style="color:inherit">
+                    <router-link to="/about22" style="color:inherit">
                         <button class="button is-large is-platinum is-outlined mb-10">About/Credits</button>
                     </router-link>
                 </div>
