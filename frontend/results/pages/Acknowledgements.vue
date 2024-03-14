@@ -228,7 +228,51 @@
 						<br/>
 					</div>
 				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Ryūsuke Okamoto (岡本龍祐) Production Desk for Onii-chan wa Oshimai! on Animation and Character Design win</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						(translated by FAN (FAN_ROTOM_IS_SCARY)<br/>
+						<br/>
+						Thank you for watching Oniichan wa Oshimai!<br/>
+						It is an honor to receive two awards for Best Animation and Best Character Design.<br/>
+						On behalf of the staff, I thank you all.<br/>
+						<br/>
+						I am honestly so happy that this anime has meant so much to both the director, Shingo Fujii, and the character designer Ryou Imamura!<br/>
+						This anime has been the product of a lot of hard work from a large number of staff, including the original creator Nekotofu-sensei, so we're overjoyed that it has caught your eyes.<br/>
+						<br/>
+						Being made aware that so many people around the world have seen the show has given me a huge amount of energy.<br/>
+						I'm truly thankful that you have made a venue like this for us to thank all of you who have supported us.<br/>
+						<br/>
+						I hope that the happy and lively antics of Mahiro and their friends can continue on.<br/>
+						<br/>
+						We will be putting our full effort into our next project too.<br/>
+						Thank you very much!!<br/>
+						<br/>
+						Production Desk  Ryūsuke Okamoto
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						アニメ「お兄ちゃんはおしまい！」をご覧いただき誠にありがとうございます！<br/>
+						<br/>
+						アニメーション賞、キャラクターデザイン賞、2つの賞を賜り、たいへん光栄です。<br/>
+						スタッフを代表して、御礼申し上げます。<br/>
+						<br/>
+						監督の藤井慎吾さん、キャラクターデザインの今村亮さん、お二人にとっても、大きな意味を持つ作品となったことが心から嬉しいです！<br/>
+						原作者のねことうふ先生を含め、他にもたくさんのスタッフと一所懸命に練り上げて制作した作品ですので、皆様の目に止まったことが何より嬉しく思います。<br/>
+						<br/>
+						世界中でこんなにも大勢の方々にご視聴いただいていることに気づかせていただき、とても活力をもらいました。<br/>
+						このような形で、応援してくれた皆様に感謝を伝える場を作っていただき、誠にありがとうございます。<br/>
+						<br/>
+						これからも、まひろたちのドタバタな日常が、幸せに続いていくことを祈って。<br/>
+						<br/>
+						今後の作品でも、全力で制作して参ります。<br/>
+						この度は本当にありがとうございました！！<br/>
+						<br/>
+						制作デスク　岡本龍祐
+					</div>					
+				</div>
 			</div>
+			
 		</section>
 	</div>
 </div>
