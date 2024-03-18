@@ -32,31 +32,6 @@
 					</div>
 				</div>
 
-				<h2 class="title is-5 has-text-gold has-text-centered pb-20">バンドリ！ BanG Dream! 公式 Official Twitter</h2>
-				<div class="columns mb-6">
-					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						r/anime Awardsにて<br/>
-						TVアニメ「BanG Dream! It's MyGO!!!!!」が<br/>
-						Anime of the Year awardを受賞いたしました🎊✨<br/>
-						<br/><br/>
-						応援していただいた皆様、ありがとうございます❣<br/>
-						今後も #バンドリアニメMyGO をよろしくお願いします🧭<br/>
-						<br/><br/>
-						#バンドリ
-					</div>
-					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						The TV anime 'BanG Dream! It's MyGO!!!!!' has been honored with the Anime of the Year award!<br/>
-						Thank you to everyone who supported us!<br/>
-						Please continue supporting TV anime 'BanG Dream! It's MyGO!!!!!' in the future.<br/>
-					</div>
-					
-				</div>
-				<div class="columns mb-6">
-					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-						<span> <a href="https://twitter.com/bang_dream_info/status/1764614663252373900"> https://twitter.com/bang_dream_info/status/1764614663252373900</a> </span>
-					</div>
-				</div>
-
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Genki Kawamura (川村元気) - Producer for Suzume no Tojimari on Adventure win</h2>
 				<div class="columns mb-6">
 					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
@@ -270,6 +245,68 @@
 						<br/>
 						制作デスク　岡本龍祐
 					</div>					
+				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Yūji Kaneko (金子雄司) Art Director for Heavenly Delusion on Background Art win</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						(translated by FAN (FAN_ROTOM_IS_SCARY)<br/>
+						<br/>
+						I consider it an honor to receive this wonderful award!<br/>
+						<br/>
+						It seems like reddit is an app that only English-speakers use in Japan, so I had never heard of it.<br/>
+						<br/>
+						The fact that, out there in the world, people are watching this anime called Heavenly Delusion, and paying attention and remembering the background art, makes me as a member of the staff extremely happy and thankful.<br/>
+						<br/>
+						Background art is not something that can be done alone. Right until the end, I was joined by the art team; director Mori-san; photography director Waki-san; Hirose-san, who did the color design; and all the animators who drew the fantastic layouts. The production assistants were also very patient waiting for me. I feel that what we managed to create is the product of all our talents put together.<br/>
+						<br/>
+						I myself am a fan of the original work by Ishiguro-sensei. I worked as hard as I could to make something that my fellow fans of the original would be happy to see. The fact this show called Heavenly Delusion has become known and enjoyed around the world is therefore a dream come true for me.<br/>
+						<br/>
+						Thank you so much to everyone who voted for us! Please continue to enjoy Heavenly Delusion.<br/>
+						<br/>
+						From the Art Director, Yūji Kaneko.
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						今回は、素晴らしい賞をいただきとても光栄に思っております！<br/>
+						<br/>
+						redditというアプリケーションは日本では英語がしゃべることが出来る人しか使っていないようで、私も知りませんでした。<br/>
+						<br/>
+						世界の何処かで、天国大魔境という作品、その背景美術が皆様の目に留まり、記憶に残っていてくれたことが、一人のスタッフとしてとてもうれしく、感謝しております。<br/>
+						<br/>
+						背景美術は一人ではできません。最後までついてきてくれた美術チーム、監督の森さん、撮影の脇さん、色彩設定の広瀬さん、素晴らしいLOを描いてくれたたくさんのアニメーターの皆さん。粘り強く待ってくれた制作進行の皆さん。すべての力が集まってできた結果だと感じております。<br/>
+						<br/>
+						私自身、原作者の石黒先生のファンであるため。原作ファンの人たちに喜んでいただけるように精一杯務めました。世界の皆さんに天国大魔境という作品が知れ渡り、沢山楽しんでいただけたら、本望です。<br/>
+						<br/>
+						投票してくれた皆さま、本当にありがとうございました！これからも天国大魔境を楽しんでくださいませ。<br/>
+						<br/>
+						美術監督　金子雄司　拝
+					</div>					
+				</div>
+
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">バンドリ！ BanG Dream! 公式 Official Twitter</h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						The TV anime 'BanG Dream! It's MyGO!!!!!' has been honored with the Anime of the Year award!<br/>
+						Thank you to everyone who supported us!<br/>
+						Please continue supporting TV anime 'BanG Dream! It's MyGO!!!!!' in the future.<br/>
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						r/anime Awardsにて<br/>
+						TVアニメ「BanG Dream! It's MyGO!!!!!」が<br/>
+						Anime of the Year awardを受賞いたしました🎊✨<br/>
+						<br/><br/>
+						応援していただいた皆様、ありがとうございます❣<br/>
+						今後も #バンドリアニメMyGO をよろしくお願いします🧭<br/>
+						<br/><br/>
+						#バンドリ
+					</div>
+					
+					
+				</div>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						<span> <a href="https://twitter.com/bang_dream_info/status/1764614663252373900"> https://twitter.com/bang_dream_info/status/1764614663252373900</a> </span>
+					</div>
 				</div>
 			</div>
 			
