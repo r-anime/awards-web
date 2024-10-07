@@ -999,7 +999,7 @@ apiApp.get('/allocations', async (request, response) => {
 					model: Applications,
 					as: 'application',
 					where: {
-						year: 2023
+						year: 2024
 					}
 				},
 				{

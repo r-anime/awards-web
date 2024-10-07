@@ -203,7 +203,7 @@ export default {
 				english: "",
 				romanji: "",
 				names: "",
-				year: 2023,
+				year: 2024,
 				image: "",
 				type: "anime",
 				mediatype: "",
@@ -292,7 +292,7 @@ export default {
 				this.form.idMal = -1;
 				this.form.english = "";
 				this.form.romanji = "";
-				this.form.year = 2023;
+				this.form.year = 2024;
 				this.form.image = "";
 				this.form.type = "anime";
 				this.form.mediatype = "";
@@ -346,7 +346,7 @@ export default {
 		async submitImportAnime () {
 			this.submitting = true;
 			this.animeimporting = true;
-			await this.importAnime(1, 20230101, 20240110);
+			await this.importAnime(1, 20240101, 20250110);
 		},
 		async submitImportCharacters () {
 			this.submitting = true;
@@ -428,7 +428,7 @@ export default {
 							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2023,
+							year: 2024,
 							image: result.coverImage.large,
 							type: 'anime',
 						});
@@ -492,7 +492,7 @@ export default {
 							idMal: (result.idMal)?result.idMal:-1,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2023,
+							year: 2043,
 							image: result.coverImage.large,
 							type: 'anime',
 						});
@@ -503,7 +503,7 @@ export default {
 					await this.addItems(importPage);
 					await new Promise(resolve => setTimeout(resolve, 750));
 					importPage.splice(0);
-					await _this.importAnime(results.pageInfo.currentPage+1, 20230101, 20240110);
+					await _this.importAnime(results.pageInfo.currentPage+1, 20240101, 20250110);
 				} else {
 					// await this.addItems(this.pulledEntries);
 					this.submitting = false;
@@ -553,7 +553,7 @@ export default {
 							idMal: -1,
 							english: result.node.name.full,
 							romanji: result.node.name.full,
-							year: 2023,
+							year: 2024,
 							image: result.node.image.large,
 							type: 'char',
 							parentID: _id,
@@ -570,7 +570,7 @@ export default {
 								idMal: -1,
 								english: va.name.full,
 								romanji: va.name.full,
-								year: 2023,
+								year: 2024,
 								image: va.image.large,
 								type: 'va',
 								parentID: result.node.id,
@@ -629,7 +629,7 @@ export default {
 							idMal: _idmal,
 							english: result.title.english,
 							romanji: result.title.romaji,
-							year: 2023,
+							year: 2024,
 							image: result.coverImage.large,
 							type: 'anime',
 							mediatype: result.format,

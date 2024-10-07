@@ -194,7 +194,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import {Viewer, Editor} from '@toast-ui/vue-editor';
 import marked from 'marked';
 import {mapState, mapActions} from 'vuex';
-import logo from '../../../img/awards2023.png';
+import logo from '../../../img/awards2024.png';
 import draggable from 'vuedraggable';
 
 export default {

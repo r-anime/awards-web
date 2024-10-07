@@ -84,7 +84,7 @@
 <script>
 import {mapState} from 'vuex';
 import NavBarLink from './NavBarLink';
-import logo from '../../img/awards2023.png';
+import logo from '../../img/awards2024.png';
 
 export default {
 	components: {
