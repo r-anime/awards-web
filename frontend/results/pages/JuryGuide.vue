@@ -1,5 +1,5 @@
 <template>
-	<div class="container pt-6">
+	<div class="container pt-6 px-3">
 		<h1 class="title is-2 has-text-gold has-text-centered pb-20">Jury Guide</h1>
 
 		<p class="has-text-white">
@@ -75,7 +75,7 @@
 			</p>
 		<h2 class="title is-3 has-text-white">Are anime with multiple genres eligible for multiple Genre Categories?</h2>
 			<p class="has-text-white pb-20">
-				Each eligible anime is assigned a primary genre designation by the hosts on the <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRT0cwrsCdTj9uyy1Getosi2fueW5mGUzFzz3FhGtrOqMCGgP8Ghz1VjMmhoNcl0LCxc0DqbK7qWaLD/pubhtml#" target="_blank">sheet</a>. Shows can be shortlisted by jurors for genre categories outside of this designation with host discretion, however an anime can only be nominated in one genre category, with priority given to its primary genre designation. Primary genre allocation may be appealed through <a href="/feedback">a form available on the Awards website</a>.
+				Each eligible anime is assigned a primary genre designation by the hosts on the <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRT0cwrsCdTj9uyy1Getosi2fueW5mGUzFzz3FhGtrOqMCGgP8Ghz1VjMmhoNcl0LCxc0DqbK7qWaLD/pubhtml#" target="_blank">Genre Allocation Sheet</a>. Shows can be shortlisted by jurors for genre categories outside of this designation with host discretion, however an anime can only be nominated in one genre category, with priority given to its primary genre designation. Primary genre allocation may be appealed through <a href="/feedback">a form available on the Awards website</a>.
 			</p>
 		<h2 class="title is-3 has-text-white">How are Genre Categories like Best Action judged? Do they award the shows with the Best Action scenes?</h2>
 			<p class="has-text-white pb-20">
