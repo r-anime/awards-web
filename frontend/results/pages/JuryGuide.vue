@@ -6,7 +6,7 @@
 			Welcome to the 2024 /r/anime Awards! 
 			From November until March, selected participants in the Awards, known as the jury, collaborate as worldwide anime fans to choose the best of the year for our subreddit community.
 			This year’s results will be showcased on <a href="https://reddit.com/r/anime">the subreddit</a> and alongside previous rankings on our dedicated website.
-			Below is a brief overview on the Awards, but for more information check out the <a href="https://discord.com/channels/1257004370000871507/1257004371036864518/1293282848845074612" target="_blank" >detailed Jury Guide</a> or shoot us a question in a /r/anime Awards thread.
+			Below is a brief overview on the Awards, but for more information check out the <a href="https://docs.google.com/document/d/1WZ0nQhdvPYGoiMeibA0zz_kbMFlqAaHTfoOIxffEP4s" target="_blank" >detailed Jury Guide</a> or shoot us a question in a /r/anime Awards thread.
 			We hope to see you at this year’s Awards!
 		</p>
 		<div class="has-text-right has-text-white"> - /r/anime Award 2024 Host Team </div>
