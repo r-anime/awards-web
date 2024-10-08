@@ -66,7 +66,7 @@ export default {
 			this.routes = navbarRoutes.resultsRoutes;
 		}
 		if (guideLock.flag) {
-			this.routes.push({name: 'Jury Guide', path: '/juryguide'});
+			this.routes.push({name: 'Jury Guide / FAQ', path: '/juryguide'});
 		}
 		if (allocLock.flag) {
 			this.routes.push({name: 'Allocations', path: '/allocations'});

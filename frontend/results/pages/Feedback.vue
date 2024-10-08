@@ -5,6 +5,7 @@
 				<div class="column is-10-fullhd is-11-widescreen is-12-desktop is-12-tablet">
 					<section class="section">
 						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Feedback Form</h1>
+						<!--
 						<div class="has-text-light has-text-centered">
                             <section class="section has-background-dark">
 								<p>This is a form you can use to directly communicate with /r/anime mods during the off-season and Awards hosts during Awards season and provide them feedback about the Awards process.
@@ -44,7 +45,7 @@
 							</div>
                         </div>
 						<br/><br/>
-						<!--
+						-->
 						<h1 class="title is-2 has-text-platinum has-text-centered pb-20">Jury Suggestions</h1>
 						<div v-if="categories" class="has-text-light has-text-centered">
 							<section class="section has-background-dark">
@@ -83,7 +84,6 @@
 							</div>
 							</section>
 						</div>
-						-->
 					</section>
 				</div>
 			</div>
