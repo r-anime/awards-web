@@ -57,6 +57,11 @@
 		<br>
 		<br>
 		<h1 class="title is-2 has-text-gold has-text-centered pb-20">Frequently Asked Questions</h1>
+		<h2 class="title is-3 has-text-white">Why is Re:Zero kara Hajimeru Isekai Seikatsu 3rd Season not eligible this year?</h2>
+			<p class="has-text-white pb-20">
+				This ReZero season airs over 2 consecutive seasons with an unorthodox break in-between. As per database guidelines and extensive consultation with databases like Anilist and MyAnimeList any planned break of less than 3 months (i.e. a cour) deems it a single continuous season as opposed to a split cour. Therefore, the season will be eligible after its completion as a full entry in our 2025 awards.
+			</p>
+		<br>
 		<h2 class="title is-3 has-text-white">Are movies eligible for nomination in the Production Categories like Best Animation and Best Soundtrack?</h2>
 			<p class="has-text-white pb-20">
 				No, only TV anime, short series, and ONAs/OVAs with multiple episodes are eligible for nomination in Production Categories. Movies, single episode ONAs/OVAs, music videos, and other single-episode shorts are ineligible but can receive Honorable Mentions from the jury.
