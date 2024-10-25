@@ -70,7 +70,7 @@
 			<p class="has-text-white pb-20">
 				Anime that don’t finish in 2024 such a 2-cour Fall Shows or long-running shows with continuous release schedules are not eligible for any category besides OP/ED. These shows will be eligible the year they reach completion.
 			</p>
-		<h2 class="title is-3 has-text-white">Why can’t I nominate Look Back/Kimi no Iro/Mononoke Karakasa/Bocchi the Rock: Re in any category?</h2>
+		<h2 class="title is-3 has-text-white">Why can’t I nominate Kimi no Iro/Mononoke Karakasa/Bocchi the Rock: Re in any category?</h2>
 			<p class="has-text-white pb-20">
 				Movies that don’t have an English subbed Blu-Ray or Official Streaming Release are not eligible for nomination. They will be carried over to the next year until a Blu-Ray or Official Streaming Release becomes available. Camrips are not allowed. Recap, Compilation, or Extended Edition Movies are not eligible unless they have at least 40 mins of new footage added beyond the original material.
 			</p>

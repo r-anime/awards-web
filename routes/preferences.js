@@ -185,7 +185,11 @@ apiApp.get('/', async (request, response) => {
 				let prefVal = 0;
 				JSON.parse(pref.answers[0].answer).forEach(catId => {
 					const catName = catMap.get(catId);
-					prefTable.get(pref['user_id'])[catName] = prefVal;
+					try {
+						prefTable.get(pref['user_id'])[catName] = prefVal;
+					} catch (e){
+						//
+					}
 					prefVal++;
 				});
 			}
