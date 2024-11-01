@@ -180,19 +180,18 @@ class ApplicationJuror {
 	}
 
 	qualifyingScore(cats, catid){
-		if (category.awardsGroup === 'main') {
-			return this.mainScore;
-		} else {
-
-		}
-		return this.genreScore;
-		/*
 		try {
 			let category = cats.find(cat => cat.id == catid);
 
 			if (category === undefined){
 				console.log(`cant find ${catid}`)
 				return 0;
+			}
+
+			if (category.awardsGroup === 'main') {
+				return this.mainScore;
+			} else {
+				return this.genreScore;
 			}
 
 			if (category.name.match(/OST|Original Sound Track/gm)) {
@@ -219,7 +218,7 @@ class ApplicationJuror {
 			return 0;
 		} catch (e) {
 			return 0;
-		}*/
+		}
 	}
 
 	// all preferences for which we have a qualifying score (passes this threshold)
