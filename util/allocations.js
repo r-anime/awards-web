@@ -413,7 +413,7 @@ class Allocations {
 				// Get the list of eligible jurors
 				let catJurors = [];
 				// If we are in the AotY category, only get the jurors that qualify for it
-				if (cat.awardsGroup = 'main'){
+				if (cat.awardsGroup == 'main'){
 					catJurors = this.getEligibleJurors(cat.id, aotylow, fill);
 				} else {
 					//break;
