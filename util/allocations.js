@@ -110,15 +110,14 @@ class ApplicationJuror {
 					opedcount++;
 				}*/
 			}
+			
 			if (genretotal/genrecount > this.genreScore){
 				this.genreScore = genretotal/genrecount;
 			}
+			/*
 			if (chartotal/charcount > this.characterScore){
 				this.characterScore = chartotal/charcount ;
 			}
-			/* Test */
-			// this.genreScore = Math.max(this.genreScore, this.characterScore);
-			// this.characterScore = Math.max(this.genreScore, this.characterScore);
 			
 			if (visualtotal/visualcount > this.visualScore){
 				this.visualScore = visualtotal/visualcount;
@@ -135,7 +134,11 @@ class ApplicationJuror {
 			if (prodtotal/prodcount > this.prodScore){
 				this.prodScore = prodtotal/prodcount;
 				// console.log(this.prodScore);
-			}
+			}*/
+
+			/* Test */
+			// this.genreScore = Math.max(this.genreScore, this.characterScore);
+			// this.characterScore = Math.max(this.genreScore, this.characterScore);
 		}
 		// console.log(this.prodScore);
 		if (totalavgcount > 0) {
@@ -177,7 +180,13 @@ class ApplicationJuror {
 	}
 
 	qualifyingScore(cats, catid){
+		if (category.awardsGroup === 'main') {
+			return this.mainScore;
+		} else {
+
+		}
 		return this.genreScore;
+		/*
 		try {
 			let category = cats.find(cat => cat.id == catid);
 
@@ -210,7 +219,7 @@ class ApplicationJuror {
 			return 0;
 		} catch (e) {
 			return 0;
-		}
+		}*/
 	}
 
 	// all preferences for which we have a qualifying score (passes this threshold)
