@@ -84,7 +84,7 @@ class ApplicationJuror {
 					genrecount++;
 					totalavg += score.score;
 					totalavgcount++;
-				}
+				}/*
 				else if (score.subgrade === 'char'){
 					chartotal += score.score;
 					charcount++;
@@ -108,7 +108,7 @@ class ApplicationJuror {
 				else if (score.subgrade === 'oped'){
 					opedtotal += score.score;
 					opedcount++;
-				}
+				}*/
 			}
 			if (genretotal/genrecount > this.genreScore){
 				this.genreScore = genretotal/genrecount;
@@ -391,10 +391,11 @@ class Allocations {
 				// Get the list of eligible jurors
 				let catJurors = [];
 				// If we are in the AotY category, only get the jurors that qualify for it
-				if (cat.name == 'Anime of the Year'){
+				if (cat.awardsGroup = 'main'){
 					catJurors = this.getEligibleJurors(cat.id, aotylow, fill);
 				} else {
-					catJurors = this.getEligibleJurors(cat.id, low, fill);
+					break;
+					// catJurors = this.getEligibleJurors(cat.id, low, fill);
 				}
 				// Get catJurors of increasing breadth of preference as the draft increases
 				catJurors = catJurors.filter(juror => juror.catPref(cat.id) == draft);
