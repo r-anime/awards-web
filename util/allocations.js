@@ -353,7 +353,7 @@ class Allocations {
 				return false;
 			}
 			if ([59,58,57,54].includes(catid)){
-				return this.jurorIsFullMain(juror);
+				return !this.jurorIsFullMain(juror);
 			}
 			return juror.qualifiesFor(this.categories, catid, threshold);
 		});
