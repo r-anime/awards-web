@@ -140,13 +140,18 @@ class ApplicationJuror {
 			// this.genreScore = Math.max(this.genreScore, this.characterScore);
 			// this.characterScore = Math.max(this.genreScore, this.characterScore);
 		}
+
+		this.mainScore = 0;
+		this.weightedScore = 0;
 		// console.log(this.prodScore);
 		if (totalavgcount > 0) {
 			// console.log(this.name, (totalavg/totalavgcount), (oldtotalavg/oldtotalavgcount), ((totalavg/totalavgcount)> (oldtotalavg/oldtotalavgcount))? 'SCREWED':'BETTER' );
+			this.mainScore = totalavg / totalavgcount;
+			this.weightedScore = this.mainScore;
 		}
 
-		this.mainScore = totalavg / totalavgcount;
-		this.weightedScore = this.mainScore;
+		// this.mainScore = totalavg / totalavgcount;
+		// this.weightedScore = this.mainScore;
 	}
 
 	calcPrefs(){
