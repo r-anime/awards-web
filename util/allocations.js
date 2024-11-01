@@ -418,7 +418,7 @@ class Allocations {
 
 				} else if (cat.name.includes("Character")) {
 					//break;
-					catJurors = this.getEligibleJurors(cat.id, 2.2, fill);
+					catJurors = this.getEligibleJurors(cat.id, 1.6, fill);
 				} else {
 					//break;
 					catJurors = this.getEligibleJurors(cat.id, low, fill);
