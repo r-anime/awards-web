@@ -2,9 +2,9 @@ const { all } = require("../routes/complain");
 const {yuuko} = require('../bot/index');
 
 const JUROR_MIN = 11;
-const FILL_MAX = 11;
-const JUROR_MAX = 11;
-const AOTY_MAX = 11;
+const FILL_MAX = 13;
+const JUROR_MAX = 99;
+const AOTY_MAX = 13;
 
 function shuffle (array) {
 	let currentIndex = array.length; let temporaryValue; let randomIndex;
@@ -292,7 +292,7 @@ class Allocations {
 		}
 
 		const catJurors = this.allocatedJurors.filter(juror => juror.catid == catid);
-		if (category.name == "Anime of the Year"){
+		if (category.awardsGroup == 'main'){
 			return catJurors.length >= AOTY_MAX;
 		} else {
 			if (fill){
@@ -312,6 +312,11 @@ class Allocations {
 	jurorIsFull(juror){
 		const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name);
 		return (jurorAllocations.length >= juror.wantedCats);
+	}
+
+	jurorIsFullMain(juror){
+		const jurorAllocations = this.allocatedJurors.filter(aj => aj.name == juror.name && [59,58,57,54].includes(aj.catid));
+		return (jurorAllocations.length >= 2);
 	}
 
 	jurorInCat(juror, catid){
@@ -346,6 +351,9 @@ class Allocations {
 			}
 			if (this.jurorInCat(juror, catid)){
 				return false;
+			}
+			if ([59,58,57,54].includes(catid)){
+				return this.jurorIsFullMain(juror);
 			}
 			return juror.qualifiesFor(this.categories, catid, threshold);
 		});

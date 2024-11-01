@@ -198,7 +198,11 @@ apiApp.get('/', async (request, response) => {
 
         // Add cats they are a juror in
 		categoryJurors.forEach(juror => {
-			prefTable.get(juror.user.id).jurorIn.push(catMap.get(juror.categoryId));
+			try {
+				prefTable.get(juror.user.id).jurorIn.push(catMap.get(juror.categoryId));
+			} catch (e) {
+				
+			}
 		});
 
         // Add scores
