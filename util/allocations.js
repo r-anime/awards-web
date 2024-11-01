@@ -177,6 +177,7 @@ class ApplicationJuror {
 	}
 
 	qualifyingScore(cats, catid){
+		return this.genreScore;
 		try {
 			let category = cats.find(cat => cat.id == catid);
 
