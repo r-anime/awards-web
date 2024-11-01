@@ -394,8 +394,8 @@ class Allocations {
 				if (cat.awardsGroup = 'main'){
 					catJurors = this.getEligibleJurors(cat.id, aotylow, fill);
 				} else {
-					break;
-					// catJurors = this.getEligibleJurors(cat.id, low, fill);
+					//break;
+					catJurors = this.getEligibleJurors(cat.id, low, fill);
 				}
 				// Get catJurors of increasing breadth of preference as the draft increases
 				catJurors = catJurors.filter(juror => juror.catPref(cat.id) == draft);
