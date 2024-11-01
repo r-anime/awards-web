@@ -441,7 +441,7 @@ export default {
 										}
 									} else {
 										this.answers[question.id] = '';
-										this.$set(this.essayText, question.id, `Please write ${500 - this.answers[question.id].length} characters to submit your answer`);
+										this.$set(this.essayText, question.id, `Please write ${500 - this.answers[question.id].length/5000} characters to submit your answer`);
 									}
 								}
 								this.$set(this.saving, question.id, false);
