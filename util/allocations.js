@@ -193,7 +193,7 @@ class ApplicationJuror {
 				return 0;
 			}
 
-			if (category.awardsGroup === 'main') {
+			if (category.name.includes("of the Year")) {
 				return this.mainScore;
 			} else {
 				return this.genreScore;
