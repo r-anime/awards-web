@@ -17,7 +17,7 @@
 					</p>
 				</div>
 			</div>
-			<small class="has-text-light mx-4 mb-1">You may vote up to 5 times per category.</small>
+			<small class="has-text-light mx-4 mb-1">You may vote up to 5 times per category. 50 entries are displayed randomly, we strongly recommend using the search bar to look for your shows.</small>
 			<div v-if="loaded && filteredShows.length" class="show-picker-entries" @scroll="handleScroll($event)">
 				<VAPickerEntry
 					v-for="show in filteredShows"
