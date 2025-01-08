@@ -10,6 +10,12 @@
 			We hope to see you at this year’s Awards!
 		</p>
 		<div class="has-text-right has-text-white"> - /r/anime Award 2024 Host Team </div>
+		<h2 class="title is-3 has-text-white"> What is the schedule for the Public? </h2>
+		<ul class="has-text-white pb-20">
+			<li>Nomination voting: January 3rd - January 12th</li>
+			<li>Ranking voting: January 20th - Feburary 23rd</li>
+			<li>Livestream: March 8th </li>
+		</ul>
 		<h2 class="title is-3 has-text-white"> When Do We Judge? </h2>
 		<ul class="has-text-white pb-20">
 			<li>Stage 1: Familiarization and Shortlisting (Nov 1 - Dec 30) - Get to know your fellow jurors and categories, and submit your top anime for the categories you wish to join.</li>
