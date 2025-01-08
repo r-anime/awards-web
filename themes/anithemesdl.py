@@ -46,7 +46,9 @@ if __name__ == "__main__":
         anime_list: list[dict] = []
         for anime in results:
             name, season = anime["name"], anime["season"]
-            anilist = anime["resources"][0]["external_id"]
+            anilist = -883
+            if (len(anime["resources"]) > 0):
+                anilist = anime["resources"][0]["external_id"]
             for themes in anime["animethemes"]:
                 oped = themes["type"]
                 sequence = themes["sequence"]
@@ -55,22 +57,22 @@ if __name__ == "__main__":
                     version, episodes = entries["version"], entries["episodes"]
                     for videos in entries["videos"]:
                         link = videos["link"]
-                        if "NCBD1080" not in link:
-                            ver = ""
-                            if (str(sequence) != "None"):
-                                ver = str(sequence)
-                            anime_list.append(
-                                {
-                                    "name": name,
-                                    "songname": songname,
-                                    "anilist": anilist,
-                                    "type": str(oped) + ver,
-                                    #"season": season,
-                                    #"version": ,
-                                    #"episodes": episodes,
-                                    "link": link,
-                                }
-                            )
+                        # if "NCBD1080" not in link:
+                        ver = ""
+                        if (str(sequence) != "None"):
+                            ver = str(sequence)
+                        anime_list.append(
+                            {
+                                "name": name,
+                                "songname": songname,
+                                "anilist": anilist,
+                                "type": str(oped) + ver,
+                                #"season": season,
+                                #"version": ,
+                                #"episodes": episodes,
+                                "link": link,
+                            }
+                        )
         if args.output == "csv":
             with open(
                 f"animethemes_{args.year}_{args.season}.csv", "w",  encoding="utf-8", newline=""

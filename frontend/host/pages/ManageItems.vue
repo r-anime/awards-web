@@ -355,7 +355,7 @@ export default {
 			this.progMaxValue = this.animeItemIDs.length;
 			for (const item of this.animeItemIDs){
 				if (item == -1 ) { continue; }
-				await new Promise(resolve => setTimeout(resolve, 750));
+				await new Promise(resolve => setTimeout(resolve, 20000));
 				await this.importCharactersByShow(item, 1);
 				this.progCurrValue += 1;
 			}
@@ -437,7 +437,7 @@ export default {
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
 					await this.addItems(importPage);
-					await new Promise(resolve => setTimeout(resolve, 750));
+					await new Promise(resolve => setTimeout(resolve, 20000));
 					importPage.splice(0);
 					await _this.importAnimeByIDs(results.pageInfo.currentPage+1);
 				} else {
@@ -501,7 +501,7 @@ export default {
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
 					await this.addItems(importPage);
-					await new Promise(resolve => setTimeout(resolve, 750));
+					await new Promise(resolve => setTimeout(resolve, 20000));
 					importPage.splice(0);
 					await _this.importAnime(results.pageInfo.currentPage+1, 20240101, 20250110);
 				} else {
@@ -580,7 +580,7 @@ export default {
 					}
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
-					await new Promise(resolve => setTimeout(resolve, 750));
+					await new Promise(resolve => setTimeout(resolve, 20000));
 					await _this.importCharactersByShow(id, results.pageInfo.currentPage+1);
 				} else {
 					await this.addItems(this.pulledEntries);
@@ -638,7 +638,7 @@ export default {
 					}
 				}
 				if (results.pageInfo.currentPage < results.pageInfo.lastPage){
-					await new Promise(resolve => setTimeout(resolve, 750));
+					await new Promise(resolve => setTimeout(resolve, 20000));
 					await _this.updateAnimeByIDs(results.pageInfo.currentPage+1);
 				} else {
 					await this.updateItems(this.pulledEntries);

@@ -10,6 +10,14 @@
 			We hope to see you at this year’s Awards!
 		</p>
 		<div class="has-text-right has-text-white"> - /r/anime Award 2024 Host Team </div>
+		<h2 class="title is-3 has-text-white"> When Do We Judge? </h2>
+		<ul class="has-text-white pb-20">
+			<li>Stage 1: Familiarization and Shortlisting (Nov 1 - Dec 30) - Get to know your fellow jurors and categories, and submit your top anime for the categories you wish to join.</li>
+			<li>Stage 2: Nomination (Jan 2 - Jan 14) - Discuss and vote on five nominations per category. </li>
+			<li>Stage 3: Ranking (Jan 14 - Feb 11)- Watch and rank the nominations as a category</li>
+			<li>Stage 4: Write Ups (Feb 12 - Feb 28) - Write reviews for the website and optionally discuss the jury selection with Special Guests for recorded segments.</li>
+			<li>Stage 5: Livestream (Mar 1) - Celebrate the jury's work with a Twitch livestream.</li>
+		</ul>
 		<h2 class="title is-3 has-text-white"> What Do We Judge? </h2>
 		<p class="has-text-white pb-20">
 			The 2024 Awards feature 19 categories, each recognizing 10 nominees - five selected by the subreddit and five chosen by the jury. The 19 categories are: 
@@ -41,15 +49,8 @@
 		<h2 class="title is-3 has-text-white"> How Do We Judge? </h2>
 		<p class="has-text-white pb-20">		
 			Each category consists of up to 25 jury members who collaborate on Discord during the Awards season. Their role is to narrow the year's options to five jury nominations, rank them alongside five nominations from the public, and write reviews. The jury’s rankings and reviews are posted alongside the public rankings determined by the subreddit’s popular vote.
-			When Do We Judge? 
 		</p>
-		<ul class="has-text-white pb-20">
-			<li>Stage 1: Familiarization and Shortlisting (Nov 1 - Dec 30) - Get to know your fellow jurors and categories, and submit your top anime for the categories you wish to join.</li>
-			<li>Stage 2: Nomination (Jan 2 - Jan 14) - Discuss and vote on five nominations per category. </li>
-			<li>Stage 3: Ranking (Jan 14 - Feb 11)- Watch and rank the nominations as a category</li>
-			<li>Stage 4: Write Ups (Feb 12 - Feb 28) - Write reviews for the website and optionally discuss the jury selection with Special Guests for recorded segments.</li>
-			<li>Stage 5: Livestream (Mar 1) - Celebrate the jury's work with a Twitch livestream.</li>
-		</ul>
+		
 		<h2 class="title is-3 has-text-white"> How to Apply </h2>
 		<p class="has-text-white pb-20">
 			If you enjoy discussing anime and gaining new insights, or if the Awards process sounds exciting, then head on over to the <a href="/apps">Jury Application</a>. We look forward to welcoming you as 2024 jurors!

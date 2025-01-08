@@ -12,6 +12,9 @@
 					is better solved by v-if's so here's yet another hack-->
 					<!-- it's okay this is exactly how i did it last year too lol -->
 					<!-- I hate both of you -->
+					<div class="has-text-platinum">
+
+					</div>
 					<div class="columns is-multiline">
 						<div class="selection-column column is-2-widescreen is-12">
 						</div>
