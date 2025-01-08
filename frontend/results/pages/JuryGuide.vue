@@ -22,7 +22,7 @@
 			<li>Stage 2: Nomination (Jan 2 - Jan 14) - Discuss and vote on five nominations per category. </li>
 			<li>Stage 3: Ranking (Jan 14 - Feb 11)- Watch and rank the nominations as a category</li>
 			<li>Stage 4: Write Ups (Feb 12 - Feb 28) - Write reviews for the website and optionally discuss the jury selection with Special Guests for recorded segments.</li>
-			<li>Stage 5: Livestream (Mar 1) - Celebrate the jury's work with a Twitch livestream.</li>
+			<li>Stage 5: Livestream (Mar 8) - Celebrate the jury's work with a Twitch livestream.</li>
 		</ul>
 		<h2 class="title is-3 has-text-white"> What Do We Judge? </h2>
 		<p class="has-text-white pb-20">
