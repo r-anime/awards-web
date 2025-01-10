@@ -19,9 +19,9 @@
 		<h2 class="title is-3 has-text-white"> When Do We Judge? </h2>
 		<ul class="has-text-white pb-20">
 			<li>Stage 1: Familiarization and Shortlisting (Nov 1 - Dec 30) - Get to know your fellow jurors and categories, and submit your top anime for the categories you wish to join.</li>
-			<li>Stage 2: Nomination (Jan 2 - Jan 14) - Discuss and vote on five nominations per category. </li>
-			<li>Stage 3: Ranking (Jan 14 - Feb 11)- Watch and rank the nominations as a category</li>
-			<li>Stage 4: Write Ups (Feb 12 - Feb 28) - Write reviews for the website and optionally discuss the jury selection with Special Guests for recorded segments.</li>
+			<li>Stage 2: Nomination (Jan 2 - Jan 17) - Discuss and vote on five nominations per category. </li>
+			<li>Stage 3: Ranking (Jan 18 - Feb 16)- Watch and rank the nominations as a category</li>
+			<li>Stage 4: Write Ups (Feb 17 - Mar 7) - Write reviews for the website and optionally discuss the jury selection with Special Guests for recorded segments.</li>
 			<li>Stage 5: Livestream (Mar 8) - Celebrate the jury's work with a Twitch livestream.</li>
 		</ul>
 		<h2 class="title is-3 has-text-white"> What Do We Judge? </h2>
