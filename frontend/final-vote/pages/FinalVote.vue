@@ -303,6 +303,7 @@ export default {
 				}
 				return nom.alt_name || `${_theme.title} (${_show.title.english} ${_theme.themeNo})` || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})`;
 			}
+			return nom.id;
 		},
 		getImage (nom) {
 			if (this.currentCat.entryType === 'shows' || this.currentCat.entryType === 'themes' || this.vote.cat >= this.categories.length) {
