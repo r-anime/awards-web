@@ -154,13 +154,13 @@ export default {
 			if (cat.entryType === 'shows' || this.vote.cat >= this.categories.length ) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				// console.log(_show);
-				if (this.romaji) {
+				if (_show && this.romaji) {
 					return nom.alt_name || _show.title.romaji || _show.title.english;
 				}
 				return nom.alt_name || _show.title.english || _show.title.romaji;
 			} else if (cat.entryType === 'characters') {
 				const _char = this.data.characters.find(char => char.id === parseInt(nom.character_id, 10));
-				if (this.romaji) {
+				if (_char && this.romaji) {
 					return nom.alt_name || `${_char.name.full} (${_char.media.nodes[0].title.romaji})` || `${_char.name.full} (${_char.media.nodes[0].title.english})`;
 				}
 				return nom.alt_name || `${_char.name.full} (${_char.media.nodes[0].title.english})` || `${_char.name.full} (${_char.media.nodes[0].title.romaji})`;
@@ -174,7 +174,7 @@ export default {
 			} else if (cat.entryType === 'themes') {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				const _theme = this.themes.find(theme => theme.id === nom.themeId);
-				if (this.romaji) {
+				if (_show && _theme && this.romaji) {
 					return nom.alt_name || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})` || `${_theme.title} (${_show.title.english} ${_theme.themeNo})`;
 				}
 				return nom.alt_name || `${_theme.title} (${_show.title.english} ${_theme.themeNo})` || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})`;
