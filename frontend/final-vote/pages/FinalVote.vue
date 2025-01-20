@@ -284,6 +284,9 @@ export default {
 			if (this.currentCat.entryType === 'shows' || this.vote.cat >= this.categories.length ) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				// console.log(_show);
+				if (_show === undefined){
+					return '';
+				}
 				if (_show && this.romaji) {
 					return nom.alt_name || _show.title.romaji || _show.title.english;
 				}
