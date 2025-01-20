@@ -285,7 +285,7 @@ export default {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				// console.log(_show);
 				if (_show === undefined){
-					return nom.alt_name || nom.anilist_id || '';
+					return nom.alt_name || ('' + nom.anilist_id) || '';
 				}
 				if (_show && this.romaji) {
 					return nom.alt_name || _show.title.romaji || _show.title.english;
