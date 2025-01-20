@@ -207,6 +207,9 @@ export default {
 				// eslint-disable-next-line eqeqeq
 				const noms = this.unique.survey;
 				noms.sort((a, b) => {
+					if (a.id < 0){
+						return 0;
+					}
 					if (this.getName(a).trim() < this.getName(b).trim()) {
 						return -1;
 					}
