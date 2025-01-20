@@ -301,7 +301,7 @@ export default {
 			} else if (this.currentCat.entryType === 'themes') {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				const _theme = this.themes.find(theme => theme.id === nom.themeId);
-				if (this.romaji) {
+				if (_show && _show.romaji && _theme && _theme.romaji) {
 					return nom.alt_name || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})` || `${_theme.title} (${_show.title.english} ${_theme.themeNo})`;
 				}
 				return nom.alt_name || `${_theme.title} (${_show.title.english} ${_theme.themeNo})` || `${_theme.title} (${_show.title.romaji} ${_theme.themeNo})`;
