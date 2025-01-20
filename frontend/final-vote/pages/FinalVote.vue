@@ -275,6 +275,9 @@ export default {
 			return _show;
 		},
 		getName (nom) {
+			if (!nom){
+				return '';
+			}
 			if (this.currentCat.entryType === 'shows' || this.vote.cat >= this.categories.length ) {
 				const _show = this.data.shows.find(show => show.id === parseInt(nom.anilist_id, 10));
 				// console.log(_show);
