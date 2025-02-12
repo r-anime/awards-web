@@ -134,7 +134,7 @@ export default {
 			return `${JSON.stringify(this.me, null, 4)}`;
 		},
 		liveStreamDate () {
-			var livestreamDateTime = new Date(1741467600);
+			var livestreamDateTime = new Date(1741467600000);
 			return livestreamDateTime.toLocaleString();
 		}
 	},
