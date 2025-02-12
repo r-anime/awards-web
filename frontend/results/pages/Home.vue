@@ -135,7 +135,7 @@ export default {
 		},
 		liveStreamDate () {
 			var livestreamDateTime = new Date(1741467600);
-			return '' + livestreamDateTime.getDay() + ', ' + livestreamDateTime.getMonth() + '' + livestreamDateTime.getDate() + ' at ' + livestreamDateTime.getHours();
+			return livestreamDateTime.toLocaleString();
 		}
 	},
 	methods: {
