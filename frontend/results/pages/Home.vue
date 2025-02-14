@@ -31,7 +31,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="has-background-dperiwinkle py-6">
+		<div class="has-background-dperiwinkle py-6 ">
 			<div class="container">
 				<div class="content has-text-light has-text-left p-5">
 					<div class="has-text-centered">
