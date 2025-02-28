@@ -13,7 +13,7 @@
 							Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer.
 							<br/>
 							<br/>
-							<b>Check out the livestream on {{liveStreamDate}} at <a href="https://www.twitch.tv/animeawards">https://www.twitch.tv/animeawards</a></b>
+							<b>Check out the Jeopardy pre-show at {{jeopardyDate}} and the livestream on {{liveStreamDate}} at <a href="https://www.twitch.tv/animeawards">https://www.twitch.tv/animeawards</a></b>
 						</p>
 						<div class="has-text-centered">
 							<a v-if="voting" href="/vote/" class="button is-primary is-large is-centered">Vote Now</a>
