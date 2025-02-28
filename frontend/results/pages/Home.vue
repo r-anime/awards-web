@@ -135,7 +135,11 @@ export default {
 			return `${JSON.stringify(this.me, null, 4)}`;
 		},
 		liveStreamDate () {
-			var livestreamDateTime = new Date(1741467600000);
+			var livestreamDateTime = new Date(1741471200000);
+			return livestreamDateTime.toLocaleString();
+		},
+		jeopardyDate () {
+			var livestreamDateTime = new Date(1741469400000);
 			return livestreamDateTime.toLocaleString();
 		}
 	},
