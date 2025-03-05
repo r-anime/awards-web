@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class IPBan extends Model
 {
-    use HasFactory;
+    // use HasFactory;
     protected $table = 'ip_bans';
 }

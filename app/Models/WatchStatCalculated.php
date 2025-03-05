@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class WatchStatCalculated extends Model
 {
-    use HasFactory;
+    // use HasFactory;
     protected $table = 'watch_stats_calculated';
 }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('reddit_user', length:32)->after('remember_token')->nullable();
-            $table->integer('role')->after('reddit_user');
-            $table->integer('flags')->after('role');
+            $table->integer('role')->after('reddit_user')->default(0);
+            $table->integer('flags')->after('role')->default(0);
             $table->text('avatar')->after('flags')->nullable();
             $table->text('about')->after('avatar')->nullable();
         });

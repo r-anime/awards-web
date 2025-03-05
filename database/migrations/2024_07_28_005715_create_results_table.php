@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('year');
             $table->foreignId('category_id');
-            $table->varchar('name', length:255);
+            $table->string('name', length:255);
             $table->text('image');
             $table->morphs('entry');
             $table->integer('jury_rank');

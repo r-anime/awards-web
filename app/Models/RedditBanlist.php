@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class RedditBanlist extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 }

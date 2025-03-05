@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Option extends Model
 {
-    use HasFactory;
+    // use HasFactory;
     public $timestamps = false;
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('year');
             $table->string('name', length: 32);
-            $table->string('type', varchar: 16);
+            $table->string('type', length: 16);
             $table->integer('order');
         });
     }

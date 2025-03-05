@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class FinalVote extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 }
