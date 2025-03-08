@@ -53,16 +53,6 @@
 							</router-link>
 						</div>
 						<div class="level-item has-text-centered">
-							<router-link to="/results/character" >
-							<div>
-								<p class="heading has-text-gold">Character</p>
-								<p class="title">
-									<fa-icon icon="user-friends" size="3x" class="has-text-gold mb-20 mt-20" />
-								</p>
-							</div>
-							</router-link>
-						</div>
-						<div class="level-item has-text-centered">
 							<router-link to="/results/production" >
 							<div>
 								<p class="heading has-text-gold">Production</p>

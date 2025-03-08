@@ -463,64 +463,69 @@ export default {
 		},
 	},
 	mounted () {
-		switch (this.year) {
-			case undefined:
-				import(/* webpackChunkName: "results23" */ '../../data/results2023.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			case '2023':
-				import(/* webpackChunkName: "results23" */ '../../data/results2023.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-			break;
-			case '2022':
-				import(/* webpackChunkName: "results22" */ '../../data/results2022.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-			break;
-			case '2021':
-				import(/* webpackChunkName: "results21" */ '../../data/results2021.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			case '2020':
-				import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			case '2019':
-				import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			case '2018':
-				import(/* webpackChunkName: "results18" */ '../../data/results2018.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			case '2017':
-				import(/* webpackChunkName: "results17" */ '../../data/results2017.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			case '2016':
-				import(/* webpackChunkName: "results17" */ '../../data/results2016.json').then(data => {
-					this.results = Object.assign({}, data);
-					this.fetchAnilist();
-				});
-				break;
-			default:
-				break;
-		}
+		import(/* webpackChunkName: "[request]" */ `../../data/results${this.year}.json`).then(data => {
+			this.results = Object.assign({}, data);
+			this.fetchAnilist();
+		});
+
+		// switch (this.year) {
+		// 	case undefined:
+		// 		import(/* webpackChunkName: "results23" */ '../../data/results2023.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	case '2023':
+		// 		import(/* webpackChunkName: "results23" */ '../../data/results2023.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 	break;
+		// 	case '2022':
+		// 		import(/* webpackChunkName: "results22" */ '../../data/results2022.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 	break;
+		// 	case '2021':
+		// 		import(/* webpackChunkName: "results21" */ '../../data/results2021.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	case '2020':
+		// 		import(/* webpackChunkName: "results20" */ '../../data/results2020.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	case '2019':
+		// 		import(/* webpackChunkName: "results19" */ '../../data/results2019.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	case '2018':
+		// 		import(/* webpackChunkName: "results18" */ '../../data/results2018.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	case '2017':
+		// 		import(/* webpackChunkName: "results17" */ '../../data/results2017.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	case '2016':
+		// 		import(/* webpackChunkName: "results17" */ '../../data/results2016.json').then(data => {
+		// 			this.results = Object.assign({}, data);
+		// 			this.fetchAnilist();
+		// 		});
+		// 		break;
+		// 	default:
+		// 		break;
+		// }
 	},
 };
 </script>
