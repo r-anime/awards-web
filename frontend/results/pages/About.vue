@@ -44,9 +44,9 @@
                                     <h2 class="title is-4 has-text-llperiwinkle has-text-left">Complete Livestream Guest List (in order of appearance):</h2>
                                     <div class="content has-text-light">
                                         <ul>
-                                            <li><p>  Best Action - Jackisboy from Spilling the Milk</p>
+                                            <li><p>  Jackisboy from Spilling the Milk</p>
                                             </li>
-                                            <li><p>  Best Adventure - Ember Reviews</p>
+                                            <li><p>  Ember Reviews</p>
                                             </li>
                                             <li><p>  Joe from Pause and Select</p>
                                             </li>
