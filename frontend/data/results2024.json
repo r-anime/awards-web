@@ -1402,7 +1402,44 @@
           "staff": "MADHOUSE\n\nChief Animation Director: Reiko Nagasawa\n\nAction Director: Tooru Iwazawa\n\nProminent Animators: Kouki Fujimoto, Keiichirou Watanabe, Vercreek, Hiroki Uchiyama, Kou Yoshinari\n"
          }
         ],
-        "hms": []
+        "hms": [
+            {
+             "id": 239,
+             "name": "Shangri-La Frontier Episode 18",
+             "writeup": "The culmination of Sunraku and co’s efforts against Wazaemon, a grandiose battle helmed by Hironori Tanaka that includes all of his trademark tells: storyboards that focus on closeups with highly detailed shading, strong usage of foreshortening, and impact frames galore. Of most importance, Tanaka makes corrections from the director’s seat to execute on his ideas in full force to make the climactic battle a legendary fight in the lore of their world.\n",
+             "active": true,
+             "createdAt": "2025-03-09T00:47:47.880Z",
+             "updatedAt": "2025-03-09T00:47:47.880Z",
+             "categoryId": 46
+            },
+            {
+             "id": 240,
+             "name": "Dragon Ball Daima Episode 8",
+             "writeup": "Albeit a short battle within the “A” part of the episode, Kazuya Karasawa crafts some of the most charismatic and dynamic action in TV Dragonball to date; enlisting the help of animators such as Ken Ootsuka, Youhei Sasaki, Naotoshi Shida, and others to portray an intense clash between Son Goku and Tamagami 3 over the fate of the three star Demon World dragon ball. Good usage of background animation, flat perspective, and dimensional layouts draw out the ferocity of their clash until its palpitating conclusion.",
+             "active": true,
+             "createdAt": "2025-03-09T00:47:47.886Z",
+             "updatedAt": "2025-03-09T00:47:47.886Z",
+             "categoryId": 46
+            },
+            {
+             "id": 241,
+             "name": "Solo Leveling Episode 11",
+             "writeup": "Takayuki Kikuchi imbues some of the strongest action direction this year with the masterful skilled work of Yoshihiro Kanno, Takafumi Torii, Kouta Mori, Hajime Nakagawa, etc. for the climax of Sun Jinwoo’s battle with Igris the Knight. Fully utilizing the capabilities of 3D-modeled backgrounds to take advantage of space and the layout of the throne room, leads to thrilling sequences of sword and hand-to-hand combat full of background animation and impact frames.",
+             "active": true,
+             "createdAt": "2025-03-09T00:47:47.890Z",
+             "updatedAt": "2025-03-09T00:47:47.890Z",
+             "categoryId": 46
+            },
+            {
+             "id": 242,
+             "name": "It’s Time for Torture, Princess Episode 1",
+             "writeup": "Goumon’s first episode is a master class in bouncy, goofy acting animation as Hime is “tortured” with having toasted bread ripped in front of her, ramen eaten in front of her, and other mundane methods. A lot of smears, simplified shapes, and volumetric shading aid in the depiction that contrasts her resistance to being tortured with her incapability of controlling her inner desires.\n",
+             "active": true,
+             "createdAt": "2025-03-09T00:47:47.895Z",
+             "updatedAt": "2025-03-09T00:47:47.895Z",
+             "categoryId": 46
+            }
+           ]
        },
        {
         "name": "Background Art",
@@ -1549,7 +1586,35 @@
           "staff": "Backgrounds: Studio Wyeth, Room's Studio, Deho Gallery\n\nArt Director: Sawako Takagi\n"
          }
         ],
-        "hms": []
+        "hms": [
+            {
+             "id": 236,
+             "name": "Monogatari Series: Off and Monster Season #06.5",
+             "writeup": "*Monogatari Series: Off and Monster Season* #06.5 features a unique visual style reminiscent of a theatrical stage production, standing out even among the already creative and diverse main style. The [backgrounds](https://files.catbox.moe/5hdgi9.jpg) in #06.5 consist of flat, decorative objects placed at varying depths to create a sense of volume, while also being able to [move](https://files.catbox.moe/7f4iny.mp4) for seamless transitions, much like a theatrical play. The deepest layer is a fabric canvas that shifts colors to match the mood of the events. This elegant approach to backgrounds, both simple and effective in storytelling, makes extra episode #06.5 truly special and memorable.\n",
+             "active": true,
+             "createdAt": "2025-03-09T00:44:46.889Z",
+             "updatedAt": "2025-03-09T00:44:46.889Z",
+             "categoryId": 47
+            },
+            {
+             "id": 237,
+             "name": "Jellyfish Can’t Swim in the Night #01",
+             "writeup": "Yuji Kaneko beautifully captures the nightlife of Shibuya, a vibrant center of creativity brimming with inspiration. The rich use of colors and thoughtful composition guide the viewer’s eye to gorgeously hand-painted details, particularly in how Yoru’s jellyfish mural is utilized. The mural’s depiction as it ages over the years enhances the storytelling, reinforcing the significance of Kano’s unyielding inspiration.",
+             "active": true,
+             "createdAt": "2025-03-09T00:44:46.894Z",
+             "updatedAt": "2025-03-09T00:44:46.894Z",
+             "categoryId": 47
+            },
+            {
+             "id": 238,
+             "name": "Love Live Superstar S3 #05",
+             "writeup": "Liella!’s trip to Shanghai features a series of vivid, photorealistic backgrounds with impressive depth. One shot depicts Natsumi Onitsuka and Shiki Wakana gazing over a meticulously detailed temple that wouldn’t look out of place in *The Apothecary Diaries*. Both the rich coloring and intricate details capture the vibrant, bustling nature of Shanghai—especially fitting for Keke Tang, who hails from the city. In the shopping district, this liveliness is further emphasized through an abundance of photorealistic objects and minimal plain walls. Large windows and expansive canopies replace bare surfaces, showcasing a strong attention to detail across both the narrow alleys and open spaces that define Shanghai.",
+             "active": true,
+             "createdAt": "2025-03-09T00:44:46.901Z",
+             "updatedAt": "2025-03-09T00:44:46.901Z",
+             "categoryId": 47
+            }
+           ]
        },
        {
         "name": "Character Design",
@@ -1695,7 +1760,26 @@
           "staff": "Original Character Design: Ryouko Kui\n\nCharacter Design: Naoki Takeda\n\nMonster Design: Yuuto Kaneko\n"
          }
         ],
-        "hms": []
+        "hms": [
+            {
+             "id": 243,
+             "name": "Hokkyoku Hyakkaten no Concierge-san",
+             "writeup": "*Hokkyoku Hyakkaten no Concierge-san* brings together people and animals from all walks of life through Chiyo Morita’s charming character designs. The film showcases an incredible variety of shapes, outfits, and body language that bring its many animal guests to life, from chic celebrity sea minks to anxious, hunched-over foxes. Complementing the animals, the concierges feature fun, exaggerated angular designs that become even more expressive as they accommodate their guests, emphasizing their dedication to customer service. These designs beautifully reflect the Hokkyoku Department Store’s philosophy: creating a space where everyone can come together and enjoy themselves.",
+             "active": true,
+             "createdAt": "2025-03-09T00:47:57.526Z",
+             "updatedAt": "2025-03-09T00:47:57.526Z",
+             "categoryId": 48
+            },
+            {
+             "id": 244,
+             "name": "Look Back",
+             "writeup": "Art, like all things in life, finds beauty in its imperfections. Kiyotaka Oshiyama boldly embraces this idea with designs that feature loose, almost unpolished linework, capturing the illustrative flair of Tatsuki Fujimoto’s original work. The organic humanity of *Look Back*’s craftsmanship seeps through the subtle cracks in the character artwork—sketchy outlines that aren’t always smoothed out, lines that sometimes overlap or leave unexpected gaps. This very philosophy gives rise to some of the film’s most cathartic moments, most notably Fujino’s iconic run in the rain.",
+             "active": true,
+             "createdAt": "2025-03-09T00:47:57.532Z",
+             "updatedAt": "2025-03-09T00:47:57.532Z",
+             "categoryId": 48
+            }
+           ]
        },
        {
         "name": "Cinematography",
@@ -1844,7 +1928,71 @@
           "staff": "MADHOUSE\n\nDirector: Keiichirou Saitou\n\nAction Director: Tooru Iwazawa\n\nDirector of Photography: Akane Fushihara\n\nColor Design: Harue Oono\n"
          }
         ],
-        "hms": []
+        "hms": [
+            {
+             "id": 245,
+             "name": "Mononoke: Karakasa",
+             "writeup": "Building on its TV predecessor, *Mononoke: Karakasa* wields a kaleidoscopic array of colors blended into its painting-inspired scenery, all overlaid with a canvas filter. The result is a visual style that is both beautiful and unsettling. This film takes things even further with frequent flying camera shots and rapid cuts that deliberately disorient the viewer, obscuring clues to the central mystery and heightening the intensity of the action scenes. It’s a bold and unconventional fusion of visual style and film technique—one that might feel overwhelming in any other film but serves as the perfect complement to *Mononoke*'s unique blend of poetic palace intrigue and fantasy-horror mystery.",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.201Z",
+             "updatedAt": "2025-03-09T01:00:19.201Z",
+             "categoryId": 49
+            },
+            {
+             "id": 246,
+             "name": "Tsue to Tsurugi no Wistor #01ia",
+             "writeup": "The first episode of *Tsue to Tsurugi no Wistoria* makes a phenomenal first impression with its masterful shot composition, color design, lighting, and camera work. A wealth of well-chosen high- and low-angle shots starkly frame the characters’ relationships and isolation as they are introduced, while numerous inserts and close-ups allow their [body language to shine](https://www.sakugabooru.com/data/9b2db1ed6deef9cdda5d91762026ab45.mp4). Frequent use of focus racking guides the audience’s attention, and purposeful continuity across shots ensures that character staging naturally directs the viewer’s gaze toward the not-yet-seen subject of the next shot. The vibrant and dynamic magic VFX [saturates the scenery with light and color](https://www.sakugabooru.com/data/d38710d54fe0cfee7042acdbfc36e6c5.mp4), making the world’s magic feel viscerally powerful.",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.217Z",
+             "updatedAt": "2025-03-09T01:00:19.217Z",
+             "categoryId": 49
+            },
+            {
+             "id": 247,
+             "name": "Gimai Seikatsu - Ayase’s Diary Entries ",
+             "writeup": "In *Gimai Seikatsu*, director Souta Ueno takes an experimental, avant-garde approach to visual storytelling, seamlessly blending it with slice-of-life to create a uniquely immersive experience. With its slow pacing and compositions that pull the audience into an observational role, often using [large negative spaces to create distance](https://imgur.com/MQDPwPn), the show invites you to breathe, immerse yourself, and engage more deeply with its world. \n\nAs everyday life unfolds, attentive viewers will notice intricate visual storytelling techniques: the [subtle evolution of the house over time](https://imgur.com/7DQkfUL), the way [camera distance reflects emotional proximity](https://imgur.com/DAZv2ER), the recurrence of [everyday objects that hold a link to the characters](https://imgur.com/AuujFjh), and how [shifting visual styles convey different perspectives](https://imgur.com/wdgJp1g). Most notably, the recurring [8mm analogue film visuals are used to offer a glimpse into Ayase's daily life and perspective](https://files.catbox.moe/ml7p3x.mp4) as she records it in her diary. Until these moments, the narrative primarily follows Asamura’s perspective, where he has limited insight into Ayase’s thoughts, and the shift to her perspective adds depth and context to the story. Few shows take the time to balance both characters' perspectives, and this approach creates a more emotionally nuanced experience. Through these inventive storytelling methods, director Ueno pushes the boundaries of how a slice-of-life anime can be expressed.\n",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.222Z",
+             "updatedAt": "2025-03-09T01:00:19.222Z",
+             "categoryId": 49
+            },
+            {
+             "id": 248,
+             "name": "Yoru no Kurage wa Oyogenai #01",
+             "writeup": "Jellyfish can't swim in the night, but they can drift through a [beautiful rendition of evenings in Shibuya](https://i.imgur.com/whraWoQ.jpeg)—multi-colored lights from shops and signs filling the dark streets and plazas with a glowing vibrancy and warmth, which is further emphasized in the opening scenes by [keeping protagonist Mahiru far from the camera](https://i.imgur.com/gBOEnRN.jpeg). It's an eye-catching and evocative way of immersing the audience into the setting by showing off the locale, but even more importantly it serves to emphasize Mahiru's belief that she is not special or talented by often framing her as [little more than a nameless background character in the Shibuya crowds](https://i.imgur.com/v71EpRi.jpeg).\n\nThis begins to change after Mahiru meets Kano. As the two girls learn about each other, the storyboarding playfully establishes separation between them using [set geometry](https://i.imgur.com/vvKaryO.jpeg) and [staging](https://i.imgur.com/xQZUs8O.jpeg), then closes that gap again [and again](https://i.imgur.com/vfrjE0l.mp4) to symbolize the growing bond between them. But at the same time, a careful emphasis on their respective body language through closeups and [asymmetric framing](https://i.imgur.com/bOHsPPm.jpeg) foreshadows their coming failure to fully connect.\n\nWith an additional helping of excellent cross-cutting between perspectives, [playful juxtapositions](https://i.imgur.com/TI77Sdp.jpeg), and eye-catching flying camera shots, *Yoru no Kurage wa Oyogenai*'s first episode is a remarkable debut that captivated audiences with both its beautiful rendition of Shibuya and its ability to capture the emotions of its characters in its camera.\n",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.227Z",
+             "updatedAt": "2025-03-09T01:00:19.227Z",
+             "categoryId": 49
+            },
+            {
+             "id": 249,
+             "name": "Uma Musume: Pretty Derby - Shin Jidai no Tobira",
+             "writeup": "After the dazzling *Uma Musume: Pretty Derby RTTT* from in-house studio *CygamesPictures*, a new project was only a matter of time, and *Uma Musume: Pretty Derby - Shin Jidai no Tobira* led by director *Ken Yamamoto* lived up to all our expectations. The film continues and builds on the ideas that were established in *Uma Musume RTTT*: highly flexible designs and even more [distorted faces](https://files.catbox.moe/hb0r5a.png) in the visual race spectacles, the visual motif of [hands](https://files.catbox.moe/3aukf7.png) stitches through the movie, the [humor](https://files.catbox.moe/gor9jq.png) referencing the world of Uma Musume is still just as funny, and dynamic [camera](https://www.sakugabooru.com/data/6b13f29935396fb30391ac9f7ec32eea.mp4) [work](https://www.sakugabooru.com/data/acbe534798efd42babbaa54d7ba1436d.mp4) - thanks to races’ 3D models - is able to take the [steepest](https://files.catbox.moe/ap975c.jpg) angles and more frequent [pov](https://files.catbox.moe/er3676.jpg) [cuts](https://www.sakugabooru.com/data/80238d678c22c0bff3dfcd138c324e23.mp4). Race scenes feature striking [highlights with abstractions](https://www.sakugabooru.com/data/3a9bc7470784e0f97581422e5a110772.mp4), while characters’ feelings and relationships are enhanced through symbolism, using [colors](https://files.catbox.moe/5gd8v2.jpg) or Jungle Pocket's [pendant](https://files.catbox.moe/xoglix.jpg), [framing, staging and blocking](https://files.catbox.moe/obfhfw.jpg). Without losing its strengths, but improving its technical execution; and simply being a movie with beautiful compositing, engaging storyboards and dynamic layouts *Uma Musume Movie* captivates the viewer and does not leave indifferent.\n",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.234Z",
+             "updatedAt": "2025-03-09T01:00:19.234Z",
+             "categoryId": 49
+            },
+            {
+             "id": 250,
+             "name": "Boukyaku Battery #11",
+             "writeup": "Episode 11 from *Boukyaku Battery* may be the best example of the show’s approach to depicting the essence of baseball. This is done not only by displaying some technical proficiency in the way of displaying common baseball plays, as it plays along with some solid animation that portrays in detail the body movements of the the players at hand, but also by heavily reinforcing these with some interesting camerawork that enables the overlapping of these detailed motions.\n\nThat being said, these general aspects have also been associated with other highlights of this anime, and the differentiating factor for Episode 11 in this case is how it elevates the emotional components of the characters within this episode. It not only plays with heavily contrasting coloring between the transitioning from different actions and timelines that display the emotional state of the characters at hand, it also goes along with focused lighting that is used to accentuate their posture and expressions during them. These frantic successions of tasks are then interrupted either with visual analogies of mental barriers that need to be overcome, as well as with censored words in a black background  that display a part of the character that he doesn’t want to acknowledge, which is the jealousy they felt at seeing others improving, in which becomes ever more present with the setbacks that he faced. \n\nThus, the introspective approach to this episode and how it depicts determination, jealousy and breaking mental barriers all while capturing the finer details of baseball matches ends up making this episode one of the best works that aired last year. \n",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.239Z",
+             "updatedAt": "2025-03-09T01:00:19.239Z",
+             "categoryId": 49
+            },
+            {
+             "id": 251,
+             "name": "Puniru wa Kawaii Slime #07",
+             "writeup": "Director Chiinashi's prodigious talent has so far been used to craft somber, dramatic episodes of *Kusuriya no Hitorigoto* and *Yama no Susume*, earning recognition as some of the past few year's must-watch moments. In *Puniru wa Kawaii Slime* #07, he turns his expertise toward a gut-busting series of comedic skits, skillfully weaponizing moments of unexpected gravitas to enhance the surrounding humor while adding depth.\n\n\nA potent example is the romantic framing of Puniru’s walk toward Kotaro to deliver the shoes he forgot at home—a moment brilliantly subverted by the framing of his massive, sun-baked footprints. The episode is further bolstered by some of the most outrageously animated camera movements, making it a kinetic tour de force that shouldn't be missed.",
+             "active": true,
+             "createdAt": "2025-03-09T01:00:19.244Z",
+             "updatedAt": "2025-03-09T01:00:19.244Z",
+             "categoryId": 49
+            }
+           ]
        },
        {
         "name": "Soundtrack",
