@@ -463,10 +463,18 @@ export default {
 		},
 	},
 	mounted () {
-		import(/* webpackChunkName: "[request]" */ `../../data/results${this.year}.json`).then(data => {
-			this.results = Object.assign({}, data);
-			this.fetchAnilist();
-		});
+		if (this.year){
+			import(/* webpackChunkName: "[request]" */ `../../data/results${this.year}.json`).then(data => {
+				this.results = Object.assign({}, data);
+				this.fetchAnilist();
+			});
+		} else {
+			import(/* webpackChunkName: "[request]" */ `../../data/results2024.json`).then(data => {
+				this.results = Object.assign({}, data);
+				this.fetchAnilist();
+			});
+		}
+		
 
 		// switch (this.year) {
 		// 	case undefined:
