@@ -79,7 +79,7 @@
 		<div class="container pt-6 has-text-light">
 			<h2 class="has-text-centered is-size-2 has-text-weight-bold mb-6">Livestream</h2>
 			<figure class="image is-16by9">
-				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/nNWIMcRFHX0?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
+				<iframe class="has-ratio" width="950" height="650" src="https://www.youtube-nocookie.com/embed/nkTk1A7APYd6JORR?rel=0&modestbranding=1&showinfo=0" frameborder="0" allow="accelerometer; autoplay;gyroscope; picture-in-picture;" allowfullscreen ></iframe>
 			</figure>
 			<div class="columns is-centered is-vcentered pt-6">
 				<div class="column is-one-third pb-0">
@@ -93,7 +93,7 @@
 						by following the link below.
 					</p>
 					<div class="has-text-centered mb-6">
-						<a class="button is-primary is-large is-centered" target="_blank" href="https://www.youtube.com/watch?v=nNWIMcRFHX0">Full Livestream</a>
+						<a class="button is-primary is-large is-centered" target="_blank" href="https://www.youtube.com/watch?v=fsQRgT3Kuao">Full Livestream</a>
 					</div>
 				</div>
 			</div>
