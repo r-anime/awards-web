@@ -78,6 +78,56 @@
 						<br/>この度は本当に、ありがとうございました。
 					</div>
 				</div>
+				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Art Director Seina Yaguchi (矢口聖奈) on The Diary of Ochibi-san Background Art award </h2>
+				<div class="columns mb-6">
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						It is a huge honor to receive the award for Best Background Art for The Diary of Ochibi-san.
+						<br/>
+						<br/>This story was created from Moyoco Anno-sensei's passion to meticulously portray the four seasons of Kamakura.
+						In particular, the original work made use of a painstaking technique called pochoir in depicting the backgrounds.
+						Moyoco-sensei patiently and precisely drew each panel with this technique, despite how ill-suited it is for mass production.
+						When I heard this, I was deeply moved by her attitude to her art.
+						<br/>
+						<br/>In adapting the story to an anime, directors Onizuka and Tsurii inherited Moyoco-sensei's ethos, and asked me if it would be possible to use an analog approach to drawing the background art.
+						At first, we tried using art tools to make a series of prototypes, but eventually settled on the current style, which uses a mix of analog and digital to depict the backgrounds.
+						Specifically, the line drawings were analog, whereas we digitally replicated the pochoir technique used for the coloring.
+						<br/>
+						<br/>I was already a fan of Moyoco-sensei, and before talks about me taking on the art director role on this project were settled, I happened to learn about this technique at one of Moyoco-sensei's exhibitions in Nagoya. I also happened to buy a stamp at the exhibition, which is actually an indispensable part of the technique (what a coincidence!), which is how I came up with this method.
+						<br/>
+						<br/>I believe this award for background art belongs to the wonderful manga, the incredibly enthusiastic directors, and all of the rest of the staff.
+						<br/>
+						<br/>And more than anything, this is thanks to all of you who loved The Diary of Ochibi-san.
+						With your praise fueling my motivation, I hope from now on that I can continue to be involved in projects that leave an impression in all of your hearts.
+						<br/>
+						<br/>Thank you so much.
+					</div>
+					<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
+						このたびは『オチビサン』の背景美術に「背景賞」をいただき、大変光栄に感じています。
+						<br/>
+						<br/>本作は安野モヨコ先生の鎌倉の四季を丹念に描こうとされた情熱から生み出された作品です。　
+						特に原作の背景描写は「ポショワール技法」と呼ばれる大変手間のかかる技法を用いられました。
+						モヨコ先生は、あまり量産には向かない技法であるにも関わらず1コマずつ根気よく丁寧に描かれました。　
+						わたしはこのことを知り、その姿勢に強く感銘を受けました。
+						<br/>
+						<br/>今回アニメ化にあたり、鬼塚監督と釣井監督から、
+						モヨコ先生のその精神を受け継ぎ、アナログ描写で背景美術を描けないかとご要望をいただきました。
+						初めのうちは絵の具を使ったアナログ描写で試作を重ねましたが、
+						結局アナログとデジタルの両方を用いた描写を行う現在のスタイルに落ち着きました。
+						具体的には、線画をアナログで行い、着色方法にポショワール技法をデジタルで再現した方法を用いました。
+						<br/>
+						<br/>わたしが元々、モヨコ先生のファンだったこともあり、
+						本作の美術監督の話が決まる前にたまたま名古屋で行われていたモヨコ先生の展覧会でこの技法について知り、
+						その技法で欠かせないスタンプを展覧会場で購入していたこともあり（すごい偶然です！）この方法を思いつきました。
+						<br/>
+						<br/>今回の受賞は「背景」ですが、
+						素晴らしい原作と熱意あふれる監督はじめスタッフの方々みなさんで受賞した賞であると思っています。　
+						<br/>
+						<br/>また何より『オチビサン』を愛してくださる皆様のおかげです。
+						今回の評価を励みに、今後も皆様の心に残る作品に携わっていければと思っています。
+						<br/>
+						<br/>この度は誠にありがとうございました。
+					</div>
+				</div>
 
 				<h2 class="title is-5 has-text-gold has-text-centered pb-20">Music Composer Evan Call on Frieren: Beyond Journey's End. Soundtrack award</h2>
 				<div class="columns mb-12">
