@@ -464,6 +464,127 @@
         "hms": []
        },
        {
+        "name": "Comedy",
+        "entryType": "shows",
+        "jurors": [
+         "RHINN0",
+         "Gippy_",
+         "Fircoal",
+         "collapsedblock6",
+         "Cheezemansam",
+         "Deafnesss",
+         "Miidas-92"
+        ],
+        "blurb": "If Comedy was simply a list of every show that multiple jurors found deeply entertaining and enjoyable, then the list of nominees would be over twenty entries long. Many didn't quite make it that were nonetheless quite successful in their own right. The uniquely surrealist *Pop Team Epic Season 2*, the ill-fated *Isekai Oji-san*, the endearingly stop-motion *Pui Pui Molcar S2*, and the 2022 premier Ecchi show *Futoku no Guild* all impressed, but weren’t able to get one of the few nominations.    In a year where far more than ten shows managed to be entertaining, high quality, and unique, what made the chosen nominees stand out are thorough, compelling character dynamics. Specifically the ways that the shows were able to tell a meaningful story about the different sorts of positive, impactful relationships we can have with each other. These relationships took many forms, from the found family narratives in Spy x Family and Akiba Maid War, to the deep friendships at heart in Machikado and Bocchi the Rock, to the literal family connecting it all in Chimimo. Humorous though they all are, it was the top nominees, the headliners of the comedy shows who set up the punchline for these compelling stories of meaningful relationships.",
+        "nominees": [
+         {
+          "id": 144858,
+          "altname": "",
+          "altimg": "",
+          "public": 21,
+          "finished": 10,
+          "watched": 102,
+          "support": 0.09803921568627451,
+          "jury": 4,
+          "percent": 0.0027693524990109455,
+          "writeup": "*Chimimo*'s bright pastel colors and bold outlines give the show a pleasant and distinct visual identity, elevated through strong use of traditional Japanese instruments accompanied by simple and cute sound design. It didn't take long to fall for the heartwarming found family between Jigoku-san and the Onigami sisters, as well as the Chimimoryo spirits' marshmallow-like bodies enhancing their cartoony shenanigans.\nThe comedy is centered around validating the little personal hells of everyday life, where the issues may seem small like the Chimimoryo from an outsider's perspective, but can be a real pain-in-the-butt to experience first-hand. The cast effectively tackle a wide range of relatable events based on their age and life-situation. Jigoku-san showcases the struggles of foreigners working abroad, confused about the culture and customs of modern Japan, while failing to meet the expectations of his boss to create hell on earth. Mei's pressure from social media was also explored competently, connecting with the younger viewers. Mutsumi had an important role of carrying the pressure of adult responsibilities at work and home, but was sadly a bit underutilized compared to the other sisters. Hazuki is a positive standout; though she's a drunkard and constantly engaging in money-making schemes to fund her next dopamine high, she's still a source of infectious joy to those around her.\nDue to the crudeness of certain sketches taking away from its pleasant atmosphere, and its minimalism at times leaving something to be desired, it falls a bit short to its contemporaries. However, its strongly themed relatable comedy and found-family aspects still made this hidden gem something special.",
+          "staff": "Director: Shinji Takamatsu"
+         },
+         {
+          "id": 140642,
+          "altname": "",
+          "altimg": "",
+          "public": 28,
+          "finished": 15,
+          "watched": 472,
+          "support": 0.03177966101694915,
+          "jury": 6,
+          "percent": 0.003692469998681261,
+          "writeup": "*Love Live! Superstar!* picks up where the first season left off with the idol group Liella continuing with their goal of achieving victory at the Love Live. \n\nThe already strong cast were greeted with a new cohort of students to join the idol club, each with their own funny personality quirks that left lasting impressions. Whilst not as impressive as some of the original Liella members, the dynamic the new cast members offered were worthwhile with the differing skill levels between the respective generations forming the crux of the dramatic beats. Sumire and Keke's bickering continued to be a highlight with their comedic chemistry whilst also growing as a pair as a result of the main conflict.   \n\nThe performances were pretty inconsistent. Liellla's concerts weren't as well choreographed and the songs lost some of the charm that made them unique compared to their predecessors. The show makes up for this with Margarete's breathtaking concerts, which are standouts not just in the season but in the entire *Love Live* franchise. \n\nThe pacing of the ending left a lot to be desired and some of the developments felt unnecessary, but the loveable cast and well realized character interactions made the overall experience still worthy of a nomination. ",
+          "staff": "Director: Takahiko Kyougoku"
+         },
+         {
+          "id": 122808,
+          "altname": "",
+          "altimg": "",
+          "public": 103,
+          "finished": 61,
+          "watched": 902,
+          "support": 0.06762749445676275,
+          "jury": 5,
+          "percent": 0.013583014638006066,
+          "writeup": "Coming off of a strong first season, *Princess Connect S2* quickly finds its groove again, putting its full cast and visual chops to use to push this season even higher\nEasily one of the best looking shows in the category, Princess Connect puts out some of the top action scenes of the year (highlighted by episode four). Additionally, it shines in even the more mundane episodes, with vibrant background art as well as using cartoony character expressions and sound effects to enhance the comedy.\nWhen not focused on comedy, the main plot of S2 largely revolves around Karyl and her relationship with the guild versus the rest of the cast. The overarching plot feels weak and drags out, especially near the end, hurting the show even more as it could have used that time to flesh out a sub-par main villain or a few of its numerous sides (possibly too numerous). Karyl's emotional climaxes stand out amidst this though, providing some wholesome moments between her and the Guild and doing a lot to improve her as a character. These combined with some solid character-of-the-week comedy in the first half bring S2 to what can be considered an overall success of a sequel.",
+          "staff": "Chief Director: Takaomi Kanasaki\n\nDirector: Yasuo Iwamoto"
+         },
+         {
+          "id": 123330,
+          "altname": "",
+          "altimg": "",
+          "public": 219,
+          "finished": 139,
+          "watched": 870,
+          "support": 0.15977011494252874,
+          "jury": 2,
+          "percent": 0.028880390346828433,
+          "writeup": "*Machikado Mazoku: 2-Choume* continues where the first season left off with the same clever, fun humor and heartwarming moments between the cast members. *Machikado* balances its comedy with character development, having Shamiko and Momo's relationship continue to form. New cast members such as Lico and Manager Shirosawa add new interactions and shake up some of the comedy. Mikan gets thrown into the limelight and has her backstory explored. These moments of character development are aided by the main cast providing support to each other and showcasing the strength of having others help one another. This season's robust thematic backbone of protecting and helping everyone, demon and magical girl alike fosters the heartwarming spirit of the show and provides for emotionally resonant moments. \n\n*Machikado* features clever usage of its art style and sound design. Quick and pointed animation communicates the energy of the show with fast-paced humor. The sound effects being both audibly and textually communicated boosts the show's lightheartedness and comedy. While Machikado had effective comedic beats and compelling character development, it struggled with its pacing. The final arc was a let down when compared to the mid-season finale and left the series feeling somewhat incomplete. While its fast paced nature works great for its comedy, sometimes it can hurt the flow of the more emotional scenes  *Machikado Mazoku: 2-Choume* is an excellent addition to the franchise that expands on the promise and strengths of the first season.",
+          "staff": "Director: Hiroaki Sakurai"
+         },
+         {
+          "id": 151379,
+          "altname": "",
+          "altimg": "",
+          "public": 493,
+          "finished": 355,
+          "watched": 2023,
+          "support": 0.1754819574888779,
+          "jury": 7,
+          "percent": 0.06501384676249505,
+          "writeup": "Maids being gangsters in a gruesome, underground, yakuza-inspired battle for dominance is a premise that nobody expected, but impresses out of the gate. The outrageous premise is bolstered by how the show commits to it. The first episode sets the tone by juxtaposing bloody messes over the happy entertainment provided by the industry. Comical over-the-top parody scenarios highlight dark comedy that keeps things fresh and original. It's a world where the characters simply accept that this is how things operate; removing rivals and competition for the most petty reasons is fair game.\n\nAs the show expands to focus on the big picture of the war itself, the characters themselves leave much to be desired in terms of camaraderie and chemistry. It feels as though the maids of Oinky Doink were loyal co-workers rather than close friends, and the apparent lack of true bonding prevents them from being more likable than those in other nominated shows. Much of the supporting cast feels underutilized and doesn't make an impact outside of their focus episodes.\n\nWhile the violent nature of the show and its insistence on the war's overall progression over character development may be divisive, its originality and dark comedy raised enough attention to earn a nomination.",
+          "staff": "Director: Soichi Masui"
+         },
+         {
+          "id": 141774,
+          "altname": "",
+          "altimg": "",
+          "public": 526,
+          "finished": 351,
+          "watched": 2668,
+          "support": 0.1315592203898051,
+          "jury": 8,
+          "percent": 0.06936568640379796,
+          "writeup": "*Ya Boi Kongming* was an unexpected hit, highlighted by a great main duo turning a silly premise into something both amusing and endearing.\nKongming himself carries most of the comedic weight, confounded by the marvels of the modern world and reusing two-thousand year old battle tactics to win over the crowd at a nightclub. He also provides motivation and a steady hand for the other main, Eiko. In addition to playing the straight man to Kongming's shenanigans, she drives the plot forward with her dream of becoming a musician. The positive but not overconfident energy that she carries makes it hard not to root for her, bolstered by the fact that the musical talent behind her is quite solid (even if they use the same songs a bit too often).\nHowever, the show runs into some problems in the second half as it goes to explore some other side characters. Kabe's arc dragged on a bit too long, while the Azalea arc seemed to abandon a lot of what made the show stand out previously. Kongming is relegated to mostly a background character as it moves to a more dramatic tone, and while the criticisms it has on music production companies are valid, it goes too far on them with some cartoonishly evil industry members. Both arcs had their highlights such as the Kabe/Kongming rap battle and some heart-to-heart between Kuon/Eiko, but they still were a step down and ultimately kept *Kongming* from a higher placement.",
+          "staff": "Director: Shuu Honma"
+         },
+         {
+          "id": 140960,
+          "altname": "",
+          "altimg": "",
+          "public": 2044,
+          "finished": 1343,
+          "watched": 5110,
+          "support": 0.2628180039138943,
+          "jury": 3,
+          "percent": 0.269550309903732,
+          "writeup": "*Spy x Family* starts off on a very strong note, establishing an endearing 3-way ‘found family' dynamic that the entire show revolves around. The heartwarming moments between the Forgers are what made the Forgers stand out as a family, such as seeing Lloyd make an effort to learn how to be a better parent or when Anya pushes herself to do a good job in the exams for the sake of the mission. Lloyd is adorably protective of Anya, who in turn loves her awesome spy dad. Yor is a big softie for Anya, who starts off scared of her but for whom the affection is deeply meaningful. Lloyd and Yor have the classic ‘marriage of convenience' but they end up being surprisingly compatible which makes their later romance more believable.\nThe Big Band soundtrack compliments the show with its alternatively jazzy and high energy vibe, layering the show by framing the otherwise mundane, everyday activities of a family as humorously intense. Anya's secret mind reading powers are well utilized in the story. Anya generally remains the star of the show, consistently having the funniest skits, particularly later on once the relationship between Anya and Damien is established. The beginning of the show creates a captivating family dynamic compared to the status quo that is established by Season 2, where much less emphasis is placed on developing relationships and character growth and as a result the show felt somewhat engaging as a result. Nonetheless, with its standout soundtrack and well-executed plot elements the show succeeds at creating a memorable and engaging ‘found family' dynamic.",
+          "staff": "Director: Kazuhiro Furuhashi"
+         },
+         {
+          "id": 130003,
+          "altname": "",
+          "altimg": "https://animeawards.moe/img/bocchi2022.jpg",
+          "public": 4149,
+          "finished": 3091,
+          "watched": 4330,
+          "support": 0.7138568129330254,
+          "jury": 1,
+          "percent": 0.5471449294474482,
+          "writeup": "*Bocchi The Rock* stands out thanks to its protagonist Hitori Gotou's portrayal of social anxiety. Despite her condition being core to the show's comedy, it remains relatable as it feels like the audience is laughing with Hitori rather than at her.\n\nThe comedy is not carried by Hitori alone. She is joined by an entertaining side cast throughout the story with contrasting personalities and good chemistry with one another. Their interactions with Hitori's anxiety are positive; rather than trying to force her to change, the band accepts her in her current state while still being supportive of her efforts to break out of her shell at her own pace. Hitori being the center of the story means less spotlight for the other characters, resulting in the rest of the cast leaving less of an impression, but they are still a positive presence in her development. \n\nThe visual strengths of the show enhances the delivery of jokes. The consistent and expressive character animation and creative use of mixed media to highlight Hitori's emotions in her fantasies provide variety to the jokes while furthering themes of social anxiety. Be it melting when put on the spot, being ‘trapped' in a game of life where the choices don't matter, or seeing herself as a monster, the visual direction of this adaptation is nothing short of amazing. The journey of Hitori and Kessoku Band is hysterical, filled with good music and technical prowess, and tells a relatable, heartwarming story that captivates the audience. ",
+          "staff": "Director: Keiichiro Saito"
+         }
+        ],
+        "hms": []
+       },
+       {
         "name": "Drama",
         "entryType": "shows",
         "jurors": [
@@ -700,127 +821,6 @@
           "percent": 0.5626699293094073,
           "writeup": "The *Kaguya-sama* series is no stranger to these awards, and it continues its dominance over the romantic comedy genre, building on all that's come before to offer up its finest installment to date in *Kaguya-sama wa Kokurasetai: Ultra Romantic*.\n \nThe cast and their chemistry together remain superb, featuring an abundance of strong group dynamics, compelling one-on-one relationships, and an expansive supporting cast that make Shuchiin Academy come to life. The relationship between Kaguya and Shirogane particularly shines, as their personalities and insecurities are explored in greater depth, re-contextualizing their ‘War of Love' as something much more compelling than a mere power struggle. Among the supporting cast, Hayasaka and Ishigami have well-developed personal arcs, while Chika and Maki are bountiful sources of entertaining jokes and gags. The narrative is meticulously structured, seamlessly weaving all the characters' individual arcs, relationships, and activities together to keep events fresh and unpredictable.\n \nThe creative staff behind *Ultra Romantic* take full advantage of anime as a medium in its production. It's well animated, and packs each skit and scene to the brim with visual and audio gags, memorable cinematic frames, and pop culture references. The voice actors all do a fantastic job, bringing their characters to life in delivering the show's sharp, fast-paced dialogue.\n \nBetween its engaging cast of characters, intelligent storytelling, and standout production, *Kaguya-sama wa Kokurasetai: Ultra Romantic* blends the series' comedic and romantic elements together better than ever, delivering an experience that is both hilarious and heartfelt.",
           "staff": "Director: Mamoru Hatakeyama"
-         }
-        ],
-        "hms": []
-       },
-       {
-        "name": "Comedy",
-        "entryType": "shows",
-        "jurors": [
-         "RHINN0",
-         "Gippy_",
-         "Fircoal",
-         "collapsedblock6",
-         "Cheezemansam",
-         "Deafnesss",
-         "Miidas-92"
-        ],
-        "blurb": "If Comedy was simply a list of every show that multiple jurors found deeply entertaining and enjoyable, then the list of nominees would be over twenty entries long. Many didn't quite make it that were nonetheless quite successful in their own right. The uniquely surrealist *Pop Team Epic Season 2*, the ill-fated *Isekai Oji-san*, the endearingly stop-motion *Pui Pui Molcar S2*, and the 2022 premier Ecchi show *Futoku no Guild* all impressed, but weren’t able to get one of the few nominations.    In a year where far more than ten shows managed to be entertaining, high quality, and unique, what made the chosen nominees stand out are thorough, compelling character dynamics. Specifically the ways that the shows were able to tell a meaningful story about the different sorts of positive, impactful relationships we can have with each other. These relationships took many forms, from the found family narratives in Spy x Family and Akiba Maid War, to the deep friendships at heart in Machikado and Bocchi the Rock, to the literal family connecting it all in Chimimo. Humorous though they all are, it was the top nominees, the headliners of the comedy shows who set up the punchline for these compelling stories of meaningful relationships.",
-        "nominees": [
-         {
-          "id": 144858,
-          "altname": "",
-          "altimg": "",
-          "public": 21,
-          "finished": 10,
-          "watched": 102,
-          "support": 0.09803921568627451,
-          "jury": 4,
-          "percent": 0.0027693524990109455,
-          "writeup": "*Chimimo*'s bright pastel colors and bold outlines give the show a pleasant and distinct visual identity, elevated through strong use of traditional Japanese instruments accompanied by simple and cute sound design. It didn't take long to fall for the heartwarming found family between Jigoku-san and the Onigami sisters, as well as the Chimimoryo spirits' marshmallow-like bodies enhancing their cartoony shenanigans.\nThe comedy is centered around validating the little personal hells of everyday life, where the issues may seem small like the Chimimoryo from an outsider's perspective, but can be a real pain-in-the-butt to experience first-hand. The cast effectively tackle a wide range of relatable events based on their age and life-situation. Jigoku-san showcases the struggles of foreigners working abroad, confused about the culture and customs of modern Japan, while failing to meet the expectations of his boss to create hell on earth. Mei's pressure from social media was also explored competently, connecting with the younger viewers. Mutsumi had an important role of carrying the pressure of adult responsibilities at work and home, but was sadly a bit underutilized compared to the other sisters. Hazuki is a positive standout; though she's a drunkard and constantly engaging in money-making schemes to fund her next dopamine high, she's still a source of infectious joy to those around her.\nDue to the crudeness of certain sketches taking away from its pleasant atmosphere, and its minimalism at times leaving something to be desired, it falls a bit short to its contemporaries. However, its strongly themed relatable comedy and found-family aspects still made this hidden gem something special.",
-          "staff": "Director: Shinji Takamatsu"
-         },
-         {
-          "id": 140642,
-          "altname": "",
-          "altimg": "",
-          "public": 28,
-          "finished": 15,
-          "watched": 472,
-          "support": 0.03177966101694915,
-          "jury": 6,
-          "percent": 0.003692469998681261,
-          "writeup": "*Love Live! Superstar!* picks up where the first season left off with the idol group Liella continuing with their goal of achieving victory at the Love Live. \n\nThe already strong cast were greeted with a new cohort of students to join the idol club, each with their own funny personality quirks that left lasting impressions. Whilst not as impressive as some of the original Liella members, the dynamic the new cast members offered were worthwhile with the differing skill levels between the respective generations forming the crux of the dramatic beats. Sumire and Keke's bickering continued to be a highlight with their comedic chemistry whilst also growing as a pair as a result of the main conflict.   \n\nThe performances were pretty inconsistent. Liellla's concerts weren't as well choreographed and the songs lost some of the charm that made them unique compared to their predecessors. The show makes up for this with Margarete's breathtaking concerts, which are standouts not just in the season but in the entire *Love Live* franchise. \n\nThe pacing of the ending left a lot to be desired and some of the developments felt unnecessary, but the loveable cast and well realized character interactions made the overall experience still worthy of a nomination. ",
-          "staff": "Director: Takahiko Kyougoku"
-         },
-         {
-          "id": 122808,
-          "altname": "",
-          "altimg": "",
-          "public": 103,
-          "finished": 61,
-          "watched": 902,
-          "support": 0.06762749445676275,
-          "jury": 5,
-          "percent": 0.013583014638006066,
-          "writeup": "Coming off of a strong first season, *Princess Connect S2* quickly finds its groove again, putting its full cast and visual chops to use to push this season even higher\nEasily one of the best looking shows in the category, Princess Connect puts out some of the top action scenes of the year (highlighted by episode four). Additionally, it shines in even the more mundane episodes, with vibrant background art as well as using cartoony character expressions and sound effects to enhance the comedy.\nWhen not focused on comedy, the main plot of S2 largely revolves around Karyl and her relationship with the guild versus the rest of the cast. The overarching plot feels weak and drags out, especially near the end, hurting the show even more as it could have used that time to flesh out a sub-par main villain or a few of its numerous sides (possibly too numerous). Karyl's emotional climaxes stand out amidst this though, providing some wholesome moments between her and the Guild and doing a lot to improve her as a character. These combined with some solid character-of-the-week comedy in the first half bring S2 to what can be considered an overall success of a sequel.",
-          "staff": "Chief Director: Takaomi Kanasaki\n\nDirector: Yasuo Iwamoto"
-         },
-         {
-          "id": 123330,
-          "altname": "",
-          "altimg": "",
-          "public": 219,
-          "finished": 139,
-          "watched": 870,
-          "support": 0.15977011494252874,
-          "jury": 2,
-          "percent": 0.028880390346828433,
-          "writeup": "*Machikado Mazoku: 2-Choume* continues where the first season left off with the same clever, fun humor and heartwarming moments between the cast members. *Machikado* balances its comedy with character development, having Shamiko and Momo's relationship continue to form. New cast members such as Lico and Manager Shirosawa add new interactions and shake up some of the comedy. Mikan gets thrown into the limelight and has her backstory explored. These moments of character development are aided by the main cast providing support to each other and showcasing the strength of having others help one another. This season's robust thematic backbone of protecting and helping everyone, demon and magical girl alike fosters the heartwarming spirit of the show and provides for emotionally resonant moments. \n\n*Machikado* features clever usage of its art style and sound design. Quick and pointed animation communicates the energy of the show with fast-paced humor. The sound effects being both audibly and textually communicated boosts the show's lightheartedness and comedy. While Machikado had effective comedic beats and compelling character development, it struggled with its pacing. The final arc was a let down when compared to the mid-season finale and left the series feeling somewhat incomplete. While its fast paced nature works great for its comedy, sometimes it can hurt the flow of the more emotional scenes  *Machikado Mazoku: 2-Choume* is an excellent addition to the franchise that expands on the promise and strengths of the first season.",
-          "staff": "Director: Hiroaki Sakurai"
-         },
-         {
-          "id": 151379,
-          "altname": "",
-          "altimg": "",
-          "public": 493,
-          "finished": 355,
-          "watched": 2023,
-          "support": 0.1754819574888779,
-          "jury": 7,
-          "percent": 0.06501384676249505,
-          "writeup": "Maids being gangsters in a gruesome, underground, yakuza-inspired battle for dominance is a premise that nobody expected, but impresses out of the gate. The outrageous premise is bolstered by how the show commits to it. The first episode sets the tone by juxtaposing bloody messes over the happy entertainment provided by the industry. Comical over-the-top parody scenarios highlight dark comedy that keeps things fresh and original. It's a world where the characters simply accept that this is how things operate; removing rivals and competition for the most petty reasons is fair game.\n\nAs the show expands to focus on the big picture of the war itself, the characters themselves leave much to be desired in terms of camaraderie and chemistry. It feels as though the maids of Oinky Doink were loyal co-workers rather than close friends, and the apparent lack of true bonding prevents them from being more likable than those in other nominated shows. Much of the supporting cast feels underutilized and doesn't make an impact outside of their focus episodes.\n\nWhile the violent nature of the show and its insistence on the war's overall progression over character development may be divisive, its originality and dark comedy raised enough attention to earn a nomination.",
-          "staff": "Director: Soichi Masui"
-         },
-         {
-          "id": 141774,
-          "altname": "",
-          "altimg": "",
-          "public": 526,
-          "finished": 351,
-          "watched": 2668,
-          "support": 0.1315592203898051,
-          "jury": 8,
-          "percent": 0.06936568640379796,
-          "writeup": "*Ya Boi Kongming* was an unexpected hit, highlighted by a great main duo turning a silly premise into something both amusing and endearing.\nKongming himself carries most of the comedic weight, confounded by the marvels of the modern world and reusing two-thousand year old battle tactics to win over the crowd at a nightclub. He also provides motivation and a steady hand for the other main, Eiko. In addition to playing the straight man to Kongming's shenanigans, she drives the plot forward with her dream of becoming a musician. The positive but not overconfident energy that she carries makes it hard not to root for her, bolstered by the fact that the musical talent behind her is quite solid (even if they use the same songs a bit too often).\nHowever, the show runs into some problems in the second half as it goes to explore some other side characters. Kabe's arc dragged on a bit too long, while the Azalea arc seemed to abandon a lot of what made the show stand out previously. Kongming is relegated to mostly a background character as it moves to a more dramatic tone, and while the criticisms it has on music production companies are valid, it goes too far on them with some cartoonishly evil industry members. Both arcs had their highlights such as the Kabe/Kongming rap battle and some heart-to-heart between Kuon/Eiko, but they still were a step down and ultimately kept *Kongming* from a higher placement.",
-          "staff": "Director: Shuu Honma"
-         },
-         {
-          "id": 140960,
-          "altname": "",
-          "altimg": "",
-          "public": 2044,
-          "finished": 1343,
-          "watched": 5110,
-          "support": 0.2628180039138943,
-          "jury": 3,
-          "percent": 0.269550309903732,
-          "writeup": "*Spy x Family* starts off on a very strong note, establishing an endearing 3-way ‘found family' dynamic that the entire show revolves around. The heartwarming moments between the Forgers are what made the Forgers stand out as a family, such as seeing Lloyd make an effort to learn how to be a better parent or when Anya pushes herself to do a good job in the exams for the sake of the mission. Lloyd is adorably protective of Anya, who in turn loves her awesome spy dad. Yor is a big softie for Anya, who starts off scared of her but for whom the affection is deeply meaningful. Lloyd and Yor have the classic ‘marriage of convenience' but they end up being surprisingly compatible which makes their later romance more believable.\nThe Big Band soundtrack compliments the show with its alternatively jazzy and high energy vibe, layering the show by framing the otherwise mundane, everyday activities of a family as humorously intense. Anya's secret mind reading powers are well utilized in the story. Anya generally remains the star of the show, consistently having the funniest skits, particularly later on once the relationship between Anya and Damien is established. The beginning of the show creates a captivating family dynamic compared to the status quo that is established by Season 2, where much less emphasis is placed on developing relationships and character growth and as a result the show felt somewhat engaging as a result. Nonetheless, with its standout soundtrack and well-executed plot elements the show succeeds at creating a memorable and engaging ‘found family' dynamic.",
-          "staff": "Director: Kazuhiro Furuhashi"
-         },
-         {
-          "id": 130003,
-          "altname": "",
-          "altimg": "https://animeawards.moe/img/bocchi2022.jpg",
-          "public": 4149,
-          "finished": 3091,
-          "watched": 4330,
-          "support": 0.7138568129330254,
-          "jury": 1,
-          "percent": 0.5471449294474482,
-          "writeup": "*Bocchi The Rock* stands out thanks to its protagonist Hitori Gotou's portrayal of social anxiety. Despite her condition being core to the show's comedy, it remains relatable as it feels like the audience is laughing with Hitori rather than at her.\n\nThe comedy is not carried by Hitori alone. She is joined by an entertaining side cast throughout the story with contrasting personalities and good chemistry with one another. Their interactions with Hitori's anxiety are positive; rather than trying to force her to change, the band accepts her in her current state while still being supportive of her efforts to break out of her shell at her own pace. Hitori being the center of the story means less spotlight for the other characters, resulting in the rest of the cast leaving less of an impression, but they are still a positive presence in her development. \n\nThe visual strengths of the show enhances the delivery of jokes. The consistent and expressive character animation and creative use of mixed media to highlight Hitori's emotions in her fantasies provide variety to the jokes while furthering themes of social anxiety. Be it melting when put on the spot, being ‘trapped' in a game of life where the choices don't matter, or seeing herself as a monster, the visual direction of this adaptation is nothing short of amazing. The journey of Hitori and Kessoku Band is hysterical, filled with good music and technical prowess, and tells a relatable, heartwarming story that captivates the audience. ",
-          "staff": "Director: Keiichiro Saito"
          }
         ],
         "hms": []
