@@ -5,6 +5,11 @@ namespace App\Providers;
 use App\Models\Category;
 use Illuminate\Support\ServiceProvider;
 
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
+
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -22,5 +27,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Unguarding category model as per filament doc
         Category::unguard();
+
+        // Year filter dropdown
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::USER_MENU_BEFORE,
+            fn(): string => Blade::render('@livewire(\'year-filter\')'),
+        );
     }
 }

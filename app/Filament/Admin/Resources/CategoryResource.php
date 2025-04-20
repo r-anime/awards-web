@@ -68,6 +68,10 @@ class CategoryResource extends Resource
     {
         return $table
             ->paginated(false)
+            ->modifyQueryUsing(function (Builder $query) {
+                $filterYear = session('selected-year-filter') ?? 2025;
+                return $query->where('year', $filterYear);
+            })
             ->columns([
                 //
                 TextColumn::make('order'),

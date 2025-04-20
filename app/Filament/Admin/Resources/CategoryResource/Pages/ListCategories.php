@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\CategoryResource\Pages;
 use App\Filament\Admin\Resources\CategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Livewire\Attributes\On;
 
 class ListCategories extends ListRecords
 {
@@ -15,5 +16,11 @@ class ListCategories extends ListRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    #[On('filter-year-updated')]
+    public function refreshOnYearFilter()
+    {
+        return;
     }
 }
