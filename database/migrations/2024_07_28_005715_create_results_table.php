@@ -17,11 +17,11 @@ return new class extends Migration
             $table->foreignId('category_id');
             $table->string('name', length:255);
             $table->text('image');
-            $table->morphs('entry');
+            $table->foreignId('entry_id');
             $table->integer('jury_rank');
             $table->integer('public_rank');
             $table->text('description');
-            $table->json('staff_credits');
+            $table->json('staff_credits')->nullable();
             $table->timestamps();
         });
     }

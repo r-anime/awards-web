@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('voice_actors', function (Blueprint $table) {
+        Schema::create('entries', function (Blueprint $table) {
             $table->id();
-            $table->string('name', length:255);
+            $table->string('type');
+            $table->string('name');
             $table->integer('year');
-            $table->string('type', length:16);
-            $table->text('image');
-            $table->foreignId('char_id');
+            $table->string('theme_version')->nullable();
+            $table->string('image')->nullable();
+            $table->string('link')->nullable();
+            $table->foreignId('parent_id')->nullable();
             $table->timestamps();
-
-            $table->index('name');
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('voice_actors');
+        Schema::dropIfExists('entries');
     }
 };

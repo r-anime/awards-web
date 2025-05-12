@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('type', length:16);
             $table->foreignId('author_id');
             $table->string('slug', length:255);
-            $table->text('feature_image');
-            $table->longText('content');
+            $table->text('feature_image')->nullable();
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }

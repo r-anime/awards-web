@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('year');
             $table->string('name', length: 32);
             $table->string('type', length: 16);
-            $table->integer('order');
+            $table->integer('order')->nullable();
         });
     }
 

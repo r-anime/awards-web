@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('year');
             $table->datetime('start_time');
             $table->datetime('end_time');
-            $table->json('form');
+            $table->json('form')->nullable();
             $table->timestamps();
         });
     }

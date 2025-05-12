@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('category_id');
             $table->foreignId('cat_nom_id');
+            $table->foreignId('entry_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
