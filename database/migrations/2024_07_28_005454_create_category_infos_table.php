@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('category_infos', function (Blueprint $table) {
             $table->foreignIdFor(Category::class);
             $table->text('description');
-            $table->mediumText('sotc_blurb');
+            $table->mediumText('sotc_blurb')->nullable();
         });
     }
 

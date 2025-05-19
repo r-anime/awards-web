@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('category_nominees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id');
-            $table->morphs('entry');
+            $table->foreignId('entry_id');
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

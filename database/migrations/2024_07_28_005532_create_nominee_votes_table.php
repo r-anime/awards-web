@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('category_id');
-            $table->morphs('entry');
             $table->foreignId('cat_entry_id');
+            $table->foreignId('entry_id');
             $table->timestamps();
             $table->softDeletes();
         });

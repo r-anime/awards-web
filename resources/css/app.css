@@ -1,0 +1,8 @@
+@import 'bulma/css/bulma.min.css';
+
+.navbar {
+    /* Default global value */
+    --bulma-navbar-item-img-max-height: 3.25rem;
+}
+
+html, body { height: 100vh; }
