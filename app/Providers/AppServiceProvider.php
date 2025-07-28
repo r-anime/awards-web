@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Application;
 use App\Models\Category;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 use Filament\Support\Facades\FilamentView;
@@ -36,5 +37,9 @@ class AppServiceProvider extends ServiceProvider
             PanelsRenderHook::USER_MENU_BEFORE,
             fn(): string => Blade::render('@livewire(\'year-filter\')'),
         );
+
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('reddit', \SocialiteProviders\Reddit\Provider::class);
+        });
     }
 }
