@@ -2,6 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\User;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Provider;
+use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -17,6 +21,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,6 +60,37 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->plugin(
+                FilamentSocialitePlugin::make()
+                    ->providers([
+                        Provider::make('reddit')
+                            ->visible(fn() => true),
+                    ])
+                    ->registration()
+                    ->createUserUsing(function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+                        // Logic to create a new user.
+
+                        $randomPasswdString = Str::random(64); // Generate a random string
+                        $placeholderPassword = Hash::make($randomPasswdString); // Hash the random string
+
+                        $randomEmailString = Str::random(16); // Generate a random string
+
+                        $user = User::create([
+                            'name' => $oauthUser->getNickname(),
+                            'email' => $randomEmailString.'@awards-web.com',
+                            'password' => $placeholderPassword
+                        ]);
+                        return $user;
+                    })
+                    ->resolveUserUsing(function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+                        // Logic to retrieve an existing user.
+                        // $user = User::where('email', $oauthUser->getEmail())->first();
+                        $user = User::where('name', $oauthUser->getNickname())->first();
+                        return $user;
+                    })
+
+
+            );
     }
 }
