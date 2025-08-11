@@ -241,6 +241,25 @@ class ImportArchive extends Command
             Sleep::for(5)->second();
         }
 
+        $endpoint = "https://api.animethemes.moe/anime";
+        $client = new \GuzzleHttp\Client();
+        $id = 5;
+        $value = "ABC";
+
+        $response = $client->request('GET', $endpoint, ['query' => [
+            'key1' => $id, 
+            'key2' => $value,
+        ]]);
+
+        // url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
+
+        $statusCode = $response->getStatusCode();
+        $content = $response->getBody();
+
+        // or when your server returns json
+        // $content = json_decode($response->getBody(), true);
+
+
         
         
     }
