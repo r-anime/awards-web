@@ -9,9 +9,11 @@ use App\Models\Entry;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Forms\Get;
+use Filament\Actions;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
@@ -29,12 +31,9 @@ class EntryResource extends Resource
 {
     protected static ?string $model = Entry::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 TextInput::make('name')->required(),
                 Select::make('type')
@@ -69,6 +68,7 @@ class EntryResource extends Resource
                 FileUpload::make('image')
                     ->image()
                     ->directory('entry')
+                    ->disk('public')
                     ->required(),
             ]);
     }
@@ -78,24 +78,41 @@ class EntryResource extends Resource
         return $table
             ->modifyQueryUsing(function (Builder $query) {
                 $filterYear = session('selected-year-filter') ?? intval(date('Y'));
-                return $query->where('year', $filterYear);
+                $query = $query->where('year', $filterYear);
+
+                $selectedType = session('selected-type-filter');
+                if ($selectedType) {
+                    $query = $query->where('type', $selectedType);
+                }
+                
+                return $query;
             })
             ->columns([
                 TextColumn::make('name')->searchable(),
+                TextColumn::make('type')
+                    ->badge()
+                    ->color(fn (?string $state): string => match ($state) {
+                        'anime' => 'success',
+                        'char' => 'info',
+                        'va' => 'warning',
+                        'theme' => 'danger',
+                        default => 'gray',
+                    }),
                 TextColumn::make('year'),
-                TextColumn::make('parent.name')->visible(fn($livewire) => ($livewire->activeTab !== 'anime'))
-                    ->searchable(),
-                TextColumn::make('parent.parent.name')->visible(fn($livewire) => ($livewire->activeTab == 'va'))
-                    ->searchable(),
+                TextColumn::make('parent.name')
+                    ->searchable()
+                    ->visible(fn($record) => $record && $record->type !== 'anime'),
+                TextColumn::make('parent.parent.name')
+                    ->searchable()
+                    ->visible(fn($record) => $record && $record->type === 'va'),
             ])
             ->filters([
             ])
             ->actions([
-                //
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -103,7 +120,6 @@ class EntryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

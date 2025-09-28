@@ -22,18 +22,14 @@ class ListCategories extends ListRecords
     #[On('filter-year-updated')]
     public function refreshOnYearFilter()
     {
-        // Force refresh the table by clearing the cache and reloading
         $this->resetTable();
     }
 
-    public function reorderTable(array $order): void
+    public function reorderTable(array $order, string|int|null $draggedRecordKey = null): void
     {
         $filterYear = session('selected-year-filter') ?? intval(date('Y'));
-        
-        // Get all categories for the current year
         $categories = Category::where('year', $filterYear)->get();
         
-        // Update the order for each category based on the new order
         foreach ($order as $index => $categoryId) {
             $category = $categories->find($categoryId);
             if ($category) {
@@ -41,7 +37,6 @@ class ListCategories extends ListRecords
             }
         }
         
-        // Refresh the table to show the new order
         $this->resetTable();
     }
 }
