@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
 
 class ListEntries extends ListRecords
 {
@@ -37,5 +38,12 @@ class ListEntries extends ListRecords
     public function getDefaultActiveTab(): string | int | null
     {
         return 'anime';
+    }
+
+    #[On('filter-year-updated')]
+    public function refreshOnYearFilter()
+    {
+        // Force refresh the table by clearing the cache and reloading
+        $this->resetTable();
     }
 }

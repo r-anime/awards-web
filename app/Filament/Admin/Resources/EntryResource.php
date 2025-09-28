@@ -76,6 +76,10 @@ class EntryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                return $query->where('year', $filterYear);
+            })
             ->columns([
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('year'),
@@ -87,7 +91,7 @@ class EntryResource extends Resource
             ->filters([
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                //
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

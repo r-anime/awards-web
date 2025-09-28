@@ -12,7 +12,7 @@ class YearFilter extends Component
 
     public function mount()
     {
-        $this->yearList = array(2021, 2022, 2023, 2024, 2025);
+        $this->yearList = range(2016, intval(date('Y')));
     }
 
     public function updated($property)

@@ -79,7 +79,8 @@ class AdminPanelProvider extends PanelProvider
                         $user = User::create([
                             'name' => $oauthUser->getNickname(),
                             'email' => $randomEmailString.'@awards-web.com',
-                            'password' => $placeholderPassword
+                            'password' => $placeholderPassword,
+                            'role' => 0, // Default role for new users
                         ]);
                         return $user;
                     })

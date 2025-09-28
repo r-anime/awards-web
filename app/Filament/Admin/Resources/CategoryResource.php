@@ -68,32 +68,32 @@ class CategoryResource extends Resource
     {
         return $table
             ->paginated(false)
+            ->reorderable('order')
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? 2025;
+                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
                 return $query->where('year', $filterYear);
             })
             ->columns([
-                //
-                TextColumn::make('order'),
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('type')
-                    ->searchable(),
-                TextColumn::make('year'),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('year')
+                    ->sortable(),
             ])
             ->defaultSort('order')
             ->filters([
-                //
                 SelectFilter::make('type')
                     ->options([
                         'genre' => 'Genre',
                         'production' => 'Production',
                         'main' => 'Main'
                     ])
-
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                //
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

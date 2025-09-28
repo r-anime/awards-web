@@ -24,6 +24,11 @@ class User extends Authenticatable implements FilamentUser, HasName
         'name',
         'email',
         'password',
+        'reddit_user',
+        'role',
+        'flags',
+        'avatar',
+        'about',
     ];
 
     /**
@@ -51,7 +56,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->role >= 1;
     }
 
     public function getFilamentName(): string
