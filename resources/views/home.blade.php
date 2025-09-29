@@ -22,7 +22,6 @@
             </div>
         </div>
         
-        <!-- YouTube Video Embed -->
         <div class="livestream-container">
             <div class="livestream-wrapper">
                 <iframe 
@@ -108,7 +107,6 @@
             height: 100%;
         }
         
-        /* Responsive design */
         @media (max-width: 768px) {
             .welcome-text {
                 font-size: 2.5rem;
