@@ -2,30 +2,39 @@
 
 namespace App\Livewire;
 
-use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class YearFilter extends Component
 {
+    public $selectedYear;
     public $yearList;
-    public $filteredYear;
 
     public function mount()
     {
-        $this->yearList = range(2016, intval(date('Y')));
+        $this->selectedYear = session('selected-year-filter') ?? date('Y');
+        $this->yearList = $this->generateYearList();
     }
 
-    public function updated($property)
+    public function updatedSelectedYear()
     {
-        if ($property == 'filteredYear') {
-            session(['selected-year-filter' => $this->filteredYear]); //$this->filteredYear
-            $this->dispatch('filter-year-updated');
+        session(['selected-year-filter' => $this->selectedYear]);
+        $this->dispatch('filter-year-updated');
+    }
+
+    private function generateYearList()
+    {
+        $currentYear = date('Y');
+        $years = [];
+        
+        for ($year = $currentYear; $year >= 2016; $year--) {
+            $years[] = $year;
         }
+        
+        return $years;
     }
 
     public function render()
     {
-        $this->filteredYear = session('selected-year-filter') ?? 2025;
         return view('livewire.year-filter');
     }
 }

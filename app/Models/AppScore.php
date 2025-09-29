@@ -11,8 +11,17 @@ class AppScore extends Model
 {
     // use HasFactory;
 
+    protected $fillable = [
+        'applicant_id',
+        'scorer_id',
+        'question_id',
+        'question_uuid',
+        'score',
+        'comment',
+    ];
+
     public function question(){
-        return $this->belongsTo(AppQuestion::class, 'id', 'question_id');
+        return $this->belongsTo(AppQuestion::class, 'question_id', 'id');
     }
 
     public function applicant(){

@@ -31,6 +31,11 @@ class EntryResource extends Resource
 {
     protected static ?string $model = Entry::class;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role >= 2;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema

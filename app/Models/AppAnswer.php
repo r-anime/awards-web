@@ -11,6 +11,12 @@ class AppAnswer extends Model
 {
     // use HasFactory;
 
+    protected $fillable = [
+        'question_id',
+        'applicant_id',
+        'answer',
+    ];
+
     public function question(){
         return $this->belongsTo(AppQuestion::class, 'id', 'question_id');
     }

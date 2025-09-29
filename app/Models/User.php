@@ -29,6 +29,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'flags',
         'avatar',
         'about',
+        'uuid',
     ];
 
     /**
@@ -56,13 +57,22 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role >= 1;
+        return true; // Allow all logged-in users to access the panel
     }
 
     public function getFilamentName(): string
     {
-        return $this->name;
+        return $this->name ?? $this->reddit_user ?? 'Unknown User';
     }
 
+    public function appAnswers()
+    {
+        return $this->hasMany(AppAnswer::class, 'applicant_id');
+    }
+
+    public function appScores()
+    {
+        return $this->hasMany(AppScore::class, 'applicant_id');
+    }
 
 }

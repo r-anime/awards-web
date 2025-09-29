@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ApplicationResource\Pages;
+use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationDashboard;
 use App\Filament\Admin\Resources\ApplicationResource\RelationManagers;
 use App\Models\Application;
 use Filament\Forms;
@@ -16,19 +17,80 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Hidden;
+use Filament\Schemas\Components\Utilities\Get;
+use Illuminate\Support\Str;
 
 class ApplicationResource extends Resource
 {
     protected static ?string $model = Application::class;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role >= 2;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                TextInput::make('year')->required(),
-                TextInput::make('start_time')->required(),
-                TextInput::make('end_time')->required(),
-                TextInput::make('form')->required(),
+                TextInput::make('year')
+                    ->required()
+                    ->numeric()
+                    ->default(date('Y')),
+                DateTimePicker::make('start_time')
+                    ->required()
+                    ->label('Start Time')
+                    ->displayFormat('M j, Y g:i A')
+                    ->seconds(false),
+                DateTimePicker::make('end_time')
+                    ->required()
+                    ->label('End Time')
+                    ->displayFormat('M j, Y g:i A')
+                    ->seconds(false),
+                Repeater::make('form')
+                    ->label('Application Questions')
+                    ->schema([
+                        Hidden::make('id')
+                            ->default(fn () => Str::uuid()->toString()),
+                        TextInput::make('question')
+                            ->label('Question Text')
+                            ->required()
+                            ->columnSpanFull(),
+                        Select::make('type')
+                            ->label('Question Type')
+                            ->options([
+                                'multiple_choice' => 'Multiple Choice',
+                                'essay' => 'Essay',
+                                'preference' => 'Preference',
+                            ])
+                            ->required()
+                            ->live(),
+                        Repeater::make('options')
+                            ->label('Answer Options')
+                            ->schema([
+                                Hidden::make('id')
+                                    ->default(fn () => Str::uuid()->toString()),
+                                TextInput::make('option')
+                                    ->label('Option Text')
+                                    ->required(),
+                            ])
+                            ->visible(fn (Get $get): bool => $get('type') === 'multiple_choice')
+                            ->addActionLabel('Add Option')
+                            ->defaultItems(0),
+                        Textarea::make('instructions')
+                            ->label('Additional Instructions')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2)
+                    ->addActionLabel('Add Question')
+                    ->defaultItems(0)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -62,7 +124,7 @@ class ApplicationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListApplications::route('/'),
+            'index' => ApplicationDashboard::route('/'),
             'create' => Pages\CreateApplication::route('/create'),
             'edit' => Pages\EditApplication::route('/{record}/edit'),
         ];

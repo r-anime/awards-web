@@ -24,6 +24,11 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->role >= 2;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
