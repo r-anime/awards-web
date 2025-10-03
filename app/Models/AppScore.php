@@ -25,10 +25,10 @@ class AppScore extends Model
     }
 
     public function applicant(){
-        return $this->belongsTo(User::class, 'id', 'applicant_id');
+        return $this->belongsTo(User::class, 'applicant_id', 'id');
     }
 
     public function scorer(){
-        return $this->belongsTo(User::class, 'id', 'scorer_id');
+        return $this->belongsTo(User::class, 'scorer_id', 'id');
     }
 }
