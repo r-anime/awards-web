@@ -44,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3rem')
             ->renderHook(
                 'panels::head.end',
-                fn (): string => '<link rel="stylesheet" href="' . asset('css/custom.css') . '">'
+                fn (): string => '<link rel="stylesheet" href="' . \Illuminate\Support\Facades\Vite::asset('resources/css/custom.css') . '">'
             )
             
             // Resources & Pages
