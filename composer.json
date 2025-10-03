@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-intl": "*",
         "dutchcodingcompany/filament-socialite": "^3.0",
         "filament/filament": "^4.0",
         "guzzlehttp/guzzle": "^7.10",
