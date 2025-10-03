@@ -9,6 +9,17 @@ class Entry extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'anilist_id',
+        'type',
+        'name',
+        'year',
+        'theme_version',
+        'image',
+        'link',
+        'parent_id',
+    ];
+
     public function category_eligibles()
     {
         return $this->belongsToMany(CategoryEligible::class);
