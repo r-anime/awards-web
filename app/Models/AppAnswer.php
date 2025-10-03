@@ -18,10 +18,10 @@ class AppAnswer extends Model
     ];
 
     public function question(){
-        return $this->belongsTo(AppQuestion::class, 'id', 'question_id');
+        return $this->belongsTo(AppQuestion::class, 'question_id', 'id');
     }
 
     public function applicant(){
-        return $this->belongsTo(User::class, 'id', 'applicant_id');
+        return $this->belongsTo(User::class, 'applicant_id', 'id');
     }
 }
