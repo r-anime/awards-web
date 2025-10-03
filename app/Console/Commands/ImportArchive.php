@@ -112,7 +112,7 @@ class ImportArchive extends Command
      public function handle()
     {
         $year = $this->argument('year');
-        $content = File::get(app_path("Console\Commands\archive\\results{$year}.json"));
+        $content = File::get(app_path("Console/Commands/archive/results{$year}.json"));
         $json = json_decode(json: $content, associative: true);
         $anime = [];
         $char = [];
