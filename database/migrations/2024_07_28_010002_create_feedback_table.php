@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->text('feedback');
-            $table->string('hash', length:255);
+            $table->string('name');
+            $table->text('message');
+            $table->string('ip_address', 45); // IPv6 compatible
             $table->timestamps();
         });
     }

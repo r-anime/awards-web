@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\FeedbackController;
 
 Route::get('/', function () {
     return view('home');
@@ -19,6 +20,9 @@ Route::get('/participate/nomination', function () {
 Route::get('/participate/voting', function () {
     return view('voting');
 });
+
+Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::get('/login', [LoginController::class, 'show'])->name('login');
 

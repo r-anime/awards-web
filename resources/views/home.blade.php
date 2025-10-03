@@ -12,6 +12,24 @@
                     <p class="subtitle is-4 has-text-white">
                     The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community. Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer. 
                     </p>
+                    
+                    <div class="notification is-warning is-light mt-4">
+                        <div class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <span class="icon">
+                                        <i class="fas fa-tools"></i>
+                                    </span>
+                                    <span class="has-text-weight-semibold">Under Construction</span>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <span class="has-text-grey">We're currently in the process of migrating our archive data of past results. Please bear with us as we move to a new system.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             

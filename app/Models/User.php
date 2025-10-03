@@ -57,7 +57,8 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true; // Allow all logged-in users to access the panel
+        // Allow all logged-in users to access the panel, including role -1 users
+        return true;
     }
 
     public function getFilamentName(): string

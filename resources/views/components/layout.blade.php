@@ -18,6 +18,55 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
+    <style>
+        /* Make navbar sticky */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        /* Style the feedback link */
+        .navbar .navbar-item {
+            color: white;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+        }
+        
+        .navbar .navbar-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffdd57;
+        }
+        
+        /* Remove highlighting from anchor tags inside navbar-item */
+        .navbar .navbar-item a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        .navbar .navbar-item a:hover {
+            background: none;
+            color: inherit;
+        }
+        
+        /* Burger menu styling */
+        .navbar-burger {
+            color: white;
+        }
+        
+        .navbar-burger:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Mobile menu styling */
+        @media screen and (max-width: 1023px) {
+            .navbar-menu {
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(10px);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Canvas Background -->
@@ -26,50 +75,31 @@
     <div class="hero is-fullheight max-width" style="position: relative; z-index: 1;">
         <nav class="navbar" role="navigation" aria-label="main navigation" style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
             <div class="navbar-brand">
+                <!-- Logo -->
                 <a class="navbar-item" href="/">
                     <img src="{{ URL::asset('/images/awardslogo.png') }}" alt="r/anime Awards Logo" style="max-height: 3rem; height: auto; width: auto;">
                 </a>
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
+                
+                <!-- Burger menu for mobile -->
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </a>
             </div>
-            <div id="navbarBasicExample" class="navbar-menu">
+            
+            <!-- Navigation menu -->
+            <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="/">
-                        Home
-                    </a>
-                    <a class="navbar-item" href="/participate/application">
-                        Applications
-                    </a>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            Awards
-                        </a>
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item" href="#">
-                                Categories
-                            </a>
-                            <a class="navbar-item" href="#">
-                                Past Winners
-                            </a>
-                            <a class="navbar-item" href="/participate/voting">
-                                Voting
-                            </a>
-                            <a class="navbar-item" href="/participate/nomination">
-                                Nominations
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item" href="#">
-                                About Awards
-                            </a>
-                        </div>
-                    </div>
+                    <!-- Future navigation items will go here -->
                 </div>
-
+                
                 <div class="navbar-end">
+                    <div class="navbar-item">
+                        <a class="navbar-item" href="/feedback">
+                            <span>Feedback</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
