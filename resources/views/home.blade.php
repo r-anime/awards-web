@@ -13,23 +13,60 @@
                     The r/anime awards are an annual event for the <a href="https://www.reddit.com/r/anime/">r/anime</a> subreddit, completely run by and for the community. Our panels of jurors are required to watch each nominee to completion and our results are split into a public and jury ranking to highlight the best the year has to offer. 
                     </p>
                     
-                    <div class="notification is-warning is-light mt-4">
-                        <div class="level">
-                            <div class="level-left">
-                                <div class="level-item">
-                                    <span class="icon">
-                                        <i class="fas fa-tools"></i>
-                                    </span>
-                                    <span class="has-text-weight-semibold">Under Construction</span>
+                    @php
+                        $currentApplication = \App\Models\Application::where('start_time', '<=', now())
+                            ->where('end_time', '>=', now())
+                            ->first();
+                    @endphp
+
+                    @if($currentApplication)
+                        <div class="notification is-success is-light mt-4">
+                            <div class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <span class="icon">
+                                            <i class="fas fa-clipboard-list"></i>
+                                        </span>
+                                        <span class="has-text-weight-semibold">Applications Open!</span>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <a href="/participate/application" class="button is-primary is-medium">
+                                            <span class="icon">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                            <span>Apply Now</span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="level-right">
-                                <div class="level-item">
-                                    <span class="has-text-grey">We're currently in the process of migrating our archive data of past results. Please bear with us as we move to a new system.</span>
+                            <div class="content mt-3">
+                                <p class="has-text-grey">
+                                    Applications are currently open for the {{ $currentApplication->year }} awards. 
+                                    The application period ends on {{ \Carbon\Carbon::parse($currentApplication->end_time)->format('F j, Y \a\t g:i A') }}.
+                                </p>
+                            </div>
+                        </div>
+                    @else
+                        <div class="notification is-warning is-light mt-4">
+                            <div class="level">
+                                <div class="level-left">
+                                    <div class="level-item">
+                                        <span class="icon">
+                                            <i class="fas fa-tools"></i>
+                                        </span>
+                                        <span class="has-text-weight-semibold">Under Construction</span>
+                                    </div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <span class="has-text-grey">We're currently in the process of migrating our archive data of past results. Please bear with us as we move to a new system.</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
             
@@ -155,6 +192,46 @@
             
             .livestream-wrapper {
                 height: 100vh;
+            }
+        }
+        
+        /* Application button styling */
+        .notification.is-success .button.is-primary {
+            background-color: #ffdd57;
+            color: #000;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .notification.is-success .button.is-primary:hover {
+            background-color: #ffeb3b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 221, 87, 0.4);
+        }
+        
+        .notification.is-success .button.is-primary:focus {
+            box-shadow: 0 0 0 3px rgba(255, 221, 87, 0.3);
+        }
+        
+        .notification.is-success {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .notification .level {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .notification .level-right {
+                margin-top: 1rem;
+                width: 100%;
+            }
+            
+            .notification .level-right .button {
+                width: 100%;
             }
         }
     </style>
