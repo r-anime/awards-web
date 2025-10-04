@@ -12,7 +12,7 @@ class Feedback extends Model
     protected $fillable = [
         'name',
         'message',
-        'ip_address',
+        'ip_hash',
     ];
 
     protected $casts = [
@@ -21,14 +21,23 @@ class Feedback extends Model
     ];
 
     /**
+     * Generate IP hash for rate limiting
+     */
+    public static function generateIpHash(string $ipAddress): string
+    {
+        return hash('sha256', $ipAddress . config('app.key'));
+    }
+
+    /**
      * Check if IP has exceeded weekly limit (5 submissions)
      */
     public static function hasExceededWeeklyLimit(string $ipAddress): bool
     {
+        $ipHash = self::generateIpHash($ipAddress);
         $weekStart = now()->startOfWeek();
         $weekEnd = now()->endOfWeek();
         
-        $submissionCount = self::where('ip_address', $ipAddress)
+        $submissionCount = self::where('ip_hash', $ipHash)
             ->whereBetween('created_at', [$weekStart, $weekEnd])
             ->count();
             

@@ -39,7 +39,7 @@ class FeedbackController extends Controller
         $feedback = Feedback::create([
             'name' => $request->name,
             'message' => $request->message,
-            'ip_address' => $ipAddress,
+            'ip_hash' => Feedback::generateIpHash($ipAddress),
         ]);
 
         // Send to Discord webhook
