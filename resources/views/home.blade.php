@@ -20,35 +20,17 @@
                     @endphp
 
                     @if($currentApplication)
-                        <div class="notification is-success is-light mt-4">
-                            <div class="level">
-                                <div class="level-left">
-                                    <div class="level-item">
-                                        <span class="icon">
-                                            <i class="fas fa-clipboard-list"></i>
-                                        </span>
-                                        <span class="has-text-weight-semibold">Applications Open!</span>
-                                    </div>
-                                </div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        <a href="/participate/application" class="button is-primary is-medium">
-                                            <span class="icon">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                            <span>Apply Now</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="content mt-3">
-                                <p class="has-text-grey">
-                                    Applications are currently open for the {{ $currentApplication->year }} awards. 
-                                    The application period ends on {{ \Carbon\Carbon::parse($currentApplication->end_time)->format('F j, Y \a\t g:i A') }}.
-                                </p>
-                            </div>
-                        </div>
-                    @else
+                        <h2 class="welcome-text has-text-white">
+                            Applications are open
+                        </h2>
+                        <p class="subtitle is-4 has-text-white">
+                            Applications are currently open for the {{ $currentApplication->year }} awards. 
+                            The application period ends on {{ \Carbon\Carbon::parse($currentApplication->end_time)->format('F j, Y \a\t g:i A') }}.
+                        </p>
+                        <a href="/participate/application" class="button is-primary is-medium">
+                            <span>Apply Now</span>
+                        </a>
+                        @endif
                         <div class="notification is-warning is-light mt-4">
                             <div class="level">
                                 <div class="level-left">
@@ -66,7 +48,6 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
                 </div>
             </div>
             
