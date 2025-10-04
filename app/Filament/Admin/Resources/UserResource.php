@@ -11,6 +11,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class UserResource extends Resource
 {
@@ -42,14 +44,33 @@ class UserResource extends Resource
                 
                 Select::make('role')
                     ->label('Role Level')
-                    ->options([
-                        0 => 'User',
-                        1 => 'Juror',
-                        2 => 'Host',
-                        3 => 'Moderator',
-                        4 => 'Site Admin',
-                    ])
-                    ->required(),
+                    ->options(function () {
+                        $currentUserRole = auth()->user()->role;
+                        $roleOptions = [
+                            -1 => 'Restricted',
+                            0 => 'User',
+                            1 => 'Juror',
+                            2 => 'Host',
+                            3 => 'Moderator',
+                            4 => 'Site Admin',
+                        ];
+                        
+                        // Filter out roles higher than the current user's role
+                        return array_filter($roleOptions, function ($role, $key) use ($currentUserRole) {
+                            return $key <= $currentUserRole;
+                        }, ARRAY_FILTER_USE_BOTH);
+                    })
+                    ->required()
+                    ->rules([
+                        function () {
+                            return function (string $attribute, $value, \Closure $fail) {
+                                $currentUserRole = auth()->user()->role;
+                                if ($value > $currentUserRole) {
+                                    $fail('You cannot assign a role higher than your own.');
+                                }
+                            };
+                        },
+                    ]),
                 
                 TextInput::make('flags')
                     ->label('Flags')
@@ -64,6 +85,64 @@ class UserResource extends Resource
                     ->image()
                     ->directory('avatars'),
             ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Username')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('reddit_user')
+                    ->label('Reddit Username')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Role')
+                    ->formatStateUsing(function ($state) {
+                        $roles = [
+                            0 => 'User',
+                            1 => 'Juror',
+                            2 => 'Host',
+                            3 => 'Moderator',
+                            4 => 'Site Admin',
+                        ];
+                        return $roles[$state] ?? 'Unknown';
+                    }),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created')
+                    ->dateTime(),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->visible(function ($record) {
+                        return $record->role <= auth()->user()->role;
+                    }),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(function ($record) {
+                        return $record->role <= auth()->user()->role;
+                    }),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(function ($records) {
+                            return $records->every(function ($record) {
+                                return $record->role <= auth()->user()->role;
+                            });
+                        }),
+                ]),
+            ])
+            ->modifyQueryUsing(function ($query) {
+                // Only show users with roles equal to or lower than current user's role
+                return $query->where('role', '<=', auth()->user()->role);
+            });
     }
 
     public static function getRelations(): array
