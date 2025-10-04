@@ -20,7 +20,7 @@
                     @endphp
 
                     @if($currentApplication)
-                        <h2 class="welcome-text has-text-white">
+                        <h2 class="has-text-white is-3">
                             Applications are open
                         </h2>
                         <p class="subtitle is-4 has-text-white">
