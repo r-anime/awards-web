@@ -105,13 +105,6 @@
                                                 </div>
                                             @endif
                                             
-                                            @if(isset($question['instructions']) && $question['instructions'])
-                                                <div class="mt-3 p-3" style="background-color: #f9fafb; border-radius: 0.375rem;">
-                                                    <p class="is-size-7 has-text-grey">
-                                                        <strong>Instructions:</strong> {{ $question['instructions'] }}
-                                                    </p>
-                                                </div>
-                                            @endif
                                             
                                             @if($question['type'] === 'essay' && isset($question['sample_answers']) && count($question['sample_answers']) > 0)
                                                 <div class="mt-3">

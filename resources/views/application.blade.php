@@ -106,7 +106,7 @@
                                                                 <p class="has-text-weight-semibold mb-2">
                                                                     <span>Additional Instructions:</span>
                                                                 </p>
-                                                                <div class="has-text-dark">{!! \Illuminate\Support\Str::markdown($question['instructions']) !!}</div>
+                                                                <div class="has-text-dark">{!! $question['instructions'] !!}</div>
                                                             </div>
                                                         </div>
                                                     @endif
