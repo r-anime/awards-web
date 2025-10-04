@@ -44,8 +44,16 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('3rem')
             ->renderHook(
                 'panels::head.start',
-                fn (): string => 
-                    '<link rel="stylesheet" href="' . asset('css/custom.css') . '?v=' . time() . '">'
+                function (): string {
+                    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+                    $customCss = $manifest['resources/css/custom.css']['file'] ?? '';
+                    
+                    if ($customCss) {
+                        return '<link rel="stylesheet" href="' . asset('build/' . $customCss) . '">';
+                    }
+                    
+                    return '';
+                }
             )
             
             // Resources & Pages
