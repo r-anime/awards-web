@@ -112,6 +112,25 @@
                                                     </p>
                                                 </div>
                                             @endif
+                                            
+                                            @if($question['type'] === 'essay' && isset($question['sample_answers']) && count($question['sample_answers']) > 0)
+                                                <div class="mt-3">
+                                                    <h6 class="has-text-weight-semibold mb-2">
+                                                        Sample Answers
+                                                    </h6>
+                                                    <div class="sample-answers">
+                                                        @foreach($question['sample_answers'] as $sampleIndex => $sample)
+                                                            <div class="p-3 mb-2" style="background-color: #f8f9fa; border-left: 3px solid #3b82f6; border-radius: 0.25rem;">
+                                                                <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+                                                                    <span class="is-size-7 has-text-weight-medium">Sample {{ $sampleIndex + 1 }}</span>
+                                                                    <span class="tag is-info is-small">{{ $sample['score'] }}/4</span>
+                                                                </div>
+                                                                <div class="is-size-7 has-text-grey">{!! \Illuminate\Support\Str::markdown($sample['answer']) !!}</div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>

@@ -21,6 +21,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Support\Str;
@@ -82,9 +83,34 @@ class ApplicationResource extends Resource
                             ->visible(fn (Get $get): bool => $get('type') === 'multiple_choice')
                             ->addActionLabel('Add Option')
                             ->defaultItems(0),
-                        Textarea::make('instructions')
+                        MarkdownEditor::make('instructions')
                             ->label('Additional Instructions')
-                            ->rows(3)
+                            ->columnSpanFull()
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsDirectory('storage/instructions'),
+                        Repeater::make('sample_answers')
+                            ->label('Sample Answers')
+                            ->schema([
+                                Hidden::make('id')
+                                    ->default(fn () => Str::uuid()->toString()),
+                                MarkdownEditor::make('answer')
+                                    ->label('Sample Answer')
+                                    ->required()
+                                    ->columnSpanFull()
+                                    ->fileAttachmentsDisk('public')
+                                    ->fileAttachmentsDirectory('storage/sample-answers'),
+                                TextInput::make('score')
+                                    ->label('Score')
+                                    ->numeric()
+                                    ->required()
+                                    ->minValue(0)
+                                    ->maxValue(4)
+                                    ->suffix('/4')
+                                    ->helperText('Score out of 4 for this sample answer'),
+                            ])
+                            ->visible(fn (Get $get): bool => $get('type') === 'essay')
+                            ->addActionLabel('Add Sample Answer')
+                            ->defaultItems(0)
                             ->columnSpanFull(),
                     ])
                     ->columns(2)

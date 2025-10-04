@@ -4,17 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="og:title" content="/r/anime Awards 2024">
-    <meta name="description" content="Welcome to the 2024 r/Anime Awards! This site contains all of the info about the winners and rankings for the award categories featured this year.">
+    <meta name="og:title" content="/r/anime Awards 2025">
+    <meta name="description" content="Welcome to the 2025 r/Anime Awards! This site contains all of the info about the winners and rankings for the award categories featured this year.">
     <meta name="og:type" content="website">
     <meta name="og:image" content="https://animeawards.moe/img/snoo_kenichiroaoki.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:description" content="Reddit Anime's 2024 Awards!">
-    <meta name="twitter:image" content="https://animeawards.moe/img/snoo_kenichiroaoki.png">
-    <meta name="og:description" content="Welcome to the 2024 r/Anime Awards! This site contains all of the info about the winners and rankings for the award categories featured this year.">
+    <meta name="twitter:description" content="Reddit Anime's 2025 Awards!">
+    <meta name="twitter:image" content="https://animeawards.moe/images/snoo_kenichiroaoki.png">
+    <meta name="og:description" content="Welcome to the 2025 r/Anime Awards! This site contains all of the info about the winners and rankings for the award categories featured this year.">
     <meta name="og:url" content="https://animeawards.moe">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'r/anime awards' }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/pubjury.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')

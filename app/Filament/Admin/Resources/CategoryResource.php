@@ -57,7 +57,8 @@ class CategoryResource extends Resource
                     ->options([
                         'genre' => 'Genre',
                         'production' => 'Production',
-                        'main' => 'Main'
+                        'main' => 'Main',
+                        'character' => 'Character'
                     ])
                     ->default('genre')
                 /*
@@ -93,7 +94,8 @@ class CategoryResource extends Resource
                     ->options([
                         'genre' => 'Genre',
                         'production' => 'Production',
-                        'main' => 'Main'
+                        'main' => 'Main',
+                        'character' => 'Character'
                     ])
             ])
             ->actions([

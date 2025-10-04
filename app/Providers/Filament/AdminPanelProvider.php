@@ -42,6 +42,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandLogo(asset('images/awardslogo.png'))
             ->brandLogoHeight('3rem')
+            ->favicon(asset('images/pubjury.png'))
             ->renderHook(
                 'panels::head.start',
                 function (): string {

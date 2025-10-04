@@ -74,6 +74,8 @@ class UserResource extends Resource
                 
                 TextInput::make('flags')
                     ->label('Flags')
+                    ->required()
+                    ->default(0)
                     ->numeric(),
                 
                 Textarea::make('about')

@@ -100,6 +100,17 @@
                                                         <span class="tag is-dark ml-2">{{ ucfirst(str_replace('_', ' ', $question['type'])) }}</span>
                                                     </label>
                                                     
+                                                    @if(isset($question['instructions']) && !empty($question['instructions']))
+                                                        <div class="notification is-info is-light mb-4">
+                                                            <div class="content">
+                                                                <p class="has-text-weight-semibold mb-2">
+                                                                    <span>Additional Instructions:</span>
+                                                                </p>
+                                                                <div class="has-text-dark">{!! \Illuminate\Support\Str::markdown($question['instructions']) !!}</div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    
                                                     @if($question['type'] === 'multiple_choice')
                                                         <div class="control">
                                                             @if(isset($question['options']) && count($question['options']) > 0)
@@ -123,6 +134,27 @@
                                                                 placeholder="Type your answer here..."
                                                             >{{ isset($existingAnswers[$question['id']]) ? $existingAnswers[$question['id']] : '' }}</textarea>
                                                         </div>
+                                                        
+                                                        @if(isset($question['sample_answers']) && count($question['sample_answers']) > 0)
+                                                            <div class="mt-4">
+                                                                <h5 class="title is-6 has-text-white mb-3">
+                                                                    Sample Answers
+                                                                </h5>
+                                                                <div class="sample-answers">
+                                                                    @foreach($question['sample_answers'] as $sampleIndex => $sample)
+                                                                        <div class="box mb-3" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+                                                                            <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+                                                                                <h6 class="subtitle is-6 has-text-white mb-0">Sample Answer {{ $sampleIndex + 1 }}</h6>
+                                                                                <span class="tag is-info">{{ $sample['score'] }}/4</span>
+                                                                            </div>
+                                                                            <div class="content">
+                                                                                <div class="has-text-white">{!! \Illuminate\Support\Str::markdown($sample['answer']) !!}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     @elseif($question['type'] === 'preference')
                                                         <div class="preference-form">
                                                             <div class="columns">
@@ -142,7 +174,7 @@
                                                                                 <input type="checkbox" name="preference_non_main[]" value="{{ $category->id }}"
                                                                                        {{ in_array($category->id, $selectedNonMain) ? 'checked' : '' }}>
                                                                                 <span class="checkmark"></span>
-                                                                                {{ $category->name }} ({{ ucfirst($category->type) }})
+                                                                                {{ $category->name }}
                                                                             </label>
                                                                         @endforeach
                                                                     </div>
@@ -234,22 +266,6 @@
                                                                     </div>
                                                                     <input type="hidden" name="preference_no_main_order" id="no_main_categories_order" value="{{ $noMainOrder }}">
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                    
-                                                    @if(isset($question['instructions']) && !empty($question['instructions']))
-                                                        <div class="notification is-info is-light mt-4">
-                                                            <div class="content">
-                                                                <p class="has-text-weight-semibold mb-2">
-                                                                    <span class="icon-text">
-                                                                        <span class="icon">
-                                                                            <i class="fas fa-info-circle"></i>
-                                                                        </span>
-                                                                        <span>Additional Instructions:</span>
-                                                                    </span>
-                                                                </p>
-                                                                <p class="has-text-dark">{{ $question['instructions'] }}</p>
                                                             </div>
                                                         </div>
                                                     @endif
