@@ -104,6 +104,7 @@ class UserResource extends Resource
                     ->label('Role')
                     ->formatStateUsing(function ($state) {
                         $roles = [
+                            -1 => 'Restricted',
                             0 => 'User',
                             1 => 'Juror',
                             2 => 'Host',
@@ -120,18 +121,18 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
+                \Filament\Actions\EditAction::make()
                     ->visible(function ($record) {
                         return $record->role <= auth()->user()->role;
                     }),
-                Tables\Actions\DeleteAction::make()
+                \Filament\Actions\DeleteAction::make()
                     ->visible(function ($record) {
                         return $record->role <= auth()->user()->role;
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
+                \Filament\Actions\BulkActionGroup::make([
+                    \Filament\Actions\DeleteBulkAction::make()
                         ->visible(function ($records) {
                             return $records->every(function ($record) {
                                 return $record->role <= auth()->user()->role;
