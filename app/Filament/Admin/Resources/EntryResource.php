@@ -72,8 +72,8 @@ class EntryResource extends Resource
                 TextInput::make('year')->numeric()->required(),
                 FileUpload::make('image')
                     ->image()
-                    ->directory('entry')
-                    ->disk('storage')
+                    ->directory('storage/entry')
+                    ->disk('public')
                     ->required(),
             ]);
     }

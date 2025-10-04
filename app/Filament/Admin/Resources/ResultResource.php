@@ -55,8 +55,8 @@ class ResultResource extends Resource
                     ->maxLength(255),
                 FileUpload::make('image')
                     ->image()
-                    ->directory('results')
-                    ->disk('storage')
+                    ->directory('storage/results')
+                    ->disk('public')
                     ->required(),
                 Select::make('entry_id')
                     ->label('Entry')
@@ -77,8 +77,8 @@ class ResultResource extends Resource
                 MarkdownEditor::make('description')
                     ->required()
                     ->columnSpanFull()
-                    ->fileAttachmentsDisk('storage')
-                    ->fileAttachmentsDirectory('descriptions'),
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('storage/descriptions'),
                 Repeater::make('staff_credits')
                     ->label('Staff Credits')
                     ->columnSpanFull()
