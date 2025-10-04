@@ -44,12 +44,7 @@ class ApplicationController extends Controller
     public function store(Request $request)
     {
         
-        // Validate the request - remove the wildcard validation for now
-        $request->validate([
-            'preference_non_main' => 'array',
-            'preference_main_order' => 'string|nullable|json',
-            'preference_no_main_order' => 'string|nullable|json'
-        ]);
+        // All fields are now optional - no validation required
 
         $user = auth()->user();
         $application = Application::orderBy('year', 'desc')->first();
