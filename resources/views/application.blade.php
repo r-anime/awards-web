@@ -140,7 +140,7 @@
                                                                 <div class="box" style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
                                                                     <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
                                                                         <h5 class="title is-6 has-text-white mb-0">Sample Answers ({{ count($question['sample_answers']) }})</h5>
-                                                                        <button class="button is-small is-info is-outlined" onclick="toggleSampleAnswers('{{ $question['id'] }}')">
+                                                                        <button type="button" class="button is-small is-info is-outlined" onclick="toggleSampleAnswers('{{ $question['id'] }}')">
                                                                             <span id="toggle-text-{{ $question['id'] }}">Show</span>
                                                                         </button>
                                                                     </div>
