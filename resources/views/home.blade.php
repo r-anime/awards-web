@@ -3,6 +3,23 @@
         <div class="columns is-vcentered is-fullheight ">
             <div class="column is-8 mx-4">
                 <div class="welcome-content">
+                    <div class="notification is-warning is-light mt-4">
+                        <div class="level">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <span class="icon">
+                                        <i class="fas fa-tools"></i>
+                                    </span>
+                                    <span class="has-text-weight-semibold">Under Construction</span>
+                                </div>
+                            </div>
+                            <div class="level-right">
+                                <div class="level-item">
+                                    <span class="has-text-grey">We're currently in the process of migrating our archive data of past results. Please bear with us as we move to a new system.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <h1 class="welcome-text has-text-white">
                         Welcome to the
                     </h1>
@@ -31,23 +48,7 @@
                             <span>Apply Now</span>
                         </a>
                         @endif
-                        <div class="notification is-warning is-light mt-4">
-                            <div class="level">
-                                <div class="level-left">
-                                    <div class="level-item">
-                                        <span class="icon">
-                                            <i class="fas fa-tools"></i>
-                                        </span>
-                                        <span class="has-text-weight-semibold">Under Construction</span>
-                                    </div>
-                                </div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        <span class="has-text-grey">We're currently in the process of migrating our archive data of past results. Please bear with us as we move to a new system.</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                 </div>
             </div>
             
