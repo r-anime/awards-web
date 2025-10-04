@@ -73,7 +73,7 @@ class EntryResource extends Resource
                 FileUpload::make('image')
                     ->image()
                     ->directory('entry')
-                    ->disk('local')
+                    ->disk('storage')
                     ->required(),
             ]);
     }
