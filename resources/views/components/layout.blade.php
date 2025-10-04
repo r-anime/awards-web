@@ -358,6 +358,20 @@
             });
         }
     });
+
+    // Toggle sample answers accordion
+    function toggleSampleAnswers(questionId) {
+        const content = document.getElementById('sample-answers-' + questionId);
+        const toggleText = document.getElementById('toggle-text-' + questionId);
+        
+        if (content.classList.contains('is-hidden')) {
+            content.classList.remove('is-hidden');
+            toggleText.textContent = 'Hide';
+        } else {
+            content.classList.add('is-hidden');
+            toggleText.textContent = 'Show';
+        }
+    }
 </script>
 
 </html>

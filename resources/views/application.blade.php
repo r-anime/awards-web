@@ -137,21 +137,26 @@
                                                         
                                                         @if(isset($question['sample_answers']) && count($question['sample_answers']) > 0)
                                                             <div class="mt-4">
-                                                                <h5 class="title is-6 has-text-white mb-3">
-                                                                    Sample Answers
-                                                                </h5>
-                                                                <div class="sample-answers">
-                                                                    @foreach($question['sample_answers'] as $sampleIndex => $sample)
-                                                                        <div class="box mb-3" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
-                                                                            <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
-                                                                                <h6 class="subtitle is-6 has-text-white mb-0">Sample Answer {{ $sampleIndex + 1 }}</h6>
-                                                                                <span class="tag is-info">{{ $sample['score'] }}/4</span>
+                                                                <div class="box" style="background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);">
+                                                                    <div class="is-flex is-justify-content-space-between is-align-items-center mb-3">
+                                                                        <h5 class="title is-6 has-text-white mb-0">Sample Answers ({{ count($question['sample_answers']) }})</h5>
+                                                                        <button class="button is-small is-info is-outlined" onclick="toggleSampleAnswers('{{ $question['id'] }}')">
+                                                                            <span id="toggle-text-{{ $question['id'] }}">Show</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div id="sample-answers-{{ $question['id'] }}" class="is-hidden">
+                                                                        @foreach($question['sample_answers'] as $sampleIndex => $sample)
+                                                                            <div class="box mb-3" style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);">
+                                                                                <div class="is-flex is-justify-content-space-between is-align-items-center mb-2">
+                                                                                    <h6 class="subtitle is-6 has-text-white mb-0">Sample Answer {{ $sampleIndex + 1 }}</h6>
+                                                                                    <span class="tag is-info">{{ $sample['score'] }}/4</span>
+                                                                                </div>
+                                                                                <div class="content">
+                                                                                    <div class="has-text-white">{!! \Illuminate\Support\Str::markdown($sample['answer']) !!}</div>
+                                                                                </div>
                                                                             </div>
-                                                                            <div class="content">
-                                                                                <div class="has-text-white">{!! \Illuminate\Support\Str::markdown($sample['answer']) !!}</div>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
+                                                                        @endforeach
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         @endif
