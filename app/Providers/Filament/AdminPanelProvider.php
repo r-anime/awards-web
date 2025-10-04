@@ -43,8 +43,9 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/awardslogo.png'))
             ->brandLogoHeight('3rem')
             ->renderHook(
-                'panels::head.end',
-                fn (): string => '<link rel="stylesheet" href="' . asset('css/custom.css') . '">'
+                'panels::head.start',
+                fn (): string => 
+                    '<link rel="stylesheet" href="' . asset('css/custom.css') . '?v=' . time() . '">'
             )
             
             // Resources & Pages
