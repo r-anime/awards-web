@@ -5,9 +5,7 @@
                 Juror Application
             </h1>
             <p class="subtitle is-6 has-text-centered has-text-white">
-                <strong>Important:</strong> Applications no longer autosave. Please make sure to submit your application using the submit button when you're finished.
-            </p>
-            
+                <strong>Important:</strong> Applications no longer autosave. Please make sure to save your application often using the submit button. Some links may open directly and erase your progress, so be careful.
             <div class="content">
                             @if(session('success'))
                                 <div class="notification is-success">
