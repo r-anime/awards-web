@@ -25,18 +25,22 @@ class RedirectUnauthorizedUsers
                 }
             }
         }
+        
+        try {
+            $response = $next($request);
 
-        // Handle 403s for non -1 users with insufficient permissions
-        if ($response->getStatusCode() === 403 && $request->is('dashboard*') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
-            if (Auth::check()) {
-                $user = Auth::user();
-                if ($user && (int) $user->role < 2 && (int) $user->role !== -1) {
-                    return redirect('/');
+            // Handle 403s for non -1 users with insufficient permissions
+            if ($response->getStatusCode() === 403 && $request->is('dashboard*') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
+                if (Auth::check()) {
+                    $user = Auth::user();
+                    if ($user && (int) $user->role < 2 && (int) $user->role !== -1) {
+                        return redirect('/');
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            // Ignore exceptions
         }
-
-        $response = $next($request);
 
         return $response;
     }
