@@ -168,7 +168,7 @@ class AdminPanelProvider extends PanelProvider
      */
     private function resolveUserCallback(): callable
     {
-        return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+		return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
             // First try to find by reddit_user field
             $user = User::where('reddit_user', $oauthUser->getNickname())->first();
             
@@ -177,21 +177,32 @@ class AdminPanelProvider extends PanelProvider
                 $user = User::where('name', $oauthUser->getNickname())->first();
             }
 
-            /*if ($user && $user->role === -1) {
-                // Check account age requirement for existing users using Socialite data
-                $minimumDays = Option::get('account_age_requirement', 30);
-                
-                if (isset($oauthUser->user['created_utc'])) {
-                    $createdUtc = $oauthUser->user['created_utc'];
-                    $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
-                    
-                    // If account now meets age requirement and user was previously restricted (role -1), upgrade to role 0
-                    if ($accountAgeInDays >= $minimumDays && $user->role === -1) {
-                        $user->role = 0;
-                        $user->save();
-                    }
-                }
-            }*/
+			// If no user exists yet, create one to ensure an Authenticatable is always returned
+			if (!$user) {
+				$randomPasswdString = Str::random(64);
+				$placeholderPassword = Hash::make($randomPasswdString);
+
+				$minimumDays = Option::get('account_age_requirement', 30);
+				$role = 0;
+				if (isset($oauthUser->user['created_utc'])) {
+					$createdUtc = $oauthUser->user['created_utc'];
+					$accountAgeInDays = (time() - $createdUtc) / 86400;
+					if ($accountAgeInDays < $minimumDays) {
+						$role = -1;
+					}
+				}
+
+				$user = User::create([
+					'name' => $oauthUser->getNickname(),
+					'email' => null,
+					'password' => $placeholderPassword,
+					'reddit_user' => $oauthUser->getNickname(),
+					'role' => $role,
+					'flags' => 0,
+					'avatar' => $oauthUser->getAvatar(),
+					'uuid' => Str::uuid(),
+				]);
+			}
 
             return $user;
         };
