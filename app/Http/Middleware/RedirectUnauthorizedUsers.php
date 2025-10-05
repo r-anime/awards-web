@@ -26,8 +26,6 @@ class RedirectUnauthorizedUsers
             }
         }
 
-        $response = $next($request);
-
         // Handle 403s for non -1 users with insufficient permissions
         if ($response->getStatusCode() === 403 && $request->is('dashboard*') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
             if (Auth::check()) {
@@ -37,6 +35,8 @@ class RedirectUnauthorizedUsers
                 }
             }
         }
+
+        $response = $next($request);
 
         return $response;
     }
