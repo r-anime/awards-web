@@ -80,11 +80,13 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     protected static function booted(): void
     {
+        /*
         static::created(function (User $user): void {
             self::sendAuditEvent('user_created', $user, [
                 'role' => (int) $user->role,
             ]);
         });
+        */
 
         static::updated(function (User $user): void {
             if ($user->wasChanged('role')) {
