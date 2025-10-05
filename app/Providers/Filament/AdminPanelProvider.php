@@ -178,7 +178,7 @@ class AdminPanelProvider extends PanelProvider
                 $user = User::where('name', $oauthUser->getNickname())->first();
             }
 
-            if ($user && $user->role === -1) {
+            /*if ($user && $user->role === -1) {
                 // Check account age requirement for existing users using Socialite data
                 $minimumDays = Option::get('account_age_requirement', 30);
                 
@@ -192,7 +192,7 @@ class AdminPanelProvider extends PanelProvider
                         $user->save();
                     }
                 }
-            }
+            }*/
 
             return $user;
         };
