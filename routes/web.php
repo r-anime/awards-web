@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Middleware\RedirectUnauthorizedUsers;
 
 Route::get('/', function () {
     return view('home');
@@ -13,7 +14,9 @@ Route::get('/participate', function () {
     return redirect('/');
 });
 
-Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');
+Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
+    Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');
+});
 Route::get('/participate/nomination', function () {
     return view('nomination');
 });
