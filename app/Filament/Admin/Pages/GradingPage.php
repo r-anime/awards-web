@@ -80,7 +80,28 @@ class GradingPage extends Page
                 ->exists();
             
             if (!$hasBeenGraded) {
-                $ungradedApplicants[] = $applicant;
+                // Check if applicant has non-empty essay answers
+                $essayQuestionIds = [];
+                if ($application->form) {
+                    foreach ($application->form as $question) {
+                        if ($question['type'] === 'essay') {
+                            $essayQuestionIds[] = $question['id'];
+                        }
+                    }
+                }
+                
+                $hasNonEmptyEssayAnswers = false;
+                if (!empty($essayQuestionIds)) {
+                    $hasNonEmptyEssayAnswers = AppAnswer::where('applicant_id', $applicant->id)
+                        ->whereIn('question_id', $essayQuestionIds)
+                        ->whereNotNull('answer')
+                        ->where('answer', '!=', '')
+                        ->exists();
+                }
+                
+                if ($hasNonEmptyEssayAnswers) {
+                    $ungradedApplicants[] = $applicant;
+                }
             }
         }
         
