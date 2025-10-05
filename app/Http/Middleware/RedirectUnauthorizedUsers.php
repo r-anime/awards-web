@@ -16,19 +16,28 @@ class RedirectUnauthorizedUsers
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // If a role -1 user hits any participate route, send them to the dashboard home directly
+        if ($request->is('participate') || $request->is('participate/*')) {
+            if (Auth::check()) {
+                $user = Auth::user();
+                if ($user && (int) $user->role === -1) {
+                    return redirect()->to('/dashboard');
+                }
+            }
+        }
+
         $response = $next($request);
-        
-        // Check if this is a 403 Forbidden response from Filament
+
+        // Handle 403s for non -1 users with insufficient permissions
         if ($response->getStatusCode() === 403 && $request->is('dashboard*') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
             if (Auth::check()) {
                 $user = Auth::user();
-                // Allow role -1 users to stay on dashboard, but redirect others with insufficient permissions
-                if ($user->role < 2 && $user->role !== -1) {
+                if ($user && (int) $user->role < 2 && (int) $user->role !== -1) {
                     return redirect('/');
                 }
             }
         }
-        
+
         return $response;
     }
 }

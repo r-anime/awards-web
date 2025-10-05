@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
+use App\Http\Middleware\RedirectUnauthorizedUsers;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -92,6 +93,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RedirectUnauthorizedUsers::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
