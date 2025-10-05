@@ -87,7 +87,7 @@
                             
                             @auth
                                 @if($application && ($isOpen || (auth()->user()->role >= 2)))
-                                    <form method="POST" action="{{ route('application.store') }}" id="applicationForm" onsubmit="console.log('Form submitting...'); return true;">
+                                    <form method="POST" action="{{ route('application.store') }}" id="applicationForm" onsubmit="return validateCharacterLimits();">
                                         @csrf
                                         
                                         @if($application->form && count($application->form) > 0)
@@ -125,12 +125,21 @@
                                                         </div>
                                                     @elseif($question['type'] === 'essay')
                                                         <div class="control">
+                                                            @php
+                                                                $characterLimit = $question['character_limit'] ?? 5000;
+                                                            @endphp
                                                             <textarea 
                                                                 id="editor_{{ $question['id'] }}" 
                                                                 name="question_{{ $question['id'] }}" 
                                                                 class="textarea essay-editor"
                                                                 placeholder="Type your answer here..."
+                                                                maxlength="{{ $characterLimit }}"
+                                                                data-question-id="{{ $question['id'] }}"
+                                                                data-character-limit="{{ $characterLimit }}"
                                                             >{{ isset($existingAnswers[$question['id']]) ? $existingAnswers[$question['id']] : '' }}</textarea>
+                                                            <div class="character-counter" id="counter_{{ $question['id'] }}">
+                                                                <span class="char-count">0</span> / {{ number_format($characterLimit) }} characters
+                                                            </div>
                                                         </div>
                                                         
                                                         @if(isset($question['sample_answers']) && count($question['sample_answers']) > 0)
@@ -353,10 +362,42 @@
                         });
                         
                         editors[questionId] = editor;
+                        
+                        // Add character counter functionality
+                        setupCharacterCounter(questionId, editor);
                     } catch (error) {
                         console.error('Error initializing EasyMDE editor for question', questionId, error);
                     }
                 });
+            }
+            
+            // Function to setup character counter for essay fields
+            function setupCharacterCounter(questionId, editor) {
+                const counterElement = document.getElementById('counter_' + questionId);
+                const charCountElement = counterElement.querySelector('.char-count');
+                const textareaElement = document.getElementById('editor_' + questionId);
+                const maxChars = parseInt(textareaElement.dataset.characterLimit) || 5000;
+                
+                function updateCharacterCount() {
+                    const content = editor.value();
+                    const charCount = content.length;
+                    
+                    charCountElement.textContent = charCount.toLocaleString();
+                    
+                    // Update counter styling based on character count
+                    counterElement.classList.remove('warning', 'danger');
+                    if (charCount > maxChars * 0.9) {
+                        counterElement.classList.add('danger');
+                    } else if (charCount > maxChars * 0.8) {
+                        counterElement.classList.add('warning');
+                    }
+                }
+                
+                // Update counter on content change
+                editor.codemirror.on('change', updateCharacterCount);
+                
+                // Initial count
+                updateCharacterCount();
             }
             
             // Initialize sortable for main categories
@@ -430,6 +471,37 @@
             setTimeout(initializeSortable, 100);
             
         });
+        
+        // Function to validate character limits before form submission
+        function validateCharacterLimits() {
+            let hasErrors = false;
+            
+            // Check all essay fields
+            document.querySelectorAll('[id^="editor_"]').forEach(function(element) {
+                const questionId = element.id.replace('editor_', '');
+                const editor = editors[questionId];
+                const maxChars = parseInt(element.dataset.characterLimit) || 5000;
+                
+                if (editor) {
+                    const content = editor.value();
+                    const charCount = content.length;
+                    
+                    if (charCount > maxChars) {
+                        hasErrors = true;
+                        alert(`Question ${questionId} exceeds the ${maxChars.toLocaleString()} character limit. Current: ${charCount.toLocaleString()} characters. Please shorten your response.`);
+                        
+                        // Focus on the problematic editor
+                        editor.codemirror.focus();
+                    }
+                }
+            });
+            
+            if (hasErrors) {
+                return false; // Prevent form submission
+            }
+            
+            return true; // Allow form submission
+        }
     </script>
     
     <style>
@@ -492,6 +564,25 @@
             background: #e3f2fd;
             border-color: #2196f3;
             color: #1976d2;
+        }
+        
+        .character-counter {
+            margin-top: 8px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: right;
+        }
+        
+        .character-counter.warning {
+            color: #ffa500;
+        }
+        
+        .character-counter.danger {
+            color: #ff4444;
+        }
+        
+        .char-count {
+            font-weight: bold;
         }
         
         .radio {

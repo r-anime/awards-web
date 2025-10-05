@@ -83,6 +83,15 @@ class ApplicationResource extends Resource
                             ->visible(fn (Get $get): bool => $get('type') === 'multiple_choice')
                             ->addActionLabel('Add Option')
                             ->defaultItems(0),
+                        TextInput::make('character_limit')
+                            ->label('Character Limit')
+                            ->numeric()
+                            ->default(5000)
+                            ->minValue(100)
+                            ->maxValue(50000)
+                            ->suffix('characters')
+                            ->helperText('Maximum characters allowed for this essay question')
+                            ->visible(fn (Get $get): bool => $get('type') === 'essay'),
                         MarkdownEditor::make('instructions')
                             ->label('Additional Instructions')
                             ->columnSpanFull()

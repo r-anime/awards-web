@@ -172,9 +172,19 @@ class GradingPage extends Page
         $this->redirect(static::getUrl());
     }
     
+    public function refreshApplications(): void
+    {
+        $this->redirect(static::getUrl());
+    }
+    
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('refresh')
+                ->label('Refresh')
+                ->icon('heroicon-o-arrow-path')
+                ->color('gray')
+                ->action('refreshApplications'),
             Action::make('save')
                 ->label('Save Grades')
                 ->color('success')
