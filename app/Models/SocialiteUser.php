@@ -4,6 +4,7 @@ namespace App\Models;
 
 use DutchCodingCompany\FilamentSocialite\Models\SocialiteUser as BaseSocialiteUser;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
+use App\Models\User;
 
 class SocialiteUser extends BaseSocialiteUser
 {
@@ -16,7 +17,7 @@ class SocialiteUser extends BaseSocialiteUser
         }
 
         // If the related user no longer exists, remove the stale mapping and return null
-        if (!$model->user()->exists()) {
+        if (! User::query()->whereKey($model->user_id)->exists()) {
             try {
                 $model->delete();
             } catch (\Throwable $e) {
