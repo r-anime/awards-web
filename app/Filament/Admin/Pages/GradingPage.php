@@ -70,8 +70,9 @@ class GradingPage extends Page
             return;
         }
         
-        // Find an application that the current user hasn't graded yet
+        // Find applications that the current user hasn't graded yet
         $applicants = User::whereHas('appAnswers')->get();
+        $ungradedApplicants = [];
         
         foreach ($applicants as $applicant) {
             $hasBeenGraded = AppScore::where('applicant_id', $applicant->id)
@@ -79,10 +80,15 @@ class GradingPage extends Page
                 ->exists();
             
             if (!$hasBeenGraded) {
-                // Redirect to the URL with the found user's UUID
-                $this->redirect(static::getUrlForUser($applicant->uuid));
-                return;
+                $ungradedApplicants[] = $applicant;
             }
+        }
+        
+        // Randomly select an ungraded applicant
+        if (!empty($ungradedApplicants)) {
+            $randomApplicant = $ungradedApplicants[array_rand($ungradedApplicants)];
+            $this->redirect(static::getUrlForUser($randomApplicant->uuid));
+            return;
         }
     }
     
