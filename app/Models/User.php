@@ -13,6 +13,7 @@ use Filament\Panel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Jobs\SendAuditWebhook;
+use App\Models\Option;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -113,26 +114,43 @@ class User extends Authenticatable implements FilamentUser, HasName
 
         $actor = Auth::user();
 
-        $payload = [
-            'event' => $eventType,
+        $action = match ($eventType) {
+            'user_deleted' => 'deleted',
+            'user_role_changed' => 'edited',
+            default => 'created',
+        };
+
+        $actorStr = $actor
+            ? sprintf('#%d %s (%s)', $actor->id, $actor->name ?? $actor->reddit_user ?? 'Unknown', $actor->reddit_user ?? 'n/a')
+            : 'System';
+
+        $subjectStr = sprintf('#%d %s (%s)', $subjectUser->id, $subjectUser->name ?? $subjectUser->reddit_user ?? 'Unknown', $subjectUser->reddit_user ?? 'n/a');
+
+        $embed = [
+            'title' => 'User audit',
+            'description' => $actorStr . ' (' . $action . ') ' . $subjectStr,
+            'color' => $eventType === 'user_deleted' ? 0xff0000 : ($eventType === 'user_role_changed' ? 0xffa500 : 0x5865f2),
             'timestamp' => now()->toIso8601String(),
-            'subject' => [
-                'id' => $subjectUser->id,
-                'uuid' => $subjectUser->uuid ?? null,
-                'name' => $subjectUser->name,
-                'reddit_user' => $subjectUser->reddit_user,
-            ],
-            'actor' => $actor ? [
-                'id' => $actor->id,
-                'name' => $actor->name,
-                'reddit_user' => $actor->reddit_user,
-            ] : null,
-            'details' => $details,
         ];
+
+        if ($eventType === 'user_role_changed') {
+            $embed['fields'] = [
+                [
+                    'name' => 'Old role',
+                    'value' => (string) ($details['old_role'] ?? ''),
+                    'inline' => true,
+                ],
+                [
+                    'name' => 'New role',
+                    'value' => (string) ($details['new_role'] ?? ''),
+                    'inline' => true,
+                ],
+            ];
+        }
 
         try {
             // Queue the webhook to avoid impacting request lifecycle
-            SendAuditWebhook::dispatch($webhookUrl, $payload)->onQueue('default');
+            SendAuditWebhook::dispatch($webhookUrl, ['embeds' => [$embed]])->onQueue('default');
         } catch (\Throwable $e) {
             // Intentionally ignore webhook errors to avoid impacting UX
         }
