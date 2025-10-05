@@ -12,6 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Filament\Panel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\SendAuditWebhook;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
@@ -85,8 +86,7 @@ class User extends Authenticatable implements FilamentUser, HasName
             self::sendAuditEvent('user_created', $user, [
                 'role' => (int) $user->role,
             ]);
-        });
-        */
+        });*/
 
         static::updated(function (User $user): void {
             if ($user->wasChanged('role')) {
@@ -131,7 +131,8 @@ class User extends Authenticatable implements FilamentUser, HasName
         ];
 
         try {
-            Http::timeout(5)->acceptJson()->asJson()->post($webhookUrl, $payload);
+            // Queue the webhook to avoid impacting request lifecycle
+            SendAuditWebhook::dispatch($webhookUrl, $payload)->onQueue('default');
         } catch (\Throwable $e) {
             // Intentionally ignore webhook errors to avoid impacting UX
         }
