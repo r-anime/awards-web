@@ -106,7 +106,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     private static function sendAuditEvent(string $eventType, User $subjectUser, array $details = []): void
     {
-        $webhookUrl = Option::get('audit_webhook_url');
+        $webhookUrl = Option::get('audit_channel_webhook');
         if (!$webhookUrl) {
             return;
         }
