@@ -119,6 +119,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->registration()
             ->showDivider(false)
+            ->socialiteUserModelClass(\App\Models\SocialiteUser::class)
             ->createUserUsing($this->createUserCallback())
             ->resolveUserUsing($this->resolveUserCallback());
     }
