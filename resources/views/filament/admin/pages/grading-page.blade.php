@@ -18,8 +18,85 @@
 
             @php
                 $essayQuestions = $this->getEssayQuestions();
+                $nonEssayQuestions = $this->getNonEssayQuestions();
                 $existingAnswers = $this->getExistingAnswers();
+                $preferenceQid = $this->getPreferenceQuestionId();
+                $categoriesById = $this->getCategoriesById();
+                $otherHostScores = $this->getOtherHostScores();
             @endphp
+
+            {{-- Non-essay answers (no grading UI) --}}
+            @if(!empty($nonEssayQuestions))
+                <div class="fi-section mb-6">
+                    <div class="fi-section-content">
+                        <div class="fi-card">
+                            <div class="fi-card-body p-6">
+                                <h3 class="fi-section-header-heading mb-4">Applicant's Non‑Essay Answers</h3>
+
+                                @foreach($nonEssayQuestions as $q)
+                                    <div class="mb-6">
+                                        <div class="font-medium mb-2">{{ $q['question'] ?? 'Question' }}</div>
+                                        @php
+                                            $raw = $existingAnswers[$q['id']] ?? null;
+                                        @endphp
+                                        @if(($q['type'] ?? null) === 'preference')
+                                            @php
+                                                $pref = $raw ? json_decode($raw, true) : ['non_main' => [], 'main_order' => '', 'no_main_order' => ''];
+                                                $nonMainIds = is_array($pref['non_main'] ?? []) ? $pref['non_main'] : [];
+                                                $mainOrder = $pref['main_order'] ?? '';
+                                                $mainIds = array_filter(explode(',', (string) $mainOrder));
+                                            @endphp
+                                            <div class="text-gray-700 dark:text-gray-300">
+                                                <div class="mb-2">
+                                                    <span class="font-semibold">Checked non‑main categories:</span>
+                                                    @if(!empty($nonMainIds))
+                                                        <ul class="list-disc ml-6 mt-1">
+                                                            @foreach($nonMainIds as $cid)
+                                                                @php $c = $categoriesById[(int) $cid] ?? null; @endphp
+                                                                @if($c)
+                                                                    <li>{{ $c->name }} ({{ $c->type }})</li>
+                                                                @endif
+                                                            @endforeach
+                                                        </ul>
+                                                    @else
+                                                        <span>None</span>
+                                                    @endif
+                                                </div>
+                                                <div>
+                                                    <span class="font-semibold">Selected main categories (in order):</span>
+                                                    @if(!empty($mainIds))
+                                                        <ol class="list-decimal ml-6 mt-1">
+                                                            @foreach($mainIds as $cid)
+                                                                @php $c = $categoriesById[(int) $cid] ?? null; @endphp
+                                                                @if($c)
+                                                                    <li>{{ $c->name }}</li>
+                                                                @endif
+                                                            @endforeach
+                                                        </ol>
+                                                    @else
+                                                        <span>None</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @else
+                                            @php
+                                                $display = $raw;
+                                                if (is_string($raw) && str_starts_with($raw, '[')) {
+                                                    $decoded = json_decode($raw, true);
+                                                    if (json_last_error() === JSON_ERROR_NONE) {
+                                                        $display = implode(', ', array_map('strval', (array) $decoded));
+                                                    }
+                                                }
+                                            @endphp
+                                            <p class="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border">{{ $display ?? 'No answer provided' }}</p>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             @foreach($essayQuestions as $question)
                 <div class="fi-section mb-4">
@@ -100,6 +177,27 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                {{-- Other hosts' grades/comments for this essay --}}
+                                @php
+                                    $others = $otherHostScores[(string) $question['id']] ?? [];
+                                @endphp
+                                @if(!empty($others))
+                                    <div class="mt-6">
+                                        <div class="font-medium mb-2">Other Hosts' Feedback</div>
+                                        <div class="space-y-2">
+                                            @foreach($others as $o)
+                                                <div class="bg-gray-50 dark:bg-gray-800 p-3 rounded border">
+                                                    <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">{{ $o['scorer'] }}</div>
+                                                    <div class="text-gray-800 dark:text-gray-200"><span class="font-semibold">Grade:</span> {{ $o['score'] }}</div>
+                                                    @if(!empty($o['comment']))
+                                                        <div class="text-gray-700 dark:text-gray-300"><span class="font-semibold">Comment:</span> {{ $o['comment'] }}</div>
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

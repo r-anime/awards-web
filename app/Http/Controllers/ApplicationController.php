@@ -53,20 +53,7 @@ class ApplicationController extends Controller
             return redirect()->route('application.index')->with('error', 'No application found.');
         }
 
-        // Delete any existing grades for this user's application
-        // This includes grades by applicant_id and grades where question_id matches question UUIDs from this application
-        $questionUuids = [];
-        if ($application->form) {
-            foreach ($application->form as $question) {
-                if (isset($question['id'])) {
-                    $questionUuids[] = $question['id'];
-                }
-            }
-        }
-        
-        AppScore::where('applicant_id', $user->id)
-            ->orWhereIn('question_id', $questionUuids)
-            ->delete();
+        // Only delete grades for questions where the answer has changed
 
         // Process each question answer
         foreach ($request->all() as $key => $value) {
@@ -78,6 +65,21 @@ class ApplicationController extends Controller
                     $answer = json_encode($value);
                 } else {
                     $answer = $value;
+                }
+
+                // Check if answer changed
+                $existingAnswer = AppAnswer::where('applicant_id', $user->id)
+                    ->where('question_id', $questionId)
+                    ->first();
+
+                if ($existingAnswer && $existingAnswer->answer !== $answer) {
+                    // Delete grades for this applicant and this specific question only
+                    AppScore::where('applicant_id', $user->id)
+                        ->where(function ($q) use ($questionId) {
+                            $q->where('question_id', $questionId)
+                              ->orWhere('question_uuid', $questionId);
+                        })
+                        ->delete();
                 }
 
                 // Update or create the answer
@@ -114,13 +116,29 @@ class ApplicationController extends Controller
             }
 
             if ($preferenceQuestion) {
+                $preferenceQuestionId = $preferenceQuestion['id'];
+                $newPreferenceAnswer = json_encode($preferenceData);
+
+                $existingPreferenceAnswer = AppAnswer::where('applicant_id', $user->id)
+                    ->where('question_id', $preferenceQuestionId)
+                    ->first();
+
+                if ($existingPreferenceAnswer && $existingPreferenceAnswer->answer !== $newPreferenceAnswer) {
+                    AppScore::where('applicant_id', $user->id)
+                        ->where(function ($q) use ($preferenceQuestionId) {
+                            $q->where('question_id', $preferenceQuestionId)
+                              ->orWhere('question_uuid', $preferenceQuestionId);
+                        })
+                        ->delete();
+                }
+
                 AppAnswer::updateOrCreate(
                     [
                         'applicant_id' => $user->id,
-                        'question_id' => $preferenceQuestion['id'],
+                        'question_id' => $preferenceQuestionId,
                     ],
                     [
-                        'answer' => json_encode($preferenceData),
+                        'answer' => $newPreferenceAnswer,
                     ]
                 );
             }

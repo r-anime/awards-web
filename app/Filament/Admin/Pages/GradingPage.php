@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Pages;
 use App\Models\Application;
 use App\Models\AppAnswer;
 use App\Models\AppScore;
+use App\Models\Category;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -149,6 +150,76 @@ class GradingPage extends Page
         }
         
         return $essayQuestions;
+    }
+    
+    public function getNonEssayQuestions(): array
+    {
+        $application = Application::orderBy('year', 'desc')->first();
+        
+        if (!$application || !$application->form) {
+            return [];
+        }
+        
+        $nonEssayQuestions = [];
+        foreach ($application->form as $question) {
+            if (($question['type'] ?? null) !== 'essay') {
+                $nonEssayQuestions[] = $question;
+            }
+        }
+        
+        return $nonEssayQuestions;
+    }
+    
+    public function getPreferenceQuestionId(): ?string
+    {
+        $application = Application::orderBy('year', 'desc')->first();
+        if (!$application || !$application->form) {
+            return null;
+        }
+        foreach ($application->form as $question) {
+            if (($question['type'] ?? null) === 'preference') {
+                return $question['id'] ?? null;
+            }
+        }
+        return null;
+    }
+    
+    public function getCategoriesById(): array
+    {
+        $application = Application::orderBy('year', 'desc')->first();
+        if (!$application) {
+            return [];
+        }
+        $categories = Category::where('year', $application->year)->get();
+        $byId = [];
+        foreach ($categories as $category) {
+            $byId[$category->id] = $category;
+        }
+        return $byId;
+    }
+    
+    public function getOtherHostScores(): array
+    {
+        if (!$this->ungradedApplication) {
+            return [];
+        }
+        $scores = AppScore::with('scorer')
+            ->where('applicant_id', $this->ungradedApplication->id)
+            ->where('scorer_id', '!=', auth()->id())
+            ->get();
+        $grouped = [];
+        foreach ($scores as $score) {
+            $qid = (string) $score->question_id;
+            if (!isset($grouped[$qid])) {
+                $grouped[$qid] = [];
+            }
+            $grouped[$qid][] = [
+                'scorer' => $score->scorer ? ($score->scorer->name ?? $score->scorer->reddit_user ?? ('#' . $score->scorer->id)) : 'Unknown',
+                'score' => $score->score,
+                'comment' => $score->comment,
+            ];
+        }
+        return $grouped;
     }
     
     public function getExistingAnswers(): array
