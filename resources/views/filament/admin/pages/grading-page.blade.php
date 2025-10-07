@@ -43,8 +43,16 @@
                                             @php
                                                 $pref = $raw ? json_decode($raw, true) : ['non_main' => [], 'main_order' => '', 'no_main_order' => ''];
                                                 $nonMainIds = is_array($pref['non_main'] ?? []) ? $pref['non_main'] : [];
-                                                $mainOrder = $pref['main_order'] ?? '';
-                                                $mainIds = array_filter(explode(',', (string) $mainOrder));
+                                                $mainOrderData = [];
+                                                if (!empty($pref['main_order'])) {
+                                                    $decoded = is_array($pref['main_order']) ? $pref['main_order'] : json_decode($pref['main_order'], true);
+                                                    if (is_array($decoded)) {
+                                                        $mainOrderData = $decoded;
+                                                    }
+                                                }
+                                                usort($mainOrderData, function($a, $b) {
+                                                    return (int) ($a['order'] ?? 999) <=> (int) ($b['order'] ?? 999);
+                                                });
                                             @endphp
                                             <div class="text-gray-700 dark:text-gray-300">
                                                 <div class="mb-2">
@@ -64,10 +72,10 @@
                                                 </div>
                                                 <div>
                                                     <span class="font-semibold">Selected main categories (in order):</span>
-                                                    @if(!empty($mainIds))
+                                                    @if(!empty($mainOrderData))
                                                         <ol class="list-decimal ml-6 mt-1">
-                                                            @foreach($mainIds as $cid)
-                                                                @php $c = $categoriesById[(int) $cid] ?? null; @endphp
+                                                            @foreach($mainOrderData as $item)
+                                                                @php $c = $categoriesById[(int) ($item['category_id'] ?? 0)] ?? null; @endphp
                                                                 @if($c)
                                                                     <li>{{ $c->name }}</li>
                                                                 @endif
@@ -78,6 +86,19 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                        @elseif(($q['type'] ?? null) === 'multiple_choice')
+                                            @php
+                                                $display = 'No answer provided';
+                                                if (!empty($raw) && !empty($q['options'] ?? [])) {
+                                                    foreach (($q['options'] ?? []) as $opt) {
+                                                        if ((string) ($opt['id'] ?? '') === (string) $raw) {
+                                                            $display = $opt['option'] ?? (string) $raw;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            @endphp
+                                            <p class="text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg border">{{ $display }}</p>
                                         @else
                                             @php
                                                 $display = $raw;
