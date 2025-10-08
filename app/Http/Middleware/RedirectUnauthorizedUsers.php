@@ -27,7 +27,7 @@ class RedirectUnauthorizedUsers
         }
         
         // Proactively block access to dashboard admin pages for users with insufficient roles
-        if ($request->is('dashboard/*') && !$request->is('dashboard') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
+        if ($request->is('dashboard/*') && !$request->is('dashboard/public-dashboard') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
             if (Auth::check()) {
                 $user = Auth::user();
                 if ($user && (int) $user->role < 2) {
