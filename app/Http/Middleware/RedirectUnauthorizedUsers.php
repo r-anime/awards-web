@@ -26,9 +26,20 @@ class RedirectUnauthorizedUsers
             }
         }
         
+        // Proactively block access to dashboard admin pages for users with insufficient roles
+        if ($request->is('dashboard*') && !$request->is('dashboard') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
+            if (Auth::check()) {
+                $user = Auth::user();
+                if ($user && (int) $user->role < 2) {
+                    // Redirect users with role < 2 to the main dashboard page
+                    return redirect('/dashboard');
+                }
+            }
+        }
+        
         $response = $next($request);
 
-        // Handle 403s for non -1 users with insufficient permissions
+        // Handle 403s for non -1 users with insufficient permissions (fallback)
         if ($response->getStatusCode() === 403 && $request->is('dashboard*') && !$request->is('login') && !$request->is('dashboard/oauth/*')) {
             if (Auth::check()) {
                 $user = Auth::user();
@@ -37,7 +48,6 @@ class RedirectUnauthorizedUsers
                 }
             }
         }
-
 
         return $response;
     }
