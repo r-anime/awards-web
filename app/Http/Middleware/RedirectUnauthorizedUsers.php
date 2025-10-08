@@ -26,16 +26,8 @@ class RedirectUnauthorizedUsers
             }
         }
         
-        // Proactively block access to dashboard admin pages for users with insufficient roles
-        if ($request->is('dashboard/*') && !$request->is('dashboard/public-dashboard') && !$request->is('login') && !$request->is('dashboard/logout') && !$request->is('dashboard/oauth/*')) {
-            if (Auth::check()) {
-                $user = Auth::user();
-                if ($user && (int) $user->role < 2) {
-                    // Redirect users with role < 2 to the main dashboard page
-                    return redirect('/dashboard');
-                }
-            }
-        }
+        // This middleware now works as a fallback since CheckUserRole handles the main blocking
+        // Keep this for any edge cases or specific route handling
         
         $response = $next($request);
 
