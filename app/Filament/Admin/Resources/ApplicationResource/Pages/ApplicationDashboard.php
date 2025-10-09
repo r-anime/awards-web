@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\ApplicationResource\Pages;
 
 use App\Filament\Admin\Resources\ApplicationResource;
+use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
 use App\Models\Application;
 use Filament\Actions;
 use Filament\Resources\Pages\Page;
@@ -56,6 +57,12 @@ class ApplicationDashboard extends Page
                 ->icon('heroicon-o-academic-cap')
                 ->color('success')
                 ->url(\App\Filament\Admin\Pages\GradingPage::getUrl());
+            
+            $actions[] = Actions\Action::make('grading-overview')
+                ->label('Grading Overview')
+                ->icon('heroicon-o-table-cells')
+                ->color('info')
+                ->url(ApplicationGrading::getUrl());
         }
         
         return $actions;

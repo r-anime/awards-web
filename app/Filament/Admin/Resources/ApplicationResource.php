@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ApplicationResource\Pages;
 use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationDashboard;
+use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
 use App\Filament\Admin\Resources\ApplicationResource\RelationManagers;
 use App\Models\Application;
 use Filament\Forms;
@@ -162,6 +163,7 @@ class ApplicationResource extends Resource
             'index' => ApplicationDashboard::route('/'),
             'create' => Pages\CreateApplication::route('/create'),
             'edit' => Pages\EditApplication::route('/{record}/edit'),
+            'grading' => Pages\ApplicationGrading::route('/grading'),
         ];
     }
 }

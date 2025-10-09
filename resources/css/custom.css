@@ -372,3 +372,12 @@ html, body {
     color: #6b7280;
     margin: 0;
 }
+
+/* Tooltip line breaks */
+.tooltip-inner {
+    white-space: pre-line;
+}
+
+.fi-input-wrp .p-4{
+    white-space: pre-line;
+}
