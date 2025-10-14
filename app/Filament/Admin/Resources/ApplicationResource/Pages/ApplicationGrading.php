@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\ApplicationResource\Pages;
 
 use App\Filament\Admin\Resources\ApplicationResource;
+use App\Filament\Admin\Pages\GradingPage;
 use App\Models\Application;
 use App\Models\AppScore;
 use App\Models\AppAnswer;
@@ -57,6 +58,13 @@ class ApplicationGrading extends Page implements HasTable
                 ->formatStateUsing(function ($record) {
                     return $record->uuid ?? 'N/A';
                 })
+                ->url(function ($record) {
+                    if ($record->uuid) {
+                        return GradingPage::getUrlForUser($record->uuid);
+                    }
+                    return null;
+                })
+                ->color('primary')
                 ->width('200px'),
         ];
 

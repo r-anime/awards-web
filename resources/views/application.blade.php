@@ -347,7 +347,7 @@
                                 'heading-1', 'heading-2', 'heading-3', '|',
                                 'quote', 'unordered-list', 'ordered-list', '|',
                                 'link', 'image', 'table', '|',
-                                'preview', 'side-by-side', 'fullscreen', '|',
+                                'preview', '|',
                                 'guide'
                             ],
                             placeholder: 'Type your answer here...',
@@ -358,13 +358,82 @@
                             },
                             insertTexts: {
                                 link: ['[', '](url)']
-                            }
+                            },
+                            minHeight: '200px',
+                            forceSync: true,
+                            renderingConfig: {
+                                singleLineBreaks: false,
+                                codeSyntaxHighlighting: true
+                            },
+                            lineWrapping: true
                         });
                         
                         editors[questionId] = editor;
                         
                         // Add character counter functionality
                         setupCharacterCounter(questionId, editor);
+                        
+                        // Force resize functionality to work
+                        const container = editor.codemirror.getWrapperElement().parentElement;
+                        
+                        // Add resize handle manually
+                        const resizeHandle = document.createElement('div');
+                        resizeHandle.style.cssText = `
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            width: 20px;
+                            height: 20px;
+                            background: linear-gradient(-45deg, transparent 30%, #ccc 30%, #ccc 35%, transparent 35%, transparent 65%, #ccc 65%, #ccc 70%, transparent 70%);
+                            cursor: nw-resize;
+                            z-index: 1000;
+                        `;
+                        container.appendChild(resizeHandle);
+                        
+                        // Handle resize manually with performance optimization
+                        let isResizing = false;
+                        let startY = 0;
+                        let startHeight = 0;
+                        let animationFrame = null;
+                        
+                        resizeHandle.addEventListener('mousedown', function(e) {
+                            isResizing = true;
+                            startY = e.clientY;
+                            startHeight = container.offsetHeight;
+                            document.body.style.cursor = 'nw-resize';
+                            e.preventDefault();
+                        });
+                        
+                        function updateSize(newHeight) {
+                            if (newHeight >= 200) {
+                                container.style.height = newHeight + 'px';
+                                editor.codemirror.setSize('100%', newHeight - 40 + 'px');
+                            }
+                        }
+                        
+                        document.addEventListener('mousemove', function(e) {
+                            if (isResizing) {
+                                if (animationFrame) {
+                                    cancelAnimationFrame(animationFrame);
+                                }
+                                
+                                animationFrame = requestAnimationFrame(function() {
+                                    const newHeight = startHeight + (e.clientY - startY);
+                                    updateSize(newHeight);
+                                });
+                            }
+                        });
+                        
+                        document.addEventListener('mouseup', function() {
+                            if (isResizing) {
+                                isResizing = false;
+                                document.body.style.cursor = '';
+                                if (animationFrame) {
+                                    cancelAnimationFrame(animationFrame);
+                                    animationFrame = null;
+                                }
+                            }
+                        });
                     } catch (error) {
                         console.error('Error initializing EasyMDE editor for question', questionId, error);
                     }
@@ -524,23 +593,25 @@
         
         .essay-editor {
             min-height: 200px;
-            max-height: 400px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 14px;
             line-height: 1.5;
             background: white;
             border: 1px solid #ddd;
             border-radius: 5px;
+            resize: vertical;
+            overflow: auto;
         }
         
         .EasyMDEContainer {
             border-radius: 5px;
-            overflow: hidden;
+            overflow: auto;
+            min-height: 200px;
+            position: relative;
         }
         
         .EasyMDEContainer .CodeMirror {
             min-height: 200px;
-            max-height: 400px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 14px;
             line-height: 1.5;
