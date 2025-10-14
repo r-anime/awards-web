@@ -7,10 +7,14 @@ use Illuminate\Support\Sleep;
 
 use App\Models\Entry;
 use App\Models\ItemName;
+use App\Models\Category;
+use App\Models\CategoryInfo;
+use App\Models\Result;
 
 use File;
 use Http;
 use Storage;
+use Exception;
 
 
 class ImportArchive extends Command
@@ -108,7 +112,7 @@ class ImportArchive extends Command
      public function handle()
     {
         $year = $this->argument('year');
-        $content = File::get(app_path("Console\Commands\archive\\results{$year}.json"));
+        $content = File::get(app_path("Console/Commands/archive/git coresults{$year}.json"));
         $json = json_decode(json: $content, associative: true);
         $anime = [];
         $char = [];
@@ -136,7 +140,7 @@ class ImportArchive extends Command
             foreach ($response_shows as $show){
                 $this->info("Importing: " . $show['title']['romaji']);
                 $imageContent = file_get_contents($show['coverImage']['large']);
-                Storage::disk('public')->put('/entry/anlist-' . $show['id'] . '.jpg', $imageContent);
+                Storage::disk('public')->put('/entry/anilist-' . $show['id'] . '.jpg', $imageContent);
 
                 $newentry = Entry::updateOrCreate(
                         [
@@ -146,7 +150,7 @@ class ImportArchive extends Command
                         [
                             'name' => $show['title']['romaji'],
                             'year' => $year,
-                            'image' => 'entry/' . 'anlist-' . $show['id'] . '.jpg'
+                            'image' => 'entry/' . 'anilist-' . $show['id'] . '.jpg'
                         ]
                 );
 
@@ -201,7 +205,7 @@ class ImportArchive extends Command
 
             $this->info("Importing: " . $charres['name']['full']);
             $imageContent = file_get_contents($charres['image']['large']);
-            Storage::disk('public')->put('/entry/anlist-char-' . $charres['id'] . '.jpg', $imageContent);
+            Storage::disk('public')->put('/entry/anilist-char-' . $charres['id'] . '.jpg', $imageContent);
 
             $parentanime = Entry::firstWhere('anilist_id', $charres['media']['nodes'][0]['id']);
             $parent_id = null;
@@ -217,7 +221,7 @@ class ImportArchive extends Command
                     [
                         'name' => $charres['name']['full'],
                         'year' => $year,
-                        'image' => 'entry/' . 'anlist-char-' . $charres['id'] . '.jpg',
+                        'image' => 'entry/' . 'anilist-char-' . $charres['id'] . '.jpg',
                         'parent_id' => $parent_id
                     ]
             );
@@ -232,7 +236,7 @@ class ImportArchive extends Command
                     [
                         'name' => $vares['name']['full'],
                         'year' => $year,
-                        'image' => 'entry/' . 'anlist-char-' . $charres['id'] . '.jpg',
+                        'image' => 'entry/' . 'anilist-char-' . $charres['id'] . '.jpg',
                         'parent_id' => $newentry->id
                     ]
                 );
@@ -241,26 +245,240 @@ class ImportArchive extends Command
             Sleep::for(5)->second();
         }
 
-        $endpoint = "https://api.animethemes.moe/anime";
-        $client = new \GuzzleHttp\Client();
-        $id = 5;
-        $value = "ABC";
+        foreach ($json['themes'] as $key => $value) {
+          
+          // print_r($value);
+          $split = explode('-',$value);
+          $anime = trim($split[0]);
+          $animesplit = explode(' ', $anime);
+          $themeversion = $animesplit[count($animesplit)-1];
+          $song = trim($split[1]);
+          $response = Http::get('https://api.animethemes.moe/search', [
+              'q' => $song,
+              'fields[search]' => 'animethemes',
+              'include[animetheme]' => 'animethemeentries.videos,anime.images,song.artists,group',
+              'page[limit]' => 1
+          ]);
 
-        $response = $client->request('GET', $endpoint, ['query' => [
-            'key1' => $id, 
-            'key2' => $value,
-        ]]);
+          $res1 = $response->json();
+          if (isset($res1['search']['animethemes'][0])){
+            $anime = $res1['search']['animethemes'][0]['anime']['name'];
+          } else {
+            array_splice( $animesplit, -1 );
+            $anime = implode(' ', $animesplit);
+          }
+          
+          if ($anime != null && $anime != ''){
 
-        // url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
+            $res2 = Http::get('https://api.animethemes.moe/search', [
+              'q' => $anime,
+              'fields[search]' => 'anime',
+              'include[anime]' => 'resources',
+              'page[limit]' => 1
+            ]);
 
-        $statusCode = $response->getStatusCode();
-        $content = $response->getBody();
+            //print_r($res2->json());
 
-        // or when your server returns json
-        // $content = json_decode($response->getBody(), true);
+            $anilist = array_filter($res2['search']['anime'][0]['resources'], function($var){
+              return $var['site'] == 'AniList';
+            });
 
+            $anilist = array_pop($anilist);
 
+            $anilistid = $anilist['external_id'];
+            // print_r($anilist);
+
+            $this->info($anime . " - " . $anilistid);
+
+            $parent = Entry::firstWhere(['anilist_id' => $anilistid, 'type' => 'anime']);
+            $parent_id = 0;
+            if ($parent != null){
+                $parent_id = $parent->id;
+            }
+
+            $newva = Entry::updateOrCreate(
+                [
+                    'type' => 'theme',
+                    'anilist_id' => $anilistid,
+                    'name' => $song,
+                    'theme_version' => $themeversion,
+                    'year' => $year,
+                ],
+                [
+                    'image' => 'entry/' . 'anilist-theme-' . $anilistid . '.jpg',
+                    'parent_id' => $parent_id
+                ]
+            );
+
+          }
+
+          Sleep::for(5)->second();
+        }       
         
+        // Import categories and results
+        $this->importCategoriesAndResults($year, $json);
+    }
+
+    /**
+     * Import categories and results from the JSON data
+     */
+    private function importCategoriesAndResults($year, $json)
+    {
+        $this->info("Importing categories and results for year {$year}...");
         
+        foreach ($json['sections'] as $section) {
+            $this->info("Processing section: {$section['name']}");
+            
+            foreach ($section['awards'] as $awardIndex => $award) {
+                $this->info("Processing award: {$award['name']}");
+                
+                // Create category
+                $category = Category::updateOrCreate(
+                    [
+                        'year' => $year,
+                        'name' => $award['name'],
+                        'type' => $section['slug']
+                    ],
+                    [
+                        'order' => $awardIndex + 1
+                    ]
+                );
+                
+                // Create category info
+                CategoryInfo::updateOrCreate(
+                    [
+                        'category_id' => $category->id
+                    ],
+                    [
+                        'description' => $award['blurb'] ?? '',
+                        'sotc_blurb' => $section['blurb'] ?? ''
+                    ]
+                );
+                
+                // Import results for this category
+                $this->importResultsForCategory($year, $category, $award);
+            }
+        }
+    }
+
+    /**
+     * Import results for a specific category
+     */
+    private function importResultsForCategory($year, $category, $award)
+    {
+        if (!isset($award['nominees']) || empty($award['nominees'])) {
+            $this->warn("No nominees found for category: {$category->name}");
+            return;
+        }
+        
+        // Sort nominees by jury rank (lower number = better rank)
+        $nominees = $award['nominees'];
+        usort($nominees, function($a, $b) {
+            return $a['jury'] <=> $b['jury'];
+        });
+        
+        foreach ($nominees as $index => $nominee) {
+            // Find the entry by anilist_id
+            $entry = Entry::where('anilist_id', $nominee['id'])->first();
+            
+            if (!$entry) {
+                $this->warn("Entry not found for anilist_id: {$nominee['id']}");
+                continue;
+            }
+            
+            // Determine entry name and image (only use alt if not empty)
+            $entryName = !empty($nominee['altname']) ? $nominee['altname'] : $entry->name;
+            $entryImage = !empty($nominee['altimg']) ? $nominee['altimg'] : $entry->image;
+            
+            // If altimg is a URL, download and store it
+            if (!empty($nominee['altimg']) && filter_var($nominee['altimg'], FILTER_VALIDATE_URL)) {
+                try {
+                    $imageContent = file_get_contents($nominee['altimg']);
+                    $filename = 'entry/result-' . $nominee['id'] . '-' . $category->id . '.jpg';
+                    Storage::disk('public')->put($filename, $imageContent);
+                    $entryImage = $filename;
+                } catch (Exception $e) {
+                    $this->warn("Failed to download image for entry {$nominee['id']}: " . $e->getMessage());
+                    $entryImage = $entry->image; // Fallback to original image
+                }
+            }
+            
+            // Parse staff credits
+            $staffCredits = null;
+            if (!empty($nominee['staff'])) {
+                $staffCreditsArray = $this->parseStaffCredits($nominee['staff']);
+                $staffCredits = $staffCreditsArray ? json_encode($staffCreditsArray) : null;
+            }
+            
+            // Create result
+            Result::updateOrCreate(
+                [
+                    'year' => $year,
+                    'category_id' => $category->id,
+                    'entry_id' => $entry->id
+                ],
+                [
+                    'name' => $entryName,
+                    'image' => $entryImage,
+                    'jury_rank' => $nominee['jury'],
+                    'public_rank' => $nominee['public'],
+                    'description' => $nominee['writeup'] ?? '',
+                    'staff_credits' => $staffCredits
+                ]
+            );
+            
+            $this->info("Imported result: {$entryName} (Jury: {$nominee['jury']}, Public: {$nominee['public']})");
+        }
+    }
+
+    /**
+     * Parse staff credits from string format to key-value array format
+     */
+    private function parseStaffCredits($staffString)
+    {
+        if (empty($staffString)) {
+            return null;
+        }
+        
+        // Split by newlines and create structured data
+        $lines = explode("\n", trim($staffString));
+        $credits = [];
+        
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (empty($line)) continue;
+            
+            // Check if line contains "Director:" or similar
+            if (strpos($line, 'Director:') !== false) {
+                $credits[] = [
+                    'role' => 'Director',
+                    'name' => trim(str_replace('Director:', '', $line))
+                ];
+            } elseif (strpos($line, 'Studio:') !== false || strpos($line, 'Production:') !== false) {
+                $role = strpos($line, 'Studio:') !== false ? 'Studio' : 'Production';
+                $credits[] = [
+                    'role' => $role,
+                    'name' => trim(str_replace(['Studio:', 'Production:'], '', $line))
+                ];
+            } elseif (strpos($line, 'Writer:') !== false) {
+                $credits[] = [
+                    'role' => 'Writer',
+                    'name' => trim(str_replace('Writer:', '', $line))
+                ];
+            } elseif (strpos($line, 'Producer:') !== false) {
+                $credits[] = [
+                    'role' => 'Producer',
+                    'name' => trim(str_replace('Producer:', '', $line))
+                ];
+            } else {
+                // Assume it's a studio/production company if no role is specified
+                $credits[] = [
+                    'role' => 'Studio',
+                    'name' => $line
+                ];
+            }
+        }
+        
+        return !empty($credits) ? $credits : null;
     }
 }

@@ -10,11 +10,13 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Filament\Actions;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -22,13 +24,15 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function form(Form $form): Form
+    public static function canAccess(): bool
     {
-        return $form
+        return auth()->user()?->role >= 2;
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
             ->schema([
-                //
                 TextInput::make('year')
                     ->default(date('Y'))
                     ->required()
@@ -53,7 +57,8 @@ class CategoryResource extends Resource
                     ->options([
                         'genre' => 'Genre',
                         'production' => 'Production',
-                        'main' => 'Main'
+                        'main' => 'Main',
+                        'character' => 'Character'
                     ])
                     ->default('genre')
                 /*
@@ -68,36 +73,36 @@ class CategoryResource extends Resource
     {
         return $table
             ->paginated(false)
+            ->reorderable('order')
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? 2025;
+                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
                 return $query->where('year', $filterYear);
             })
             ->columns([
-                //
-                TextColumn::make('order'),
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('type')
-                    ->searchable(),
-                TextColumn::make('year'),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('year')
+                    ->sortable(),
             ])
             ->defaultSort('order')
             ->filters([
-                //
                 SelectFilter::make('type')
                     ->options([
                         'genre' => 'Genre',
                         'production' => 'Production',
-                        'main' => 'Main'
+                        'main' => 'Main',
+                        'character' => 'Character'
                     ])
-
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -105,7 +110,6 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 

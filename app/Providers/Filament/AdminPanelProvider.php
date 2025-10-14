@@ -3,13 +3,13 @@
 namespace App\Providers\Filament;
 
 use App\Models\User;
+use App\Models\Option;
+use App\Filament\Admin\Pages\PublicDashboard;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
-use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -20,33 +20,69 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
-
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Socialite\Contracts\User as SocialiteUserContract;
+use App\Http\Middleware\RedirectUnauthorizedUsers;
 
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
+            // Basic Panel Configuration
             ->default()
             ->id('admin')
-            ->path('admin')
-            ->login()
+            ->path('dashboard')
+            ->login(false)
+            
+            // Branding & Styling
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
-            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
+            ->brandLogo(asset('images/awardslogo.png'))
+            ->brandLogoHeight('3rem')
+            ->favicon(asset('images/pubjury.png'))
+            ->renderHook(
+                'panels::head.start',
+                function (): string {
+                    $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+                    $customCss = $manifest['resources/css/custom.css']['file'] ?? '';
+                    
+                    if ($customCss) {
+                        return '<link rel="stylesheet" href="' . asset('build/' . $customCss) . '">';
+                    }
+                    
+                    return '';
+                }
+            )
+            
+            // Resources & Pagesgit
+            ->discoverResources(
+                in: app_path('Filament/Admin/Resources'), 
+                for: 'App\\Filament\\Admin\\Resources'
+            )
+            ->discoverPages(
+                in: app_path('Filament/Admin/Pages'), 
+                for: 'App\\Filament\\Admin\\Pages'
+            )
             ->pages([
-                Pages\Dashboard::class,
+                PublicDashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
+            ->homeUrl(fn (): string => PublicDashboard::getUrl())
+            
+            // Widgets
+            ->discoverWidgets(
+                in: app_path('Filament/Admin/Widgets'), 
+                for: 'App\\Filament\\Admin\\Widgets'
+            )
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            
+            // Middleware Configuration
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -57,40 +93,120 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RedirectUnauthorizedUsers::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->plugin(
-                FilamentSocialitePlugin::make()
-                    ->providers([
-                        Provider::make('reddit')
-                            ->visible(fn() => true),
-                    ])
-                    ->registration()
-                    ->createUserUsing(function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
-                        // Logic to create a new user.
+            ->authGuard('web')
+            ->authPasswordBroker('users')
+            
+            // Reddit OAuth Plugin
+            ->plugin($this->configureRedditAuth());
+    }
 
-                        $randomPasswdString = Str::random(64); // Generate a random string
-                        $placeholderPassword = Hash::make($randomPasswdString); // Hash the random string
-
-                        $randomEmailString = Str::random(16); // Generate a random string
-
-                        $user = User::create([
-                            'name' => $oauthUser->getNickname(),
-                            'email' => $randomEmailString.'@awards-web.com',
-                            'password' => $placeholderPassword
-                        ]);
-                        return $user;
-                    })
-                    ->resolveUserUsing(function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
-                        // Logic to retrieve an existing user.
-                        // $user = User::where('email', $oauthUser->getEmail())->first();
-                        $user = User::where('name', $oauthUser->getNickname())->first();
-                        return $user;
-                    })
+    /**
+     * Configure Reddit OAuth authentication
+     */
+    private function configureRedditAuth(): FilamentSocialitePlugin
+    {
+        return FilamentSocialitePlugin::make()
+            ->providers([
+                Provider::make('reddit')
+                    ->visible(fn() => true)
+                    ->label('Sign in with Reddit')
+                    ->icon('heroicon-o-user')
+                    ->color('orange'),
+            ])
+            ->registration()
+            ->showDivider(false)
+            // ->socialiteUserModelClass(\App\Models\SocialiteUser::class)
+            ->createUserUsing($this->createUserCallback())
+            ->resolveUserUsing($this->resolveUserCallback());
+    }
 
 
-            );
+    /**
+     * Callback for creating new users from Reddit authentication
+     */
+    private function createUserCallback(): callable
+    {
+        return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+            $randomPasswdString = Str::random(64);
+            $placeholderPassword = Hash::make($randomPasswdString);
+
+            // Check account age requirement using Socialite data
+            $minimumDays = Option::get('account_age_requirement', 30);
+            $role = 0; // Default role for new users
+
+            // Get Reddit account creation date from Socialite user data
+            if (isset($oauthUser->user['created_utc'])) {
+                $createdUtc = $oauthUser->user['created_utc'];
+                $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
+                
+                // If account is too young, set role to -1
+                if ($accountAgeInDays < $minimumDays) {
+                    $role = -1;
+                }
+            }
+
+            $user = User::create([
+                'name' => $oauthUser->getNickname(),
+                'email' => null, // No email required for Reddit users
+                'password' => $placeholderPassword,
+                'reddit_user' => $oauthUser->getNickname(),
+                'role' => $role,
+                'flags' => 0, // Default flags
+                'avatar' => $oauthUser->getAvatar(),
+                'uuid' => Str::uuid(),
+            ]);
+
+            return $user;
+        };
+    }
+
+    /**
+     * Callback for resolving existing users from Reddit authentication
+     */
+    private function resolveUserCallback(): callable
+    {
+		return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+            // First try to find by reddit_user field
+            $user = User::where('reddit_user', $oauthUser->getNickname())->first();
+            
+            // Fallback to name field for backward compatibility
+            if (!$user) {
+                $user = User::where('name', $oauthUser->getNickname())->first();
+            }
+
+			// If no user exists yet, create one to ensure an Authenticatable is always returned
+			if (!$user) {
+				$randomPasswdString = Str::random(64);
+				$placeholderPassword = Hash::make($randomPasswdString);
+
+				$minimumDays = Option::get('account_age_requirement', 30);
+				$role = 0;
+				if (isset($oauthUser->user['created_utc'])) {
+					$createdUtc = $oauthUser->user['created_utc'];
+					$accountAgeInDays = (time() - $createdUtc) / 86400;
+					if ($accountAgeInDays < $minimumDays) {
+						$role = -1;
+					}
+				}
+
+				$user = User::create([
+					'name' => $oauthUser->getNickname(),
+					'email' => null,
+					'password' => $placeholderPassword,
+					'reddit_user' => $oauthUser->getNickname(),
+					'role' => $role,
+					'flags' => 0,
+					'avatar' => $oauthUser->getAvatar(),
+					'uuid' => Str::uuid(),
+				]);
+			}
+
+            return $user;
+        };
     }
 }

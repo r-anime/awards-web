@@ -1,8 +1,40 @@
-@import 'bulma/css/bulma.min.css';
-
-.navbar {
-    /* Default global value */
-    --bulma-navbar-item-img-max-height: 3.25rem;
+/* Custom styles for Filament admin panel */
+html, body { 
+    min-height: 100vh; 
 }
 
-html, body { height: 100vh; }
+/* Custom dashboard grid layouts using CSS Grid */
+.dashboard-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.dashboard-grid-2 {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+    .dashboard-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Utility class for text centering */
+.has-text-centered {
+    text-align: center;
+}
