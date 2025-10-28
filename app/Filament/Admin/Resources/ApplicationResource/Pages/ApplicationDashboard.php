@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\ApplicationResource\Pages;
 
 use App\Filament\Admin\Resources\ApplicationResource;
 use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
+use App\Filament\Admin\Pages\JurorAllocations;
 use App\Models\Application;
 use Filament\Actions;
 use Filament\Resources\Pages\Page;
@@ -63,6 +64,12 @@ class ApplicationDashboard extends Page
                 ->icon('heroicon-o-table-cells')
                 ->color('info')
                 ->url(ApplicationGrading::getUrl());
+            
+            $actions[] = Actions\Action::make('juror-allocations')
+                ->label('Juror Allocations')
+                ->icon('heroicon-o-users')
+                ->color('gray')
+                ->url(JurorAllocations::getUrl());
         }
         
         return $actions;
