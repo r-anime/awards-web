@@ -68,8 +68,8 @@ class ApplicationGrading extends Page implements HasTable
                 ->width('200px'),
         ];
 
-        // Only show username column for users with role 3 or higher
-        if (auth()->user()->role >= 3) {
+        // Only show username column for users with role 2 or higher
+        if (auth()->user()->role >= 2) {
             $columns[] = TextColumn::make('name')
                 ->label('Username')
                 ->sortable()
@@ -103,8 +103,8 @@ class ApplicationGrading extends Page implements HasTable
 
                     $scoreList = [];
                     foreach ($scores as $score) {
-                        // Show scorer name only for users with role 3 or higher
-                        if (auth()->user()->role >= 3) {
+                        // Show scorer name only for users with role 2 or higher
+                        if (auth()->user()->role >= 2) {
                             $scorerName = $score->scorer ? 
                                 ($score->scorer->name ?? $score->scorer->reddit_user ?? 'User #' . $score->scorer->id) : 
                                 'Unknown';
