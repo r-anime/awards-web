@@ -18,7 +18,7 @@
                                    max="10" 
                                    wire:model.live="baseCutoff"
                                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                                   placeholder="1.6"
+                                   placeholder="1.5"
                                    value="{{ $this->baseCutoff }}">
                             </div>
                             <div>
@@ -29,7 +29,7 @@
                                        max="10" 
                                        wire:model.live="mainCategoryCutoff"
                                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                                       placeholder="2.6"
+                                       placeholder="2.5"
                                        value="{{ $this->mainCategoryCutoff }}">
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                                          $mainCategories[] = [
                                              'id' => $category->id,
                                              'name' => $category->name,
-                                             'max_jurors' => 11
+                                             'max_jurors' => 15
                                          ];
                                      }
                                  }
@@ -126,9 +126,14 @@
                                      
                                      if ($isOPorED) {
                                          
-                                         // For OP/ED: unlimited jurors who scored above main threshold only on question 2
+                                         // For OP/ED: up to 11 jurors who scored above main threshold only on question 2
                                          $opEdCandidates = 0;
+                                         $allocatedCount = 0;
                                          foreach ($remainingApplicants as $applicant) {
+                                             if ($allocatedCount >= 11) {
+                                                 break; // Stop at 11 jurors for OP/ED categories
+                                             }
+                                             
                                              $jurorId = $applicant['id'];
                                              $currentAllocations = $jurorAllocationCount[$jurorId] ?? 0;
                                              
@@ -163,8 +168,9 @@
                                              
                                              if ($question2Score >= $this->mainCategoryCutoff) {
                                                  $categoryAllocations[] = $applicant;
+                                                 $allocatedCount++;
                                                  
-                                                 \Log::info('Debug: Allocated OP/ED applicant', ['applicant_id' => $applicant['id'], 'question2_score' => $question2Score]);
+                                                 \Log::info('Debug: Allocated OP/ED applicant', ['applicant_id' => $applicant['id'], 'question2_score' => $question2Score, 'allocated_count' => $allocatedCount]);
                                              }
                                          }
                                          
@@ -178,13 +184,9 @@
                                          // Sort applicants by preference order for this category
                                          $preferredApplicants = [];
                                          foreach ($remainingApplicants as $applicant) {
-                                             // Check if juror hasn't reached max allocations (2)
+                                             // No limit on number of categories per juror
                                              $jurorId = $applicant['id'];
                                              $currentAllocations = $jurorAllocationCount[$jurorId] ?? 0;
-                                             
-                                             if ($currentAllocations >= 2) {
-                                                 continue; // Skip this juror, they're already allocated to 2 categories
-                                             }
                                              
                                              foreach ($applicant['main_preferences'] as $pref) {
                                                  if ($pref['id'] == $categoryId) {

@@ -31,8 +31,8 @@ class JurorAllocations extends Page
     
     protected static bool $shouldRegisterNavigation = false;
     
-    public $baseCutoff = 1.6;
-    public $mainCategoryCutoff = 2.6;
+    public $baseCutoff = 1.5;
+    public $mainCategoryCutoff = 2.5;
     
     protected $listeners = ['refreshData' => 'refreshData'];
     
@@ -53,20 +53,20 @@ class JurorAllocations extends Page
             ->schema([
                 Section::make('Cutoff Settings')
                     ->schema([
-                        TextInput::make('baseCutoff')
-                            ->label('Base Cutoff')
-                            ->numeric()
-                            ->default(1.6)
-                            ->step(0.1)
-                            ->minValue(0)
-                            ->maxValue(10),
-                        TextInput::make('mainCategoryCutoff')
-                            ->label('Main Category Cutoff')
-                            ->numeric()
-                            ->default(2.6)
-                            ->step(0.1)
-                            ->minValue(0)
-                            ->maxValue(10),
+                             TextInput::make('baseCutoff')
+                                 ->label('Base Cutoff')
+                                 ->numeric()
+                                 ->default(1.5)
+                                 ->step(0.1)
+                                 ->minValue(0)
+                                 ->maxValue(10),
+                             TextInput::make('mainCategoryCutoff')
+                                 ->label('Main Category Cutoff')
+                                 ->numeric()
+                                 ->default(2.5)
+                                 ->step(0.1)
+                                 ->minValue(0)
+                                 ->maxValue(10),
                     ])
                     ->columns(2)
             ])
@@ -111,10 +111,13 @@ class JurorAllocations extends Page
         $preferenceQuestionId = $preferenceQuestion['id'] ?? null;
 
         // Get applicant count first to determine if we need chunking
-        $applicantCount = User::whereHas('appAnswers', function ($query) use ($essayQuestionIds) {
-            $query->whereIn('question_id', $essayQuestionIds)
-                  ->whereNotNull('answer')
+        // Include all applicants who have any answers (not just essays)
+        $applicantCount = User::whereHas('appAnswers', function ($query) use ($preferenceQuestionId) {
+            $query->whereNotNull('answer')
                   ->where('answer', '!=', '');
+            if ($preferenceQuestionId) {
+                $query->where('question_id', $preferenceQuestionId);
+            }
         })->count();
 
         // If too many applicants, process in chunks
@@ -129,10 +132,13 @@ class JurorAllocations extends Page
                       ->whereNotNull('answer')
                       ->where('answer', '!=', '');
             }
-        ])->whereHas('appAnswers', function ($query) use ($essayQuestionIds) {
-            $query->whereIn('question_id', $essayQuestionIds)
-                  ->whereNotNull('answer')
+        ])->whereHas('appAnswers', function ($query) use ($preferenceQuestionId) {
+            // Include all applicants who have any answers (not just essays)
+            $query->whereNotNull('answer')
                   ->where('answer', '!=', '');
+            if ($preferenceQuestionId) {
+                $query->where('question_id', $preferenceQuestionId);
+            }
         })->get();
 
         // Pre-load all scores for all applicants in one query
@@ -171,10 +177,13 @@ class JurorAllocations extends Page
         // Pre-load categories for preferences
         $categories = Category::where('year', $application->year)->get()->keyBy('id');
 
-        User::whereHas('appAnswers', function ($query) use ($essayQuestionIds) {
-            $query->whereIn('question_id', $essayQuestionIds)
-                  ->whereNotNull('answer')
+        User::whereHas('appAnswers', function ($query) use ($preferenceQuestionId) {
+            // Include all applicants who have any answers (not just essays)
+            $query->whereNotNull('answer')
                   ->where('answer', '!=', '');
+            if ($preferenceQuestionId) {
+                $query->where('question_id', $preferenceQuestionId);
+            }
         })->chunk($chunkSize, function ($applicants) use ($essayQuestions, $essayQuestionIds, $preferenceQuestionId, $categories, &$allApplicantsData) {
             // Pre-load scores for this chunk
             $allScores = AppScore::whereIn('applicant_id', $applicants->pluck('id'))
@@ -245,18 +254,18 @@ class JurorAllocations extends Page
                         'total_scores' => $scores->count(),
                     ];
                 } else {
+                    // Give applicants without essays a score of 0
+                    $questionAverages[] = 0;
                     $applicantData['individual_scores'][$questionId] = [
                         'question_text' => $question['question'],
-                        'average_score' => null,
+                        'average_score' => 0,
                         'total_scores' => 0,
                     ];
                 }
             }
 
-            // Calculate total average score
-            if (!empty($questionAverages)) {
-                $applicantData['total_average_score'] = round(array_sum($questionAverages) / count($questionAverages), 2);
-            }
+            // Calculate total average score (always calculate, even if all scores are 0)
+            $applicantData['total_average_score'] = round(array_sum($questionAverages) / count($questionAverages), 2);
 
             // Get preferences
             if ($preferenceQuestionId) {
