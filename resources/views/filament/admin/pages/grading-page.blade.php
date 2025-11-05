@@ -7,7 +7,7 @@
                         <div class="fi-card-body p-6">
                             <h2 class="fi-section-header-heading mb-4">
                                 Grading Application for: <strong>{{ $this->ungradedApplication->uuid }}</strong>
-                                @if(auth()->user()->role >= 3)
+                                @if(auth()->user()->role >= 2)
                                     <br><span class="text-lg font-normal text-gray-600 dark:text-gray-400">
                                         Applicant: {{ $this->ungradedApplication->name ?? $this->ungradedApplication->reddit_user ?? 'User #' . $this->ungradedApplication->id }}
                                     </span>
