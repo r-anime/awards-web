@@ -144,7 +144,7 @@ class ImportAnilist extends Command
         $import_vas = $this->option('vas');
 
         if($import_vas && !$import_chars) {
-            $this->info('Error: Cannnot import VAs without Characters');
+            $this->error('Error: Cannnot import VAs without Characters');
             return;
         }
 
@@ -187,7 +187,7 @@ class ImportAnilist extends Command
             $showlist = ($response->json())['data']['Page']['media'];
 
             // For dev, save responses to json
-            Storage::disk('local')->put('anilist-response-'.$currentpage.'.json', var_export(($response->json())['data']['Page'], true));
+            // Storage::disk('local')->put('anilist-response-'.$currentpage.'.json', var_export(($response->json())['data']['Page'], true));
 
             $this->info('Queried page '.$currentpage.' : Status '.($response->ok() ? 'ok' : 'error'));
 
