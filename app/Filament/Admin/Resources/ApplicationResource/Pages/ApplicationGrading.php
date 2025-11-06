@@ -22,11 +22,11 @@ class ApplicationGrading extends Page implements HasTable
     use InteractsWithTable;
 
     protected static string $resource = ApplicationResource::class;
-    
+
     protected string $view = 'filament.resources.application-resource.pages.application-grading';
-    
+
     protected static ?string $title = 'Application Grading';
-    
+
     protected static ?string $navigationLabel = 'Application Grading';
 
     protected static ?string $slug = 'application/grading';
@@ -40,7 +40,7 @@ class ApplicationGrading extends Page implements HasTable
     public function table(Table $table): Table
     {
         $application = $this->getApplication();
-        
+
         if (!$application || !$application->form) {
             return $table->query(User::query()->whereRaw('1 = 0')); // Empty query
         }
@@ -85,7 +85,7 @@ class ApplicationGrading extends Page implements HasTable
             $questionId = $question['id'];
             $questionText = $question['question'];
             $questionIndex = array_search($question, $essayQuestions->toArray()) + 1;
-            
+
             $columns[] = TextColumn::make("question_{$questionIndex}")
                 ->label('Q' . $questionIndex)
                 ->tooltip(function ($record) use ($questionId, $questionText) {
@@ -105,15 +105,15 @@ class ApplicationGrading extends Page implements HasTable
                     foreach ($scores as $score) {
                         // Show scorer name only for users with role 2 or higher
                         if (auth()->user()->role >= 2) {
-                            $scorerName = $score->scorer ? 
-                                ($score->scorer->name ?? $score->scorer->reddit_user ?? 'User #' . $score->scorer->id) : 
+                            $scorerName = $score->scorer ?
+                                ($score->scorer->name ?? $score->scorer->reddit_user ?? 'User #' . $score->scorer->id) :
                                 'Unknown';
                         } else {
-                            $scorerName = $score->scorer ? 
-                                'User #' . $score->scorer->id : 
+                            $scorerName = $score->scorer ?
+                                'User #' . $score->scorer->id :
                                 'Unknown';
                         }
-                        
+
                         $scoreList[] = $scorerName . ': ' . $score->score;
                     }
 
@@ -144,7 +144,7 @@ class ApplicationGrading extends Page implements HasTable
             ->filter(fn($q) => $q['type'] === 'essay')
             ->pluck('id')
             ->toArray();
-        
+
         $userQuery = User::query()
             ->whereHas('appAnswers', function (Builder $query) use ($essayQuestionIds) {
                 $query->whereIn('question_id', $essayQuestionIds)
