@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Result;
-use Illuminate\Http\Request;
+use App\Services\ResultService;
 use Illuminate\View\View;
 
 class ResultController extends Controller
@@ -14,30 +15,35 @@ class ResultController extends Controller
         return response('<h1>Result Index Controller Function!</h1>', 200)->header('Content-Type', 'text/html');
     }
 
-    public function archive()
+    public function archive(ResultService $resultservice)
     {
+        $years = $resultservice->getYearList()->toJson();
 
-        $years = Result::select('year')->groupBy('year')->get();
-        return response('<h1>Result Archive Controller Function!</h1><br>Years:<br>'.$years->toJson(), 200)->header('Content-Type', 'text/html');
+        return response('<h1>Result Archive Controller Function!</h1><br>Years:<br>'.$years, 200)->header('Content-Type', 'text/html');
+    }
+
+    public function result(ResultService $resultservice, int $year)
+    {
+        $res = $resultservice->getResults($year)->toJson();
+
+        return response('<h1>Yearly Result for '.$year.' </h1><br><br>'.$res, 200)->header('Content-Type', 'text/html');
 
     }
 
-    public function result(int $year)
+    public function acknowledgements(ResultService $resultservice, int $year)
     {
-        return response('<h1>Yearly Result Controller Function for '.$year.' </h1>', 200)->header('Content-Type', 'text/html');
 
-    }
+        $res = 'ACKNOWLEDGEMENT_PLACEHOLDER';
 
 
-    public function acknowledgements(int $year)
-    {
-        return response('<h1>Yearly Acknowledgements Controller Function for '.$year.' </h1>', 200)->header('Content-Type', 'text/html');
-
+        return response('<h1>Yearly Acknowledgements Controller Function for '.$year.' </h1><br><br>'.$res, 200)->header('Content-Type', 'text/html');
     }
 
     public function about(int $year)
     {
-        return response('<h1>Yearly About Controller Function for '.$year.' </h1>', 200)->header('Content-Type', 'text/html');
+        $res = 'ABOUT_PLACEHOLDER';
+
+        return response('<h1>Yearly About Controller Function for '.$year.' </h1><br><br>'.$res, 200)->header('Content-Type', 'text/html');
 
     }
 }
