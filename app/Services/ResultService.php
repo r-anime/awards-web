@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Result;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class ResultService
 {
@@ -21,7 +22,9 @@ class ResultService
     {
         // Get list of years for which results are available
         // TODO(?): Separate into queries for Acknowledgements and About
-        $years = Result::select('year')->groupBy('year')->get();
+        $years = Cache::remember('results_yearlist', 10800, function() {
+            return Result::select('year')->groupBy('year')->get();
+        });
         return $years;
     }
 
@@ -29,13 +32,15 @@ class ResultService
     {
         // Results by year
         // TODO: Implement cache
-        $results = Category::where('year', $year)
+        $results = Cache::remember('results_'.$year, 10080, function () use ($year) {
+        return Category::where('year', $year)
             ->with([
                 'info' => function ($query) {
                     $query->select(['category_id', 'description']);
                 },
                 'results' => function ($query) {
                     $query->select([
+                        'id',
                         'category_id',
                         'name',
                         'image',
@@ -55,6 +60,7 @@ class ResultService
                 'order',
             ])
             ->get();
+        });
 
         return $results;
     }

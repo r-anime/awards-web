@@ -24,9 +24,14 @@ class ResultController extends Controller
 
     public function result(ResultService $resultservice, int $year)
     {
-        $res = $resultservice->getResults($year)->toJson();
+        // \DB::enableQueryLog();
 
-        return response('<h1>Yearly Result for '.$year.' </h1><br><br>'.$res, 200)->header('Content-Type', 'text/html');
+        $results = $resultservice->getResults($year);
+
+        // $queries = \DB::getQueryLog();
+        // dd($queries);
+
+        return view('results.result', [ 'year' => $year, 'categorylist' => $results ]);
 
     }
 
