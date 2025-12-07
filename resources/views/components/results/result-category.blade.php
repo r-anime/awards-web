@@ -12,10 +12,11 @@
         </div>
         <br>
         <br class="is-hidden-desktop" />
-        <button class="button is-platinum is-pulled-right mr-5 mt-3">
+        {{-- Category info modal is disabled --}}
+        {{-- <button class="button is-platinum is-pulled-right mr-5 mt-3">
             <span class="icon mr-4"><fa-icon icon="info-circle" /></span>
             Read Category Info
-        </button>
+        </button> --}}
     </div>
 
     {{-- Nominees: Winners + Rankings --}}
