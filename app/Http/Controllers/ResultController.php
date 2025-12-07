@@ -10,9 +10,11 @@ use Illuminate\View\View;
 class ResultController extends Controller
 {
     //
-    public function index()
+    public function index(ResultService $resultservice)
     {
-        return response('<h1>Result Index Controller Function!</h1>', 200)->header('Content-Type', 'text/html');
+        $latest_year = $resultservice->getYearList()->sortDesc()->value('year');
+        return $this->result($resultservice, (int)$latest_year);
+        // return response('<h1>Result Index Controller Function!</h1>', 200)->header('Content-Type', 'text/html');
     }
 
     public function archive(ResultService $resultservice)

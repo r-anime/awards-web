@@ -34,10 +34,12 @@ Route::post('/participate/application/submit', [ApplicationController::class, 's
 Route::get('/redirect-after-login', [ApplicationController::class, 'redirectAfterLogin'])->name('application.redirect-after-login')->middleware('auth');
 Route::post('/set-redirect-url', [ApplicationController::class, 'setRedirectUrl'])->name('application.set-redirect-url')->middleware('auth');
 
+// Result routes
+
 Route::get('/results', [ResultController::class, 'index'])->name('results.latest');
-Route::get('/results/acknowledgements', [ResultController::class, 'index'])->name('results.latest.acknowledgements');
-Route::get('/results/about', [ResultController::class, 'index'])->name('results.latest.about');
-Route::get('/results/archive', [ResultController::class, 'archive'])->name('results.archive');
+// Route::get('/results/acknowledgements', [ResultController::class, 'index'])->name('results.latest.acknowledgements');
+// Route::get('/results/about', [ResultController::class, 'index'])->name('results.latest.about');
+// Route::get('/results/archive', [ResultController::class, 'archive'])->name('results.archive');
 Route::get('/results/{year}', [ResultController::class, 'result'])->name('results.year')->whereNumber('year');
-Route::get('/results/{year}/acknowledgements', [ResultController::class, 'acknowledgements'])->name('results.year.acknowledgements')->whereNumber('year');
-Route::get('/results/{year}/about', [ResultController::class, 'about'])->name('results.year.about')->whereNumber('year');
+// Route::get('/results/{year}/acknowledgements', [ResultController::class, 'acknowledgements'])->name('results.year.acknowledgements')->whereNumber('year');
+// Route::get('/results/{year}/about', [ResultController::class, 'about'])->name('results.year.about')->whereNumber('year');
