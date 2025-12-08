@@ -6,7 +6,9 @@ use App\Models\Application;
 use App\Models\AppAnswer;
 use App\Models\AppScore;
 use App\Models\Category;
+use App\Models\Option;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
@@ -43,15 +45,22 @@ class ApplicationController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         // All fields are now optional - no validation required
 
         $user = auth()->user();
         $application = Application::orderBy('year', 'desc')->first();
-        
         if (!$application) {
             return redirect()->route('application.index')->with('error', 'No application found.');
         }
+
+        // String tracking changed questions
+        $changed_questions = '';
+        
+        $app_questions = array_reduce($application->form, function($list, $question) {
+            $list[$question['id']]=$question['question'];
+            return $list;
+        }, []);
 
         // Only delete grades for questions where the answer has changed
 
@@ -72,7 +81,13 @@ class ApplicationController extends Controller
                     ->where('question_id', $questionId)
                     ->first();
 
+                // If new answer, add to log
+                if(!$existingAnswer)
+                    $changed_questions = $changed_questions.'- '.$app_questions[$questionId]."\n";
+                // dd($changed_questions);
                 if ($existingAnswer && $existingAnswer->answer !== $answer) {
+                    // Changed Answer, add to log
+                    $changed_questions = $changed_questions.'- '.$app_questions[$questionId]."\n";
                     // Delete grades for this applicant and this specific question only
                     AppScore::where('applicant_id', $user->id)
                         ->where(function ($q) use ($questionId) {
@@ -123,7 +138,15 @@ class ApplicationController extends Controller
                     ->where('question_id', $preferenceQuestionId)
                     ->first();
 
+                # If new preference answer, add to log
+                if(!$existingPreferenceAnswer){
+                    $changed_questions = $changed_questions.'- '.'Updated Preferences'."\n";
+                }
+
                 if ($existingPreferenceAnswer && $existingPreferenceAnswer->answer !== $newPreferenceAnswer) {
+                    // Log preference update
+                    $changed_questions = $changed_questions.'- '.'Updated Preferences'."\n";
+                    
                     AppScore::where('applicant_id', $user->id)
                         ->where(function ($q) use ($preferenceQuestionId) {
                             $q->where('question_id', $preferenceQuestionId)
@@ -143,8 +166,8 @@ class ApplicationController extends Controller
                 );
             }
         }
-
         \Log::info('Application submitted successfully for user: ' . $user->id);
+        $this->sendToDiscord($user, $changed_questions);
         return redirect()->route('application.index')->with('success', 'Application submitted successfully!');
     }
 
@@ -168,5 +191,55 @@ class ApplicationController extends Controller
         $redirectUrl = session('redirect_after_login', '/');
         session()->forget('redirect_after_login');
         return redirect($redirectUrl);
+    }
+
+    /**
+     * Send info about changed application to Audit channel
+     */
+    private function sendToDiscord($user, $changed_questions)
+    {
+        $webhookUrl = Option::get('audit_channel_webhook', '');
+        
+        if (empty($webhookUrl)) {
+            return; // No webhook configured
+        }
+
+        if($changed_questions == '') {
+            return; // No changes
+        }
+
+        $embed = [
+            'title' => 'Application Submission',
+            'color' => 0x00ff00, // Green color
+            'fields' => [
+                [
+                    'name' => 'Username',
+                    'value' => $user->name,
+                    'inline' => true
+                ],
+                [
+                    'name' => 'Submitted At',
+                    'value' => now()->format('Y-m-d H:i:s'),
+                    'inline' => true
+                ],
+                [
+                    'name' => 'Changed Questions',
+                    'value' => $changed_questions,
+                    'inline' => false
+                ]
+            ],
+            'timestamp' => now()->toISOString(),
+        ];
+
+        $payload = [
+            'embeds' => [$embed]
+        ];
+
+        try {
+            Http::post($webhookUrl, $payload);
+        } catch (\Exception $e) {
+            // Log error but don't fail the application submission
+            \Log::error('Failed to send application submission to Discord: ' . $e->getMessage());
+        }
     }
 }
