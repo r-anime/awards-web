@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Application;
 use App\Models\Category;
+use App\Services\ResultService;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,7 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Binding singleton ResultService
+        $this->app->singleton(ResultService::class, function() {return new ResultService();});
     }
 
     /**
@@ -32,7 +34,6 @@ class AppServiceProvider extends ServiceProvider
         Category::unguard();
 
         // Year filter dropdown
-
         FilamentView::registerRenderHook(
             PanelsRenderHook::USER_MENU_BEFORE,
             fn(): string => Blade::render('@livewire(\'year-filter\')'),

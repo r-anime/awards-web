@@ -1,0 +1,34 @@
+// Loads utilities, variables, and basic bulma customizations with all our new
+// colors
+@use "utilities.scss";
+
+// Import the Bulma styles themselves
+// TODO: only import bulma components we actually use
+@import "../../node_modules/bulma/sass/base/_all.sass";
+@import "../../node_modules/bulma/sass/elements/_all.sass";
+@import "../../node_modules/bulma/sass/form/_all.sass";
+@import "../../node_modules/bulma/sass/components/_all.sass";
+@import "../../node_modules/bulma/sass/grid/_all.sass";
+@import "../../node_modules/bulma/sass/layout/_all.sass";
+@import "../../node_modules/bulma/sass/helpers/_all.sass";
+
+// Navbar menus on mobile shouldn't interfere with page content
+@include touch {
+	.navbar-menu {
+		position: absolute;
+		left: 0;
+	}
+}
+
+// Don't need to default to overflow-y: scroll
+html {
+	overflow-y: auto;
+}
+
+// Some other utility classes
+
+// When you have a title inside a level, the title's margin is lost. Apply this
+// class to the level to get it back.
+.title-margin {
+	margin-bottom: 1.5rem;
+}
