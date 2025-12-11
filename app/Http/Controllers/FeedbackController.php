@@ -17,6 +17,7 @@ class FeedbackController extends Controller
 
     public function store(Request $request)
     {
+        $turnstile_enabled = config('cloudflare-turnstile.enable');
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'message' => 'required|string|max:2000',
@@ -27,7 +28,14 @@ class FeedbackController extends Controller
         }
 
         $ipAddress = $request->ip();
+        $turnstile_validated = false;
         
+        if($turnstile_enabled) {
+            $turnstile_token = $request['cf-turnstile-response'];
+            
+            $turnstile_response = $this->validateTurnstile($turnstile_token, $ipAddress);
+            $turnstile_validated = $turnstile_response['success'];
+    }
         // Check rate limit
         if (Feedback::hasExceededWeeklyLimit($ipAddress)) {
             return back()->withErrors([
@@ -40,12 +48,49 @@ class FeedbackController extends Controller
             'name' => $request->name,
             'message' => $request->message,
             'ip_hash' => Feedback::generateIpHash($ipAddress),
+            'validated' => $turnstile_validated
         ]);
 
-        // Send to Discord webhook
-        $this->sendToDiscord($feedback);
+        // If not validated when Turnstile enabled, log failure
+        if($turnstile_validated == false && $turnstile_enabled) {
+                \Log::info('Feedback id '.$feedback->id.' validation failed: ' . $turnstile_response['error-codes']);
+        }
+
+        // If validated, or if Turnstile disabled, send to Discord webhook
+        if($turnstile_validated || !$turnstile_enabled) {
+            $this->sendToDiscord($feedback);
+        }
 
         return back()->with('success', 'Thank you for your feedback! It has been submitted successfully.');
+    }
+
+    // Validate turnstile token
+    private function validateTurnstile($token, $remoteip = null) {
+        $secret = config('cloudflare-turnstile.secret');
+        $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+        $data = [
+            'secret' => $secret,
+            'response' => $token
+        ];
+
+        if ($remoteip) {
+            $data['remoteip'] = $remoteip;
+        }
+
+        try {
+        $response = Http::acceptJson()
+            ->post($url, $data);
+        } catch(\Exception $e) {
+            \Log::error('Failed to validate Turnstile token: ' . $e->getMessage());
+            return ['success' => false, 'error-codes' => ['internal-error']];
+        }
+
+        if ($response === FALSE) {
+            return ['success' => false, 'error-codes' => ['internal-error']];
+        }
+
+        return json_decode($response, true);
     }
 
     private function sendToDiscord(Feedback $feedback)
