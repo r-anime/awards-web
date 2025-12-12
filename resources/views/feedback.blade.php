@@ -89,14 +89,33 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="field is-grouped is-grouped-right">
-                                <div class="control">
-                                    <button type="submit" class="button is-primary is-medium">
-                                        <span>Submit Feedback</span>
-                                    </button>
+                            {{-- flex div if turnstile is enabled --}}
+                            @if (config('cloudflare-turnstile.enable'))
+                            <div style="display: flex; flex-direction: row; justify-content: space-between">
+                                <div class="field is-grouped is-grouped-left cf-turnstile"
+                                    data-size="flexible"
+                                    data-sitekey={{ config('cloudflare-turnstile.sitekey') }}
+                                    data-callback="onTurnstileSuccess"
+                                    {{-- data-error-callback="onTurnstileError" --}}
+                                    data-expired-callback="onTurnstileExpired"
+                                ></div>
+                                <div class="field is-grouped is-grouped-right">
+                                    <div class="control">
+                                        <button type="submit" id="feedback-submit-btn" disabled class="button is-primary is-medium">
+                                            <span>Submit Feedback</span>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                            {{-- no flex div if turnstile is not enabled --}}
+                            @else
+                                <div class="field is-grouped is-grouped-right">
+                                    <div class="control">
+                                        <button type="submit" id="feedback-submit-btn" class="button is-primary is-medium">
+                                            <span>Submit Feedback</span>
+                                        </button>
+                                    </div>
+                            @endif
                         </form>
                     </div>
                 </div>
@@ -200,5 +219,27 @@
                 });
             });
         });
+
+        @if (config('cloudflare-turnstile.enable'))
+        // Turnstile enable button on clear
+        function onTurnstileSuccess(token) {
+            console.log("Turnstile success:", token);
+            document.getElementById("feedback-submit-btn").disabled = false;
+        }
+        function onTurnstileError(errorCode) {
+            console.error("Turnstile error:", errorCode);
+            document.getElementById("feedback-submit-btn").disabled = true;
+        }
+        function onTurnstileExpired() {
+            console.warn("Turnstile token expired");
+            document.getElementById("feedback-submit-btn").disabled = true;
+        }
+        @endif
     </script>
+    {{-- Cloudflare Turnstile script import --}}
+    <script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        async
+        defer
+    ></script>
 </x-layout>
