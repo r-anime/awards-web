@@ -20,7 +20,7 @@
     </div>
 
     {{-- Nominees: Winners + Rankings --}}
-    <div x-data=" {
+    <div x-data="{
          results: {{ Js::from($resultcategory->results) }},
          get juryOrder() {
              return this.results.filter(nom => nom.jury_rank !== -1)
