@@ -226,7 +226,7 @@
                  });
              });
          },
-         imgstyle(img) { return `background-image: url(/${img})` }
+         imgstyle(img) { return `background-image: url(/storage/${img})` }
      }">
         {{-- <div x-text="JSON.stringify(results)"></div> --}}
         {{-- <div x-text="JSON.stringify(juryOrder[0])"></div> --}}
