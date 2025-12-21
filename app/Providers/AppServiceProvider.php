@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\Category;
 use App\Services\ResultService;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 use Filament\Support\Facades\FilamentView;
@@ -32,6 +33,17 @@ class AppServiceProvider extends ServiceProvider
         Application::unguard();
         // Unguarding category model as per filament doc
         Category::unguard();
+
+        // Share results years with all views for navbar dropdown
+        View::composer('*', function ($view) {
+            $resultService = app(ResultService::class);
+            $years = $resultService->getYearList()
+                ->pluck('year')
+                ->sortDesc()
+                ->values()
+                ->all();
+            $view->with('resultsYears', $years);
+        });
 
         // Year filter dropdown
         FilamentView::registerRenderHook(

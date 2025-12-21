@@ -92,7 +92,20 @@
             <!-- Navigation menu -->
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
-                    <!-- Future navigation items will go here -->
+                    @if(!empty($resultsYears))
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            Results
+                        </a>
+                        <div class="navbar-dropdown">
+                            @foreach($resultsYears as $year)
+                                <a class="navbar-item" href="/results/{{ $year }}">
+                                    {{ $year }}
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
                 </div>
                 
                 <div class="navbar-end">

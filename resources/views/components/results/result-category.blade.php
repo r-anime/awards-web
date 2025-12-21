@@ -30,6 +30,202 @@
              return this.results.filter(nom => nom.public_rank !== -1)
                  .sort((a, b) => b.public_rank - a.public_rank)
          },
+         nomineeOrderArr: [],
+         init() {
+             this.nomineeOrderArr = this.juryOrder;
+         },
+         updateNomineeOrder(isPublic) {
+             const container = this.$refs.nomineesContainer;
+             const newOrder = isPublic ? this.publicOrder : this.juryOrder;
+             const oldOrder = this.nomineeOrderArr;
+             
+             // Get IDs in each order
+             const oldIds = new Set(oldOrder.map(n => n.id));
+             const newIds = new Set(newOrder.map(n => n.id));
+             const appearingIds = new Set([...newIds].filter(id => !oldIds.has(id)));
+             const disappearingIds = new Set([...oldIds].filter(id => !newIds.has(id)));
+             
+             // FLIP animation: First - capture current positions
+             const first = new Map();
+             const items = Array.from(container.querySelectorAll('[data-nominee-id]'));
+             items.forEach((el) => {
+                 const id = parseInt(el.getAttribute('data-nominee-id'));
+                 const rect = el.getBoundingClientRect();
+                 first.set(id, {
+                     top: rect.top,
+                     left: rect.left,
+                     width: rect.width,
+                     height: rect.height
+                 });
+                 // Prepare for animation
+                 el.style.willChange = 'transform, width';
+                 
+                 // Handle disappearing elements - animate width to 0
+                 if (disappearingIds.has(id)) {
+                     el.style.transition = 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                     el.style.width = rect.width + 'px';
+                     el.style.overflow = 'hidden';
+                 }
+             });
+             
+             // Animate out disappearing elements first
+             if (disappearingIds.size > 0) {
+                 requestAnimationFrame(() => {
+                     items.forEach((el) => {
+                         const id = parseInt(el.getAttribute('data-nominee-id'));
+                         if (disappearingIds.has(id)) {
+                             el.style.width = '0';
+                             el.style.minWidth = '0';
+                         }
+                     });
+                 });
+                 
+                 // Wait for disappear animation, then update array
+                 setTimeout(() => {
+                     this.nomineeOrderArr = newOrder;
+                     
+                     // Wait for DOM update, then animate appearing and reordering
+                     requestAnimationFrame(() => {
+                         container.offsetHeight; // Force layout
+                         
+                         // Animate appearing elements - width from 0 to full
+                         const elements = Array.from(container.querySelectorAll('[data-nominee-id]'));
+                         elements.forEach((el) => {
+                             const id = parseInt(el.getAttribute('data-nominee-id'));
+                             if (appearingIds.has(id)) {
+                                 const rect = el.getBoundingClientRect();
+                                 const finalWidth = rect.width;
+                                 el.style.width = '0';
+                                 el.style.minWidth = '0';
+                                 el.style.overflow = 'hidden';
+                                 el.style.transition = 'none';
+                                 
+                                 requestAnimationFrame(() => {
+                                     el.style.transition = 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                                     el.style.width = finalWidth + 'px';
+                                     
+                                     // Clean up after animation
+                                     setTimeout(() => {
+                                         el.style.width = '';
+                                         el.style.minWidth = '';
+                                         el.style.overflow = '';
+                                     }, 500);
+                                 });
+                             }
+                         });
+                         
+                         // Reorder existing elements (those that exist in both orders)
+                         const updatedFirst = new Map();
+                         elements.forEach((el) => {
+                             const id = parseInt(el.getAttribute('data-nominee-id'));
+                             if (!appearingIds.has(id) && !disappearingIds.has(id)) {
+                                 const rect = el.getBoundingClientRect();
+                                 const oldPos = first.get(id);
+                                 if (oldPos) {
+                                     updatedFirst.set(id, oldPos);
+                                 }
+                             }
+                         });
+                         
+                         if (updatedFirst.size > 0) {
+                             setTimeout(() => {
+                                 this.animateReordering(container, updatedFirst, appearingIds);
+                             }, 50);
+                         }
+                     });
+                 }, 400);
+             } else {
+                 // Update the array immediately if no elements are disappearing
+                 this.nomineeOrderArr = newOrder;
+                 
+                 // Wait for DOM update, then animate appearing and reordering
+                 requestAnimationFrame(() => {
+                     container.offsetHeight; // Force layout
+                     
+                     // Animate appearing elements
+                     const elements = Array.from(container.querySelectorAll('[data-nominee-id]'));
+                     elements.forEach((el) => {
+                         const id = parseInt(el.getAttribute('data-nominee-id'));
+                         if (appearingIds.has(id)) {
+                             const rect = el.getBoundingClientRect();
+                             const finalWidth = rect.width;
+                             el.style.width = '0';
+                             el.style.minWidth = '0';
+                             el.style.overflow = 'hidden';
+                             el.style.transition = 'none';
+                             
+                             requestAnimationFrame(() => {
+                                 el.style.transition = 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                                 el.style.width = finalWidth + 'px';
+                                 
+                                 // Clean up after animation
+                                 setTimeout(() => {
+                                     el.style.width = '';
+                                     el.style.minWidth = '';
+                                     el.style.overflow = '';
+                                 }, 500);
+                             });
+                         }
+                     });
+                     
+                     // Reorder existing elements
+                     this.animateReordering(container, first, appearingIds);
+                 });
+             }
+         },
+         animateReordering(container, first, appearingIds) {
+             // Force a synchronous layout recalculation to ensure DOM is updated
+             container.offsetHeight;
+             
+             // Last - capture new positions
+             const last = new Map();
+             const elements = Array.from(container.querySelectorAll('[data-nominee-id]'));
+             
+             elements.forEach((el) => {
+                 const id = parseInt(el.getAttribute('data-nominee-id'));
+                 const rect = el.getBoundingClientRect();
+                 last.set(id, {
+                     top: rect.top,
+                     left: rect.left,
+                     width: rect.width,
+                     height: rect.height
+                 });
+             });
+             
+             // Invert - apply transform immediately in same synchronous block to prevent flash
+             elements.forEach((el) => {
+                 const id = parseInt(el.getAttribute('data-nominee-id'));
+                 const firstPos = first.get(id);
+                 const lastPos = last.get(id);
+                 
+                 // Skip appearing elements - they'll be handled separately
+                 if (appearingIds.has(id)) {
+                     return;
+                 }
+                 
+                 if (firstPos && lastPos) {
+                     const deltaX = firstPos.left - lastPos.left;
+                     const deltaY = firstPos.top - lastPos.top;
+                     
+                     if (deltaX !== 0 || deltaY !== 0) {
+                         // Apply transform immediately with no transition to prevent flash
+                         el.style.transition = 'none';
+                         el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                     }
+                 }
+             });
+             
+             // Play - animate to final position in next frame
+             requestAnimationFrame(() => {
+                 elements.forEach((el) => {
+                     const id = parseInt(el.getAttribute('data-nominee-id'));
+                     if (!appearingIds.has(id)) {
+                         el.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                         el.style.transform = '';
+                     }
+                 });
+             });
+         },
          imgstyle(img) { return `background-image: url(/${img})` }
      }">
         {{-- <div x-text="JSON.stringify(results)"></div> --}}
@@ -124,7 +320,7 @@
                 </div>
             </template>
         </div>
-        <div x-data="{ focus: false }">
+        <div>
             {{-- Nominees --}}
             <div class="">
                 {{-- Order toggle button --}}
@@ -132,7 +328,7 @@
                 <div class="juryToggle is-pulled-right mr-2 is-inline-flex">
                     <img class="image mr-2" src="{{ asset('images/jury.png') }}" width="42" height="34" />
                     <label class="switch">
-                        <input x-model="focus" type="checkbox">
+                        <input type="checkbox" @change="updateNomineeOrder($event.target.checked)">
                         <span class="slider round">
                         </span>
                     </label>
@@ -140,14 +336,12 @@
                 </div>
             </div>
             <div class="is-clearfix my-3"></div>
-            <div x-data="{ get nomineeOrder() { return (focus) ? publicOrder : juryOrder } }">
-                {{-- Transition currently broken --}}
-                <transition-group name="nominees" tag="div"
-                    class="categoryNominationCards columns is-gapless is-marginless is-mobile is-multiline">
-                    <template x-for="(nominee, rank) in nomineeOrder" :key="nominee.id">
-                        <div class="categoryRankCard column is-half-mobile">
+            <div>
+                <div class="categoryNominationCards columns is-gapless is-marginless is-mobile is-multiline" x-ref="nomineesContainer">
+                    <template x-for="(nominee, rank) in nomineeOrderArr" :key="nominee.id">
+                        <div class="categoryRankCard column is-half-mobile" :data-nominee-id="nominee.id">
                             <div class="categoryNominationItem">
-                                <div class="categoryItemImage" x-bind:title="nom.id"
+                                <div class="categoryItemImage" x-bind:title="nominee.id"
                                     :style=imgstyle(nominee.image)>
                                 </div>
                                 <div class="nomineeTitle has-text-light is-size-6">
@@ -160,7 +354,8 @@
                             </div>
                         </div>
                     </template>
-                    <div class="is-clearfix"></div>
+                </div>
+                <div class="is-clearfix"></div>
             </div>
         </div>
     </div>
