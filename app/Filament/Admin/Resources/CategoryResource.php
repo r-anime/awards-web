@@ -34,11 +34,13 @@ class CategoryResource extends Resource
         return $schema
             ->schema([
                 TextInput::make('year')
-                    ->default(date('Y'))
+                    ->default(session('selected-year-filter') ?? date('Y'))
                     ->required()
                     ->numeric()
                     ->maxLength(4)
-                    ->reactive(),
+                    ->reactive()
+                    ->readOnly()                 // Disable accidental misinput
+                    ->hiddenOn(Operation::Edit), // Hide during edit
                 TextInput::make('name')
                     ->required()
                     // Name suggestions based on previous years' categories, excluding already present current year names
