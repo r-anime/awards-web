@@ -63,7 +63,7 @@ class CategoryResource extends Resource
                         'main' => 'Main',
                         'character' => 'Character'
                     ])
-                    ->default('genre')
+                    ->default('genre'),
                 /*
                 TextInput::make('order')
                     ->required()
@@ -90,6 +90,9 @@ class CategoryResource extends Resource
                     ->sortable(),
                 TextColumn::make('year')
                     ->sortable(),
+                TextColumn::make('eligibles_count')
+                    ->label('Eligible Entries')
+                    ->counts('eligibles')
             ])
             ->defaultSort('order')
             ->filters([
@@ -113,6 +116,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
+            RelationManagers\EligiblesRelationManager::class,
         ];
     }
 
