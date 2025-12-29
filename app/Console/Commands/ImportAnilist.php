@@ -259,6 +259,9 @@ class ImportAnilist extends Command
 
                 foreach ($characters as $charedge) {
 
+                    if ($character['name']['full'] == null || $character['name']['full'] == '')
+                        continue;
+
                     $character = $charedge['node'];
                     $char_img_filename = 'entry/'.'anilist-char-'.$character['id'].'.jpg';
                     $charimg_url = $character['image']['large'];
