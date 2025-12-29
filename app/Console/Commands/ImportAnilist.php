@@ -262,6 +262,7 @@ class ImportAnilist extends Command
                     $character = $charedge['node'];
                     if ($character['name']['full'] == null || $character['name']['full'] == '')
                         continue;
+
                     $char_img_filename = 'entry/'.'anilist-char-'.$character['id'].'.jpg';
                     $charimg_url = $character['image']['large'];
 
@@ -270,18 +271,18 @@ class ImportAnilist extends Command
                     $this->queueimgdownload($char_img_filename, $charimg_url, $imgdownload_as_bgjob);
 
                     try {
-                        $newchar = Entry::updateOrCreate(
-                            [
-                                'type' => 'char',
-                                'anilist_id' => $character['id'],
-                                'parent_id' => $newshow['id'],
-                            ],
-                            [
-                                'name' => $character['name']['full'],
-                                'year' => $year,
-                                'image' => $char_img_filename,
-                            ]
-                        );
+                    $newchar = Entry::updateOrCreate(
+                        [
+                            'type' => 'char',
+                            'anilist_id' => $character['id'],
+                            'parent_id' => $newshow['id'],
+                        ],
+                        [
+                            'name' => $character['name']['full'],
+                            'year' => $year,
+                            'image' => $char_img_filename,
+                        ]
+                    );
                     } catch (\Exception $e) {
                         $this->error('Error importing Character: '.$e->getMessage());
                         continue;
@@ -295,8 +296,9 @@ class ImportAnilist extends Command
 
                         $this->info('Importing VA: '.$va['name']['full']);
 
+
                         try {
-                            $newva = Entry::updateOrCreate(
+                        $newva = Entry::updateOrCreate(
                             [
                                 'type' => 'va',
                                 'anilist_id' => $va['id'],
@@ -306,13 +308,13 @@ class ImportAnilist extends Command
                                 'name' => $va['name']['full'],
                                 'year' => $year,
                                 'image' => $char_img_filename,
-                                    'image' => $char_img_filename,
-                                ]
-                            );
+                            ]
+                        );
                         } catch (\Exception $e) {
                             $this->error('Error importing VA: '.$e->getMessage());
                             continue;
                         }
+                    }
                 }
 
             }
