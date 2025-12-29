@@ -259,6 +259,8 @@ class ImportAnilist extends Command
 
                 foreach ($characters as $charedge) {
 
+                    try {
+
                     if ($character['name']['full'] == null || $character['name']['full'] == '')
                         continue;
 
@@ -303,7 +305,10 @@ class ImportAnilist extends Command
                                 'year' => $year,
                                 'image' => $char_img_filename,
                             ]
-                        );
+                            );
+                        }
+                    } catch (\Exception $e) {
+                        $this->error('Error importing Character or VA: '.$e->getMessage());
                     }
                 }
 
