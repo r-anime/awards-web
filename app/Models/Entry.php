@@ -22,7 +22,7 @@ class Entry extends Model
 
     public function category_eligibles()
     {
-        return $this->belongsToMany(CategoryEligible::class);
+        return $this->hasMany(CategoryEligible::class);
     }
     
     public function parent(){

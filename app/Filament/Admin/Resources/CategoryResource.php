@@ -17,6 +17,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Filament\Actions;
+use Filament\Support\Enums\Operation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -34,11 +35,13 @@ class CategoryResource extends Resource
         return $schema
             ->schema([
                 TextInput::make('year')
-                    ->default(date('Y'))
+                    ->default(session('selected-year-filter') ?? date('Y'))
                     ->required()
                     ->numeric()
                     ->maxLength(4)
-                    ->reactive(),
+                    ->reactive()
+                    ->readOnly()                 // Disable accidental misinput
+                    ->hiddenOn(Operation::Edit), // Hide during edit
                 TextInput::make('name')
                     ->required()
                     // Name suggestions based on previous years' categories, excluding already present current year names
@@ -60,7 +63,7 @@ class CategoryResource extends Resource
                         'main' => 'Main',
                         'character' => 'Character'
                     ])
-                    ->default('genre')
+                    ->default('genre'),
                 /*
                 TextInput::make('order')
                     ->required()
@@ -87,6 +90,9 @@ class CategoryResource extends Resource
                     ->sortable(),
                 TextColumn::make('year')
                     ->sortable(),
+                TextColumn::make('eligibles_count')
+                    ->label('Eligible Entries')
+                    ->counts('eligibles')
             ])
             ->defaultSort('order')
             ->filters([
@@ -110,6 +116,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
+            RelationManagers\EligiblesRelationManager::class,
         ];
     }
 

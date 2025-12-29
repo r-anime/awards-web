@@ -17,6 +17,6 @@ class CategoryEligible extends Model
     }
     
     public function entry(){
-        return $this->hasOne(Entry::class);
+        return $this->belongsTo(Entry::class);
     }
 }
