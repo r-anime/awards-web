@@ -261,12 +261,12 @@ class ImportAnilist extends Command
 
                     try {
 
-                    if ($character['name']['full'] == null || $character['name']['full'] == '')
-                        continue;
-
                     $character = $charedge['node'];
                     $char_img_filename = 'entry/'.'anilist-char-'.$character['id'].'.jpg';
                     $charimg_url = $character['image']['large'];
+
+                    if ($character['name']['full'] == null || $character['name']['full'] == '')
+                        continue;
 
                     $this->info('Importing character: '.$character['name']['full']);
 
