@@ -11,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\DateTimePicker;
 
 class OptionResource extends Resource
 {
@@ -71,6 +72,27 @@ class OptionResource extends Resource
                                     ->default(fn() => Option::get('audit_channel_webhook', ''))
                                     ->helperText('Discord webhook URL for audit channel notifications')
                                     ->placeholder('https://discord.com/api/webhooks/...'),
+                            ]),
+                    ]),
+
+                Section::make('Nomination Voting')
+                    ->description('Configure nomination voting period')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                DateTimePicker::make('nomination_voting_start_date')
+                                    ->label('Start Date')
+                                    ->default(fn() => Option::get('nomination_voting_start_date', '') ? \Carbon\Carbon::parse(Option::get('nomination_voting_start_date', '')) : null)
+                                    ->displayFormat('M j, Y g:i A')
+                                    ->seconds(false)
+                                    ->helperText('When nomination voting opens'),
+
+                                DateTimePicker::make('nomination_voting_end_date')
+                                    ->label('End Date')
+                                    ->default(fn() => Option::get('nomination_voting_end_date', '') ? \Carbon\Carbon::parse(Option::get('nomination_voting_end_date', '')) : null)
+                                    ->displayFormat('M j, Y g:i A')
+                                    ->seconds(false)
+                                    ->helperText('When nomination voting closes'),
                             ]),
                     ]),
             ]);

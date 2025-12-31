@@ -55,7 +55,7 @@ class ResultResource extends Resource
                     ->maxLength(255),
                 FileUpload::make('image')
                     ->image()
-                    ->directory('results')
+                    ->directory('entry')
                     ->disk('public')
                     ->required(),
                 Select::make('entry_id')

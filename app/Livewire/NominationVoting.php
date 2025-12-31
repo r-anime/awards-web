@@ -7,9 +7,11 @@ use App\Models\Category;
 use App\Models\CategoryEligible;
 use App\Models\Entry;
 use App\Models\NomineeVote;
+use App\Models\Option;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
+use Carbon\Carbon;
 
 #[Layout('components.layouts.app')]
 class NominationVoting extends Component
@@ -39,6 +41,27 @@ class NominationVoting extends Component
         
         if (!$this->user) {
             return $this->redirect('/login', navigate: true);
+        }
+        
+        // Check if nomination voting is currently open
+        $startDate = Option::get('nomination_voting_start_date', '');
+        $endDate = Option::get('nomination_voting_end_date', '');
+        
+        // If dates are set, check if current time is within the voting period
+        if (!empty($startDate) && !empty($endDate)) {
+            $now = Carbon::now();
+            $start = Carbon::parse($startDate);
+            $end = Carbon::parse($endDate);
+            
+            // If outside the voting period and user doesn't have role >= 2, deny access
+            if (!$now->between($start, $end) && $this->user->role < 2) {
+                abort(403, 'Nomination voting is not currently open.');
+            }
+        }
+        
+        // Clear any stored redirect URL since we're already on the intended page
+        if (session()->has('redirect_after_login')) {
+            session()->forget('redirect_after_login');
         }
         
         $this->loadData();
@@ -150,6 +173,7 @@ class NominationVoting extends Component
         }
         $this->search = '';
         $this->updateSelectedCategory();
+
         // Clear cache when switching groups
         $this->categoryItemsCache = [];
         $this->updateFilteredItems();
@@ -179,6 +203,7 @@ class NominationVoting extends Component
         $this->selectedCategoryId = $categoryId;
         $this->search = '';
         $this->updateSelectedCategory();
+        
         // Clear cache for this category to force refresh if needed
         unset($this->categoryItemsCache[$categoryId]);
         $this->updateFilteredItems();
@@ -439,12 +464,10 @@ class NominationVoting extends Component
     
     public function updateProgress()
     {
-        // Count how many categories in the current voting group the user has voted in
-        $votingCategoryIds = collect($this->votingCategories)->pluck('id')->toArray();
-        
+        // Count how many categories across all groups the user has voted in
         $this->progress = collect($this->selections)
-            ->filter(function ($selections, $categoryId) use ($votingCategoryIds) {
-                return in_array($categoryId, $votingCategoryIds) && !empty($selections) && count($selections) > 0;
+            ->filter(function ($selections, $categoryId) {
+                return !empty($selections) && count($selections) > 0;
             })
             ->count();
     }

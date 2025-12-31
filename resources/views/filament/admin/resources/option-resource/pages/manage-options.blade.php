@@ -66,6 +66,43 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Nomination Voting -->
+                <div class="fi-section-content mb-2">
+                    <div class="fi-card">
+                        <div class="fi-card-header p-6 pb-0">
+                            <h3 class="fi-section-header-heading text-lg font-semibold text-gray-950 dark:text-white">Nomination Voting</h3>
+                            <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">Configure nomination voting period</p>
+                        </div>
+                        <div class="fi-card-body p-6 pt-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="fi-fo-field-wrp-label space-y-2">
+                                    <label class="fi-fo-field-wrp-label-text inline-flex items-center gap-x-3">
+                                        <span class="fi-fo-field-wrp-label-text-label text-sm font-medium text-gray-700 dark:text-gray-300">Start Date</span>
+                                    </label>
+                                    <x-filament::input 
+                                        type="datetime-local" 
+                                        wire:model="nomination_voting_start_date"
+                                        class="fi-input"
+                                    />
+                                    <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">When nomination voting opens</p>
+                                </div>
+                                
+                                <div class="fi-fo-field-wrp-label space-y-2">
+                                    <label class="fi-fo-field-wrp-label-text inline-flex items-center gap-x-3">
+                                        <span class="fi-fo-field-wrp-label-text-label text-sm font-medium text-gray-700 dark:text-gray-300">End Date</span>
+                                    </label>
+                                    <x-filament::input 
+                                        type="datetime-local" 
+                                        wire:model="nomination_voting_end_date"
+                                        class="fi-input"
+                                    />
+                                    <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">When nomination voting closes</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="mt-6 flex justify-end">

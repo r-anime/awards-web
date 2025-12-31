@@ -1,4 +1,4 @@
-<div class="voting-page-content has-background-anti-spotify" style="min-height: 100vh;">
+<div class="voting-page-content has-background-anti-spotify">
         @if($loaded)
             <div class="voting-page-content-container">
                 <div class="has-text-light">
@@ -18,9 +18,6 @@
                                 <li wire:key="group-character" class="{{ $selectedGroup === 'character' ? 'is-active' : '' }}">
                                     <a href="#" wire:click="setSelectedGroup('character')">Character Awards</a>
                                 </li>
-                                <li wire:key="group-test" class="{{ $selectedGroup === 'test' ? 'is-active' : '' }}">
-                                    <a href="#" wire:click="setSelectedGroup('test')">Test Categories</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -30,7 +27,7 @@
                         <div class="mobile-select has-background-dark">
                             <progress class="progress is-tiny is-primary mb-3" 
                                 value="{{ $progress }}" 
-                                max="{{ count($votingCategories) }}">
+                                max="{{ count($categories) }}">
                             </progress>
                             <div class="mobile-select-container">
                                 @foreach($votingCategories as $category)
@@ -151,8 +148,17 @@
             </section>
         @endif
         <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
         .has-background-anti-spotify {
             background: linear-gradient(360deg, rgba(107, 156, 232, 0.35) 0%, rgba(45, 56, 83, 0) 76.46%), #1B1E25;
+            height: 100vh;
+            overflow-y: auto;
         }
         
         .mobile-select {
@@ -246,9 +252,9 @@
         @media (min-width: 1216px) {
             .mobile-select {
                 position: fixed;
-                top: 65px;
+                top: 8px;
                 left: 0px;
-                height: calc(100vh - 65px);
+                height: calc(100vh - 8px);
                 padding: 0;
                 padding-top: 20px;
                 width: 220px;
