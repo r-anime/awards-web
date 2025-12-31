@@ -18,8 +18,8 @@ Route::get('/participate', function () {
 Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
     Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');
 });
-Route::get('/participate/nomination', function () {
-    return view('nomination');
+Route::middleware('auth')->group(function () {
+    Route::get('/participate/nominate', \App\Livewire\NominationVoting::class)->name('nomination.voting');
 });
 Route::get('/participate/voting', function () {
     return view('voting');

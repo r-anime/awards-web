@@ -22,7 +22,7 @@ class ApplicationController extends Controller
         $application = Application::orderBy('year', 'desc')->first();
         
         // Get categories for the latest application's year, or current year if no application exists
-        $year = $application ? $application->year : date('Y');
+        $year = $application ? $application->year : app('current-year');
         $categories = Category::where('year', $year)->get();
         $mainCategories = $categories->where('type', 'main');
         $nonMainCategories = $categories->where('type', '!=', 'main');

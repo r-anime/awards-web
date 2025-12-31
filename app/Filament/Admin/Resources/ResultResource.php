@@ -41,12 +41,12 @@ class ResultResource extends Resource
                 TextInput::make('year')
                     ->required()
                     ->numeric()
-                    ->default(date('Y')),
+                    ->default(app('current-year')),
                 Select::make('category_id')
                     ->label('Category')
                     ->required()
                     ->options(function () {
-                        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                         return Category::where('year', $filterYear)->pluck('name', 'id');
                     })
                     ->searchable(),
@@ -55,14 +55,24 @@ class ResultResource extends Resource
                     ->maxLength(255),
                 FileUpload::make('image')
                     ->image()
-                    ->directory('storage/results')
+                    ->directory('entry')
                     ->disk('public')
-                    ->required(),
+                    ->maxSize(10240) // 10MB in KB
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        null,
+                        '16:9',
+                        '4:3',
+                        '1:1',
+                    ])
+                    ->required()
+                    ->helperText('Maximum file size: 10MB. Supported formats: JPEG, PNG, WebP, GIF'),
                 Select::make('entry_id')
                     ->label('Entry')
                     ->required()
                     ->options(function () {
-                        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                         return Entry::where('year', $filterYear)->pluck('name', 'id');
                     })
                     ->searchable(),
@@ -78,7 +88,7 @@ class ResultResource extends Resource
                     ->required()
                     ->columnSpanFull()
                     ->fileAttachmentsDisk('public')
-                    ->fileAttachmentsDirectory('storage/descriptions'),
+                    ->fileAttachmentsDirectory('descriptions'),
                 Repeater::make('staff_credits')
                     ->label('Staff Credits')
                     ->columnSpanFull()
@@ -107,7 +117,7 @@ class ResultResource extends Resource
                 'xl' => 3,
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                 $query = $query->where('year', $filterYear);
                 
                 $selectedCategory = session('selected-category-filter');

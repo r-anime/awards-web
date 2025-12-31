@@ -35,7 +35,7 @@ class CategoryResource extends Resource
         return $schema
             ->schema([
                 TextInput::make('year')
-                    ->default(session('selected-year-filter') ?? date('Y'))
+                    ->default(session('selected-year-filter') ?? app('current-year'))
                     ->required()
                     ->numeric()
                     ->maxLength(4)
@@ -78,7 +78,7 @@ class CategoryResource extends Resource
             ->paginated(false)
             ->reorderable('order')
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                 return $query->where('year', $filterYear);
             })
             ->columns([

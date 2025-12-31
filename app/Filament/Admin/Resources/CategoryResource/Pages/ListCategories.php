@@ -27,7 +27,7 @@ class ListCategories extends ListRecords
 
     public function reorderTable(array $order, string|int|null $draggedRecordKey = null): void
     {
-        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
         $categories = Category::where('year', $filterYear)->get();
         
         foreach ($order as $index => $categoryId) {

@@ -21,7 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json(['message' => 'Unauthenticated.'], 401);
             }
             
-            // Redirect to dashboard for authentication
-            return redirect('/login');
+            // Redirect to login with the intended URL as a redirect parameter
+            $intendedUrl = $request->fullUrl();
+            return redirect('/login?redirect=' . urlencode($intendedUrl));
         });
     })->create();

@@ -11,7 +11,7 @@ class YearFilter extends Component
 
     public function mount()
     {
-        $this->selectedYear = session('selected-year-filter') ?? date('Y');
+        $this->selectedYear = session('selected-year-filter') ?? app('current-year');
         $this->yearList = $this->generateYearList();
     }
 
@@ -23,7 +23,7 @@ class YearFilter extends Component
 
     private function generateYearList()
     {
-        $currentYear = date('Y');
+        $currentYear = app('current-year');
         $years = [];
         
         for ($year = $currentYear; $year >= 2016; $year--) {

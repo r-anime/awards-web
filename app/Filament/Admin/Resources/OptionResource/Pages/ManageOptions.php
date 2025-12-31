@@ -22,6 +22,8 @@ class ManageOptions extends Page
     public $max_file_size;
     public $feedback_channel_webhook;
     public $audit_channel_webhook;
+    public $nomination_voting_start_date;
+    public $nomination_voting_end_date;
 
     public static function canAccess(array $parameters = []): bool
     {
@@ -36,6 +38,14 @@ class ManageOptions extends Page
         $this->max_file_size = Option::get('max_file_size', '10MB');
         $this->feedback_channel_webhook = Option::get('feedback_channel_webhook', '');
         $this->audit_channel_webhook = Option::get('audit_channel_webhook', '');
+        
+        // Parse dates for datetime-local input format (YYYY-MM-DDTHH:mm)
+        $startDate = Option::get('nomination_voting_start_date', '');
+        $endDate = Option::get('nomination_voting_end_date', '');
+        $this->nomination_voting_start_date = $startDate ? 
+            \Carbon\Carbon::parse($startDate)->format('Y-m-d\TH:i') : '';
+        $this->nomination_voting_end_date = $endDate ? 
+            \Carbon\Carbon::parse($endDate)->format('Y-m-d\TH:i') : '';
     }
 
     public function saveSettings(): void
@@ -47,6 +57,15 @@ class ManageOptions extends Page
         Option::set('max_file_size', $this->max_file_size);
         Option::set('feedback_channel_webhook', $this->feedback_channel_webhook);
         Option::set('audit_channel_webhook', $this->audit_channel_webhook);
+        
+        // Format dates properly for storage
+        $startDate = $this->nomination_voting_start_date ? 
+            (\Carbon\Carbon::parse($this->nomination_voting_start_date)->format('Y-m-d H:i:s')) : '';
+        $endDate = $this->nomination_voting_end_date ? 
+            (\Carbon\Carbon::parse($this->nomination_voting_end_date)->format('Y-m-d H:i:s')) : '';
+        
+        Option::set('nomination_voting_start_date', $startDate);
+        Option::set('nomination_voting_end_date', $endDate);
 
         Notification::make()
             ->title('Settings saved successfully')

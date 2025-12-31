@@ -72,9 +72,19 @@ class EntryResource extends Resource
                 TextInput::make('year')->numeric()->required(),
                 FileUpload::make('image')
                     ->image()
-                    ->directory('storage/entry')
+                    ->directory('entry')
                     ->disk('public')
-                    ->required(),
+                    ->maxSize(10240) // 10MB in KB
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        null,
+                        '16:9',
+                        '4:3',
+                        '1:1',
+                    ])
+                    ->required()
+                    ->helperText('Maximum file size: 10MB. Supported formats: JPEG, PNG, WebP, GIF'),
             ]);
     }
 
@@ -82,7 +92,7 @@ class EntryResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                 $query = $query->where('year', $filterYear);
 
                 $selectedType = session('selected-type-filter');
