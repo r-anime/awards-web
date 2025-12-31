@@ -279,11 +279,10 @@ class EligiblesRelationManager extends RelationManager
                             try {
                                 // Add delay between API requests to avoid rate limiting
                                 if ($index > 0 && $index % 5 == 0) {
-                                    Sleep::for(1)->second();
+                                    Sleep::for(30)->second();
                                 }
                                 
                                 // Fetch from Anilist API first to determine the entry type
-                                // (anilist_id is not unique across types, so we need type to find the correct entry)
                                 $entry = $this->fetchAndCreateEntryFromAnilist($anilistId, $category->year);
                                 
                                 if (!$entry) {
