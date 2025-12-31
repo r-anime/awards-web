@@ -5,4 +5,6 @@ import sort from '@alpinejs/sort'
 window.Alpine = Alpine
  
 Alpine.plugin(sort)
-Alpine.start()
+
+// Don't start Alpine - let Livewire handle it completely
+// Livewire 3 will automatically start Alpine when it initializes

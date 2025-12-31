@@ -9,6 +9,10 @@ use App\Models\Entry;
 class NomineeVote extends Model
 {
     public function entry(){
-        return $this->hasOne(Entry::class);
+        return $this->belongsTo(Entry::class);
+    }
+    
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 }
