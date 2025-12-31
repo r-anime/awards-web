@@ -248,6 +248,15 @@
             transform: translateY(-5px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
+
+        .box.entry-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box.entry-card div {
+            flex: 1 0 auto;
+        }
         
         @media (min-width: 1216px) {
             .mobile-select {
