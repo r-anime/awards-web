@@ -279,7 +279,7 @@ class EligiblesRelationManager extends RelationManager
                             try {
                                 // Add delay between API requests to avoid rate limiting
                                 if ($index > 0 && $index % 5 == 0) {
-                                    Sleep::for(30)->second();
+                                    Sleep::for(60)->second();
                                 }
                                 
                                 // Fetch from Anilist API first to determine the entry type
