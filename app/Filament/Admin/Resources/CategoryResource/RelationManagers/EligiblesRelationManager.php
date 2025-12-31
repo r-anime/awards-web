@@ -17,6 +17,7 @@ use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
+use App\Models\Category;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -122,6 +123,112 @@ class EligiblesRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
+                Action::make('copyFromCategory')
+                    ->label('Copy from Category')
+                    ->icon('heroicon-o-document-duplicate')
+                    ->form([
+                        Select::make('source_category_id')
+                            ->label('Source Category')
+                            ->required()
+                            ->options(function () {
+                                $currentCategory = $this->getOwnerRecord();
+                                $year = $currentCategory->year;
+                                
+                                // Get all categories from the same year, excluding the current one
+                                return Category::where('year', $year)
+                                    ->where('id', '!=', $currentCategory->id)
+                                    ->orderBy('name')
+                                    ->pluck('name', 'id');
+                            })
+                            ->searchable()
+                            ->helperText('Select a category to copy all eligibles from'),
+                        Toggle::make('active')
+                            ->label('Set copied entries as active')
+                            ->default(true)
+                            ->helperText('If unchecked, copied entries will be inactive'),
+                        Toggle::make('skip_duplicates')
+                            ->label('Skip duplicates')
+                            ->default(true)
+                            ->helperText('If checked, entries that already exist in this category will be skipped'),
+                    ])
+                    ->action(function (array $data) {
+                        $targetCategory = $this->getOwnerRecord();
+                        $sourceCategoryId = $data['source_category_id'];
+                        $active = $data['active'] ?? true;
+                        $skipDuplicates = $data['skip_duplicates'] ?? true;
+                        
+                        $sourceCategory = Category::find($sourceCategoryId);
+                        
+                        if (!$sourceCategory) {
+                            Notification::make()
+                                ->title('Source category not found')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+                        
+                        if ($sourceCategory->id === $targetCategory->id) {
+                            Notification::make()
+                                ->title('Cannot copy from the same category')
+                                ->danger()
+                                ->send();
+                            return;
+                        }
+                        
+                        // Get all eligibles from source category
+                        $sourceEligibles = CategoryEligible::where('category_id', $sourceCategoryId)->get();
+                        
+                        if ($sourceEligibles->isEmpty()) {
+                            Notification::make()
+                                ->title('No eligibles to copy')
+                                ->body("The source category '{$sourceCategory->name}' has no eligibles.")
+                                ->warning()
+                                ->send();
+                            return;
+                        }
+                        
+                        $copiedCount = 0;
+                        $skippedCount = 0;
+                        $updatedCount = 0;
+                        
+                        foreach ($sourceEligibles as $sourceEligible) {
+                            // Check if eligible already exists in target category
+                            $existing = CategoryEligible::where('category_id', $targetCategory->id)
+                                ->where('entry_id', $sourceEligible->entry_id)
+                                ->first();
+                            
+                            if ($existing) {
+                                if ($skipDuplicates) {
+                                    $skippedCount++;
+                                } else {
+                                    // Update existing eligible
+                                    $existing->update(['active' => $active]);
+                                    $updatedCount++;
+                                }
+                            } else {
+                                // Create new eligible
+                                CategoryEligible::create([
+                                    'category_id' => $targetCategory->id,
+                                    'entry_id' => $sourceEligible->entry_id,
+                                    'active' => $active,
+                                ]);
+                                $copiedCount++;
+                            }
+                        }
+                        
+                        $message = "Copied {$copiedCount} eligible(s) from '{$sourceCategory->name}'";
+                        if ($updatedCount > 0) {
+                            $message .= ", updated {$updatedCount} existing";
+                        }
+                        if ($skippedCount > 0) {
+                            $message .= ", skipped {$skippedCount} duplicate(s)";
+                        }
+                        
+                        Notification::make()
+                            ->title($message)
+                            ->success()
+                            ->send();
+                    }),
                 Action::make('bulkAddByAnilistId')
                     ->label('Bulk Add by Anilist ID')
                     ->icon('heroicon-o-plus-circle')

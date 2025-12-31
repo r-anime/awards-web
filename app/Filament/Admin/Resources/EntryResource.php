@@ -74,7 +74,17 @@ class EntryResource extends Resource
                     ->image()
                     ->directory('entry')
                     ->disk('public')
-                    ->required(),
+                    ->maxSize(10240) // 10MB in KB
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif'])
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        null,
+                        '16:9',
+                        '4:3',
+                        '1:1',
+                    ])
+                    ->required()
+                    ->helperText('Maximum file size: 10MB. Supported formats: JPEG, PNG, WebP, GIF'),
             ]);
     }
 
