@@ -22,7 +22,7 @@ class ListResults extends ListRecords
             Category::find($selectedCategoryId)?->name ?? 'Unknown Category' : 
             'All Categories';
 
-        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
         $categories = Category::where('year', $filterYear)->orderBy('order')->get();
         
         $dropdownActions = [];

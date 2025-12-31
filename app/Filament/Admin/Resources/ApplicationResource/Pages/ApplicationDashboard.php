@@ -22,7 +22,7 @@ class ApplicationDashboard extends Page
 
     public function getApplication(): ?Application
     {
-        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
         return Application::where('year', $filterYear)->first();
     }
 

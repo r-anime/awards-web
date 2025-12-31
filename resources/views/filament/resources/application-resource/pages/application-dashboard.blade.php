@@ -3,7 +3,7 @@
         
         @php
             $application = $this->getApplication();
-            $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+            $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
         @endphp
 
         @if(!$application)

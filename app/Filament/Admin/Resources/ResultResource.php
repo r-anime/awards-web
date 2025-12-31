@@ -41,12 +41,12 @@ class ResultResource extends Resource
                 TextInput::make('year')
                     ->required()
                     ->numeric()
-                    ->default(date('Y')),
+                    ->default(app('current-year')),
                 Select::make('category_id')
                     ->label('Category')
                     ->required()
                     ->options(function () {
-                        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                         return Category::where('year', $filterYear)->pluck('name', 'id');
                     })
                     ->searchable(),
@@ -72,7 +72,7 @@ class ResultResource extends Resource
                     ->label('Entry')
                     ->required()
                     ->options(function () {
-                        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                         return Entry::where('year', $filterYear)->pluck('name', 'id');
                     })
                     ->searchable(),
@@ -117,7 +117,7 @@ class ResultResource extends Resource
                 'xl' => 3,
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                 $query = $query->where('year', $filterYear);
                 
                 $selectedCategory = session('selected-category-filter');

@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Binding singleton ResultService
         $this->app->singleton(ResultService::class, function() {return new ResultService();});
+        
+        // Global value of current awards year
+        $this->app->singleton('current-year', function() { return now()->subMonths(3)->year; });
     }
 
     /**
