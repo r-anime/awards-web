@@ -43,7 +43,7 @@ class ApplicationResource extends Resource
                 TextInput::make('year')
                     ->required()
                     ->numeric()
-                    ->default(date('Y')),
+                    ->default(app('current-year')),
                 DateTimePicker::make('start_time')
                     ->required()
                     ->label('Start Time')

@@ -33,7 +33,7 @@ class ApplicationGrading extends Page implements HasTable
 
     public function getApplication(): ?Application
     {
-        $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+        $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
         return Application::where('year', $filterYear)->first();
     }
 
@@ -162,7 +162,7 @@ class ApplicationGrading extends Page implements HasTable
                         $years = Application::distinct()->pluck('year', 'year')->toArray();
                         return array_combine($years, $years);
                     })
-                    ->default(session('selected-year-filter') ?? date('Y'))
+                    ->default(session('selected-year-filter') ?? app('current-year'))
                     ->query(function (Builder $query, array $data): Builder {
                         if (!empty($data['value'])) {
                             session(['selected-year-filter' => $data['value']]);

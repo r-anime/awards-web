@@ -69,7 +69,7 @@ class NominationVoting extends Component
     
     public function loadData()
     {
-        $year = date('Y');
+        $year = app('current-year');
         
         // Load all categories for the current year
         $this->categories = Category::where('year', $year)->get()->toArray();

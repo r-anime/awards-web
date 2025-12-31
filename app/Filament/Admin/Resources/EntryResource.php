@@ -82,7 +82,7 @@ class EntryResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $filterYear = session('selected-year-filter') ?? intval(date('Y'));
+                $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
                 $query = $query->where('year', $filterYear);
 
                 $selectedType = session('selected-type-filter');
