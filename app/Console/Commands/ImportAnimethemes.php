@@ -166,7 +166,7 @@ class ImportAnimethemes extends Command
         $prioryear = $year - 1;
 
         $this->info("Import themes according to year {$year}");
-        $this->getAnimeThemes($year);
+        // $this->getAnimeThemes($year);
 
         $this->themesLoop($year, $year, ImportAnimethemes::CURRENT_YEAR_QUERY);
 
