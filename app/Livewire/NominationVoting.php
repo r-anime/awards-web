@@ -9,32 +9,63 @@ use App\Models\Entry;
 use App\Models\NomineeVote;
 use App\Models\Option;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 #[Layout('components.layouts.app')]
 class NominationVoting extends Component
 {
-    
+    /**
+     * Currently selected category group
+     */
     public $selectedGroup = 'main';
+    /**
+     * Currently selected category
+     */
     public $selectedCategoryId = null;
     public $search = '';
     public $loaded = false;
     public $locked = false;
     public $loadingProgress = ['curr' => 0, 'max' => 0];
     
+    /**
+     * Collection of all categories
+     */
     public $categories = [];
+    /**
+     * Categories under the currently selected Group
+     */
     public $votingCategories = [];
-    public $entries = [];
-    public $items = [];
+    
+    /**
+     * Collection of all Eligibles under current category
+     */
+    public $currentEligibles = [];
+
+    /**
+     * Collection of all selected Entries
+     */
     public $selections = [];
     public $user = null;
+    /**
+     * Number of categories voted on
+     */
     public $progress = 0;
     public $selectedCategory = null;
+    /**
+     * Unfiltered entries under current category
+     */
+    public $categoryEntries = [];
+    /**
+     * categoryEntries filtered by search
+     */
     public $filteredItems = [];
-    public $categoryItemsCache = []; // Cache items per category
-    
+    /**
+     * Cached items per category
+     */
+    public $categoryItemsCache = []; 
+
     public function mount()
     {
         $this->user = Auth::user();
@@ -64,39 +95,55 @@ class NominationVoting extends Component
             session()->forget('redirect_after_login');
         }
         
-        $this->loadData();
-    }
-    
-    public function loadData()
-    {
-        $year = app('current-year');
-        
-        // Load all categories for the current year
-        $this->categories = Category::where('year', $year)->get()->toArray();
-        
-        // Load entries (category eligibles)
-        $categoryIds = collect($this->categories)->pluck('id')->toArray();
-        $eligibles = CategoryEligible::whereIn('category_id', $categoryIds)
-            ->where('active', true)
-            ->with('entry')
-            ->get();
-        
-        $this->entries = $eligibles->groupBy('category_id')
-            ->map(function ($group) {
-                return $group->map(function ($eligible) {
-                    return $eligible->entry;
-                })->filter()->values()->toArray();
-            })
-            ->toArray();
-        
+        // ---
+        // Load data
+        // ---
+
+        // Load Categories
+        $this->categories = $this->getCategories();
+
         // Initialize selections structure
-        foreach ($this->categories as $category) {
-            $this->selections[$category['id']] = [];
-        }
+        $this->selections = $this->categories->reduce(function ($carry, $category) {
+            return $carry->put($category['id'], collect());
+        }, collect());
+
+        $this->loadVotes();
         
+        // ---
+        // Set initial state
+        // ---
+        
+        // Filter categories by selected group
+        $this->updateVotingCategories();
+
+        // Set initial selected category
+        if (!empty($this->votingCategories)) {
+            $this->selectedCategoryId = $this->votingCategories[0]['id'];
+        } else {
+            // If no categories found, still mark as loaded
+            $this->selectedCategoryId = null;
+        }
+
+        // Update selected category object
+        $this->updateSelectedCategory();
+        
+        // Update fetched entries for category
+        $this->updateCategoryEntries();
+
+        // Update filtered items
+        $this->updateFilteredItems();
+        
+        // Calculate initial progress
+        $this->updateProgress();
+        
+        $this->loaded = true;
+    }
+
+    private function loadVotes()
+    {
         // Load user's existing votes (only non-deleted ones)
         $votes = NomineeVote::where('user_id', $this->user->id)
-            ->with(['entry', 'category'])
+            ->with('entry')
             ->get();
         
         foreach ($votes as $vote) {
@@ -114,58 +161,19 @@ class NominationVoting extends Component
             }
         }
         
-        // Ensure selections are arrays
+        // Ensure selections are Collections
         foreach ($this->selections as $categoryId => $selections) {
-            if (!is_array($selections)) {
-                $this->selections[$categoryId] = [];
+            if (!$selections instanceof Collection) {
+                $this->selections[$categoryId] = collect();
             }
         }
-        
-        // Load items (entries) - only load entries that are actually eligible for categories
-        $entryIds = CategoryEligible::whereIn('category_id', $categoryIds)
-            ->where('active', true)
-            ->pluck('entry_id')
-            ->unique()
-            ->toArray();
-        
-        // Only load entries that are in category eligibles
-        if (!empty($entryIds)) {
-            // Load items and index by ID for O(1) lookups
-            $itemsCollection = Entry::whereIn('id', $entryIds)->get();
-            $this->items = [];
-            foreach ($itemsCollection as $item) {
-                $this->items[$item->id] = $item->toArray();
-            }
-        } else {
-            $this->items = [];
-        }
-        
-        // Filter categories by selected group
-        $this->updateVotingCategories();
-        
-        // Set initial selected category
-        if (!empty($this->votingCategories)) {
-            $this->selectedCategoryId = $this->votingCategories[0]['id'];
-        } else {
-            // If no categories found, still mark as loaded
-            $this->selectedCategoryId = null;
-        }
-        
-        // Update selected category object
-        $this->updateSelectedCategory();
-        
-        // Update filtered items
-        $this->updateFilteredItems();
-        
-        // Calculate initial progress
-        $this->updateProgress();
-        
-        $this->loaded = true;
     }
-    
-    public function updatedSelectedGroup()
+
+    private function updatedSelectedGroup()
     {
+        // $startTime = microtime(true);
         $this->updateVotingCategories();
+        // $updatedVotingCategoriesTime = microtime(true) - $startTime;
         if (!empty($this->votingCategories)) {
             $this->selectedCategoryId = $this->votingCategories[0]['id'];
         } else {
@@ -173,13 +181,18 @@ class NominationVoting extends Component
         }
         $this->search = '';
         $this->updateSelectedCategory();
-
+        // $updatedSelectedCategoriesTime = microtime(true) - $startTime + $updatedVotingCategoriesTime;
         // Clear cache when switching groups
         $this->categoryItemsCache = [];
         $this->updateFilteredItems();
+        // $updatedFilteredItemsTime = microtime(true) -$startTime + $updatedSelectedCategoriesTime + $updatedVotingCategoriesTime;
         $this->updateProgress();
+        // dd($startTime*1000, $updatedVotingCategoriesTime*1000, $updatedSelectedCategoriesTime*1000, $updatedFilteredItemsTime*1000);
     }
     
+    /**
+     * Handle user click on group
+     */
     public function setSelectedGroup($group)
     {
         \Log::info('setSelectedGroup called', ['group' => $group]);
@@ -187,122 +200,91 @@ class NominationVoting extends Component
         $this->updatedSelectedGroup();
     }
     
-    public function updateVotingCategories()
+    private function updateVotingCategories()
     {
-        $this->votingCategories = collect($this->categories)
-            ->filter(function ($cat) {
-                return $cat['type'] === $this->selectedGroup;
-            })
-            ->values()
-            ->toArray();
+        $this->votingCategories = $this->categories
+            ->where('type', $this->selectedGroup)
+            ->values();
     }
     
+    /**
+     * Handle user click on category
+     */
     public function selectCategory($categoryId)
     {
         \Log::info('selectCategory called', ['categoryId' => $categoryId]);
         $this->selectedCategoryId = $categoryId;
         $this->search = '';
         $this->updateSelectedCategory();
+
+        $this->updateCategoryEntries();
         
         // Clear cache for this category to force refresh if needed
         unset($this->categoryItemsCache[$categoryId]);
         $this->updateFilteredItems();
     }
     
-    public function updateSelectedCategory()
+    private function updateSelectedCategory()
     {
         if (!$this->selectedCategoryId) {
             $this->selectedCategory = null;
             return;
         }
         
-        // Find the category from the categories array
-        $this->selectedCategory = collect($this->categories)->firstWhere('id', $this->selectedCategoryId);
+        // Find the category from the categories arrayx
+        $this->selectedCategory = $this->categories->firstWhere('id', $this->selectedCategoryId);
     }
     
-    public function getCategoryEntriesProperty()
+    private function updateCategoryEntries()
     {
-        if (!$this->selectedCategoryId) {
-            return [];
+        // Set items as empty collection if category not present
+        if (!$this->selectedCategoryId || !$this->selectedCategory) {
+            $this->categoryEntries = collect();
+            return;
+        }
+
+        // TODO: Change query to search for character categories
+        // Set limit to 50 if category type is character
+        $limit = 0;
+        if($this->selectedCategory['type'] == 'character') {
+            $limit = 50;
         }
         
-        return $this->entries[$this->selectedCategoryId] ?? [];
+        // TODO: Implement cache
+        $this->categoryEntries = $this->getEligiblesByCategory($this->selectedCategoryId, $limit)->pluck('entry');
     }
-    
-    public function getCategoryItemsProperty()
+
+    /**
+     * Set the filteredItems property as per category and search
+     */
+    private function updateFilteredItems() : void
     {
-        if (!$this->selectedCategoryId) {
-            return [];
-        }
-        
-        // Use cache if available
-        if (isset($this->categoryItemsCache[$this->selectedCategoryId])) {
-            return $this->categoryItemsCache[$this->selectedCategoryId];
-        }
-        
-        $category = $this->selectedCategory;
-        if (!$category) {
-            return [];
-        }
-        
-        $categoryEntries = $this->categoryEntries;
-        $entryIds = collect($categoryEntries)->pluck('id')->toArray();
-        
-        // If no specific entries, return empty array
-        if (empty($entryIds)) {
-            $this->categoryItemsCache[$this->selectedCategoryId] = [];
-            return [];
-        }
-        
-        // Determine entry type from category name/type
-        $entryType = $this->getEntryType($category);
-        
-        // Use array_intersect_key for faster filtering when items are keyed by ID
-        $items = [];
-        foreach ($entryIds as $entryId) {
-            if (isset($this->items[$entryId])) {
-                $item = $this->items[$entryId];
-                // Filter by type
-                if ($entryType === 'anime' && $item['type'] !== 'anime') {
-                    continue;
-                }
-                if (($entryType === 'character' || $entryType === 'va') && $item['type'] !== 'char') {
-                    continue;
-                }
-                $items[] = $item;
-            }
-        }
-        
-        // Cache the result
-        $this->categoryItemsCache[$this->selectedCategoryId] = $items;
-        
-        return $items;
-    }
-    
-    public function updateFilteredItems()
-    {
-        $items = $this->categoryItems;
-        
+        $entries = $this->categoryEntries;
+
         if (empty($this->search)) {
-            // Sort: selected items first - use usort for better performance
-            $selectedIds = collect($this->selections[$this->selectedCategoryId] ?? [])->pluck('id')->toArray();
-            usort($items, function ($a, $b) use ($selectedIds) {
-                $aSelected = in_array($a['id'], $selectedIds);
-                $bSelected = in_array($b['id'], $selectedIds);
+            // Sort: selected items first 
+            // TODO: Push this to frontend ideally? Because this re-fetch is 
+            $selectedIds = ($this->selections[$this->selectedCategoryId] ?? collect())->pluck('id');
+            $sortedEntries = $entries->sort(function ($a, $b) use ($selectedIds, $entries) {
+                if($a == null) {
+                    dd($entries);
+                }
+                $aSelected = $selectedIds->contains($a['id']);
+                $bSelected = $selectedIds->contains($b['id']);
                 if ($aSelected === $bSelected) {
                     return 0;
                 }
                 return $aSelected ? -1 : 1;
             });
-            $this->filteredItems = $items;
+            $this->filteredItems = $sortedEntries;
         } else {
             $searchLower = strtolower($this->search);
-            $this->filteredItems = array_filter($items, function ($item) use ($searchLower) {
-                $name = strtolower($item['name'] ?? '');
+            $this->filteredItems = $entries->filter(function ($entry) use ($searchLower) {
+                $name = strtolower($entry['name'] ?? '');
                 return str_contains($name, $searchLower);
             });
             // Re-index array
-            $this->filteredItems = array_values($this->filteredItems);
+            // $this->filteredItems = $this->filteredItems;
         }
     }
     
@@ -311,7 +293,7 @@ class NominationVoting extends Component
         $this->updateFilteredItems();
     }
     
-    public function getEntryType($category)
+    private function getEntryType($category)
     {
         $name = strtolower($category['name'] ?? '');
         $type = $category['type'] ?? '';
@@ -338,13 +320,13 @@ class NominationVoting extends Component
             return false;
         }
         
-        $selections = $this->selections[$this->selectedCategoryId] ?? [];
-        return collect($selections)->contains(function ($selection) use ($item) {
+        $selections = $this->selections[$this->selectedCategoryId] ?? collect();
+        return $selections->contains(function ($selection) use ($item) {
             return isset($selection['id']) && $selection['id'] == $item['id'];
         });
     }
     
-    public function canVoteMore()
+    private function canVoteMore()
     {
         if (!$this->selectedCategoryId) {
             return false;
@@ -354,13 +336,13 @@ class NominationVoting extends Component
         return $count < 5;
     }
     
-    public function toggleVote($itemId)
+    public function toggleVote($entryId)
     {
         if (!$this->selectedCategoryId) {
             return;
         }
         
-        $item = collect($this->items)->firstWhere('id', $itemId);
+        $item = $this->getEntryById($entryId);
         if (!$item) {
             return;
         }
@@ -368,20 +350,20 @@ class NominationVoting extends Component
         $isSelected = $this->isItemSelected($item);
         
         if ($isSelected) {
-            $this->removeVote($itemId);
+            $this->removeVote($entryId);
         } else {
-            $this->addVote($itemId);
+            $this->addVote($entryId);
         }
     }
     
-    public function addVote($itemId)
+    private function addVote($entryId)
     {
         if (!$this->canVoteMore()) {
             session()->flash('error', 'You cannot vote for any more entries in this category.');
             return;
         }
         
-        $item = collect($this->items)->firstWhere('id', $itemId);
+        $item = $this->getEntryById($entryId);
         if (!$item) {
             return;
         }
@@ -390,24 +372,22 @@ class NominationVoting extends Component
             return;
         }
         
-        // Find or create the category eligible entry
+        // Find the category eligible entry
         $categoryEligible = CategoryEligible::where('category_id', $this->selectedCategoryId)
-            ->where('entry_id', $itemId)
+            ->where('entry_id', $entryId)
             ->first();
         
         if (!$categoryEligible) {
-            // Create the category eligible if it doesn't exist
-            $categoryEligible = CategoryEligible::create([
-                'category_id' => $this->selectedCategoryId,
-                'entry_id' => $itemId,
-                'active' => true,
-            ]);
+            // Fail vote creation if entry does not exist
+            \Log::notice('Failed to create vote, category_eligible record not found ',
+                ['category_id' => $this->selectedCategoryId, 'entry_id' => $entryId]);
+            return;
         }
         
         // Check if vote already exists
         $existingVote = NomineeVote::where('user_id', $this->user->id)
             ->where('category_id', $this->selectedCategoryId)
-            ->where('entry_id', $itemId)
+            ->where('entry_id', $entryId)
             ->first();
         
         if ($existingVote) {
@@ -419,7 +399,7 @@ class NominationVoting extends Component
             'user_id' => $this->user->id,
             'category_id' => $this->selectedCategoryId,
             'cat_entry_id' => $categoryEligible->id,
-            'entry_id' => $itemId,
+            'entry_id' => $entryId,
         ]);
         
         // Update local selections
@@ -436,7 +416,13 @@ class NominationVoting extends Component
         $this->dispatch('vote-added');
     }
     
-    public function removeVote($itemId)
+    /**
+     * Deletes vote, updates local selections,
+     * Calls `updateFilteredItems()` and `updateProgress()`,
+     * Dispatches `vote-removed`
+     * @param id $entryId Id of the item from which the vote is to be removed
+     */
+    public function removeVote($entryId)
     {
         if (!$this->selectedCategoryId) {
             return;
@@ -445,33 +431,37 @@ class NominationVoting extends Component
         // Delete the vote
         NomineeVote::where('user_id', $this->user->id)
             ->where('category_id', $this->selectedCategoryId)
-            ->where('entry_id', $itemId)
+            ->where('entry_id', $entryId)
             ->delete();
         
         // Update local selections
-        $selections = $this->selections[$this->selectedCategoryId] ?? [];
-        $this->selections[$this->selectedCategoryId] = collect($selections)
-            ->reject(function ($selection) use ($itemId) {
-                return $selection['id'] == $itemId;
-            })
-            ->values()
-            ->toArray();
+        $selections = $this->selections[$this->selectedCategoryId] ?? collect();
+        $this->selections[$this->selectedCategoryId] = $selections
+            ->reject(function ($selection) use ($entryId) {
+                return $selection['id'] == $entryId;
+            });
         
         $this->updateFilteredItems();
         $this->updateProgress();
         $this->dispatch('vote-removed');
     }
     
-    public function updateProgress()
+    /**
+     * Set `$this->progress` as number of categories user has voted in
+     */
+    private function updateProgress()
     {
         // Count how many categories across all groups the user has voted in
-        $this->progress = collect($this->selections)
+        $this->progress = $this->selections
             ->filter(function ($selections, $categoryId) {
                 return !empty($selections) && count($selections) > 0;
             })
             ->count();
     }
     
+    /**
+     * Returns array of categories that have been voted on
+     */
     public function getVotedCategoriesProperty()
     {
         $voted = [];
@@ -480,7 +470,30 @@ class NominationVoting extends Component
         }
         return $voted;
     }
+
+    // DB Calls
+    private function getCategories() : Collection
+    {
+        return Category::where('year', app('current-year'))->get();
+    }
     
+    private function getEligiblesByCategory(int $categoryId, int $limit = 0) : Collection
+    {
+        $query = CategoryEligible::where('category_id', $categoryId)
+            ->where('active', true)
+            ->has('entry') // Only pull eligibles when entry exists
+            ->with('entry');
+        if($limit > 0) {
+            $query = $query->limit($limit);
+        }
+        return $query->get();
+    }
+
+    private function getEntryById(int $entryId) : Entry
+    {
+        return Entry::find($entryId);
+    }
+
     public function render()
     {
         return view('livewire.nomination-voting');
