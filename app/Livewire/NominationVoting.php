@@ -171,23 +171,22 @@ class NominationVoting extends Component
 
     private function updatedSelectedGroup()
     {
-        // $startTime = microtime(true);
         $this->updateVotingCategories();
-        // $updatedVotingCategoriesTime = microtime(true) - $startTime;
         if (!empty($this->votingCategories)) {
             $this->selectedCategoryId = $this->votingCategories[0]['id'];
         } else {
             $this->selectedCategoryId = null;
         }
+
         $this->search = '';
         $this->updateSelectedCategory();
-        // $updatedSelectedCategoriesTime = microtime(true) - $startTime + $updatedVotingCategoriesTime;
+        $this->updateCategoryEntries();
+        
         // Clear cache when switching groups
         $this->categoryItemsCache = [];
         $this->updateFilteredItems();
-        // $updatedFilteredItemsTime = microtime(true) -$startTime + $updatedSelectedCategoriesTime + $updatedVotingCategoriesTime;
+
         $this->updateProgress();
-        // dd($startTime*1000, $updatedVotingCategoriesTime*1000, $updatedSelectedCategoriesTime*1000, $updatedFilteredItemsTime*1000);
     }
     
     /**
