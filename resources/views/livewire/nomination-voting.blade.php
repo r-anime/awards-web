@@ -76,6 +76,7 @@
                                     @forelse($filteredItems as $item)
                                         <div class="box entry-card" 
                                              style="cursor: pointer; position: relative; padding: 0; overflow: hidden; background: {{ $this->isItemSelected($item) ? '#00d1b2' : '#2d3853' }};"
+                                             wire:key="entry-{{ $item['id'] }}"
                                              wire:click="toggleVote({{ $item['id'] }})">
                                             @if(!empty($item['image']))
                                                 <figure class="image" style="margin: 0;">
