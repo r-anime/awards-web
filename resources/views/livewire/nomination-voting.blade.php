@@ -165,9 +165,9 @@
                                     }
                                 }"
                                 x-init="filterEligibles();
-                                    $watch('search', search => {console.log('refresh through search'); filterEligibles(); });
-                                    $watch('eligibles', eligibles => {console.log('refresh through eligibles'); filterEligibles(); });
-                                    $watch('selections', selections => {console.log('refresh through selections'); filterEligibles(); });
+                                    $watch('search', search => {filterEligibles(); });
+                                    $watch('eligibles', eligibles => {filterEligibles(); });
+                                    $watch('selections', selections => {filterEligibles(); });
                                 "
                             >
                                 <!-- Search Bar -->
