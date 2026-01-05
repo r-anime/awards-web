@@ -99,10 +99,10 @@
                                 {{-- ! Not sure how to have handled this --}}
                                 try{
                                     response = await $wire.deleteVote(eligible.category_id, eligible.id, eligible.entry.id)
-                                    if (response && response.success) {
+                                    if (response && response.original.success) {
                                         removeSelection(eligible);
                                     } else {
-                                        this.error = response.error;
+                                        this.error = response.original.error;
                                     }
                                 } catch (error) {
                                     this.error = error.message;
@@ -259,10 +259,10 @@
                                     <p class="panel-heading">My Selections</p>
                                     <div class="panel-block">
                                         <p class="has-text-dark" 
-                                            x-text="((Object.keys(selections[selectedCategoryId]) ?? []).length)+'/ 5 selected'">
+                                            x-text="(Object.keys(selections[selectedCategoryId] ?? {}).length)+'/ 5 selected'">
                                         </p>
                                     </div>
-                                    <template x-if="(Object.keys([selectedCategoryId]) ?? []).length > 0">
+                                    <template x-if="Object.keys(selections[selectedCategoryId] ?? {}).length > 0">
                                         <template x-for="selection in Object.values(selections[selectedCategoryId])" :key="selection.id">
                                             <a class="panel-block has-text-dark" 
                                                x-on:click="removeVote(selection)"
