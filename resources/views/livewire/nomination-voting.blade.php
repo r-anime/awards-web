@@ -203,8 +203,7 @@
                                         >
                                             <template x-if="selectedEligible.entry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    {{-- ! Sorairo Utility hardcoded to make developemnt faster --}}
-                                                    <img src="{{ asset('storage/' . 'entry/anilist-174596.jpg') }}" 
+                                                    <img x-bind:src="'/storage/'+selectedEligible.entry.image"
                                                          alt="eligible.entry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
@@ -228,8 +227,7 @@
                                         >
                                             <template x-if="filteredEligible.entry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    {{-- ! Sorairo Utility hardcoded to make developemnt faster --}}
-                                                    <img src="{{ asset('storage/' . 'entry/anilist-174596.jpg') }}" 
+                                                    <img x-bind:src="'/storage/'+filteredEligible.entry.image"
                                                          alt="eligible.entry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
