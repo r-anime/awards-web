@@ -196,8 +196,8 @@
                                     {{-- <template x-if="filteredEligibles.length>0"> --}}
                                         <template x-for="selectedEligible in selectedEligibles">
                                         <div class="box entry-card" 
-                                             x-bind:style="`cursor: pointer; position: relative; padding: 0; overflow: hidden; 
-                                             background: #00d1b2};`"
+                                             style="cursor: pointer; position: relative; padding: 0; overflow: hidden;
+                                                background: #00d1b2;"
                                              :key="selectedEligible.id"
                                              x-on:click="await removeVote(selectedEligible)"
                                         >
@@ -221,8 +221,8 @@
                                         </template>
                                         <template x-for="filteredEligible in filteredEligibles">
                                         <div class="box entry-card" 
-                                             style="`cursor: pointer; position: relative; padding: 0; overflow: hidden; 
-                                             background: #2d3853};`"
+                                             style="cursor: pointer; position: relative; padding: 0; overflow: hidden; 
+                                                background: #2d3853;"
                                              :key="filteredEligible.id"
                                              x-on:click="await addVote(filteredEligible)"
                                         >
@@ -256,26 +256,26 @@
                             </div>
                             
                             <!-- Selections Sidebar -->
-                            {{-- <div class="column is-2-widescreen is-12 selection-column">
+                            <div class="column is-2-widescreen is-12 selection-column">
                                 <div class="panel">
                                     <p class="panel-heading">My Selections</p>
                                     <div class="panel-block">
-                                        <p class="has-text-dark">
-                                            {{ count($selections[$selectedCategoryId] ?? []) }} / 5 selected
+                                        <p class="has-text-dark" 
+                                            x-text="((Object.keys(selections[selectedCategoryId]) ?? []).length)+'/ 5 selected'">
                                         </p>
                                     </div>
-                                    @if(!empty($selections[$selectedCategoryId]))
-                                        @foreach($selections[$selectedCategoryId] as $selection)
+                                    <template x-if="(Object.keys([selectedCategoryId]) ?? []).length > 0">
+                                        <template x-for="selection in Object.values(selections[selectedCategoryId])" :key="selection.id">
                                             <a class="panel-block has-text-dark" 
-                                               wire:click="removeVote({{ $selection['id'] }})"
+                                               x-on:click="removeVote(selection)"
                                                style="cursor: pointer;">
                                                 <span class="delete"></span>
-                                                {{ $selection['name'] }}
+                                                <span x-text="selection.entry.name"></span>
                                             </a>
-                                        @endforeach
-                                    @endif
+                                        </template>
+                                    </template>
                                 </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </template>
                     <template x-if="!selectedCategoryId">
@@ -283,7 +283,7 @@
                             <template x-if="categories[selectedGroup]?.length == 0">
                                 <p>No categories available for voting at this time.</p>
                             </template>
-                            <template x-if="categories[selectedGroup]?.length > 0)">
+                            <template x-if="categories[selectedGroup]?.length > 0">
                                 <p>Please select a category to begin voting.</p>
                             </template>
                         </div>
