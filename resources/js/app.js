@@ -6,5 +6,14 @@ window.Alpine = Alpine
  
 Alpine.plugin(sort)
 
-// Don't start Alpine - let Livewire handle it completely
-// Livewire 3 will automatically start Alpine when it initializes
+// Wait for DOM to be ready, then start Alpine
+if (typeof window.Livewire === 'undefined') {
+   
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            Alpine.start();
+        });
+    } else {
+        Alpine.start();
+    }
+}
