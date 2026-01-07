@@ -26,10 +26,10 @@ class NominationVoting extends Component
     public function groups()
     {
         return [
-            ['slug' => 'main', 'text' => 'Main Awards'],
             ['slug' => 'genre', 'text' => 'Genre Awards'],
             ['slug' => 'production', 'text' => 'Production Awards'],
             ['slug' => 'character', 'text' => 'Character Awards'],
+            ['slug' => 'main', 'text' => 'Main Awards'],
         ];
     }
 
@@ -38,6 +38,7 @@ class NominationVoting extends Component
     {
         return Category::where('year', app('current-year'))
             ->has('eligibles')
+            ->orderBy('order')
             ->get()
             ->groupBy('type');
     }
