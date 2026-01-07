@@ -111,50 +111,90 @@ class ImportAnimethemes extends Command
   }';
 
     // Only useful for the 2025 year, check the eligible entries
-    public const ONE_PIECE_QUERY = 'query ONEPIECE {
-  animePagination(name: "One Piece", sort:SLUG){
-    data{
-      animethemes{
+    public const ONE_PIECE_QUERY = 'query ONEPIECE ($page: Int, $year: Int) {
+  animePagination(name: "One Piece", year: $year, page: $page) {
+    paginationInfo {
+      currentPage
+      count
+      total
+      lastPage
+      hasMorePages
+    }
+    data {
+      resources (site:ANILIST) {
+        nodes {
+        		link
+        	}
+        }
+      name
+      mediaFormat
+      season
+      year
+      animethemes {
         slug
-        song{
+        song {
           id
           title
         }
         animethemeentries{
+          id
+          version
           videos{
             nodes{
-              path
+              link
             }
           }
         }
       }
     }
+    paginationInfo {
+      hasMorePages
+    }
   }
-}
-}';
+  }';
 
     // Check if there are eligible Detective Conan entries
-    public const DETECTIVE_CONAN_QUERY = 'query DETECTIVECONAN {
-  animePagination(name: "Detective Conan", sort:SLUG){
-    data{
-      animethemes{
+    public const DETECTIVE_CONAN_QUERY = 'query DETECTIVECONAN ($page: Int, $year: Int) {
+  animePagination(name: "Detective Conan", year: $year, page: $page){
+    paginationInfo {
+      currentPage
+      count
+      total
+      lastPage
+      hasMorePages
+    }
+    data {
+      resources (site:ANILIST) {
+        nodes {
+        		link
+        	}
+        }
+      name
+      mediaFormat
+      season
+      year
+      animethemes {
         slug
-        song{
+        song {
           id
           title
         }
         animethemeentries{
+          id
+          version
           videos{
             nodes{
-              path
+              link
             }
           }
         }
       }
     }
+    paginationInfo {
+      hasMorePages
+    }
   }
-}
-}';
+  }';
 
     /**
      * Execute the console command.
@@ -171,6 +211,11 @@ class ImportAnimethemes extends Command
         $this->themesLoop($year, $year, ImportAnimethemes::CURRENT_YEAR_QUERY);
 
         $this->themesLoop($year, $prioryear, ImportAnimethemes::PREVIOUS_FALL_QUERY);
+
+        // Only really needed for 2025 year
+        $this->themesLoop($year, 1999, ImportAnimethemes::ONE_PIECE_QUERY); //1999 is One Piece's year
+
+        $this->themesLoop($year, 1996, ImportAnimethemes::DETECTIVE_CONAN_QUERY); //1996 is Detective Conan's year
     }
 
     private function themesLoop($year, $query_year, $query)
