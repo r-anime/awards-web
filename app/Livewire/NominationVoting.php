@@ -156,7 +156,8 @@ class NominationVoting extends Component
         })
             ->where('category_id', $categoryId)
             ->where('active', true)
-            ->select('id', 'category_id', 'entry_id');
+            ->select('id', 'category_id', 'entry_id')
+            ->with('entry.parent.grandparents');
 
         if ($limit > 0) {
             $query = $query->limit($limit);

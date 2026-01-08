@@ -26,6 +26,21 @@ class Entry extends Model
     }
     
     public function parent(){
-        return $this->hasOne(Entry::class, 'id', 'parent_id');
+        return $this->hasOne(self::class, 'id', 'parent_id');
+    }
+
+    public function grandparents()
+    {
+        return $this->parent()->with('grandparents');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
+    public function grandchildren()
+    {
+        return $this->children()->with('grandchildren');
     }
 }

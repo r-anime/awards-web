@@ -208,9 +208,9 @@ class ImportAnimethemes extends Command
         $this->info("Import themes according to year {$year}");
         // $this->getAnimeThemes($year);
 
-        $this->themesLoop($year, $year, ImportAnimethemes::CURRENT_YEAR_QUERY);
+        // $this->themesLoop($year, $year, ImportAnimethemes::CURRENT_YEAR_QUERY);
 
-        $this->themesLoop($year, $prioryear, ImportAnimethemes::PREVIOUS_FALL_QUERY);
+        //$this->themesLoop($year, $prioryear, ImportAnimethemes::PREVIOUS_FALL_QUERY);
 
         // Only really needed for 2025 year
         $this->themesLoop($year, 1999, ImportAnimethemes::ONE_PIECE_QUERY); //1999 is One Piece's year

@@ -149,6 +149,9 @@
                                         const searchKey = this.search?.toLowerCase();
                                         const searchedEligibles = [];
                                         eligibles.forEach(eligible => {
+                                            if (searchedEligibles.length >= 25) {
+                                                return;
+                                            }
                                             if(selections[selectedCategoryId]?.[eligible.id]) {
                                                 
                                             } else {
@@ -228,7 +231,7 @@
                                             <template x-if="filteredEligible.entry.image">
                                                 <figure class="image" style="margin: 0;">
                                                     <img x-bind:src="'/storage/'+filteredEligible.entry.image"
-                                                         alt="eligible.entry.name"
+                                                         x-bind:alt="filteredEligible.entry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
@@ -236,6 +239,18 @@
                                                 <p class="has-text-white" 
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
                                                     x-text="filteredEligible.entry.name"
+                                                >
+                                                </p>
+                                                <p class="has-text-white" 
+                                                    x-if="filteredEligible.entry.parent"
+                                                    style="font-size: 0.9rem; word-wrap: break-word;"
+                                                    x-text="'(' + filteredEligible.entry.parent.name + ')'"
+                                                >
+                                                </p>
+                                                <p class="has-text-white" 
+                                                    x-if="filteredEligible.entry.parent.grandparents"
+                                                    style="font-size: 0.9rem; word-wrap: break-word;"
+                                                    x-text="'from ' + filteredEligible.entry.parent.grandparents.name"
                                                 >
                                                 </p>
                                             </div>
@@ -255,20 +270,20 @@
                             
                             <!-- Selections Sidebar -->
                             <div class="column is-2-widescreen is-12 selection-column">
-                                <div class="panel">
+                                <div class="panel is-primary has-background-dark">
                                     <p class="panel-heading">My Selections</p>
                                     <div class="panel-block">
-                                        <p class="has-text-dark" 
+                                        <p class="has-text-light" 
                                             x-text="(Object.keys(selections[selectedCategoryId] ?? {}).length)+'/ 5 selected'">
                                         </p>
                                     </div>
                                     <template x-if="Object.keys(selections[selectedCategoryId] ?? {}).length > 0">
                                         <template x-for="selection in Object.values(selections[selectedCategoryId])" :key="selection.id">
-                                            <a class="panel-block has-text-dark" 
+                                            <a class="panel-block has-text-light" 
                                                x-on:click="removeVote(selection)"
                                                style="cursor: pointer;">
                                                 <span class="delete"></span>
-                                                <span x-text="selection.entry.name"></span>
+                                                <span class="ml-2" x-text="selection.entry.name"></span>
                                             </a>
                                         </template>
                                     </template>
