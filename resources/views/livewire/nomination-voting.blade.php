@@ -50,9 +50,15 @@
                         const data = {{ Js::from($this->selections) }};
                         Object.keys(data).forEach(categoryId => {
                             Object.keys(data[categoryId]).forEach(eligibleId => {
-                                this.addSelection(data[categoryId][eligibleId]);
+                                this.initialAddSelection(data[categoryId][eligibleId]);
                             });
                         });
+                    },
+                    initialAddSelection(eligible) {
+                        if(!this.selections[eligible.category_id]) {
+                            this.selections[eligible.category_id] = {};
+                        }
+                        this.selections[eligible.category_id][eligible.cat_entry_id] = eligible;
                     },
                     addSelection(eligible) {
                         if(!this.selections[eligible.category_id]) {
@@ -184,11 +190,17 @@
 
                                         const limit = {{ Js::from($this->displayLimit) }};
 
-                                        for(let i=0; i<this.categoryEligibles.length && (searchedEligibles.length<limit+this.selectedEligibles.length); i++) {
+                                        // console.log('selections[selectedCategory.id]:', selections[selectedCategory.id]);
+
+                                        for(let i=0; i<this.categoryEligibles.length; i++) {
+                                            if (searchedEligibles.length>=limit+this.selectedEligibles.length){
+                                                break;
+                                            }
                                             const eligible = this.categoryEligibles[i];
+                                            // console.log('eligible:', eligible);
                                             if(selections[selectedCategory.id]?.[eligible.id]) {
                                                 continue;
-                                            } 
+                                            }
                                             if(!searchKey) {
                                                 searchedEligibles.push(eligible);    
                                                 continue;
