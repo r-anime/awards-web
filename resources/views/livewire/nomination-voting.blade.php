@@ -53,6 +53,9 @@
                         this.selections[eligible.category_id][eligible.id] = eligible;
                     },
                     removeSelection(eligible) {
+                        if (!this.selections) {
+                            return;
+                        }
                         if (!this.selections[eligible.category_id]) {
                             return;
                         }
