@@ -74,8 +74,8 @@
                             return;
                         }
 
-                        console.log('this.selections[eligible.category_id]:', this.selections[eligible.category_id]);
-                        console.log('eligible:', eligible);
+                        // console.log('this.selections[eligible.category_id]:', this.selections[eligible.category_id]);
+                        // console.log('eligible:', eligible);
 
                         delete this.selections[eligible.category_id][eligible.entry_id];
                         if(this.selections[eligible.category_id] && Object.keys(this.selections[eligible.category_id]).length == 0) {
@@ -201,7 +201,7 @@
                                                 break;
                                             }
                                             const eligible = this.categoryEligibles[i];
-                                            console.log('eligible:', eligible);
+                                            // console.log('eligible:', eligible);
 
                                             if(selections[selectedCategory.id]?.[eligible.entry_id]) {
                                                 continue;
