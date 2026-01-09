@@ -60,7 +60,7 @@ class NominationVoting extends Component
     // TODO: Add Cache before going live
     public function fetchEntriesByType($entryType)
     {
-        return Entry::select('id', 'name', 'image', 'parent_id')
+        return Entry::select('id', 'name', 'image', 'parent_id', 'theme_version')
         ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
             $query->where('entry_type', $entryType);
         })->get();

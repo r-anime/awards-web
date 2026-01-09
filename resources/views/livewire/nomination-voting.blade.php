@@ -242,6 +242,13 @@
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
+                                            <template x-if="!selectedEntry.image && parent.image">
+                                                <figure class="image" style="margin: 0;">
+                                                    <img x-bind:src="'/storage/'+parent.image"
+                                                         x-bind:alt="parent.name"
+                                                         style="width: 100%; height: 200px; object-fit: cover;">
+                                                </figure>
+                                            </template>
                                             <div class="p-3" style="background: rgba(0,0,0,0.7);">
                                                 <p class="has-text-white" 
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
@@ -252,6 +259,12 @@
                                                     x-show="parent"
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
                                                     x-text="'(' + parent?.name + ')'"
+                                                >
+                                                </p>
+                                                <p class="has-text-white" 
+                                                    x-show="selectedEntry.theme_version"
+                                                    style="font-size: 0.9rem; word-wrap: break-word;"
+                                                    x-text="selectedEntry.theme_version"
                                                 >
                                                 </p>
                                                 <p class="has-text-white" 
@@ -283,6 +296,13 @@
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
+                                            <template x-if="!filteredEntry.image && parent.image">
+                                                <figure class="image" style="margin: 0;">
+                                                    <img x-bind:src="'/storage/'+parent.image"
+                                                         x-bind:alt="parent.name"
+                                                         style="width: 100%; height: 200px; object-fit: cover;">
+                                                </figure>
+                                            </template>
                                             <div class="p-3" style="background: rgba(0,0,0,0.7);">
                                                 <p class="has-text-white" 
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
@@ -293,6 +313,11 @@
                                                     x-show="parent"
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
                                                     x-text="'(' + parent?.name + ')'"
+                                                >
+                                                <p class="has-text-white" 
+                                                    x-show="filteredEntry.theme_version"
+                                                    style="font-size: 0.9rem; word-wrap: break-word;"
+                                                    x-text="filteredEntry.theme_version"
                                                 >
                                                 </p>
                                                 <p class="has-text-white" 
