@@ -224,7 +224,7 @@
                                             }
                                             if(entries[eligible.entry_id].parent_id && entries[entries[eligible.entry_id].parent_id]){
                                                 var parent = entries[eligible.entry_id].parent_id;
-                                                console.log(parent);
+                                                // console.log(parent);
                                                 if(entries[parent].searchable_string?.toLowerCase().includes(searchKey)) {
                                                     searchedEligibles.push(eligible);
                                                     continue;
@@ -273,7 +273,13 @@
                                              :key="selectedEligible.id"
                                              x-data="{
                                                 get selectedEntry() {return entries[selectedEligible.entry_id];},
-                                                get parent() {return this.selectedEntry.parent_id? entries[this.selectedEntry.parent_id] : null},
+                                                get parent() {
+                                                    if (this.selectedEntry.parent) {
+                                                        return this.selectedEntry.parent;
+                                                    } else {
+                                                        return this.selectedEntry.parent_id? entries[this.selectedEntry.parent_id] : null;
+                                                    }
+                                                },
                                                 get grandparent() {return this.parent?.parent_id? entries[this.parent.parent_id] : null},
                                             }"
                                              x-on:click="await removeVote(selectedEligible)"
@@ -328,7 +334,13 @@
                                              :key="filteredEligible.id"
                                              x-data="{ 
                                                 get filteredEntry() {return entries[filteredEligible.entry_id]},
-                                                get parent() {return this.filteredEntry.parent_id? entries[this.filteredEntry.parent_id] : null},
+                                                get parent() {
+                                                    if (this.filteredEntry.parent) {
+                                                        return this.filteredEntry.parent;
+                                                    } else {
+                                                        return this.filteredEntry.parent_id? entries[this.filteredEntry.parent_id] : null;
+                                                    }
+                                                },
                                                 get grandparent() {return this.parent?.parent_id? entries[this.parent.parent_id] : null},
                                              }"
                                              x-on:click="await addVote(filteredEligible)"

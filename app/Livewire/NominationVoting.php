@@ -62,11 +62,17 @@ class NominationVoting extends Component
     {
         return Entry::select('id', 'name', 'image', 'parent_id', 'theme_version')
         ->with('item_names')
+        ->with('parent')
         ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
             $query->where('entry_type', $entryType);
         })
         ->get()->map(function ($entry) {
             $entry->searchable_string = $entry->name . ' ' . $entry->item_names->pluck('name')->implode(' ');
+
+            if ($entry->parent) {
+                $entry->searchable_string .= ' ' . $entry->parent->name . ' ' . $entry->parent->item_names->pluck('name')->implode(' ');
+            }
+
             return $entry;
         });
     }
