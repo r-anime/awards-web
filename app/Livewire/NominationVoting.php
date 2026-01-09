@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
-use Illuminate\Support\Facades\Cache;
 
 #[Layout('components.layouts.app')]
 class NominationVoting extends Component
@@ -61,22 +60,20 @@ class NominationVoting extends Component
     // TODO: Add Cache before going live
     public function fetchEntriesByType($entryType)
     {
-        return Cache::remember('entries_'.$entryType, 3600, function () use ($entryType) {
-            return Entry::select('id', 'name', 'image', 'parent_id', 'theme_version')
-            ->with('item_names')
-            ->with('parent')
-            ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
-                $query->where('entry_type', $entryType);
-            })
-            ->get()->map(function ($entry) {
-                $entry->searchable_string = $entry->name . ' ' . $entry->item_names->pluck('name')->implode(' ');
+        return Entry::select('id', 'name', 'image', 'parent_id', 'theme_version')
+        ->with('item_names')
+        ->with('parent')
+        ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
+            $query->where('entry_type', $entryType);
+        })
+        ->get()->map(function ($entry) {
+            $entry->searchable_string = $entry->name . ' ' . $entry->item_names->pluck('name')->implode(' ');
 
-                if ($entry->parent) {
-                    $entry->searchable_string .= ' ' . $entry->parent->name;
-                }
+            if ($entry->parent) {
+                $entry->searchable_string .= ' ' . $entry->parent->name;
+            }
 
-                return $entry;
-            });
+            return $entry;
         });
     }
 
@@ -96,14 +93,12 @@ class NominationVoting extends Component
             return collect();
         }
 
-        return Cache::remember('category_eligibles_'.$selectedCategoryId, 3600, function () use ($selectedCategoryId) {
-            return CategoryEligible::select('id', 'category_id', 'entry_id')
-            ->where('category_id', $selectedCategoryId)
-            ->where('active', true)
-            ->has('entry')
-            ->inRandomOrder()
-            ->get();
-        });
+        return CategoryEligible::select('id', 'category_id', 'entry_id')
+        ->where('category_id', $selectedCategoryId)
+        ->where('active', true)
+        ->has('entry')
+        ->inRandomOrder()
+        ->get();
     }
 
     #[Computed]
