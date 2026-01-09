@@ -106,6 +106,10 @@
                             $watch('selectedGroup', group => selectedCategory = categories[group]?.[0]?? null);
                         "
                     >
+                        <input type="checkbox" id="sidebar-hide-toggle" class="sidebar-hide-checkbox">
+                        <label for="sidebar-hide-toggle" class="sidebar-show-button">
+                            <span>>></span>
+                        </label>
                         <div class="mobile-select has-background-dark">
                             <progress class="progress is-tiny is-primary mb-3" 
                                 x-data="{ 
@@ -133,6 +137,9 @@
                                     </a>
                                 </template>
                             </div>
+                            <label for="sidebar-hide-toggle" class="sidebar-hide-button">
+                                <span class="sidebar-hide-text"><<</span>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -774,6 +781,12 @@
         }
         
         @media (min-width: 1216px) {
+            .sidebar-hide-checkbox {
+                position: absolute;
+                opacity: 0;
+                pointer-events: none;
+            }
+            
             .mobile-select {
                 position: fixed;
                 top: 8px;
@@ -781,11 +794,15 @@
                 height: calc(100vh - 8px);
                 padding: 0;
                 padding-top: 20px;
+                padding-bottom: 0;
                 width: 220px;
                 overflow-x: hidden;
                 overflow-y: auto;
                 z-index: 9999;
                 margin-top: 0;
+                transition: transform 0.3s ease;
+                display: flex;
+                flex-direction: column;
             }
             
             .mobile-select:before,
@@ -795,6 +812,11 @@
             
             .progress.is-tiny {
                 height: 8px;
+            }
+            
+            .mobile-select-container {
+                flex: 1;
+                overflow-y: auto;
             }
             
             .sidebar-item {
@@ -820,9 +842,68 @@
             .sidebar-item.voted {
                 color: #00D1B2;
             }
+            
+            .sidebar-hide-button {
+                position: sticky;
+                bottom: 0;
+                display: block;
+                width: 100%;
+                padding: 10px 20px;
+                margin-top: auto;
+                background: rgba(87,150,255, 0.2);
+                color: #B7B7B7;
+                text-align: center;
+                cursor: pointer;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                transition: background 0.2s;
+                font-size: 12px;
+            }
+            
+            .sidebar-hide-button:hover {
+                background: rgba(87,150,255, 0.3);
+            }
+            
+            .sidebar-hide-text {
+                display: inline-block;
+            }
+            
+            .sidebar-hide-checkbox:checked ~ .mobile-select {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar-show-button {
+                position: fixed;
+                top: 50%;
+                left: 0;
+                transform: translateY(-50%) translateX(-100%);
+                z-index: 10000;
+                padding: 8px 12px;
+                background: rgba(87,150,255, 0.3);
+                color: #B7B7B7;
+                cursor: pointer;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-left: none;
+                font-size: 11px;
+                transition: transform 0.3s ease, background 0.2s;
+            }
+            
+            .sidebar-show-button:hover {
+                background: rgba(87,150,255, 0.5);
+            }
+            
+            .sidebar-hide-checkbox:checked ~ .sidebar-show-button {
+                transform: translateY(-50%) translateX(0);
+            }
         }
         
         @media (max-width: 1215.999px) {
+            .sidebar-hide-button,
+            .sidebar-show-button {
+                display: none !important;
+            }
+            
             .selection-column {
                 position: fixed;
                 top: 9999px;
