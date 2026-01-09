@@ -188,7 +188,9 @@
                                                 continue;
                                             }
                                             if(entries[eligible.entry_id].parent_id && entries[entries[eligible.entry_id].parent_id].name){
-                                                if(entries[entries[eligible.entry_id].parent_id].name.toLowerCase().includes(searchKey)) {
+                                                var parent = entries[eligible.entry_id].parent_id;
+                                                console.log(parent);
+                                                if(entries[parent].name.toLowerCase().includes(searchKey)) {
                                                     searchedEligibles.push(eligible);
                                                     continue;
                                                 }
