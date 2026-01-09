@@ -58,13 +58,13 @@
                         if(!this.selections[eligible.category_id]) {
                             this.selections[eligible.category_id] = {};
                         }
-                        this.selections[eligible.category_id][eligible.cat_entry_id] = eligible;
+                        this.selections[eligible.category_id][eligible.entry_id] = eligible;
                     },
                     addSelection(eligible) {
                         if(!this.selections[eligible.category_id]) {
                             this.selections[eligible.category_id] = {};
                         }
-                        this.selections[eligible.category_id][eligible.cat_entry_id] = eligible;
+                        this.selections[eligible.category_id][eligible.entry_id] = eligible;
                     },
                     removeSelection(eligible) {
                         if (!this.selections) {
@@ -73,13 +73,11 @@
                         if (!this.selections[eligible.category_id]) {
                             return;
                         }
-                        // console.log('eligible:', eligible);
-                        // console.log('this.selections[eligible.category_id]:', this.selections[eligible.category_id]);
-                        if (eligible.cat_entry_id) {
-                            delete this.selections[eligible.category_id][eligible.cat_entry_id];
-                        } else {
-                            delete this.selections[eligible.category_id][eligible.id];
-                        }
+
+                        console.log('this.selections[eligible.category_id]:', this.selections[eligible.category_id]);
+                        console.log('eligible:', eligible);
+
+                        delete this.selections[eligible.category_id][eligible.entry_id];
                         if(this.selections[eligible.category_id] && Object.keys(this.selections[eligible.category_id]).length == 0) {
                             delete this.selections[eligible.category_id];
                         }
@@ -203,8 +201,9 @@
                                                 break;
                                             }
                                             const eligible = this.categoryEligibles[i];
-                                            // console.log('eligible:', eligible);
-                                            if(selections[selectedCategory.id]?.[eligible.id]) {
+                                            console.log('eligible:', eligible);
+
+                                            if(selections[selectedCategory.id]?.[eligible.entry_id]) {
                                                 continue;
                                             }
                                             if(!searchKey) {
