@@ -149,8 +149,8 @@ class User extends Authenticatable implements FilamentUser, HasName
         }
 
         try {
-            // Queue the webhook to avoid impacting request lifecycle
-            SendAuditWebhook::dispatch($webhookUrl, ['embeds' => [$embed]])->onQueue('default');
+            // Send webhook immediately
+            SendAuditWebhook::dispatchSync($webhookUrl, ['embeds' => [$embed]]);
         } catch (\Throwable $e) {
             // Intentionally ignore webhook errors to avoid impacting UX
         }
