@@ -53,7 +53,10 @@
                         this.selections[eligible.category_id][eligible.id] = eligible;
                     },
                     removeSelection(eligible) {
-                        delete this.selections[eligible.category_id]?.[eligible.id];
+                        if (!this.selections[eligible.category_id]) {
+                            return;
+                        }
+                        delete this.selections[eligible.category_id][eligible.id];
                         if(this.selections[eligible.category_id] && Object.keys(selections[eligible.category_id]).length == 0) {
                             delete this.selections[eligible.category_id];
                         }
@@ -126,6 +129,7 @@
                                     }
                                 } catch (error) {
                                     this.error = error.message;
+                                    console.error(error);
                                 }
                             },
                             async addVote(eligible) {
