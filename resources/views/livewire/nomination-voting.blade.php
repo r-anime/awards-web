@@ -75,7 +75,7 @@
                         }
                         console.log('eligible:', eligible);
                         console.log('this.selections[eligible.category_id]:', this.selections[eligible.category_id]);
-                        delete this.selections[eligible.category_id][eligible.cat_entry_id];
+                        delete this.selections[eligible.category_id][eligible.id];
                         if(this.selections[eligible.category_id] && Object.keys(this.selections[eligible.category_id]).length == 0) {
                             delete this.selections[eligible.category_id];
                         }
