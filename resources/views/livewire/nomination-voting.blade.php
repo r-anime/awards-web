@@ -45,7 +45,15 @@
             {{-- Separating selections from static data --}}
             <div
                 x-data="{
-                    selections: {{ Js::from($this->selections) }},
+                    selections: {},
+                    init() {
+                        const data = {{ Js::from($this->selections) }};
+                        Object.keys(data).forEach(categoryId => {
+                            Object.keys(data[categoryId]).forEach(eligibleId => {
+                                this.addSelection(data[categoryId][eligibleId]);
+                            });
+                        });
+                    },
                     addSelection(eligible) {
                         if(!this.selections[eligible.category_id]) {
                             this.selections[eligible.category_id] = {};
@@ -60,7 +68,7 @@
                             return;
                         }
                         delete this.selections[eligible.category_id][eligible.id];
-                        if(this.selections[eligible.category_id] && Object.keys(selections[eligible.category_id]).length == 0) {
+                        if(this.selections[eligible.category_id] && Object.keys(this.selections[eligible.category_id]).length == 0) {
                             delete this.selections[eligible.category_id];
                         }
                     },
@@ -359,11 +367,11 @@
                                     <p class="panel-heading">My Selections</p>
                                     <div class="panel-block">
                                         <p class="has-text-light" 
-                                            x-text="(Object.keys(selections[selectedCategory.id] ?? {}).length)+'/ 5 selected'">
+                                            x-text="(Object.keys(selections[selectedCategory?.id] ?? {}).length)+'/ 5 selected'">
                                         </p>
                                     </div>
-                                    <template x-if="Object.keys(selections[selectedCategory.id] ?? {}).length > 0">
-                                        <template x-for="selection in Object.values(selections[selectedCategory.id])" :key="selection.id">
+                                    <template x-if="Object.keys(selections[selectedCategory?.id] ?? {}).length > 0">
+                                        <template x-for="selection in Object.values(selections[selectedCategory.id]??{})" :key="selection.id">
                                             <a class="panel-block has-text-light" 
                                                x-on:click="removeVote(selection)"
                                                style="cursor: pointer;">
