@@ -169,7 +169,7 @@
 
                                         const limit = {{ Js::from($this->displayLimit) }};
 
-                                        for(let i=0; i<this.categoryEligibles.length && (searchedEligibles.length<=limit+this.selectedEligibles.length); i++) {
+                                        for(let i=0; i<this.categoryEligibles.length && (searchedEligibles.length<limit+this.selectedEligibles.length); i++) {
                                             const eligible = this.categoryEligibles[i];
                                             if(selections[selectedCategory.id]?.[eligible.id]) {
                                                 continue;
@@ -232,7 +232,7 @@
                                         >
                                             <template x-if="selectedEntry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    <img x-bind:src="'/storage'+selectedEntry.image" 
+                                                    <img x-bind:src="'/storage/'+selectedEntry.image" 
                                                     {{-- <img src="/storage/entry/anilist-174596.jpg" --}}
                                                          x-bind:alt="selectedEntry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">

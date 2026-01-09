@@ -16,7 +16,7 @@ class NominationVoting extends Component
 {
     public $loaded = false;
 
-    public $displayLimit = 25;
+    public $displayLimit = 30;
 
     public function mount()
     {
