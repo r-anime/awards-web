@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\CategoryEligible;
 use App\Models\Entry;
 use App\Models\NomineeVote;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -16,6 +15,8 @@ use Livewire\Component;
 class NominationVoting extends Component
 {
     public $loaded = false;
+
+    public $displayLimit = 25;
 
     public function mount()
     {
@@ -47,7 +48,7 @@ class NominationVoting extends Component
     public function selections()
     {
         $votes = NomineeVote::where('user_id', $this->user->id)
-            ->with('entry')
+            // ->with('entry')
             ->get();
 
         return $votes->groupBy('category_id')
@@ -56,6 +57,24 @@ class NominationVoting extends Component
             });
     }
 
+    // TODO: Add Cache before going live
+    public function fetchEntriesByType($entryType)
+    {
+        return Entry::select('id', 'name', 'image', 'parent_id')
+        ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
+            $query->where('entry_type', $entryType);
+        })->get();
+    }
+
+    // Unused so far
+    public function fetchEntriesByIds($ids)
+    {
+        return Entry::select('id', 'name', 'image')
+        ->whereIn('id', $ids)
+        ->get();
+    }
+    
+    // TODO: Add Cache before going live
     public function fetchEligibles($selectedCategoryId)
     {
         // Set items as empty collection if category not present
@@ -63,15 +82,11 @@ class NominationVoting extends Component
             return collect();
         }
 
-        // TODO: Change query to search for character categories
-        // Set limit to 50 if category type is character
-        // $limit = 0;
-        // if($this->selectedCategory['type'] == 'character') {
-        //     $limit = 50;
-        // }
-
-        // TODO: Implement cache
-        return $this->getEligiblesByCategory($selectedCategoryId);
+        return CategoryEligible::select('id', 'category_id', 'entry_id')
+        ->where('category_id', $selectedCategoryId)
+        ->where('active', true)
+        ->has('entry')
+        ->get();
     }
 
     #[Computed]
@@ -147,28 +162,6 @@ class NominationVoting extends Component
 
         return response()->json(['success' => 'Vote deleted']);
 
-    }
-
-    private function getEligiblesByCategory(int $categoryId, int $limit = 0): Collection
-    {
-        $query = CategoryEligible::withWhereHas('entry', function ($query) {
-            $query->select('id', 'name', 'image');
-        })
-            ->where('category_id', $categoryId)
-            ->where('active', true)
-            ->select('id', 'category_id', 'entry_id')
-            ->with('entry.parent.grandparents');
-
-        if ($limit > 0) {
-            $query = $query->limit($limit);
-        }
-
-        return $query->get();
-    }
-
-    private function getEntryById(int $entryId): Entry
-    {
-        return Entry::find($entryId);
     }
 
     public function render()
