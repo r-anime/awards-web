@@ -34,6 +34,17 @@
                         $currentApplication = \App\Models\Application::where('start_time', '<=', now())
                             ->where('end_time', '>=', now())
                             ->first();
+
+                        $nominationVotingStart = \App\Models\Option::get('nomination_voting_start_date');
+                        $nominationVotingEnd = \App\Models\Option::get('nomination_voting_end_date');
+                        $now = now();
+
+                        $isNominationVotingOpen = $nominationVotingStart && $nominationVotingEnd
+                            ? $now->between(
+                                \Carbon\Carbon::parse($nominationVotingStart),
+                                \Carbon\Carbon::parse($nominationVotingEnd)
+                            )
+                            : false;
                     @endphp
 
                     @if($currentApplication)
@@ -47,7 +58,19 @@
                         <a href="/participate/application" class="button is-primary is-medium">
                             <span>Apply Now</span>
                         </a>
-                        @endif
+                    @endif
+
+                    @if($isNominationVotingOpen)
+                        <h2 class="has-text-white is-3 mt-4">
+                            Nomination voting is open
+                        </h2>
+                        <p class="subtitle is-4 has-text-white">
+                            Submit your nominations for the best of the year!
+                        </p>
+                        <a href="/participate/nominate" class="button is-primary is-medium">
+                            <span>Nominate</span>
+                        </a>
+                    @endif
                         
                 </div>
             </div>
