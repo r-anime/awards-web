@@ -187,8 +187,8 @@
                                                 searchedEligibles.push(eligible);
                                                 continue;
                                             }
-                                            if(entries[eligible.entry_id].parent_id){
-                                                if(entries[entries[eligible.entry_id].parent_id].name?.toLowerCase().includes(searchKey)) {
+                                            if(entries[eligible.entry_id].parent_id && entries[entries[eligible.entry_id].parent_id].name){
+                                                if(entries[entries[eligible.entry_id].parent_id].name.toLowerCase().includes(searchKey)) {
                                                     searchedEligibles.push(eligible);
                                                     continue;
                                                 }
