@@ -224,7 +224,7 @@
                                                 background: #00d1b2;"
                                              :key="selectedEligible.id"
                                              x-data="{
-                                                get selectedEntry() {return entries[selectedEligible.entry_id];} 
+                                                get selectedEntry() {return entries[selectedEligible.entry_id];},
                                                 get parent() {return this.selectedEntry.parent_id? entries[this.selectedEntry.parent_id] : null},
                                                 get grandparent() {return this.parent?.parent_id? entries[this.parent.parent_id] : null},
                                             }"
@@ -232,8 +232,8 @@
                                         >
                                             <template x-if="selectedEntry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    {{-- <img x-bind:src="'/storage'+selectedEntry.image" --}}
-                                                    <img src="/storage/entry/anilist-174596.jpg"
+                                                    <img x-bind:src="'/storage'+selectedEntry.image" 
+                                                    {{-- <img src="/storage/entry/anilist-174596.jpg" --}}
                                                          x-bind:alt="selectedEntry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
@@ -274,7 +274,7 @@
                                         >
                                             <template x-if="filteredEntry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    <img x-bind:src="'/storage'+filteredEntry.image"
+                                                    <img x-bind:src="'/storage/'+filteredEntry.image"
                                                          x-bind:alt="filteredEntry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
