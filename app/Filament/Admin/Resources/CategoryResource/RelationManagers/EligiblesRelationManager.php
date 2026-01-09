@@ -98,6 +98,7 @@ class EligiblesRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('eligible')
+            ->defaultSort('active', 'desc')
             ->columns([
                 TextColumn::make('entry_id')
                     ->numeric()
