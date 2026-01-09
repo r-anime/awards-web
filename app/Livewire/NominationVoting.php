@@ -64,7 +64,8 @@ class NominationVoting extends Component
         ->with('item_names')
         ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
             $query->where('entry_type', $entryType);
-        })->get()->map(function ($entry) {
+        })
+        ->get()->map(function ($entry) {
             $entry->searchable_string = $entry->name . ' ' . $entry->item_names->pluck('name')->implode(' ');
             return $entry;
         });
@@ -90,6 +91,7 @@ class NominationVoting extends Component
         ->where('category_id', $selectedCategoryId)
         ->where('active', true)
         ->has('entry')
+        ->inRandomOrder()
         ->get();
     }
 
