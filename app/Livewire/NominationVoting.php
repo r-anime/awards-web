@@ -70,7 +70,7 @@ class NominationVoting extends Component
             $entry->searchable_string = $entry->name . ' ' . $entry->item_names->pluck('name')->implode(' ');
 
             if ($entry->parent) {
-                $entry->searchable_string .= ' ' . $entry->parent->name . ' ' . $entry->parent->item_names->pluck('name')->implode(' ');
+                $entry->searchable_string .= ' ' . $entry->parent->name;
             }
 
             return $entry;
