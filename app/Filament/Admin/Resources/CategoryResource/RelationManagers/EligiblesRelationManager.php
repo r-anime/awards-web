@@ -107,6 +107,12 @@ class EligiblesRelationManager extends RelationManager
                 TextColumn::make('entry.name')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('entry.parent.name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('entry.parent.grandparents.name')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('entry.type')
                     ->toggleable(isToggledHiddenByDefault: true),
                 ToggleColumn::make('active'),
