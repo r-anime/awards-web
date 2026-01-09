@@ -2,27 +2,69 @@
         @if($loaded)
             <div class="voting-page-content-container" 
             x-data="{selectedGroup: 'genre',
-                selectedCategoryId: '',
+                selectedCategory: null,
+                groups: {{ Js::from($this->groups) }},
                 categories: {{ Js::from($this->categories) }},
-                selections: {{ Js::from($this->selections) }},
-                addSelection(eligible) {
-                    if(!this.selections[eligible.category_id]) {
-                        this.selections[eligible.category_id] = {};
-                    }
-                    this.selections[eligible.category_id][eligible.id] = eligible;
+                entries: {},
+                eligibles: {},
+                loadedEntries: {
+                    'anime' : false,
+                    'theme' : false,
+                    'char'  : false,
+                    'va'    : false
                 },
-                removeSelection(eligible) {
-                    delete this.selections[eligible.category_id]?.[eligible.id];
-                    if(this.selections[eligible.category_id] && Object.keys(selections[eligible.category_id]).length == 0) {
-                        delete this.selections[eligible.category_id];
-                    }
+                loadedEligibles: {}, {{-- Booleans with Category IDs as keys --}}
+                fetchEntries(type) {
+                    {{-- console.time(type + ' fetch'); --}}
+                    $wire.fetchEntriesByType(type).then(data => {
+                        data.forEach(entry => this.entries[entry.id]= entry);
+                        this.loadedEntries[type] = true;
+                        {{-- console.timeEnd(type + ' fetch'); --}}
+                    });
+                },
+                fetchEligibles(categoryId) {
+                    this.loadedEligibles[categoryId] = false;
+                    $wire.fetchEligibles(categoryId).then(data => {
+                        this.eligibles[categoryId] = data;
+                        this.loadedEligibles[categoryId] = true;
+                    });
+
+                },
+                init() {
+                    this.fetchEntries('anime');
+                    this.fetchEntries('theme');
+                    this.fetchEntries('char');
+                    this.fetchEntries('va');
+                    this.groups.forEach(group => {
+                        this.categories[group.slug].forEach(category => {
+                            this.fetchEligibles(category.id);
+                        });
+                    });
                 }
             }">
+            {{-- Separating selections from static data --}}
+            <div
+                x-data="{
+                    selections: {{ Js::from($this->selections) }},
+                    addSelection(eligible) {
+                        if(!this.selections[eligible.category_id]) {
+                            this.selections[eligible.category_id] = {};
+                        }
+                        this.selections[eligible.category_id][eligible.id] = eligible;
+                    },
+                    removeSelection(eligible) {
+                        delete this.selections[eligible.category_id]?.[eligible.id];
+                        if(this.selections[eligible.category_id] && Object.keys(selections[eligible.category_id]).length == 0) {
+                            delete this.selections[eligible.category_id];
+                        }
+                    },
+                }"
+            >
                 <div class="has-text-light">
                     <!-- Category Group Tabs -->
                     <div class="container mt-4">
                         <div class="tabs is-boxed">
-                            <ul x-data="{ groups: {{ Js::from($this->groups) }} }">
+                            <ul>
                                 <template x-for="group in groups" :key="group.slug">
                                     <li :class="selectedGroup == group.slug? 'is-active' : ''">
                                         <a href="#" 
@@ -36,8 +78,8 @@
                     
                     <!-- Category Tabs -->
                     <div class="tab-container container"
-                        x-init="selectedCategoryId = categories[selectedGroup][0].id;
-                            $watch('selectedGroup', group => selectedCategoryId = categories[group]?.[0]?.id ?? null);
+                        x-init="selectedCategory = categories[selectedGroup][0];
+                            $watch('selectedGroup', group => selectedCategory = categories[group]?.[0]?? null);
                         "
                     >
                         <div class="mobile-select has-background-dark">
@@ -59,8 +101,8 @@
                                 <template x-for="category in categories[selectedGroup]" :key="category.id">
                                     <a href="#"
                                         class="sidebar-item"
-                                        :class="selectedCategoryId == category.id? 'current-tab' : ''"
-                                        x-on:click="selectedCategoryId = category.id"
+                                        :class="selectedCategory.id == category.id? 'current-tab' : ''"
+                                        x-on:click="selectedCategory = category"
                                         style="cursor: pointer;"
                                         x-text="category.name"
                                     >
@@ -71,34 +113,12 @@
                     </div>
                 </div>
                 <div class="container mt-4" 
-                    x-data="{ eligibles: [],
-                            loaded: false,
-                            async fetchEligibles(catId) {
-                                if(!catId) {
-                                    this.eligibles = [];
-                                    return;
-                                }
-                                const data = await $wire.fetchEligibles(catId);
-                                const cacheKey = 'eligibles-'+catId;
-                                {{-- sessionStorage.setItem(cacheKey, JSON.stringify(data)); --}}
-                                return data;
-                            },
-                            async loadEligibles(catId) {
-                                this.loaded = false;
-                                const cacheKey = 'eligibles-'+catId;
-                                let data = [];
-                                if(sessionStorage.getItem(cacheKey)) {
-                                    data = JSON.parse(sessionStorage.getItem(cacheKey));
-                                } else {
-                                    data = await this.fetchEligibles(catId);
-                                }
-                                this.loaded = true;
-                                return data;
-                            },
+                    x-data="{ 
+                            get loaded() {return loadedEntries[selectedGroup]},
                             async removeVote(eligible) {
-                                {{-- ! Not sure how to have handled this --}}
+                                {{-- ! Currently causing frontend issues --}}
                                 try{
-                                    response = await $wire.deleteVote(eligible.category_id, eligible.id, eligible.entry.id)
+                                    response = await $wire.deleteVote(eligible.category_id, eligible.id, eligible.entry_id)
                                     if (response && response.original.success) {
                                         removeSelection(eligible);
                                     } else {
@@ -112,9 +132,9 @@
                                 {{-- Ignore if at vote limit --}}
                                 if(Object.keys(selections[eligible.category_id] ?? {}).length >= 5)
                                     return;
-                                {{-- ! Not sure how to have handled this --}}
+                                {{-- ! Currently causing frontend issues --}}
                                 try{
-                                    response = await $wire.createVote(eligible.category_id, eligible.id, eligible.entry.id)
+                                    response = await $wire.createVote(eligible.category_id, eligible.id, eligible.entry_id)
                                     if (response && response.original.success) {
                                         addSelection(eligible);
                                     } else {
@@ -125,51 +145,52 @@
                                 }
                             }
                         }"
-                    x-init="eligibles = await loadEligibles(selectedCategoryId);
-                        $watch('selectedCategoryId', async (catId) => {
-                            eligibles = [];
-                            eligibles = await loadEligibles(catId);
-                            
-                        })"
+                    x-init=""
                         >
-                    <template x-if="selectedCategoryId">
+                    <template x-if="selectedCategory && loadedEntries[selectedCategory.entry_type]">
                         <div class="columns">
                             <div class="column is-10-widescreen is-12"
                                 x-data="{search: '',
+                                    get categoryEligibles() {return eligibles[selectedCategory.id]},
                                     selectedEligibles: [],
                                     filteredEligibles: [],
+                                    loadedEligibles: false,
                                     filterEligibles() {
-                                        if(eligibles.length == 0) {
+                                        this.loadedEligibles = false;
+                                        if(this.categoryEligibles.length == 0) {
                                             this.selectedEligibles = [];
                                             this.filteredEligibles = [];
                                         }
                                         
-                                        this.selectedEligibles = Object.values(selections[selectedCategoryId]??{});
-                                        
+                                        this.selectedEligibles = Object.values(selections[selectedCategory.id]??{});
+
                                         const searchKey = this.search?.toLowerCase();
                                         const searchedEligibles = [];
-                                        eligibles.forEach(eligible => {
-                                            if (searchedEligibles.length >= 25) {
-                                                return;
-                                            }
-                                            if(selections[selectedCategoryId]?.[eligible.id]) {
-                                                
-                                            } else {
-                                                if(searchKey) {
-                                                    if(eligible.entry.name?.toLowerCase().includes(searchKey)) {
-                                                      searchedEligibles.push(eligible);                                                        
-                                                    }
-                                                } else {
+
+                                        const limit = {{ Js::from($this->displayLimit) }};
+
+                                        for(let i=0; i<this.categoryEligibles.length && (searchedEligibles.length<=limit+this.selectedEligibles.length); i++) {
+                                            const eligible = this.categoryEligibles[i];
+                                            if(selections[selectedCategory.id]?.[eligible.id]) {
+                                                continue;
+                                            } 
+                                            if(!searchKey) {
+                                                searchedEligibles.push(eligible);    
+                                                continue;
+                                            } 
+
+                                            if(entries[eligible.entry_id].name?.toLowerCase().includes(searchKey)) {
                                                     searchedEligibles.push(eligible);                                                        
-                                                }
                                             }
-                                        });
+                                        }
+
                                         this.filteredEligibles =  searchedEligibles;
+                                        this.loadedEligibles = true;
                                     }
                                 }"
                                 x-init="filterEligibles();
+                                    $watch('selectedCategory', category => {filterEligibles(); });
                                     $watch('search', search => {filterEligibles(); });
-                                    $watch('eligibles', eligibles => {filterEligibles(); });
                                     $watch('selections', selections => {filterEligibles(); });
                                 "
                             >
@@ -190,7 +211,7 @@
                                 
                                 <small class="has-text-light mb-4" style="display: block;">
                                     You may vote up to 5 times per category. 
-                                        <span x-text="((selectedEligibles.length+filteredEligibles.length) + ' entries are displayed out of ' + eligibles.length)"></span>
+                                        <span x-text="((selectedEligibles.length+filteredEligibles.length) + ' entries are displayed out of ' + categoryEligibles.length)"></span>
                                     We strongly recommend using the search bar to look for your shows.
                                 </small>
                                 
@@ -202,19 +223,37 @@
                                              style="cursor: pointer; position: relative; padding: 0; overflow: hidden;
                                                 background: #00d1b2;"
                                              :key="selectedEligible.id"
+                                             x-data="{
+                                                get selectedEntry() {return entries[selectedEligible.entry_id];} 
+                                                get parent() {return this.selectedEntry.parent_id? entries[this.selectedEntry.parent_id] : null},
+                                                get grandparent() {return this.parent?.parent_id? entries[this.parent.parent_id] : null},
+                                            }"
                                              x-on:click="await removeVote(selectedEligible)"
                                         >
-                                            <template x-if="selectedEligible.entry.image">
+                                            <template x-if="selectedEntry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    <img x-bind:src="'/storage/'+selectedEligible.entry.image"
-                                                         alt="eligible.entry.name"
+                                                    {{-- <img x-bind:src="'/storage'+selectedEntry.image" --}}
+                                                    <img src="/storage/entry/anilist-174596.jpg"
+                                                         x-bind:alt="selectedEntry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
                                             <div class="p-3" style="background: rgba(0,0,0,0.7);">
                                                 <p class="has-text-white" 
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
-                                                    x-text="selectedEligible.entry.name"
+                                                    x-text="selectedEntry.name"
+                                                >
+                                                </p>
+                                                <p class="has-text-white" 
+                                                    x-show="parent"
+                                                    style="font-size: 0.9rem; word-wrap: break-word;"
+                                                    x-text="'(' + parent?.name + ')'"
+                                                >
+                                                </p>
+                                                <p class="has-text-white" 
+                                                    x-show="grandparent"
+                                                    style="font-size: 0.9rem; word-wrap: break-word;"
+                                                    x-text="'from ' + grandparent?.name"
                                                 >
                                                 </p>
                                                     <span class="tag is-success mt-2">Selected</span>
@@ -226,31 +265,36 @@
                                              style="cursor: pointer; position: relative; padding: 0; overflow: hidden; 
                                                 background: #2d3853;"
                                              :key="filteredEligible.id"
+                                             x-data="{ 
+                                                get filteredEntry() {return entries[filteredEligible.entry_id]},
+                                                get parent() {return this.filteredEntry.parent_id? entries[this.filteredEntry.parent_id] : null},
+                                                get grandparent() {return this.parent?.parent_id? entries[this.parent.parent_id] : null},
+                                             }"
                                              x-on:click="await addVote(filteredEligible)"
                                         >
-                                            <template x-if="filteredEligible.entry.image">
+                                            <template x-if="filteredEntry.image">
                                                 <figure class="image" style="margin: 0;">
-                                                    <img x-bind:src="'/storage/'+filteredEligible.entry.image"
-                                                         x-bind:alt="filteredEligible.entry.name"
+                                                    <img x-bind:src="'/storage'+filteredEntry.image"
+                                                         x-bind:alt="filteredEntry.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
                                             <div class="p-3" style="background: rgba(0,0,0,0.7);">
                                                 <p class="has-text-white" 
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
-                                                    x-text="filteredEligible.entry.name"
+                                                    x-text="filteredEntry.name"
                                                 >
                                                 </p>
                                                 <p class="has-text-white" 
-                                                    x-if="filteredEligible.entry.parent"
+                                                    x-show="parent"
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
-                                                    x-text="'(' + filteredEligible.entry.parent.name + ')'"
+                                                    x-text="'(' + parent?.name + ')'"
                                                 >
                                                 </p>
                                                 <p class="has-text-white" 
-                                                    x-if="filteredEligible.entry.parent.grandparents"
+                                                    x-show="grandparent"
                                                     style="font-size: 0.9rem; word-wrap: break-word;"
-                                                    x-text="'from ' + filteredEligible.entry.parent.grandparents.name"
+                                                    x-text="'from ' + grandparent?.name"
                                                 >
                                                 </p>
                                             </div>
@@ -274,16 +318,16 @@
                                     <p class="panel-heading">My Selections</p>
                                     <div class="panel-block">
                                         <p class="has-text-light" 
-                                            x-text="(Object.keys(selections[selectedCategoryId] ?? {}).length)+'/ 5 selected'">
+                                            x-text="(Object.keys(selections[selectedCategory.id] ?? {}).length)+'/ 5 selected'">
                                         </p>
                                     </div>
-                                    <template x-if="Object.keys(selections[selectedCategoryId] ?? {}).length > 0">
-                                        <template x-for="selection in Object.values(selections[selectedCategoryId])" :key="selection.id">
+                                    <template x-if="Object.keys(selections[selectedCategory.id] ?? {}).length > 0">
+                                        <template x-for="selection in Object.values(selections[selectedCategory.id])" :key="selection.id">
                                             <a class="panel-block has-text-light" 
                                                x-on:click="removeVote(selection)"
                                                style="cursor: pointer;">
                                                 <span class="delete"></span>
-                                                <span class="ml-2" x-text="selection.entry.name"></span>
+                                                <span class="ml-2" x-text="entries[selection.entry_id].name"></span>
                                             </a>
                                         </template>
                                     </template>
@@ -291,7 +335,7 @@
                             </div>
                         </div>
                     </template>
-                    <template x-if="!selectedCategoryId">
+                    <template x-if="!selectedCategory">
                         <div class="has-text-light has-text-centered">
                             <template x-if="categories[selectedGroup]?.length == 0">
                                 <p>No categories available for voting at this time.</p>
@@ -302,6 +346,7 @@
                         </div>
                     </template>
                 </div>
+            </div>
             </div>
         @else
             <section class="hero">
