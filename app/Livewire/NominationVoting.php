@@ -61,9 +61,13 @@ class NominationVoting extends Component
     public function fetchEntriesByType($entryType)
     {
         return Entry::select('id', 'name', 'image', 'parent_id', 'theme_version')
+        ->with('item_names')
         ->whereHas('category_eligibles.category', function ($query) use ($entryType) {
             $query->where('entry_type', $entryType);
-        })->get();
+        })->get()->map(function ($entry) {
+            $entry->searchable_string = $entry->name . ' ' . $entry->item_names->pluck('name')->implode(' ');
+            return $entry;
+        });
     }
 
     // Unused so far

@@ -11,4 +11,8 @@ class ItemName extends Model
     public $timestamps = false;
 
     // use HasFactory;
+
+    public function entry(){
+        return $this->belongsTo(Entry::class);
+    }
 }

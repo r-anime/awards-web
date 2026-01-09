@@ -43,4 +43,16 @@ class Entry extends Model
     {
         return $this->children()->with('grandchildren');
     }
+
+    public function item_names()
+    {
+        return $this->hasMany(ItemName::class);
+    }
+
+    /* bad code doesn't work
+    public function searchable_string()
+    {
+        return $this->name . ' ' . $this->item_names->pluck('name')->implode(' ');
+    }
+    */
 }

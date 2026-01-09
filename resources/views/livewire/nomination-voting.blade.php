@@ -194,14 +194,14 @@
                                                 continue;
                                             } 
 
-                                            if(entries[eligible.entry_id].name?.toLowerCase().includes(searchKey)) {
+                                            if(entries[eligible.entry_id].searchable_string?.toLowerCase().includes(searchKey)) {
                                                 searchedEligibles.push(eligible);
                                                 continue;
                                             }
                                             if(entries[eligible.entry_id].parent_id && entries[entries[eligible.entry_id].parent_id]){
                                                 var parent = entries[eligible.entry_id].parent_id;
                                                 console.log(parent);
-                                                if(entries[parent].name.toLowerCase().includes(searchKey)) {
+                                                if(entries[parent].searchable_string?.toLowerCase().includes(searchKey)) {
                                                     searchedEligibles.push(eligible);
                                                     continue;
                                                 }
