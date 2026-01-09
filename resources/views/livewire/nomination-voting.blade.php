@@ -184,7 +184,14 @@
                                             } 
 
                                             if(entries[eligible.entry_id].name?.toLowerCase().includes(searchKey)) {
-                                                    searchedEligibles.push(eligible);                                                        
+                                                searchedEligibles.push(eligible);
+                                                continue;
+                                            }
+                                            if(entries[eligible.entry_id].parent_id){
+                                                if(entries[entries[eligible.entry_id].parent_id].name?.toLowerCase().includes(searchKey)) {
+                                                    searchedEligibles.push(eligible);
+                                                    continue;
+                                                }
                                             }
                                         }
 
@@ -242,10 +249,10 @@
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
-                                            <template x-if="!selectedEntry.image && parent.image">
+                                            <template x-if="!selectedEntry.image && parent">
                                                 <figure class="image" style="margin: 0;">
-                                                    <img x-bind:src="'/storage/'+parent.image"
-                                                         x-bind:alt="parent.name"
+                                                    <img x-bind:src="'/storage/'+parent?.image"
+                                                         x-bind:alt="parent?.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
@@ -296,10 +303,10 @@
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
-                                            <template x-if="!filteredEntry.image && parent.image">
+                                            <template x-if="!filteredEntry.image && parent">
                                                 <figure class="image" style="margin: 0;">
-                                                    <img x-bind:src="'/storage/'+parent.image"
-                                                         x-bind:alt="parent.name"
+                                                    <img x-bind:src="'/storage/'+parent?.image"
+                                                         x-bind:alt="parent?.name"
                                                          style="width: 100%; height: 200px; object-fit: cover;">
                                                 </figure>
                                             </template>
