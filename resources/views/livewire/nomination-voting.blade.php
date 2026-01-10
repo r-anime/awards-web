@@ -441,7 +441,7 @@
                                                             const selectionValues = Object.values(categorySelections);
                                                             
                                                             if (selectionValues.length > 0) {
-                                                                formatted += `*${category.name}:*\n`;
+                                                                formatted += `*${category.name}:*\n\n`;
                                                                 selectionValues.forEach(selection => {
                                                                     const entry = entries[selection.entry_id];
                                                                     if (entry) {
@@ -597,7 +597,7 @@
                                                                 const selectionValues = Object.values(categorySelections);
                                                                 
                                                                 if (selectionValues.length > 0) {
-                                                                    formatted += `*${category.name}:*\n`;
+                                                                    formatted += `*${category.name}:*\n\n`;
                                                                     selectionValues.forEach(selection => {
                                                                         const entry = entries[selection.entry_id];
                                                                         if (entry) {
