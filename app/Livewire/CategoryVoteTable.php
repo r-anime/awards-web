@@ -35,10 +35,11 @@ class CategoryVoteTable extends Component implements HasTable, HasActions, HasSc
     {
         $currentYear = app('current-year');
         
-        $query = NomineeVote::selectRaw('nominee_votes.entry_id, entries.name as entry_name, COUNT(*) as vote_count')
+        $query = NomineeVote::selectRaw('nominee_votes.entry_id, entries.name as entry_name, parents.name as parent_name, COUNT(*) as vote_count')
             ->join('entries', 'nominee_votes.entry_id', '=', 'entries.id')
+            ->leftJoin('entries as parents', 'entries.parent_id', '=', 'parents.id')
             ->where('nominee_votes.category_id', $this->categoryId)
-            ->groupBy('nominee_votes.entry_id', 'entries.name')
+            ->groupBy('nominee_votes.entry_id')
             ->limit(10);
         
         return $table
@@ -51,6 +52,8 @@ class CategoryVoteTable extends Component implements HasTable, HasActions, HasSc
             ->columns([
                 TextColumn::make('entry_name')
                     ->label('Entry'),
+                TextColumn::make('parent_name')
+                    ->label('Parent'),
                 TextColumn::make('vote_count')
                     ->label('Votes')
                     ->sortable()
