@@ -45,6 +45,7 @@ class CategoryVoteTable extends Component implements HasTable, HasActions, HasSc
             ->query($query)
             ->paginated(false)
             ->defaultSort('vote_count', 'desc')
+            // default sort Key by id breaks the table.
             ->defaultKeySort(false)
             ->searchable(false)
             ->columns([
