@@ -40,15 +40,10 @@ class AppServiceProvider extends ServiceProvider
         // Ensure storage directories exist
         $this->ensureStorageDirectoriesExist();
 
-        // Share results years with all views for navbar dropdown
+        // Share results years with all views for navbar dropdown (respects display final results date)
         View::composer('*', function ($view) {
             $resultService = app(ResultService::class);
-            $years = $resultService->getYearList()
-                ->pluck('year')
-                ->sortDesc()
-                ->values()
-                ->all();
-            $view->with('resultsYears', $years);
+            $view->with('resultsYears', $resultService->getVisibleYearList());
         });
 
         // Year filter dropdown

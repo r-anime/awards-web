@@ -12,7 +12,11 @@ class ResultController extends Controller
     //
     public function index(ResultService $resultservice)
     {
-        $latest_year = $resultservice->getYearList()->sortDesc()->value('year');
+        $visibleYears = $resultservice->getVisibleYearList();
+        $latest_year = $visibleYears[0] ?? null;
+        if ($latest_year === null) {
+            abort(404);
+        }
         return $this->result($resultservice, (int)$latest_year);
         // return response('<h1>Result Index Controller Function!</h1>', 200)->header('Content-Type', 'text/html');
     }
@@ -26,6 +30,10 @@ class ResultController extends Controller
 
     public function result(ResultService $resultservice, int $year)
     {
+        if (!$resultservice->isYearVisible($year)) {
+            abort(404);
+        }
+
         // \DB::enableQueryLog();
 
         $results = $resultservice->getResults($year);

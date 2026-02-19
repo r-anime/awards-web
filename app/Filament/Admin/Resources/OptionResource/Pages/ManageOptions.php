@@ -26,6 +26,7 @@ class ManageOptions extends Page
     public $nomination_voting_end_date;
     public $final_voting_start_date;
     public $final_voting_end_date;
+    public $results_display_date;
 
     public static function canAccess(array $parameters = []): bool
     {
@@ -55,6 +56,10 @@ class ManageOptions extends Page
             \Carbon\Carbon::parse($finalStartDate)->format('Y-m-d\TH:i') : '';
         $this->final_voting_end_date = $finalEndDate ? 
             \Carbon\Carbon::parse($finalEndDate)->format('Y-m-d\TH:i') : '';
+
+        $resultsDisplayDate = Option::get('results_display_date', '');
+        $this->results_display_date = $resultsDisplayDate ?
+            \Carbon\Carbon::parse($resultsDisplayDate)->format('Y-m-d\TH:i') : '';
     }
 
     public function saveSettings(): void
@@ -83,6 +88,10 @@ class ManageOptions extends Page
         
         Option::set('final_voting_start_date', $finalStartDate);
         Option::set('final_voting_end_date', $finalEndDate);
+
+        $resultsDisplayDate = $this->results_display_date ?
+            (\Carbon\Carbon::parse($this->results_display_date)->format('Y-m-d H:i:s')) : '';
+        Option::set('results_display_date', $resultsDisplayDate);
 
         Notification::make()
             ->title('Settings saved successfully')
