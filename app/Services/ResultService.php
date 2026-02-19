@@ -30,8 +30,8 @@ class ResultService
     }
 
     /**
-     * Get list of years that should be shown publicly. Excludes the current (latest) year
-     * until results_display_date has passed, if that option is set.
+     * Get list of years that should be shown publicly. Only the year that matches the
+     * "final results" date - 1 year is hidden until that date/time has passed.
      */
     public function getVisibleYearList(): array
     {
@@ -44,9 +44,10 @@ class ResultService
             return $years;
         }
         $displayAt = Carbon::parse($displayDate);
+        // Lock the year *before* the display date
+        $hiddenYear = (int) $displayAt->year - 1;
         if (now()->lt($displayAt)) {
-            // Hide the latest (current) year until display date has passed
-            return array_slice($years, 1);
+            return array_values(array_filter($years, fn ($y) => (int) $y !== $hiddenYear));
         }
         return $years;
     }
@@ -56,7 +57,16 @@ class ResultService
      */
     public function isYearVisible(int $year): bool
     {
-        return in_array($year, $this->getVisibleYearList(), true);
+        $displayDate = Option::get('results_display_date', '');
+        if ($displayDate === '' || $displayDate === null) {
+            return true;
+        }
+        $displayAt = Carbon::parse($displayDate);
+        $hiddenYear = (int) $displayAt->year - 1;
+        if ($year !== $hiddenYear) {
+            return true;
+        }
+        return now()->gte($displayAt);
     }
 
     public function getResults(int $year): Collection
