@@ -2,7 +2,6 @@
 <template>
     <div>
         <Head :title="'Results ' + year" />
-        <h1>Results Page for {{ year }} Via Inertia and Vue</h1>
         <div class="">
             <div class="container">
                 <div class="columns is-centered">

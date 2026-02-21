@@ -56,7 +56,10 @@
                   </span>
 								</div>
 							</div>
-							<div class="categoryRank has-text-gold">{{index+1}}</div>
+							<div class="categoryRank has-text-gold"
+								style="background-image: url('/images/laurels.png')">
+								{{index+1}}
+							</div>
 						</div>
 					</transition-group>
 					<small class="is-pulled-right has-text-light small mr-3">Click each nominee to read a detailed write-up.</small>

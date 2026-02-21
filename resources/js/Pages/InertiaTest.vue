@@ -7,8 +7,8 @@ defineProps({ username: String })
 
 <template>
     <div>
-        <Head title="Welcome" />
-        <h1>Welcome</h1>
+        <Head title="Inertia test page" />
+        <h1>Inertia test page</h1>
         <p>Hello {{ username ?? 'Guest' }}, welcome to Inertia Test!</p>
     </div>
 </template>
