@@ -56,4 +56,5 @@ Route::get('/results/{year}', [ResultController::class, 'result'])->name('result
 // Route::get('/results/{year}/about', [ResultController::class, 'about'])->name('results.year.about')->whereNumber('year');
 
 // Inertia Test
-Route::get('/inertia', [InertiaController::class, 'test'])->name('inertia');
+Route::get('/inertia/test', [InertiaController::class, 'test'])->name('inertia.test');
+Route::get('/inertia/{year}', [InertiaController::class, 'result'])->name('inertia.results')->whereNumber('year');
