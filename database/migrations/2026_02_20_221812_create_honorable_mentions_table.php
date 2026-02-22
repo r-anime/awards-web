@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('honorable_mentions', function (Blueprint $table) {
             $table->id();
+            $table->string('name', length:255);
+            $table->integer('year');
+            $table->foreignId('category_id');
+            $table->text('writeup');
             $table->timestamps();
         });
     }
