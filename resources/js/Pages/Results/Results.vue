@@ -7,7 +7,6 @@
                 <div class="columns is-centered">
                     <div class="column">
                         <section class="" v-if="true">
-                            <!-- <p>{{ JSON.stringify(result) }}</p>     -->
                             <result-section v-for="(section, index) in Object.values(result)" 
                                 :key="index"
                                 :section="section"

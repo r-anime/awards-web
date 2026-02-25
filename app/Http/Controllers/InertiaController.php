@@ -15,11 +15,15 @@ class InertiaController extends Controller
         return Inertia::render('InertiaTest', ['username' => 'Jesus' ]);
     }
 
-    public function result(ResultService $resultservice, int $year) {
+    public function results(ResultService $resultservice, int $year) {
         $results = $resultservice->getResults($year)->groupBy('type');
-        return Inertia::render('Results/Index',
+        return Inertia::render('Results/Results',
             ['year' => $year,
             'result' => $results]);
+    }
+
+    public function acknowledgements() {
+        
     }
 
 }
