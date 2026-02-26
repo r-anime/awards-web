@@ -12,7 +12,7 @@ use Illuminate\Support\ServiceProvider;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\Blade;
-
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -55,6 +55,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('reddit', \SocialiteProviders\Reddit\Provider::class);
         });
+
+        // Inertia set root view
+
+        Inertia::setRootView('inertia-root');
     }
 
     /**
