@@ -98,7 +98,6 @@ const nomCurrentOrder = computed(() => {
   return nomJuryOrder;
 });
 
-function nomineeImage(nominee) {
-  return `background-image: url(/${nominee.image})`;
-}
+import { nomineeImage } from '../../utils.js';
+
 </script>

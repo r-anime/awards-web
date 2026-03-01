@@ -99,13 +99,6 @@
 
 <script setup>
 const props = defineProps({ category: Object, juryWinner: Object, pubWinner: Object })
-function nomineeImage(nominee) {
-    try {
-  return `background-image: url(/${nominee.image})`;
-        
-    } catch (error) {
-        console.log(nominee);
-  return ``;
-    }
-}
+import { nomineeImage } from '../../utils.js';
+
 </script>
