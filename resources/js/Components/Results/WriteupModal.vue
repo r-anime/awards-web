@@ -1,17 +1,17 @@
-<!-- Todo: Category, Jurors, Ranks, Vote%   -->
+<!-- Todo: Titles, Category, Jurors, Vote stats  -->
 <template>
-    <div class="modal animated fast fadeIn" :class="{ 'is-active': (nominee!=null) }" v-if="nominee!=null">
+    <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalNom!=null) }" v-if="modalNom!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
             <div class="columns is-gapless">
                 <div class="awardsImage column is-5">
-                    <div class="categoryItemImage" :title="nominee.id" :style="nomineeImage(nominee)">
+                    <div class="categoryItemImage" :title="modalNom.id" :style="nomineeImage(modalNom)">
                     </div>
                 </div>
                 <div class="column is-7">
                     <div class="awardsModal has-text-light has-background-dark content">
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
-                            <span>{{ nominee.name }}</span>
+                            <span>{{ modalNom.name }}</span>
                             <!-- <span v-if="modalCat.entryType==='themes'">
                                 {{results.themes[modalNom.id].split(/ - /gm)[1]}} ({{results.themes[modalNom.id].split(/ - /gm)[0]}})
                             </span>
@@ -26,17 +26,17 @@
                             </span> -->
                         </h3>
                         <div class="is-marginless">
-                            <!-- <div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
-                                <div v-if="modalNom.percent > 0" class="column is-narrow"> <img class="image" :src="publicIcon" /> </div>
-                                <div v-if="modalNom.percent > 0" class="column "> Public {{prettifyRank(modalRank)}} ({{(modalNom.percent*100).toFixed(2)}}%) </div>
-                                <div v-if="modalNom.jury > 0" class="column is-narrow"> <img class="image" :src="juryIcon" /> </div>
-                                <div v-if="modalNom.jury > 0" class="column"> Jury {{prettifyRank(modalNom.jury)}} </div>
-                            </div> -->
+                            <div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
+                                <div v-if="modalNom.percent > 0" class="column is-narrow"> <img class="image" src="/images/public.png" /> </div>
+                                <div v-if="modalNom.percent > 0" class="column "> Public {{prettifyRank(modalNom.public_standing)}} ({{(modalNom.percent*100).toFixed(2)}}%) </div>
+                                <div v-if="modalNom.jury_rank > 0" class="column is-narrow"> <img class="image" src="/images/jury.png" /> </div>
+                                <div v-if="modalNom.jury_rank > 0" class="column"> Jury {{prettifyRank(modalNom.jury_rank)}} </div>
+                            </div>
                         </div>
                         <p class="awardsStaffCredit has-text-llperiwinkle is-size-6"
-                            v-html="markdownit(nominee.staff_credits)">
+                            v-html="markdownit(modalNom.staff_credits)">
                         </p>
-                        <div class="awardsModalBody" v-html="markdownit(nominee.description)">
+                        <div class="awardsModalBody" v-html="markdownit(modalNom.description)">
                         </div>
                     </div>
                 </div>
@@ -59,16 +59,17 @@
         <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div> -->
     <!-- Todo: Category Modal -->
-    <!-- <div class="modal animated fast fadeIn" :class="{ 'is-active': modalCat && showCat }" v-if="modalCat">
+    <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalCat!=null) }" v-if="modalCat!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
             <div class="awardsModal has-text-light has-background-dark content">
                 <h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
                     {{ modalCat.name }}
                 </h3>
-                <div class="awardsModalBody mt-30" v-html="markdownit(modalCat.blurb)">
+                <div class="awardsModalBody mt-30" v-html="markdownit(modalCat.info.description)">
                 </div>
-                <h5 class="title is-5 mt-30"> Vote Data </h5>
+                <!-- Todo: Vote Data -->
+                <!-- <h5 class="title is-5 mt-30"> Vote Data </h5>
                 <table width="100%" class="table is-black-bis " v-if="chartData">
                     <thead>
                         <tr>
@@ -100,8 +101,9 @@
                             </th>
                         </tr>
                     </tbody>
-                </table>
-                <div class="categoryJurors mt-30">
+                </table> -->
+                <!-- Todo: Jurors -->
+                <!-- <div class="categoryJurors mt-30">
                     <h5 class="title is-5"> Jurors </h5>
                     <div class="tags">
                         <span class="mr-10" v-for="(juror, index) in modalCat.jurors" :key="index">
@@ -120,11 +122,11 @@
                             </a>
                         </span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
-    </div> -->
+    </div>
 </template>
 
 <script setup>
@@ -133,19 +135,26 @@ import { nomineeImage } from '../../utils.js';
 import { marked } from 'marked';
 // const props = defineProps({ type: String, nominee: Object | null, category: Object | null })
 const type = ref('');
-const nominee = ref(null);
-const category = ref(null);
-const hm = ref(null);
+const modalNom = ref(null);
+const modalCat = ref(null);
+const modalHm = ref(null);
 
-function openNomModal(modalNom) {
+function prettifyRank (n) {
+	const rank = ['Winner', '2nd Place', '3rd Place'];
+	if (n - 1 < 3) {
+		return rank[n - 1];
+	}
+	return `${n}th Place`;
+}
+
+function openNomModal(nominee) {
 	document.documentElement.classList.add('is-clipped');
-    nominee.value = modalNom;
+    modalNom.value = nominee;
 }
 
 function openCatModal(category) {
 	document.documentElement.classList.add('is-clipped');
-    console.log('catModal method');
-
+    modalCat.value = category;
 }
 
 function openHmModal(hm) {
@@ -158,9 +167,9 @@ function closeModal() {
 	    // console.log(el);
 	    el.scrollTop = 0;
 	});
-    nominee.value = null;
-    category.value = null;
-    hm.value = null;
+    modalNom.value = null;
+    modalCat.value = null;
+    modalHm.value = null;
 	document.documentElement.classList.remove('is-clipped');
 }
 

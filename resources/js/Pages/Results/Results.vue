@@ -57,11 +57,13 @@ function openNomModal(nominee) {
 }
 
 function openCatModal(category) {
-
+    console.log(category);
+    modal.value.openCatModal(category);
 }
 
 function openHmModal(hm) {
-
+    console.log(hm);
+    modal.value.openHmModal(hm);
 }
 
 provide('openNomModal', openNomModal);

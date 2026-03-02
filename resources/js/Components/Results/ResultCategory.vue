@@ -2,8 +2,7 @@
 <template>
     <div :id="slug" class="awardDisplay mb-100">
     <!-- TODO: Implement Modals -->
-    <div class="mb-6">
-		<!-- <div class="mb-6" @click="emitCatModal"> -->
+		<div class="mb-6" @click="openCatModal(category)">
 			<div class="is-pulled-left">
 				<h2 class="categoryHeader title is-2 has-text-light pl-5" >
 					{{category.name}}
@@ -89,9 +88,17 @@ const props = defineProps({ category: Object });
 // ? Can be computed
 const nomJuryOrder = props.category.results.slice().sort((nom1, nom2) => nom1.jury_rank - nom2.jury_rank);
 const nomPublicOrder = props.category.results.slice().sort((nom1, nom2) => nom2.public_rank - nom1.public_rank);
+let totalVotes = 0;
 
+// Calculate public rank
 nomPublicOrder.forEach((nom, index) => {
 	nom.public_standing = index + 1;
+	totalVotes += nom.public_rank;
+});
+
+// Calculate vote percentage
+nomPublicOrder.forEach(nom => {
+	nom.percent = nom.public_rank/totalVotes;
 });
 
 // Order toggle
@@ -106,5 +113,6 @@ const nomCurrentOrder = computed(() => {
 import { nomineeImage } from '../../utils.js';
 
 const openNomModal = inject('openNomModal');
+const openCatModal = inject('openCatModal');
 
 </script>
