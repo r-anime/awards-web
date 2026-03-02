@@ -44,6 +44,7 @@
 					<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless is-mobile is-multiline">
 						<div class="categoryRankCard column is-half-mobile" v-for="(nom, index) in nomCurrentOrder"
 						:key="nom.id" 
+						@click="openNomModal(nom)"
             >
             <!-- Todo: implement modal -->
             <!-- @click="emitNomModal(nom)" -->
@@ -82,12 +83,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import ResultWinners from './ResultWinners.vue';
 const props = defineProps({ category: Object });
 // ? Can be computed
 const nomJuryOrder = props.category.results.slice().sort((nom1, nom2) => nom1.jury_rank - nom2.jury_rank);
 const nomPublicOrder = props.category.results.slice().sort((nom1, nom2) => nom2.public_rank - nom1.public_rank);
+
+nomPublicOrder.forEach((nom, index) => {
+	nom.public_standing = index + 1;
+});
 
 // Order toggle
 const focus = ref(false);
@@ -99,5 +104,7 @@ const nomCurrentOrder = computed(() => {
 });
 
 import { nomineeImage } from '../../utils.js';
+
+const openNomModal = inject('openNomModal');
 
 </script>

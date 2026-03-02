@@ -1,11 +1,11 @@
 <!-- Todo: Category, Jurors, Ranks, Vote%   -->
 <template>
-    <div class="modal animated fast fadeIn" :class="{ 'is-active': modalNom && showNom }" v-if="modalNom">
+    <div class="modal animated fast fadeIn" :class="{ 'is-active': (nominee!=null) }" v-if="nominee!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
             <div class="columns is-gapless">
                 <div class="awardsImage column is-5">
-                    <div class="categoryItemImage" :title="modalNom.id" :style="itemImage(modalNom)">
+                    <div class="categoryItemImage" :title="nominee.id" :style="nomineeImage(nominee)">
                     </div>
                 </div>
                 <div class="column is-7">
@@ -129,22 +129,53 @@
 
 <script setup>
 import { ref, provide } from 'vue';
+import { nomineeImage } from '../../utils.js';
+import { marked } from 'marked';
 // const props = defineProps({ type: String, nominee: Object | null, category: Object | null })
 const type = ref('');
 const nominee = ref(null);
 const category = ref(null);
 const hm = ref(null);
 
+function openNomModal(modalNom) {
+	document.documentElement.classList.add('is-clipped');
+    nominee.value = modalNom;
+}
+
+function openCatModal(category) {
+	document.documentElement.classList.add('is-clipped');
+    console.log('catModal method');
+
+}
+
+function openHmModal(hm) {
+	document.documentElement.classList.add('is-clipped');
+}
+
 function closeModal() {
     const modalels = document.getElementsByClassName('awardsModal');
-			[].forEach.call(modalels, el => {
-				// console.log(el);
-				el.scrollTop = 0;
-			});
-            nominee.value = null;
-            category.value = null;
-            hm.value = null;
-			document.documentElement.classList.remove('is-clipped');
+	[].forEach.call(modalels, el => {
+	    // console.log(el);
+	    el.scrollTop = 0;
+	});
+    nominee.value = null;
+    category.value = null;
+    hm.value = null;
+	document.documentElement.classList.remove('is-clipped');
 }
+
+function markdownit (it) {
+	if (it){
+		return marked(it);
+	} else {
+		return "";
+	}
+}
+
+defineExpose({
+    openNomModal,
+    openCatModal,
+    openHmModal
+});
 
 </script>

@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="columns is-centered">
                     <div class="column">
-                        <section class="" v-if="true">
+                        <section class="" v-if="loaded">
                             <result-section v-for="(section, index) in Object.values(result)" 
                                 :key="index"
                                 :section="section"
@@ -33,6 +33,7 @@
                     </div>
                 </div>
             </div>
+            <writeup-modal ref="modal"/>
         </div>
     </div>
 </template>
@@ -40,11 +41,31 @@
 <script setup>
 // import Layout from './Layout'
 import { Head } from '@inertiajs/vue3'
-import { ref, computed } from 'vue';
+import { ref, computed, provide, useTemplateRef } from 'vue';
 
 import ResultSection from '../../Components/Results/ResultSection.vue'
+import WriteupModal from '../../Components/Results/WriteupModal.vue';
 
 const props = defineProps({ year: Number, result: Object });
 
+const loaded = ref(true);
+const modal = useTemplateRef('modal');
+
+function openNomModal(nominee) {
+    console.log(nominee);
+    modal.value.openNomModal(nominee);
+}
+
+function openCatModal(category) {
+
+}
+
+function openHmModal(hm) {
+
+}
+
+provide('openNomModal', openNomModal);
+provide('openCatModal', openCatModal);
+provide('openHmModal', openHmModal);
 
 </script>

@@ -1,10 +1,10 @@
-<!-- TODO: Modal, Theme/Char/VA Titles -->
+<!-- TODO: Theme/Char/VA Titles -->
 <template>
     <div>
 		<!-- Consensus Winner -->
         <div v-if="pubWinner.id === juryWinner.id" class="categoryWinnerContainer" >
             <div class="columns is-gapless is-mobile">
-                <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column is-paddingless" @click="emitNomModal(pubwinner)">
+                <div class="categoryWinnerItem categoryWinnerPublic categoryWinnerJury column is-paddingless" @click="openNomModal(pubWinner)">
                     <div class="categoryItemImage" :title="pubWinner.id" :style="nomineeImage(pubWinner)">
     				</div>
                 </div>
@@ -13,12 +13,12 @@
 		<!-- Non Consensus Winner -->
         <div v-else class="categoryWinnerContainer" >
             <div class="columns is-gapless is-mobile">
-                <div class="categoryWinnerItem categoryWinnerJury column is-paddingless" @click="emitNomModal(jurywinner)">
-                    <div class="categoryItemImage" :title="juryWinner.id" :style="nomineeImage(jurywinner)">
+                <div class="categoryWinnerItem categoryWinnerJury column is-paddingless" @click="openNomModal(juryWinner)">
+                    <div class="categoryItemImage" :title="juryWinner.id" :style="nomineeImage(juryWinner)">
     				</div>
                 </div>
-                <div class="categoryWinnerItem categoryWinnerPublic column is-paddingless" @click="emitNomModal(pubwinner)">
-                    <div class="categoryItemImage" :title="pubWinner.id" :style="nomineeImage(pubwinner)">
+                <div class="categoryWinnerItem categoryWinnerPublic column is-paddingless" @click="openNomModal(pubWinner)">
+                    <div class="categoryItemImage" :title="pubWinner.id" :style="nomineeImage(pubWinner)">
     				</div>
                 </div>
             </div>
@@ -98,7 +98,10 @@
 </template>
 
 <script setup>
+import { inject } from 'vue';
 const props = defineProps({ category: Object, juryWinner: Object, pubWinner: Object })
 import { nomineeImage } from '../../utils.js';
+
+const openNomModal = inject('openNomModal');
 
 </script>
