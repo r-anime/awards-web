@@ -2,8 +2,7 @@
 <template>
     <div :id="slug" class="awardDisplay mb-100">
     <!-- TODO: Implement Modals -->
-    <div class="mb-6">
-		<!-- <div class="mb-6" @click="emitCatModal"> -->
+		<div class="mb-6" @click="openCatModal(category)">
 			<div class="is-pulled-left">
 				<h2 class="categoryHeader title is-2 has-text-light pl-5" >
 					{{category.name}}
@@ -44,6 +43,7 @@
 					<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless is-mobile is-multiline">
 						<div class="categoryRankCard column is-half-mobile" v-for="(nom, index) in nomCurrentOrder"
 						:key="nom.id" 
+						@click="openNomModal(nom)"
             >
             <!-- Todo: implement modal -->
             <!-- @click="emitNomModal(nom)" -->
@@ -82,12 +82,24 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, inject } from 'vue';
 import ResultWinners from './ResultWinners.vue';
 const props = defineProps({ category: Object });
 // ? Can be computed
 const nomJuryOrder = props.category.results.slice().sort((nom1, nom2) => nom1.jury_rank - nom2.jury_rank);
 const nomPublicOrder = props.category.results.slice().sort((nom1, nom2) => nom2.public_rank - nom1.public_rank);
+let totalVotes = 0;
+
+// Calculate public rank
+nomPublicOrder.forEach((nom, index) => {
+	nom.public_standing = index + 1;
+	totalVotes += nom.public_rank;
+});
+
+// Calculate vote percentage
+nomPublicOrder.forEach(nom => {
+	nom.percent = nom.public_rank/totalVotes;
+});
 
 // Order toggle
 const focus = ref(false);
@@ -98,7 +110,9 @@ const nomCurrentOrder = computed(() => {
   return nomJuryOrder;
 });
 
-function nomineeImage(nominee) {
-  return `background-image: url(/${nominee.image})`;
-}
+import { nomineeImage } from '../../utils.js';
+
+const openNomModal = inject('openNomModal');
+const openCatModal = inject('openCatModal');
+
 </script>
