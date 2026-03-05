@@ -10,6 +10,7 @@ use App\Http\Middleware\CheckNominationVotingEndDate;
 use App\Http\Middleware\CheckFinalVotingEndDate;
 
 use App\Http\Controllers\InertiaController;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return view('home');
@@ -59,3 +60,8 @@ Route::get('/results/{year}', [ResultController::class, 'result'])->name('result
 // Route::get('/inertia/test', [InertiaController::class, 'test'])->name('inertia.test');
 // Route::get('/inertia/results/{year}', [InertiaController::class, 'results'])->name('inertia.results')->whereNumber('year');
 // Route::get('/inertia/acknowledgements/{year}', [InertiaController::class, 'acknowledgements'])->name('inertia.results')->whereNumber('year');
+
+// Temporary Acknowledgements for 2024
+Route::get('/acknowledgements', function () {
+    return Inertia::render('Acknowledgements', []);
+})->name('acknowledgements');

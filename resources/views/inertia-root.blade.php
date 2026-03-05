@@ -112,6 +112,10 @@
                 
                 <div class="navbar-end">
                     <div class="navbar-item">
+                        <a class="navbar-item" href="/acknowledgements">
+                            <span>Acknowledgements</span>
+                        </a>
+                    </div><div class="navbar-item">
                         <a class="navbar-item" href="/feedback">
                             <span>Feedback</span>
                         </a>
