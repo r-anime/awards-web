@@ -16,6 +16,9 @@ class InertiaController extends Controller
     }
 
     public function results(ResultService $resultservice, int $year) {
+        if($year >= app('current-year')) {
+            abort(404);
+        }
         $results = $resultservice->getResults($year)->groupBy('type');
         return Inertia::render('Results/Results',
             ['year' => $year,
