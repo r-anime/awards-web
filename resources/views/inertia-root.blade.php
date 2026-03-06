@@ -1,4 +1,4 @@
-<html>
+<html data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -73,7 +73,7 @@
 </head>
 <body>
     <!-- Canvas Background -->
-    <canvas id="backgroundCanvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.8;"></canvas>
+    <canvas id="backgroundCanvas" class="has-background-dark" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.8;"></canvas>
     
     <div class="hero is-fullheight max-width" style="position: relative; z-index: 1;">
         <nav class="navbar" role="navigation" aria-label="main navigation" style="background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
