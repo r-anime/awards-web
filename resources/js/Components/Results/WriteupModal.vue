@@ -1,5 +1,6 @@
 <!-- Todo: Titles, Category, Jurors, Vote stats  -->
 <template>
+    <!-- *Nominee Modal -->
     <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalNom!=null) }" v-if="modalNom!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
@@ -45,19 +46,19 @@
         <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div>
     <!-- Todo: HM Modal -->
-    <!-- <div class="modal animated fast fadeIn" :class="{ 'is-active': modalHM && showHM }" v-if="modalHM">
+    <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalHm!=null) }" v-if="modalHm!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
             <div class="awardsModal has-text-light has-background-dark content">
                 <h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
-                    {{ modalHM.name }}
+                    {{ modalHm.name }}
                 </h3>
-                <div class="awardsModalBody" v-html="markdownit(modalHM.writeup)">
+                <div class="awardsModalBody" v-html="markdownit(modalHm.writeup)">
                 </div>
             </div>
         </div>
         <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
-    </div> -->
+    </div>
     <!-- Todo: Category Modal -->
     <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalCat!=null) }" v-if="modalCat!=null">
         <div class="modal-background" @click="closeModal"></div>
@@ -159,6 +160,7 @@ function openCatModal(category) {
 
 function openHmModal(hm) {
 	document.documentElement.classList.add('is-clipped');
+    modalHm.value = hm;
 }
 
 function closeModal() {

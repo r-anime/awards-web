@@ -43,6 +43,10 @@ class Category extends Model
         return $this->hasMany(Result::class);
     }
 
+    public function honorablementions(){
+        return $this->hasMany(HonorableMention::class);
+    }
+
     public function watchstatscalculated(){
         return $this->hasMany(WatchStatCalculated::class);
     }

@@ -67,17 +67,19 @@
 			</div>
 		</div>
         <!-- Todo: Honorable Mentions -->
-        <!-- <div class="awardHonorableMentions has-text-light has-text-centered my-6" v-if="category.hms && category.hms.length > 0">
+        <div class="awardHonorableMentions has-text-light has-text-centered my-6" 
+			v-if="category.honorablementions && category.honorablementions.length > 0">
             <h5 class="is-pulled-left has-text-light is-size-4 ml-2">Honorable Mentions</h5>
 			      <div class="is-clearfix mb-4"></div>
             <div class="columns is-multiline mx-2 is-mobile">
-				      <div class="column is-half-mobile is-one-quarter-tablet is-clickable" v-for="(hm, index) in category.hms" :key="index" @click="emitHMModal(hm)">
+				      <div class="column is-half-mobile is-one-quarter-tablet is-clickable"
+					  	v-for="(hm, index) in category.honorablementions" :key="index" @click="openHmModal(hm)">
 					      <div class="awardHonorableMention p-4">{{hm.name}}</div>
               </div>
             </div>
 			      <small class="is-pulled-right has-text-light small mr-3">Click each HM to read a detailed write-up (if available).</small>
 			      <div class="is-clearfix"></div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -114,5 +116,6 @@ import { nomineeImage } from '../../utils.js';
 
 const openNomModal = inject('openNomModal');
 const openCatModal = inject('openCatModal');
+const openHmModal = inject('openHmModal');
 
 </script>

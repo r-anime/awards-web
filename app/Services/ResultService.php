@@ -92,6 +92,14 @@ class ResultService
                     ])
                         ->orderBy('jury_rank');
                 },
+                'honorablementions' => function ($query) {
+                    $query->select([
+                        'id',
+                        'category_id',
+                        'name',
+                        'writeup'
+                    ]);
+                },
             ])
             ->select([
                 'id',
@@ -100,6 +108,7 @@ class ResultService
                 'type',
                 'order',
             ])
+            ->orderBy('order')
             ->get();
         });
 
@@ -116,5 +125,16 @@ class ResultService
     {
         // Paused on this until abouts are uploaded to db
         abort(404);
+    }
+
+    // For Results, Acks and Abouts, return the years that exist
+    public function getArchive()
+    {
+        $results = Result::select('year')
+            ->distinct()
+            ->orderBy('year', 'asc')
+            ->pluck('year');
+
+        // Todo: Acks, Abouts
     }
 }
