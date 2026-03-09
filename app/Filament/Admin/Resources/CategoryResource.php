@@ -79,7 +79,7 @@ class CategoryResource extends Resource
             ->reorderable('order')
             ->modifyQueryUsing(function (Builder $query) {
                 $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
-                return $query->where('year', $filterYear);
+                return $query->where('year', $filterYear)->orderBy('order');
             })
             ->columns([
                 TextColumn::make('name')
@@ -94,7 +94,7 @@ class CategoryResource extends Resource
                     ->label('Eligible Entries')
                     ->counts('eligibles')
             ])
-            ->defaultSort('order')
+            ->defaultSort('order', 'asc')
             ->filters([
                 SelectFilter::make('type')
                     ->options([

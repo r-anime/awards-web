@@ -52,13 +52,13 @@ Route::get('/results', [ResultController::class, 'index'])->name('results.latest
 // Route::get('/results/acknowledgements', [ResultController::class, 'index'])->name('results.latest.acknowledgements');
 // Route::get('/results/about', [ResultController::class, 'index'])->name('results.latest.about');
 // Route::get('/results/archive', [ResultController::class, 'archive'])->name('results.archive');
-Route::get('/results/{year}', [ResultController::class, 'result'])->name('results.year')->whereNumber('year');
+// Route::get('/results/{year}', [ResultController::class, 'result'])->name('results.year')->whereNumber('year');
 // Route::get('/results/{year}/acknowledgements', [ResultController::class, 'acknowledgements'])->name('results.year.acknowledgements')->whereNumber('year');
 // Route::get('/results/{year}/about', [ResultController::class, 'about'])->name('results.year.about')->whereNumber('year');
 
 // Inertia Test
 // Route::get('/inertia/test', [InertiaController::class, 'test'])->name('inertia.test');
-Route::get('/inertia/results/{year}', [InertiaController::class, 'results'])->name('inertia.results')->whereNumber('year');
+Route::get('/results/{year}', [InertiaController::class, 'results'])->name('inertia.results')->whereNumber('year');
 // Route::get('/inertia/acknowledgements/{year}', [InertiaController::class, 'acknowledgements'])->name('inertia.results')->whereNumber('year');
 
 // Temporary Acknowledgements for 2024

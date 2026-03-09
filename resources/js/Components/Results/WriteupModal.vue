@@ -35,7 +35,7 @@
                             </div>
                         </div>
                         <p class="awardsStaffCredit has-text-llperiwinkle is-size-6"
-                            v-html="markdownit(modalNom.staff_credits)">
+                            v-html="parseStaffCredits(modalNom.staff_credits)">
                         </p>
                         <div class="awardsModalBody" v-html="markdownit(modalNom.description)">
                         </div>
@@ -173,6 +173,20 @@ function closeModal() {
     modalCat.value = null;
     modalHm.value = null;
 	document.documentElement.classList.remove('is-clipped');
+}
+
+function parseStaffCredits(str){
+    if (!str) return '';
+    let arr = [];
+    try {
+        arr = JSON.parse(str);
+        if (!Array.isArray(arr)) arr = [];
+    } catch (e) {
+        return str;
+    }
+    return arr.map(item =>
+        `<strong>${item.role}</strong>: ${item.name} `
+    ).join('');
 }
 
 function markdownit (it) {

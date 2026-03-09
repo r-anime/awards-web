@@ -20,6 +20,11 @@ html {
 	overflow-y: auto;
 }
 
+
+.modal{
+    --bulma-modal-content-width: 820px;
+}
+
 // Some other utility classes
 
 // When you have a title inside a level, the title's margin is lost. Apply this
