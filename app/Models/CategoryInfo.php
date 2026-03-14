@@ -11,6 +11,11 @@ class CategoryInfo extends Model
     // use HasFactory;
     public $timestamps = false;
 
+    /** primary key is category_id (1:1 with Category); table has no id column. */
+    protected $primaryKey = 'category_id';
+
+    public $incrementing = false;
+
     protected $fillable = ['category_id', 'description', 'sotc_blurb'];
 
     public function category(){
