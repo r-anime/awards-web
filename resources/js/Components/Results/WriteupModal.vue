@@ -34,9 +34,11 @@
                                 <div v-if="modalNom.jury_rank > 0" class="column"> Jury {{prettifyRank(modalNom.jury_rank)}} </div>
                             </div>
                         </div>
+                        <br/>
                         <p class="awardsStaffCredit has-text-llperiwinkle is-size-6"
                             v-html="parseStaffCredits(modalNom.staff_credits)">
                         </p>
+                        <hr class="has-flaired-underline" />
                         <div class="awardsModalBody" v-html="markdownit(modalNom.description)">
                         </div>
                     </div>
@@ -192,7 +194,7 @@ function parseStaffCredits(staffCredits) {
     }
     return arr
         .filter(item => item && (item.role != null || item.name != null))
-        .map(item => `<strong>${item.role ?? ''}</strong>: ${item.name ?? ''} `)
+        .map(item => `<strong>${item.role ?? ''}:</strong> ${item.name ?? ''} `)
         .join('');
 }
 
