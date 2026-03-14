@@ -3,7 +3,8 @@
     <!-- *Nominee Modal -->
     <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalNom!=null) }" v-if="modalNom!=null">
         <div class="modal-background" @click="closeModal"></div>
-        <div class="modal-content">
+        <div :class="{['result'+modalNom.id] : true,
+                     'modal-content': true}" >
             <div class="columns is-gapless">
                 <div class="awardsImage column is-5">
                     <div class="categoryItemImage" :title="modalNom.id" :style="nomineeImage(modalNom)">

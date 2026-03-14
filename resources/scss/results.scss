@@ -25,6 +25,29 @@ html {
     --bulma-modal-content-width: 56rem;
 }
 
+.result1758 {
+
+    .awardsModal {
+        overflow-y: hidden !important;
+    }
+    
+    .awardsModalBody {
+        overflow-y: hidden !important;
+        p {
+            animation: scrollUp 20s linear;
+            animation-iteration-count: infinite;
+        }
+    }
+}   
+@keyframes scrollUp {
+	from {
+		transform: translateY( 100% );
+	}
+	to {
+		transform: translateY( -200% );
+	}
+}
+
 // Some other utility classes
 
 // When you have a title inside a level, the title's margin is lost. Apply this
