@@ -51,7 +51,11 @@ class HonorableMentionsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['year'] = $this->getOwnerRecord()->year;
+                        return $data;
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),
