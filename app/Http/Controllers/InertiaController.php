@@ -15,6 +15,22 @@ class InertiaController extends Controller
         return Inertia::render('InertiaTest', ['username' => 'Jesus' ]);
     }
 
+    /**
+     * Redirect to the Inertia results page for the latest visible year.
+     */
+    public function latestResults(ResultService $resultservice)
+    {
+        $isHostOrHigher = auth()->check() && (int) auth()->user()->role >= 2;
+        $visibleYears = $isHostOrHigher
+            ? $resultservice->getYearList()->pluck('year')->sortDesc()->values()->all()
+            : $resultservice->getVisibleYearList();
+        $latestYear = $visibleYears[0] ?? null;
+        if ($latestYear === null) {
+            abort(404);
+        }
+        return redirect()->route('inertia.results', ['year' => $latestYear]);
+    }
+
     public function results(ResultService $resultservice, int $year) {
         $isHostOrHigher = auth()->check() && (int) auth()->user()->role >= 2;
         if (!$isHostOrHigher && !$resultservice->isYearVisible($year)) {

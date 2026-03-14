@@ -48,7 +48,7 @@ Route::post('/set-redirect-url', [ApplicationController::class, 'setRedirectUrl'
 
 // Result routes
 
-Route::get('/results', [ResultController::class, 'index'])->name('results.latest');
+Route::get('/results', [InertiaController::class, 'latestResults'])->name('results.latest');
 // Route::get('/results/acknowledgements', [ResultController::class, 'index'])->name('results.latest.acknowledgements');
 // Route::get('/results/about', [ResultController::class, 'index'])->name('results.latest.about');
 // Route::get('/results/archive', [ResultController::class, 'archive'])->name('results.archive');
