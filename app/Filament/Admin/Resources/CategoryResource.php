@@ -8,8 +8,9 @@ use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -73,14 +74,14 @@ class CategoryResource extends Resource
                             ->label('Description')
                             ->rows(4)
                             ->columnSpanFull(),
-                        Textarea::make('sotc_blurb')
+                        RichEditor::make('sotc_blurb')
                             ->label('SOTC blurb')
-                            ->rows(3)
                             ->nullable()
                             ->columnSpanFull(),
                     ])
                     ->statePath('info')
-                    ->collapsible(),
+                    ->collapsible()
+                    ->columnSpanFull(),
                 /*
                 TextInput::make('order')
                     ->required()
