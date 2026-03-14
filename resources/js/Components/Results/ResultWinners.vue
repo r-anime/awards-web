@@ -50,6 +50,7 @@
                     </div>
                     <div class="categorySubHeadItemText">
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
+                            {{juryWinner.name}}
                             <!-- <span v-if="category.entryType==='themes'">
 							{{data.themes[jury.id].split(/ - /gm)[1]}} ({{data.themes[jury.id].split(/ - /gm)[0]}})
 							</span>
@@ -75,6 +76,7 @@
                     </div>
                     <div class="categorySubHeadItemText">
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-light">
+                            {{pubWinner.name}}
                             <!-- <span v-if="category.entryType==='themes'">
 							{{data.themes[pub.id].split(/ - /gm)[1]}} ({{data.themes[pub.id].split(/ - /gm)[0]}})
 							</span>
