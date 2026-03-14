@@ -23,6 +23,11 @@ class HonorableMentionsRelationManager extends RelationManager
     {
         return $schema
             ->components([
+                TextInput::make('year')
+                    ->default(fn () => $this->getOwnerRecord()->year)
+                    ->required()
+                    ->numeric()
+                    ->hidden(),
                 TextInput::make('name')
                     ->label('Name')
                     ->required()
