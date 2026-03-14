@@ -9,7 +9,6 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -70,12 +69,12 @@ class CategoryResource extends Resource
                 Section::make('Category Info')
                     ->description('Optional description and blurb for this category.')
                     ->schema([
-                        Textarea::make('description')
-                            ->label('Description')
-                            ->rows(4)
+                        RichEditor::make('description')
+                            ->label('SOTC blurb')
+                            ->nullable()
                             ->columnSpanFull(),
                         RichEditor::make('sotc_blurb')
-                            ->label('SOTC blurb')
+                            ->label('Description')
                             ->nullable()
                             ->columnSpanFull(),
                     ])
