@@ -120,6 +120,11 @@
                             <span>Feedback</span>
                         </a>
                     </div>
+                    <div class="navbar-item">
+                        <a class="navbar-item" href="{{ route('credits') }}">
+                            <span>Credits</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </nav>
