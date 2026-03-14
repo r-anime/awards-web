@@ -194,7 +194,7 @@ function parseStaffCredits(staffCredits) {
     }
     return arr
         .filter(item => item && (item.role != null || item.name != null))
-        .map(item => `<strong>${item.role ?? ''}:</strong> ${item.name ?? ''} `)
+        .map(item => `<strong>${item.role ?? ''}:</strong> ${item.name ?? ''} <br/>`)
         .join('');
 }
 
