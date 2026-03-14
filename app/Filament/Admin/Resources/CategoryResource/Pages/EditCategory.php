@@ -30,6 +30,14 @@ class EditCategory extends EditRecord
         return $data;
     }
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        // Don't save 'info' to categories table; it's persisted to category_infos in afterSave()
+        unset($data['info']);
+
+        return $data;
+    }
+
     protected function afterSave(): void
     {
         $data = $this->form->getState();

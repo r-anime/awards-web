@@ -16,6 +16,9 @@ class CreateCategory extends CreateRecord
         // TODO: implement auto-determined order
         $data['order'] = 5;
 
+        // Don't save 'info' to categories table; it's persisted to category_infos in afterCreate()
+        unset($data['info']);
+
         return $data;
     }
 
