@@ -13,18 +13,7 @@
                     <div class="awardsModal has-text-light has-background-dark content">
                         <h3 class="categorySubHeadItemTextTitle title is-4 has-text-gold mb-10">
                             <span>{{ modalNom.name }}</span>
-                            <!-- <span v-if="modalCat.entryType==='themes'">
-                                {{results.themes[modalNom.id].split(/ - /gm)[1]}} ({{results.themes[modalNom.id].split(/ - /gm)[0]}})
-                            </span>
-                            <span>
-                                {{nomineeName(modalNom, this.modalCat)}}
-                            </span>
-                            <span v-if="modalCat.entryType==='characters' && !modalNom.altname">
-                                ({{results.characters[modalNom.id].anime}})
-                            </span>
-                            <span v-if="modalCat.entryType==='vas' && !modalNom.altname">
-                                ({{results.characters[modalNom.id].va}})
-                            </span> -->
+                            <span v-if="nomineeParentLabel" class="has-text-weight-normal"> ({{ nomineeParentLabel }})</span>
                         </h3>
                         <div class="is-marginless">
                             <div class="awardRanksContainer columns is-size-7 is-centered is-vcentered has-text-silver">
@@ -133,7 +122,7 @@
 </template>
 
 <script setup>
-import { ref, provide } from 'vue';
+import { ref, computed } from 'vue';
 import { nomineeImage } from '../../utils.js';
 import { marked } from 'marked';
 // const props = defineProps({ type: String, nominee: Object | null, category: Object | null })
@@ -141,6 +130,19 @@ const type = ref('');
 const modalNom = ref(null);
 const modalCat = ref(null);
 const modalHm = ref(null);
+
+const nomineeParentLabel = computed(() => {
+    const nom = modalNom.value;
+    if (!nom?.entry?.parent) {
+        return '';
+    }
+    const parent = nom.entry.parent;
+    const grandparent = parent?.parent;
+    if (grandparent?.name){
+        return `${parent.name} - ${grandparent.name}`;v
+    } 
+    return `${parent.name}` ?? '';
+});
 
 function prettifyRank (n) {
 	const rank = ['Winner', '2nd Place', '3rd Place'];
