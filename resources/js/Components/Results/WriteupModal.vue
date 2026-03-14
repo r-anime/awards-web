@@ -197,11 +197,14 @@ function parseStaffCredits(staffCredits) {
 }
 
 function markdownit (it) {
-	if (it){
-		return marked(it);
-	} else {
-		return "";
+	if (!it) {
+		return '';
 	}
+
+	const html = marked(it);
+
+	// Add target and rel to all links
+	return html.replace(/<a\b(?![^>]*\btarget=)([^>]*)>/gi, '<a target="_blank" rel="noopener"$1>');
 }
 
 defineExpose({

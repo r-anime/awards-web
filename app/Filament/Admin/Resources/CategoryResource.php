@@ -9,7 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -69,11 +69,11 @@ class CategoryResource extends Resource
                 Section::make('Category Info')
                     ->description('Optional description and blurb for this category.')
                     ->schema([
-                        RichEditor::make('description')
+                        MarkdownEditor::make('description')
                             ->label('SOTC blurb')
                             ->nullable()
                             ->columnSpanFull(),
-                        RichEditor::make('sotc_blurb')
+                        MarkdownEditor::make('sotc_blurb')
                             ->label('Description')
                             ->nullable()
                             ->columnSpanFull(),
