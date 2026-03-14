@@ -89,7 +89,17 @@ class ResultService
                         'public_rank',
                         'description',
                         'staff_credits',
+                        'entry_id',
                     ])
+                        ->with(['entry' => function ($query) {
+                            $query->select(['id', 'name', 'parent_id'])
+                                ->with(['parent' => function ($query) {
+                                    $query->select(['id', 'name', 'parent_id'])
+                                    ->with(['parent' => function ($query) {
+                                        $query->select(['id', 'name']);
+                                    }]);
+                                }]);
+                    }])
                         ->orderBy('jury_rank');
                 },
                 'honorablementions' => function ($query) {
@@ -107,6 +117,7 @@ class ResultService
                 'name',
                 'type',
                 'order',
+                'entry_type',
             ])
             ->orderBy('order')
             ->get();
