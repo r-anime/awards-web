@@ -34,7 +34,7 @@ html {
     .awardsModalBody {
         overflow-y: hidden !important;
         p {
-            animation: scrollUp 20s linear;
+            animation: scrollUp 30s linear;
             animation-iteration-count: infinite;
         }
     }
@@ -44,7 +44,7 @@ html {
 		transform: translateY( 100% );
 	}
 	to {
-		transform: translateY( -200% );
+		transform: translateY( -150% );
 	}
 }
 
