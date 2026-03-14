@@ -12,7 +12,10 @@ class ResultController extends Controller
     //
     public function index(ResultService $resultservice)
     {
-        $visibleYears = $resultservice->getVisibleYearList();
+        $isHostOrHigher = auth()->check() && (int) auth()->user()->role >= 2;
+        $visibleYears = $isHostOrHigher
+            ? $resultservice->getYearList()->pluck('year')->sortDesc()->values()->all()
+            : $resultservice->getVisibleYearList();
         $latest_year = $visibleYears[0] ?? null;
         if ($latest_year === null) {
             abort(404);
@@ -30,7 +33,8 @@ class ResultController extends Controller
 
     public function result(ResultService $resultservice, int $year)
     {
-        if (!$resultservice->isYearVisible($year)) {
+        $isHostOrHigher = auth()->check() && (int) auth()->user()->role >= 2;
+        if (!$isHostOrHigher && !$resultservice->isYearVisible($year)) {
             abort(404);
         }
 

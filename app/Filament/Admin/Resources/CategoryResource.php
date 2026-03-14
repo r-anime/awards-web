@@ -8,6 +8,8 @@ use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -64,6 +66,21 @@ class CategoryResource extends Resource
                         'character' => 'Character'
                     ])
                     ->default('genre'),
+                Section::make('Category Info')
+                    ->description('Optional description and blurb for this category.')
+                    ->schema([
+                        Textarea::make('description')
+                            ->label('Description')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                        Textarea::make('sotc_blurb')
+                            ->label('SOTC blurb')
+                            ->rows(3)
+                            ->nullable()
+                            ->columnSpanFull(),
+                    ])
+                    ->statePath('info')
+                    ->collapsible(),
                 /*
                 TextInput::make('order')
                     ->required()

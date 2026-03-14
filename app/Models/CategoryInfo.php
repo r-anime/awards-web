@@ -11,6 +11,8 @@ class CategoryInfo extends Model
     // use HasFactory;
     public $timestamps = false;
 
+    protected $fillable = ['category_id', 'description', 'sotc_blurb'];
+
     public function category(){
         return $this->belongsTo(Category::class);
     }

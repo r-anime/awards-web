@@ -16,7 +16,8 @@ class InertiaController extends Controller
     }
 
     public function results(ResultService $resultservice, int $year) {
-        if (!$resultservice->isYearVisible($year)) {
+        $isHostOrHigher = auth()->check() && (int) auth()->user()->role >= 2;
+        if (!$isHostOrHigher && !$resultservice->isYearVisible($year)) {
             abort(404);
         }
         $results = $resultservice->getResults($year)->groupBy('type');

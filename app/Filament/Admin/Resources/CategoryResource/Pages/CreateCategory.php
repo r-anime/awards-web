@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\CategoryResource\Pages;
 
 use App\Filament\Admin\Resources\CategoryResource;
+use App\Models\CategoryInfo;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -16,5 +17,18 @@ class CreateCategory extends CreateRecord
         $data['order'] = 5;
 
         return $data;
+    }
+
+    protected function afterCreate(): void
+    {
+        $data = $this->form->getState();
+        $info = $data['info'] ?? null;
+        if ($info !== null) {
+            CategoryInfo::create([
+                'category_id' => $this->record->id,
+                'description' => $info['description'] ?? '',
+                'sotc_blurb' => $info['sotc_blurb'] ?? null,
+            ]);
+        }
     }
 }
