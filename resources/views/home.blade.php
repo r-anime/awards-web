@@ -96,6 +96,10 @@
                             <span>Vote Now</span>
                         </a>
                     @endif
+                    
+                    <a href="{{ route('results.latest') }}" class="button is-primary is-medium">
+                        <span>View Results</span>
+                    </a>
                         
                 </div>
             </div>
