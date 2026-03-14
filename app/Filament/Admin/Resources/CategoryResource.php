@@ -135,6 +135,7 @@ class CategoryResource extends Resource
         return [
             RelationManagers\NomineesRelationManager::class,
             RelationManagers\EligiblesRelationManager::class,
+            RelationManagers\HonorableMentionsRelationManager::class,
         ];
     }
 
