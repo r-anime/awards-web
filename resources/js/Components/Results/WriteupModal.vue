@@ -175,18 +175,25 @@ function closeModal() {
 	document.documentElement.classList.remove('is-clipped');
 }
 
-function parseStaffCredits(str){
-    if (!str) return '';
+function parseStaffCredits(staffCredits) {
+    if (!staffCredits) return '';
     let arr = [];
-    try {
-        arr = JSON.parse(str);
-        if (!Array.isArray(arr)) arr = [];
-    } catch (e) {
-        return str;
+    if (Array.isArray(staffCredits)) {
+        arr = staffCredits;
+    } else if (typeof staffCredits === 'string') {
+        try {
+            arr = JSON.parse(staffCredits);
+            if (!Array.isArray(arr)) arr = [];
+        } catch (e) {
+            return staffCredits;
+        }
+    } else {
+        return '';
     }
-    return arr.map(item =>
-        `<strong>${item.role}</strong>: ${item.name} `
-    ).join('');
+    return arr
+        .filter(item => item && (item.role != null || item.name != null))
+        .map(item => `<strong>${item.role ?? ''}</strong>: ${item.name ?? ''} `)
+        .join('');
 }
 
 function markdownit (it) {
