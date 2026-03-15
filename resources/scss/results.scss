@@ -34,14 +34,14 @@ html {
     .awardsModalBody {
         overflow-y: hidden !important;
         p {
-            animation: scrollUp 30s linear;
+            animation: scrollUp 35s linear;
             animation-iteration-count: infinite;
         }
     }
 }   
 @keyframes scrollUp {
 	from {
-		transform: translateY( 100% );
+		transform: translateY( 80% );
 	}
 	to {
 		transform: translateY( -150% );
