@@ -42,8 +42,14 @@ class InertiaController extends Controller
             'result' => $results]);
     }
 
-    public function acknowledgements() {
-        
+    public function acknowledgements(ResultService $resultservice, int $year) {
+        $acknowledgements = $resultservice->getAcknowledgements($year);
+        // dd($acknowledgements);
+        return Inertia::render('Results/Acknowledgements',
+        [
+            'year' => $year,
+            'acknowledgements' => $acknowledgements
+        ]);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Acknowledgement;
 use App\Models\Category;
 use App\Models\Option;
 use App\Models\Result;
@@ -128,8 +129,9 @@ class ResultService
 
     public function getAcknowledgements(int $year)
     {
-        // Paused on this until acknowledgements are uploaded to db
-        abort(404);
+        // Probably don't need cache
+        $acknowledgements = Acknowledgement::where('year', $year)->get();
+        return $acknowledgements;
     }
 
     public function getAbout(int $year)
