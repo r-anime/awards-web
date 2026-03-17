@@ -130,7 +130,7 @@ class ResultService
     public function getAcknowledgements(int $year)
     {
         // Probably don't need cache
-        $acknowledgements = Acknowledgement::where('year', $year)->get();
+        $acknowledgements = Acknowledgement::where('year', $year)->orderBy('order')->get();
         return $acknowledgements;
     }
 
