@@ -7,12 +7,17 @@
                     <div v-for="acknowledgement in acknowledgements">
                         <h2 class="title is-5 has-text-gold has-text-centered pb-20">{{ acknowledgement.title }}</h2>
                         <div class="columns mb-6">
-                            <div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-                                {{  acknowledgement.english }}
-                            </div>
-                            <div v-if="acknowledgement.japanese" class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
-                                {{ acknowledgement.japanese }}
-                            </div>
+                            <div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center"
+                                :style="'white-space: pre-wrap;'" v-text="acknowledgement.content.english"
+                            />
+                            <div v-if="acknowledgement.content.japanese" class="column has-text-centered has-text-periwinkle is-flex is-align-items-center"
+                                :style="'white-space: pre-wrap;'" v-text="acknowledgement.content.japanese"
+                            />
+                        </div>
+                        <div v-if="acknowledgement.content.extra" class="columns mb-6">
+                            <div class="column has-text-centered has-text-periwinkle is-flex-grow-1 is-align-items-center"
+                                :style="'white-space: pre-wrap;'" v-html="markdownit(acknowledgement.content.extra)"
+                            />
                         </div>
                     </div>
                 </div>
@@ -22,5 +27,8 @@
 </template>
 
 <script setup>
+import { markdownit } from '../../utils';
+
 const props = defineProps({ acknowledgements: Array });
+props.acknowledgements.forEach(ack => ack.content = JSON.parse(ack.content));
 </script>

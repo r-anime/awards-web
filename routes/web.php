@@ -63,7 +63,7 @@ Route::get('/results/{year}', [InertiaController::class, 'results'])->name('iner
 
 // Temporary Acknowledgements for 2024
 Route::get('/acknowledgements', function () {
-    return Inertia::render('Acknowledgements', []);
+    return Inertia::render('Acknowledgements2025', []);
 })->name('acknowledgements');
 
 Route::get('/credits', App\Http\Controllers\CreditsController::class)->name('credits');

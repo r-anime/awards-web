@@ -1,4 +1,4 @@
-<!-- Todo: Titles, Category, Jurors, Vote stats  -->
+<!-- Todo: Jurors, Vote stats  -->
 <template>
     <!-- *Nominee Modal -->
     <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalNom!=null) }" v-if="modalNom!=null">
@@ -37,7 +37,7 @@
         </div>
         <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div>
-    <!-- Todo: HM Modal -->
+    <!-- HM Modal -->
     <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalHm!=null) }" v-if="modalHm!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
@@ -51,7 +51,7 @@
         </div>
         <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
     </div>
-    <!-- Todo: Category Modal -->
+    <!-- Category Modal -->
     <div class="modal animated fast fadeIn" :class="{ 'is-active': (modalCat!=null) }" v-if="modalCat!=null">
         <div class="modal-background" @click="closeModal"></div>
         <div class="modal-content">
@@ -124,8 +124,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { nomineeImage } from '../../utils.js';
-import { marked } from 'marked';
+import { nomineeImage, markdownit } from '../../utils.js';
 // const props = defineProps({ type: String, nominee: Object | null, category: Object | null })
 const type = ref('');
 const modalNom = ref(null);
@@ -201,16 +200,7 @@ function parseStaffCredits(staffCredits) {
         .join('');
 }
 
-function markdownit (it) {
-	if (!it) {
-		return '';
-	}
 
-	const html = marked(it);
-
-	// Add target and rel to all links
-	return html.replace(/<a\b(?![^>]*\btarget=)([^>]*)>/gi, '<a target="_blank" rel="noopener"$1>');
-}
 
 defineExpose({
     openNomModal,
