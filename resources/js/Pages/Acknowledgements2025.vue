@@ -158,7 +158,7 @@
 					</div>
 
 					<h2 class="title is-5 has-text-gold has-text-centered pb-20">
-						Milky subway Director kameyama 亀山
+						Milky subway Director Yohei Kameyama 亀山陽平
 					</h2>
 					<div class="columns mb-6">
 						<div class="column has-text-centered has-text-periwinkle is-flex is-align-items-center">
