@@ -42,13 +42,15 @@ class ImportAcknowledgements extends Command
                     $contentArr['japanese'] = $ack['japanese'];
                 if(array_key_exists('extra', $ack))
                     $contentArr['extra'] = $ack['extra'];
+                $order = $ack['order'] ?? 5;
                 Acknowledgement::updateOrCreate([
                     'year' => $year,
                     'title' => $title
                 ],
                 [
                     'subtitle' => '',
-                    'content' => json_encode($contentArr)
+                    'content' => json_encode($contentArr),
+                    'order' => $order
                 ]);
             }
         }
