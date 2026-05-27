@@ -49,7 +49,7 @@ class ImportAcknowledgements extends Command
                 ],
                 [
                     'subtitle' => '',
-                    'content' => json_encode($contentArr),
+                    'content' => $contentArr,
                     'order' => $order
                 ]);
             }

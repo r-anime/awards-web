@@ -9,4 +9,9 @@ class Acknowledgement extends Model
 {
     // use HasFactory;
     public $timestamps = false;
+
+    
+    protected $casts = [
+        'content' => 'array',
+    ];
 }
