@@ -85,6 +85,9 @@ class ImportOpEdArchive extends Command
 
 
 
+
+
+
                         // $entry_id = $json_themes_map[key];
                         $json_entry = $json_themes_map[$result_id];
                         $json_name = explode(' - ', $json_entry);
@@ -99,12 +102,18 @@ class ImportOpEdArchive extends Command
                         if ($db_entry !== NULL) {
                             // $this->info($db_entry['id']);
 
-
                             // $this->info($entry_name);
                             // $entry_image = $db_entry['image'];
                             $entry_id = $db_entry['id'];
 
+
+                            $imageContent = file_get_contents($alt_img);
+                            $theme_image_filename = '/entry/theme-'.$entry_id.'.jpg';
+                            Storage::disk('public')->put($theme_image_filename, $imageContent);
+
                             // $this->info($alt_img);
+
+
 
                             $new_result = Result::updateOrCreate (
                                 [
@@ -113,7 +122,7 @@ class ImportOpEdArchive extends Command
                                     'category_id' => $category_id,
                                 ],
                                 [
-                                    'image' => $alt_img,
+                                    'image' => $theme_image_filename,
                                     'entry_id' => $entry_id,
                                     'jury_rank' => $jury_rank,
                                     'public_rank' => $public_vote,
