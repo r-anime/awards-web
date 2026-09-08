@@ -40,12 +40,13 @@
 			<div class="is-clearfix my-3"></div>
       <!-- Final rankings -->
 			<div>
+				<!-- Todo: Fix clipping of winners not present in both pub and jury -->
 					<transition-group name="nominees" tag="div" class="categoryNominationCards columns is-gapless is-marginless is-mobile is-multiline">
 						<div class="categoryRankCard column is-half-mobile" v-for="(nom, index) in nomCurrentOrder"
 						:key="nom.id" 
 						@click="openNomModal(nom)"
-            >
-            <!-- Todo: implement modal -->
+            			>
+            <!-- Todo: Fix modal -->
             <!-- @click="emitNomModal(nom)" -->
 							<div class="categoryNominationItem" >
 								<div class="categoryItemImage" :title="nom.id" :style="nomineeImage(nom)">
@@ -88,8 +89,12 @@ import { ref, computed, inject } from 'vue';
 import ResultWinners from './ResultWinners.vue';
 const props = defineProps({ category: Object });
 // ? Can be computed
-const nomJuryOrder = props.category.results.slice().sort((nom1, nom2) => nom1.jury_rank - nom2.jury_rank);
-const nomPublicOrder = props.category.results.slice().sort((nom1, nom2) => nom2.public_rank - nom1.public_rank);
+const nomJuryOrder = props.category.results.slice()
+	.filter((jurynom) => jurynom.jury_rank > 0)
+	.sort((nom1, nom2) => nom1.jury_rank - nom2.jury_rank);
+const nomPublicOrder = props.category.results.slice()
+	.filter((pubnom) => pubnom.public_rank > 0)
+	.sort((nom1, nom2) => nom2.public_rank - nom1.public_rank);
 let totalVotes = 0;
 
 // Calculate public rank
