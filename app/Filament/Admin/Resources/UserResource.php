@@ -114,7 +114,8 @@ class UserResource extends Resource
                             4 => 'Site Admin',
                         ];
                         return $roles[$state] ?? 'Unknown';
-                    }),
+                    })
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime(),
