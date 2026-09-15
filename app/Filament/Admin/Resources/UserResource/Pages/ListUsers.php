@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 class ListUsers extends ListRecords
@@ -48,13 +49,15 @@ class ListUsers extends ListRecords
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (int $state): string => match ($state) {
+                        -1 => 'Restricted',
                         0 => 'User',
                         1 => 'Juror',
                         2 => 'Host',
                         3 => 'Moderator',
                         4 => 'Site Admin',
                         default => 'Unknown',
-                    }),
+                    })
+                    ->sortable(),
                 
                 TextColumn::make('flags')
                     ->label('Flags')
@@ -67,7 +70,17 @@ class ListUsers extends ListRecords
                     ->sortable(),
             ])
             ->filters([
-                // Add filters here if needed
+                Tables\Filters\SelectFilter::make('role')
+                    ->label('Role')
+                    ->options([
+                        -1 => 'Restricted',
+                        0 => 'User',
+                        1 => 'Juror',
+                        2 => 'Host',
+                        3 => 'Moderator',
+                        4 => 'Site Admin',
+                    ])
+                    ->multiple(),
             ])
             ->actions([
                 Actions\EditAction::make()
