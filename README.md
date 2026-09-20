@@ -63,6 +63,19 @@ php artisan db:seed --class=DevelopmentResultsSeeder
 php artisan db:seed --class=DevelopmentAcknowledgementsSeeder
 ```
 
+The development results use a bundled fallback image when the archive does not specify one. To enrich the 2024 archive with current AniList metadata and downloaded cover images, run:
+
+```bash
+php artisan storage:link
+php artisan app:import-archive 2024 --anilist-only
+```
+
+No AniList API key is required. The importer calls AniList for anime and character data and deliberately pauses between requests to respect the service. It may take a few minutes. Downloaded files are written under `storage/app/public/entry` and served through the `public/storage` symbolic link. Omit `--anilist-only` to also query AnimeThemes for opening and ending metadata; this is substantially slower and is unnecessary for the bundled 2024 results because those entries have custom images.
+
+For voting data rather than a published archive, `php artisan app:import-anilist 2024` imports the full AniList catalog for that year. Add `--chars` to include characters, `--chars --vas` to include Japanese voice actors, or `--queue` to dispatch image downloads to the queue worker. This broader command does not replace the archive command because it does not update the result-specific image records used by `/results`.
+
+Running `php artisan migrate:fresh --seed` later resets database references to the offline seed defaults. Run the archive importer again if you want to restore the enriched metadata after rebuilding the database.
+
 The final build is needed before first use because the application and admin panel expect a Vite manifest in `public/build`.
 
 For Reddit sign-in, create a Reddit OAuth application and replace the placeholder `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REDIRECT_URI` values in `.env`. Keep `APP_URL` and the callback URL consistent with the hostname used to serve the application. The placeholder Cloudflare Turnstile keys can remain in local development while `CFTURNSTILE_ENABLE=false`.
