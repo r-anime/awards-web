@@ -1,11 +1,11 @@
 name: Deploy production
 
 on:
-  pull_request:
-    branches:
-      - master
-    types:
-      - closed
+  # pull_request:
+  #   branches:
+  #     - master
+  #   types:
+  #     - closed
   workflow_dispatch:
 
 concurrency:

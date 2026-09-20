@@ -30,7 +30,7 @@ Tests run with [PHPUnit 11](https://docs.phpunit.de/en/11.5/), and PHP formattin
 | `resources/js/Components` | Reusable Vue components. |
 | `resources/css`, `resources/scss` | Frontend styles compiled by Vite. |
 | `database/migrations` | Database schema history. |
-| `database/seeders` | Initial site options used by a fresh database. |
+| `database/seeders` | Initial site options and offline development archive data. |
 | `tests/Feature`, `tests/Unit` | HTTP-level and isolated PHPUnit tests. |
 | `public` | Web entry point and static images/fonts. Generated Vite assets are written to `public/build`. |
 
@@ -56,13 +56,26 @@ php artisan migrate --seed
 npm run build
 ```
 
+In the local environment, the default seeder loads the bundled 2024 results and the 2021-2025 acknowledgement archive without making external API requests. This makes `/results`, `/results/2024`, and `/acknowledgements/{year}` useful immediately. In other environments, `DatabaseSeeder` only creates the site options; bundled content can be loaded explicitly with:
+
+```bash
+php artisan db:seed --class=DevelopmentResultsSeeder
+php artisan db:seed --class=DevelopmentAcknowledgementsSeeder
+```
+
 The final build is needed before first use because the application and admin panel expect a Vite manifest in `public/build`.
 
 For Reddit sign-in, create a Reddit OAuth application and replace the placeholder `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REDIRECT_URI` values in `.env`. Keep `APP_URL` and the callback URL consistent with the hostname used to serve the application. The placeholder Cloudflare Turnstile keys can remain in local development while `CFTURNSTILE_ENABLE=false`.
 
 ## Development loop
 
-Run the backend and Vite development server in separate terminals:
+Start the Laravel server, queue worker, and Vite development server together:
+
+```bash
+npm run dev:all
+```
+
+They can also be run separately:
 
 ```bash
 # Terminal 1: Laravel application
@@ -77,6 +90,8 @@ By default, `php artisan serve` makes the site available at <http://127.0.0.1:80
 ```bash
 php artisan queue:work
 ```
+
+The public home, results, acknowledgements, feedback, and credits routes work with the local seed data. Application, nomination, final-vote, and admin workflows require a Reddit OAuth application and may also depend on active voting dates and additional awards data configured through the dashboard.
 
 Typical commands while making a change are:
 
@@ -104,7 +119,7 @@ php artisan migrate:fresh --seed
 php artisan optimize:clear
 ```
 
-`migrate:fresh` deletes all data in the selected database, so only use it against a disposable local database. The PHPUnit configuration currently inherits the configured database connection; confirm that `.env` points to the local SQLite file before running database-writing tests.
+`migrate:fresh` deletes all data in the selected database, so only use it against a disposable local database. PHPUnit uses an isolated in-memory SQLite database and does not modify the database configured in `.env`.
 
 There are currently no JavaScript test or lint scripts in `package.json`. For most changes, a good pre-push check is:
 
