@@ -1,0 +1,70 @@
+name: PHP lint
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: php-formatting-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: intl, mbstring, pdo_sqlite
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate Composer configuration
+        run: composer validate --strict --no-check-publish
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-php-8.4-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-php-8.4-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Check PHP formatting
+        env:
+          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          base="$BASE_SHA"
+
+          if [[ -z "$base" || "$base" =~ ^0+$ ]] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            git fetch origin "$DEFAULT_BRANCH"
+            base=$(git merge-base HEAD "origin/$DEFAULT_BRANCH")
+          fi
+
+          php_files=()
+          while IFS= read -r file; do
+            php_files+=("$file")
+          done < <(git diff --name-only --diff-filter=ACMR "$base" HEAD -- '*.php')
+
+          if (( ${#php_files[@]} == 0 )); then
+            echo "No changed PHP files to check."
+            exit 0
+          fi
+
+          ./vendor/bin/pint --test "${php_files[@]}"
