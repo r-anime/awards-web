@@ -45,14 +45,30 @@ class ApplicationController extends Controller
      */
     public function store(Request $request)
     {
-
-        // All fields are now optional - no validation required
-
         $user = auth()->user();
         $application = Application::orderBy('year', 'desc')->first();
         if (!$application) {
             return redirect()->route('application.index')->with('error', 'No application found.');
         }
+
+        // Answers stay optional; only the essay length is enforced. The limit and
+        // its 5000 default mirror what the form renders, so the browser's check can
+        // never produce input the server rejects.
+        $rules = [];
+        $messages = [];
+        foreach ($application->form as $question) {
+            if (($question['type'] ?? null) !== 'essay') {
+                continue;
+            }
+
+            $limit = $question['character_limit'] ?? 5000;
+            $field = 'question_'.$question['id'];
+
+            $rules[$field] = ['nullable', 'string', 'max:'.$limit];
+            $messages[$field.'.max'] = 'Your answer exceeds the '.number_format($limit).' character limit.';
+        }
+
+        $request->validate($rules, $messages);
 
         // String tracking changed questions
         $changed_questions = '';
