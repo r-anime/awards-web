@@ -14,6 +14,7 @@ fi
 has_php=false
 has_php_intl=false
 has_php_sqlite=false
+has_sqlite_cli=false
 has_composer=false
 has_node=false
 has_npm=false
@@ -26,6 +27,7 @@ if command -v php >/dev/null 2>&1 && php -r 'exit(version_compare(PHP_VERSION, "
 fi
 
 command -v composer >/dev/null 2>&1 && has_composer=true
+command -v sqlite3 >/dev/null 2>&1 && has_sqlite_cli=true
 
 if command -v node >/dev/null 2>&1 && node -e 'process.exit(Number(process.versions.node.split(".")[0]) >= 18 ? 0 : 1)'; then
     has_node=true
@@ -37,6 +39,7 @@ missing=()
 $has_php || missing+=("PHP 8.2+")
 $has_php_intl || missing+=("PHP intl extension")
 $has_php_sqlite || missing+=("PHP SQLite extension")
+$has_sqlite_cli || missing+=("sqlite3")
 $has_composer || missing+=("Composer")
 $has_node || missing+=("Node.js 18+")
 $has_npm || missing+=("npm")
@@ -75,6 +78,7 @@ install_macos() {
     if ! $has_php || ! $has_php_intl || ! $has_php_sqlite; then
         packages+=("php")
     fi
+    $has_sqlite_cli || packages+=("sqlite")
     $has_composer || packages+=("composer")
     if ! $has_node || ! $has_npm; then
         packages+=("node")
@@ -99,6 +103,7 @@ install_debian() {
     if ! $has_php || ! $has_php_intl || ! $has_php_sqlite; then
         packages+=(php-cli php-intl php-sqlite3 php-mbstring php-xml php-curl unzip)
     fi
+    $has_sqlite_cli || packages+=(sqlite3)
     $has_composer || packages+=(composer)
 
     if [[ ${#packages[@]} -gt 0 ]]; then
@@ -147,6 +152,10 @@ if ! php -m | grep -qi '^intl$'; then
 fi
 if ! php -m | grep -Eqi '^(pdo_sqlite|sqlite3)$'; then
     echo "A PHP SQLite extension is not available." >&2
+    errors=1
+fi
+if ! command -v sqlite3 >/dev/null 2>&1; then
+    echo "The sqlite3 command is not available." >&2
     errors=1
 fi
 if ! command -v composer >/dev/null 2>&1; then

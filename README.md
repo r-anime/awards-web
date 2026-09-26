@@ -60,7 +60,7 @@ Run the project setup:
 bash scripts/setup.sh
 ```
 
-The setup script installs project dependencies, creates `.env`, generates the application key, initializes and seeds the local SQLite database, and builds the frontend. Later runs are a no-op after setup completes successfully.
+The setup script installs project dependencies, creates `.env`, generates the application key, initializes and seeds the local SQLite database, and builds the frontend. Laravel loads the committed SQLite schema snapshot before running newer migrations, so historical MySQL-specific migrations do not need to be changed. Later runs are a no-op after setup completes successfully.
 
 Use `bash scripts/setup.sh --force` to delete `.env`, the local SQLite database and its data, installed dependencies, and built assets, then repeat setup from scratch.
 
@@ -73,6 +73,7 @@ Optional post-setup commands:
 | `php artisan app:import-archive 2024` | Enrich bundled results using AniList and the slower AnimeThemes import. |
 | `php artisan app:import-anilist 2024` | Import the full AniList catalog for voting data; add `--chars`, `--chars --vas`, or `--queue` as needed. |
 | `php artisan migrate:fresh --seed` | Delete local database data, rebuild the schema, and reload the default seed data. |
+| `php artisan schema:dump --database=sqlite` | Regenerate `database/schema/sqlite-schema.sql` from a fully migrated SQLite database after schema changes. |
 
 For Reddit sign-in, create a Reddit OAuth application and replace the placeholder `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REDIRECT_URI` values in `.env`. Keep `APP_URL` and the callback URL consistent with the hostname used to serve the application. The placeholder Cloudflare Turnstile keys can remain in local development while `CFTURNSTILE_ENABLE=false`.
 

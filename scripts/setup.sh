@@ -53,8 +53,32 @@ if ! grep -Eq '^APP_KEY=.+$' .env; then
     php artisan key:generate
 fi
 
-mkdir -p database
-touch database/database.sqlite
+db_connection=$(grep -E '^DB_CONNECTION=' .env | tail -n 1 | cut -d= -f2- | tr -d "\"'" || true)
+db_connection=${db_connection:-sqlite}
+
+if [[ "$db_connection" == "sqlite" ]]; then
+    sqlite_database=$(grep -E '^DB_DATABASE=' .env | tail -n 1 | cut -d= -f2- | tr -d "\"'" || true)
+    sqlite_database=${sqlite_database:-database/database.sqlite}
+
+    if [[ "$sqlite_database" != /* ]]; then
+        sqlite_database="$repository_root/$sqlite_database"
+    fi
+
+    mkdir -p "$(dirname "$sqlite_database")"
+    touch "$sqlite_database"
+
+    if [[ ! -f "$completion_marker" ]] && \
+        [[ -s "$sqlite_database" ]] && \
+        sqlite3 "$sqlite_database" \
+            "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'migrations';" 2>/dev/null | grep -q '^1$' && \
+        ! sqlite3 "$sqlite_database" \
+            "SELECT 1 FROM migrations WHERE migration = '2026_03_17_231806_add_order_to_acknowledgements' LIMIT 1;" 2>/dev/null | grep -q '^1$'; then
+        backup="$sqlite_database.setup-backup-$(date +%Y%m%d%H%M%S)"
+        echo "Backing up the partially migrated SQLite database to $backup..."
+        mv "$sqlite_database" "$backup"
+        touch "$sqlite_database"
+    fi
+fi
 
 echo "Migrating the local database..."
 php artisan migrate
