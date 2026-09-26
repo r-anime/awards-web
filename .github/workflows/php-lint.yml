@@ -1,4 +1,4 @@
-name: PHP formatting
+name: PHP lint
 
 on:
   push:
