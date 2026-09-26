@@ -44,39 +44,35 @@ Prerequisites:
 - [Composer](https://getcomposer.org/doc/00-intro.md)
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-Install the project and initialize a local SQLite database:
+On macOS, Ubuntu, Debian, or Windows through WSL, install any missing prerequisites from the repository root:
 
 ```bash
-composer install
-npm ci
-cp .env.example .env
-php artisan key:generate
-touch database/database.sqlite
-php artisan migrate --seed
-npm run build
+bash scripts/install-prerequisites.sh
 ```
 
-In the local environment, the default seeder loads the bundled 2024 results and the 2021-2025 acknowledgement archive without making external API requests. This makes `/results`, `/results/2024`, and `/acknowledgements/{year}` useful immediately. In other environments, `DatabaseSeeder` only creates the site options; bundled content can be loaded explicitly with:
+The script checks versions and required PHP extensions, installs anything missing, and verifies the result. On macOS it uses [Homebrew](https://brew.sh/), installing Homebrew first if necessary. On Ubuntu, Debian, and WSL it uses `apt-get` and NodeSource. Use `bash scripts/install-prerequisites.sh --check` to check without installing anything.
+
+If you use `nvm`, running `nvm install` in this repository installs the Node.js version specified by `.nvmrc`; npm is included with Node.js.
+
+Run the project setup:
 
 ```bash
-php artisan db:seed --class=DevelopmentResultsSeeder
-php artisan db:seed --class=DevelopmentAcknowledgementsSeeder
+bash scripts/setup.sh
 ```
 
-The development results use a bundled fallback image when the archive does not specify one. To enrich the 2024 archive with current AniList metadata and downloaded cover images, run:
+The setup script installs project dependencies, creates `.env`, generates the application key, initializes and seeds the local SQLite database, and builds the frontend. Later runs are a no-op after setup completes successfully.
 
-```bash
-php artisan storage:link
-php artisan app:import-archive 2024 --anilist-only
-```
+Use `bash scripts/setup.sh --force` to delete `.env`, the local SQLite database and its data, installed dependencies, and built assets, then repeat setup from scratch.
 
-No AniList API key is required. The importer calls AniList for anime and character data and deliberately pauses between requests to respect the service. It may take a few minutes. Downloaded files are written under `storage/app/public/entry` and served through the `public/storage` symbolic link. Omit `--anilist-only` to also query AnimeThemes for opening and ending metadata; this is substantially slower and is unnecessary for the bundled 2024 results because those entries have custom images.
+Optional post-setup commands:
 
-For voting data rather than a published archive, `php artisan app:import-anilist 2024` imports the full AniList catalog for that year. Add `--chars` to include characters, `--chars --vas` to include Japanese voice actors, or `--queue` to dispatch image downloads to the queue worker. This broader command does not replace the archive command because it does not update the result-specific image records used by `/results`.
-
-Running `php artisan migrate:fresh --seed` later resets database references to the offline seed defaults. Run the archive importer again if you want to restore the enriched metadata after rebuilding the database.
-
-The final build is needed before first use because the application and admin panel expect a Vite manifest in `public/build`.
+| Command | Purpose |
+| --- | --- |
+| `php artisan storage:link` | Expose downloaded entry images through `public/storage`. |
+| `php artisan app:import-archive 2024 --anilist-only` | Enrich bundled 2024 results with AniList metadata and images without requiring an API key. |
+| `php artisan app:import-archive 2024` | Enrich bundled results using AniList and the slower AnimeThemes import. |
+| `php artisan app:import-anilist 2024` | Import the full AniList catalog for voting data; add `--chars`, `--chars --vas`, or `--queue` as needed. |
+| `php artisan migrate:fresh --seed` | Delete local database data, rebuild the schema, and reload the default seed data. |
 
 For Reddit sign-in, create a Reddit OAuth application and replace the placeholder `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REDIRECT_URI` values in `.env`. Keep `APP_URL` and the callback URL consistent with the hostname used to serve the application. The placeholder Cloudflare Turnstile keys can remain in local development while `CFTURNSTILE_ENABLE=false`.
 
