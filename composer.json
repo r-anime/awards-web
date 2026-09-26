@@ -5,7 +5,7 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": ">=8.2 <8.5",
         "ext-intl": "*",
         "dutchcodingcompany/filament-socialite": "^3.0",
         "filament/filament": "^4.0",

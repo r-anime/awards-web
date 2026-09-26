@@ -4,7 +4,7 @@ This repository contains the web application used to run the r/anime Awards. It 
 
 ## Technology overview
 
-The application is a [Laravel 11](https://laravel.com/docs/11.x) project running on [PHP 8.2+](https://www.php.net/docs.php). Its server-rendered pages use [Blade](https://laravel.com/docs/11.x/blade), while interactive voting screens use [Livewire 3](https://livewire.laravel.com/docs/3.x/quickstart) and [Alpine.js](https://alpinejs.dev/start-here).
+The application is a [Laravel 11](https://laravel.com/docs/11.x) project running on [PHP 8.2 through 8.4](https://www.php.net/docs.php). Its server-rendered pages use [Blade](https://laravel.com/docs/11.x/blade), while interactive voting screens use [Livewire 3](https://livewire.laravel.com/docs/3.x/quickstart) and [Alpine.js](https://alpinejs.dev/start-here).
 
 Results and acknowledgement pages use [Inertia.js](https://inertiajs.com/) with [Vue 3](https://vuejs.org/guide/introduction.html). Styles are written in CSS and [Sass](https://sass-lang.com/documentation/), with [Bulma](https://bulma.io/documentation/) used by parts of the interface. [Vite](https://vite.dev/guide/) builds and serves the frontend assets through the [Laravel Vite plugin](https://laravel.com/docs/11.x/vite).
 
@@ -40,7 +40,7 @@ The main public route definitions are in `routes/web.php`. `/` serves the home p
 
 Prerequisites:
 
-- PHP 8.2 or newer, including the `intl` and SQLite extensions
+- PHP 8.2 through 8.4, including the `intl` and SQLite extensions
 - [Composer](https://getcomposer.org/doc/00-intro.md)
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
@@ -50,7 +50,7 @@ On macOS, Ubuntu, Debian, or Windows through WSL, install any missing prerequisi
 bash scripts/install-prerequisites.sh
 ```
 
-The script checks versions and required PHP extensions, installs anything missing, and verifies the result. On macOS it uses [Homebrew](https://brew.sh/), installing Homebrew first if necessary. On Ubuntu, Debian, and WSL it uses `apt-get` and NodeSource. Use `bash scripts/install-prerequisites.sh --check` to check without installing anything.
+The script checks versions and required PHP extensions, installs anything missing, and verifies the result. On macOS it uses [Homebrew](https://brew.sh/), installing and linking PHP 8.4 and installing Homebrew first if necessary. On Ubuntu, Debian, and WSL it uses `apt-get` and NodeSource. PHP 8.5 is not supported by Laravel 11. Restart any running PHP development server after the script switches PHP versions. Use `bash scripts/install-prerequisites.sh --check` to check without installing anything.
 
 If you use `nvm`, running `nvm install` in this repository installs the Node.js version specified by `.nvmrc`; npm is included with Node.js.
 

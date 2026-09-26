@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+php_is_supported() {
+    command -v php >/dev/null 2>&1 &&
+        php -r 'exit(PHP_VERSION_ID >= 80200 && PHP_VERSION_ID < 80500 ? 0 : 1);'
+}
+
 check_only=false
 
 if [[ ${1:-} == "--check" ]]; then
@@ -19,7 +24,7 @@ has_composer=false
 has_node=false
 has_npm=false
 
-if command -v php >/dev/null 2>&1 && php -r 'exit(version_compare(PHP_VERSION, "8.2.0", ">=") ? 0 : 1);'; then
+if php_is_supported; then
     has_php=true
     php_modules=$(php -m)
     grep -qi '^intl$' <<<"$php_modules" && has_php_intl=true
@@ -36,7 +41,7 @@ fi
 command -v npm >/dev/null 2>&1 && has_npm=true
 
 missing=()
-$has_php || missing+=("PHP 8.2+")
+$has_php || missing+=("PHP 8.2-8.4")
 $has_php_intl || missing+=("PHP intl extension")
 $has_php_sqlite || missing+=("PHP SQLite extension")
 $has_sqlite_cli || missing+=("sqlite3")
@@ -76,7 +81,7 @@ install_macos() {
 
     packages=()
     if ! $has_php || ! $has_php_intl || ! $has_php_sqlite; then
-        packages+=("php")
+        packages+=("php@8.4")
     fi
     $has_sqlite_cli || packages+=("sqlite")
     $has_composer || packages+=("composer")
@@ -85,6 +90,13 @@ install_macos() {
     fi
 
     brew install "${packages[@]}"
+
+    if brew list --versions php@8.4 >/dev/null 2>&1; then
+        brew unlink php >/dev/null 2>&1 || true
+        brew link --force --overwrite php@8.4
+        export PATH="$(brew --prefix php@8.4)/bin:$(brew --prefix php@8.4)/sbin:$PATH"
+        hash -r
+    fi
 }
 
 install_debian() {
@@ -142,8 +154,8 @@ esac
 echo "Verifying installed prerequisites..."
 
 errors=0
-if ! command -v php >/dev/null 2>&1 || ! php -r 'exit(version_compare(PHP_VERSION, "8.2.0", ">=") ? 0 : 1);'; then
-    echo "PHP 8.2 or newer is not available." >&2
+if ! php_is_supported; then
+    echo "PHP 8.2 through 8.4 is required; PHP 8.5 is not supported by Laravel 11." >&2
     errors=1
 fi
 if ! php -m | grep -qi '^intl$'; then
