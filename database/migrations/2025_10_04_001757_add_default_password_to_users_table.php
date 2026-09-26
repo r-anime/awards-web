@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -17,26 +19,26 @@ return new class extends Migration
             ->whereNull('password')
             ->orWhere('password', '')
             ->get();
-
+            
         foreach ($usersWithoutPassword as $user) {
             $randomPassword = Hash::make(Str::random(32));
             DB::table('users')
                 ->where('id', $user->id)
                 ->update(['password' => $randomPassword]);
         }
-
-        if (DB::getDriverName() === 'mysql') {
-            DB::statement("
-                CREATE TRIGGER set_default_password
-                BEFORE INSERT ON users
-                FOR EACH ROW
-                BEGIN
-                    IF NEW.password IS NULL OR NEW.password = '' THEN
-                        SET NEW.password = SHA2(CONCAT(NEW.id, UNIX_TIMESTAMP(), RAND()), 256);
-                    END IF;
-                END
-            ");
-        }
+        
+        // Set a default random password hash for new users
+        // We'll use a trigger since MySQL doesn't support function calls in DEFAULT
+        DB::statement("
+            CREATE TRIGGER set_default_password 
+            BEFORE INSERT ON users 
+            FOR EACH ROW 
+            BEGIN 
+                IF NEW.password IS NULL OR NEW.password = '' THEN 
+                    SET NEW.password = SHA2(CONCAT(NEW.id, UNIX_TIMESTAMP(), RAND()), 256);
+                END IF;
+            END
+        ");
     }
 
     /**
@@ -44,8 +46,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (DB::getDriverName() === 'mysql') {
-            DB::statement('DROP TRIGGER IF EXISTS set_default_password');
-        }
+        // Drop the trigger
+        DB::statement("DROP TRIGGER IF EXISTS set_default_password");
     }
 };
