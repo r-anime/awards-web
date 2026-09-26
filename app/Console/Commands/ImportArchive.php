@@ -24,7 +24,7 @@ class ImportArchive extends Command
      *
      * @var string
      */
-    protected $signature = 'app:import-archive {year}';
+    protected $signature = 'app:import-archive {year} {--anilist-only : Skip AnimeThemes lookups}';
 
     /**
      * The console command description.
@@ -126,7 +126,7 @@ class ImportArchive extends Command
             //$this->info($key . ' - ' . $value);
         }
 
-        for ($i = 0; $i <= ceil(count($anime)/50); $i++){
+        for ($i = 1; $i <= ceil(count($anime) / 50); $i++) {
             $response = Http::post('https://graphql.anilist.co', [
                 'query' => ImportArchive::ANILIST_ANIME_QUERY,
                 'variables' => [
@@ -245,7 +245,8 @@ class ImportArchive extends Command
             Sleep::for(5)->second();
         }
 
-        foreach ($json['themes'] as $key => $value) {
+        if (! $this->option('anilist-only')) {
+            foreach ($json['themes'] as $key => $value) {
           
           // print_r($value);
           $split = explode('-',$value);
@@ -312,8 +313,9 @@ class ImportArchive extends Command
 
           }
 
-          Sleep::for(5)->second();
-        }       
+                                Sleep::for(5)->second();
+                        }
+                }
         
         // Import categories and results
         $this->importCategoriesAndResults($year, $json);
@@ -340,7 +342,8 @@ class ImportArchive extends Command
                         'type' => $section['slug']
                     ],
                     [
-                        'order' => $awardIndex + 1
+                        'order' => $awardIndex + 1,
+                        'entry_type' => $award['entryType'],
                     ]
                 );
                 
@@ -378,8 +381,16 @@ class ImportArchive extends Command
         });
         
         foreach ($nominees as $index => $nominee) {
-            // Find the entry by anilist_id
-            $entry = Entry::where('anilist_id', $nominee['id'])->first();
+            $entryType = match ($award['entryType']) {
+                'shows' => 'anime',
+                'characters' => 'char',
+                'vas' => 'va',
+                'themes' => 'theme',
+            };
+            $entry = Entry::where([
+                'anilist_id' => $nominee['id'],
+                'type' => $entryType,
+            ])->first();
             
             if (!$entry) {
                 $this->warn("Entry not found for anilist_id: {$nominee['id']}");

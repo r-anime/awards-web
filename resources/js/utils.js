@@ -2,7 +2,11 @@ import { marked } from 'marked';
 
 export const nomineeImage = (nominee) => {
         try {
-            return `background-image: url(/storage/${nominee.image})`;        
+            const image = nominee.image || '/images/awardslogo.png';
+            const imageUrl = image.startsWith('http://') || image.startsWith('https://') || image.startsWith('/')
+                ? image
+                : `/storage/${image}`;
+            return `background-image: url(${imageUrl})`;
         } catch (error) {
             console.log('Error with image url');
             console.log(nominee);

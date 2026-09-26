@@ -3,12 +3,14 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "dev:all": "concurrently --kill-others --names app,queue,vite --prefix-colors blue,magenta,green \"php artisan serve\" \"php artisan queue:work --tries=1\" \"vite\"",
         "build": "vite build",
         "watch": "vite build --watch"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^6.0.4",
         "axios": "^1.6.4",
+        "concurrently": "^9.2.4",
         "laravel-vite-plugin": "^1.0",
         "sass-embedded": "^1.93.3",
         "vite": "^5.0"
