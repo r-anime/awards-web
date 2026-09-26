@@ -115,10 +115,13 @@
                                                     @if($question['type'] === 'multiple_choice')
                                                         <div class="control">
                                                             @if(isset($question['options']) && count($question['options']) > 0)
+                                                                @php
+                                                                    $selectedOption = old('question_'.$question['id'], $existingAnswers[$question['id']] ?? null);
+                                                                @endphp
                                                                 @foreach($question['options'] as $optionIndex => $option)
                                                                     <label class="radio has-text-white">
                                                                         <input type="radio" name="question_{{ $question['id'] }}" value="{{ $option['id'] }}"
-                                                                               {{ isset($existingAnswers[$question['id']]) && $existingAnswers[$question['id']] == $option['id'] ? 'checked' : '' }}>
+                                                                               {{ $selectedOption !== null && $selectedOption == $option['id'] ? 'checked' : '' }}>
                                                                         <span class="checkmark"></span>
                                                                         {{ $option['option'] }}
                                                                     </label>
@@ -139,10 +142,13 @@
                                                                 maxlength="{{ $characterLimit }}"
                                                                 data-question-id="{{ $question['id'] }}"
                                                                 data-character-limit="{{ $characterLimit }}"
-                                                            >{{ isset($existingAnswers[$question['id']]) ? $existingAnswers[$question['id']] : '' }}</textarea>
+                                                            >{{ old('question_'.$question['id'], $existingAnswers[$question['id']] ?? '') }}</textarea>
                                                             <div class="character-counter" id="counter_{{ $question['id'] }}">
                                                                 <span class="char-count">0</span> / {{ number_format($characterLimit) }} characters
                                                             </div>
+                                                            @error('question_'.$question['id'])
+                                                                <p class="help is-danger">{{ $message }}</p>
+                                                            @enderror
                                                         </div>
                                                         
                                                         @if(isset($question['sample_answers']) && count($question['sample_answers']) > 0)
