@@ -1,0 +1,56 @@
+name: Deploy production
+
+on:
+  # pull_request:
+  #   branches:
+  #     - master
+  #   types:
+  #     - closed
+  workflow_dispatch:
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.AWARDS_WEB_SSH_KEY }}
+
+      - name: Add server host key
+        env:
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+          DEPLOY_SSH_USER: ${{ vars.DEPLOY_SSH_USER }}
+          DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+        run: |
+          ssh "$DEPLOY_SSH_USER@$DEPLOY_HOST" \
+            sudo -n -iu awards-web \
+            bash -s -- deploy "$DEPLOY_PATH" <<'DEPLOY_SCRIPT'
+          set -euo pipefail
+
+          cd "$1"
+
+          if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
+            source "$HOME/.nvm/nvm.sh"
+            nvm use
+          fi
+
+          git pull --ff-only
+          npm run build
+          php artisan optimize
+          DEPLOY_SCRIPT
