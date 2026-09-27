@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Acknowledgements\Pages;
 use App\Filament\Admin\Resources\Acknowledgements\AcknowledgementResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
+use Livewire\Attributes\On;
 
 class ListAcknowledgements extends ListRecords
 {
@@ -15,5 +16,11 @@ class ListAcknowledgements extends ListRecords
         return [
             CreateAction::make(),
         ];
+    }
+
+    #[On('filter-year-updated')]
+    public function refreshOnYearFilter(): void
+    {
+        $this->resetTable();
     }
 }

@@ -114,7 +114,7 @@
                 
                 <div class="navbar-end">
                     <div class="navbar-item">
-                        <a class="navbar-item" href="/acknowledgements">
+                        <a class="navbar-item" href="{{ route('acknowledgements') }}">
                             <span>Acknowledgements</span>
                         </a>
                     </div><div class="navbar-item">

@@ -69,12 +69,7 @@ Route::get('/results', [InertiaController::class, 'latestResults'])->name('resul
 // Route::get('/inertia/test', [InertiaController::class, 'test'])->name('inertia.test');
 Route::get('/results/{year}', [InertiaController::class, 'results'])->name('inertia.results')->whereNumber('year');
 
-// Hard-coded Acknowledgements for 2025
-Route::get('/acknowledgements', function () {
-    return Inertia::render('Acknowledgements2025', []);
-})->name('acknowledgements');
-
-// Database acknowledgements
+Route::get('/acknowledgements', [InertiaController::class, 'latestAcknowledgements'])->name('acknowledgements');
 Route::get('/acknowledgements/{year}', [InertiaController::class, 'acknowledgements'])->name('inertia.acknowledgements')->whereNumber('year');
 
 Route::get('/credits', CreditsController::class)->name('credits');
