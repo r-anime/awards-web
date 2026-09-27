@@ -36,6 +36,8 @@ class LocalLoginTest extends TestCase
 
     public function test_local_login_is_rejected_when_disabled(): void
     {
+        $this->withoutVite();
+
         $this->seed(DevelopmentUserSeeder::class);
         config()->set('auth.local_login.enabled', false);
 
