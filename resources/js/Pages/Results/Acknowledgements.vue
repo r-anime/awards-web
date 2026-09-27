@@ -1,5 +1,5 @@
 <template>
-    <div class="has-background-dark">
+    <div>
         <div class="container">
             <section class="section">
                 <div class="container">
