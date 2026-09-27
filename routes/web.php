@@ -13,6 +13,7 @@ use App\Http\Middleware\RedirectUnauthorizedUsers;
 use App\Livewire\FinalVoting;
 use App\Livewire\NominationVoting;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', function () {
     return view('home');
@@ -43,6 +44,12 @@ Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.in
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::get('/login', [LoginController::class, 'show'])->name('login');
+
+if (app()->environment(['local', 'testing']) && config('auth.local_login.enabled')) {
+    Route::post('/local-login', [LoginController::class, 'local'])
+        ->middleware('guest')
+        ->name('local-login');
+}
 
 Route::post('/participate/application/submit', [ApplicationController::class, 'store'])->name('application.store')->middleware('auth');
 Route::get('/redirect-after-login', [ApplicationController::class, 'redirectAfterLogin'])->name('application.redirect-after-login')->middleware('auth');
