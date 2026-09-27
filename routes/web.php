@@ -1,16 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CreditsController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\ResultController;
-use App\Http\Middleware\RedirectUnauthorizedUsers;
-use App\Http\Middleware\CheckNominationVotingEndDate;
-use App\Http\Middleware\CheckFinalVotingEndDate;
-
+use App\Http\Controllers\FinalVoteImageController;
 use App\Http\Controllers\InertiaController;
-use Inertia\Inertia;
+use App\Http\Controllers\ResultController;
+use App\Http\Middleware\CheckFinalVotingEndDate;
+use App\Http\Middleware\CheckNominationVotingEndDate;
+use App\Http\Middleware\RedirectUnauthorizedUsers;
+use App\Livewire\FinalVoting;
+use App\Livewire\NominationVoting;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
@@ -24,14 +26,14 @@ Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
     Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');
 });
 Route::middleware(['auth', CheckNominationVotingEndDate::class])->group(function () {
-    Route::get('/participate/nominate', \App\Livewire\NominationVoting::class)->name('nomination.voting');
+    Route::get('/participate/nominate', NominationVoting::class)->name('nomination.voting');
 });
 Route::middleware(['auth', CheckFinalVotingEndDate::class])->group(function () {
-     Route::get('/participate/final-vote', \App\Livewire\FinalVoting::class)->name('final.voting');
-     Route::get('/participate/final-vote/share', function () {
-         return view('final-vote-share');
-     })->name('final.voting.share');
-     Route::get('/participate/final-vote/image', [\App\Http\Controllers\FinalVoteImageController::class, 'generate'])->name('final.voting.image');
+    Route::get('/participate/final-vote', FinalVoting::class)->name('final.voting');
+    Route::get('/participate/final-vote/share', function () {
+        return view('final-vote-share');
+    })->name('final.voting.share');
+    Route::get('/participate/final-vote/image', [FinalVoteImageController::class, 'generate'])->name('final.voting.image');
 });
 Route::get('/participate/voting', function () {
     return view('voting');
@@ -60,13 +62,7 @@ Route::get('/results', [InertiaController::class, 'latestResults'])->name('resul
 // Route::get('/inertia/test', [InertiaController::class, 'test'])->name('inertia.test');
 Route::get('/results/{year}', [InertiaController::class, 'results'])->name('inertia.results')->whereNumber('year');
 
-// Hard-coded Acknowledgements for 2025
-Route::get('/acknowledgements', function () {
-    return Inertia::render('Acknowledgements2025', []);
-})->name('acknowledgements');
-
-// Database acknowledgements
+Route::get('/acknowledgements', [InertiaController::class, 'latestAcknowledgements'])->name('acknowledgements');
 Route::get('/acknowledgements/{year}', [InertiaController::class, 'acknowledgements'])->name('inertia.acknowledgements')->whereNumber('year');
 
-
-Route::get('/credits', App\Http\Controllers\CreditsController::class)->name('credits');
+Route::get('/credits', CreditsController::class)->name('credits');

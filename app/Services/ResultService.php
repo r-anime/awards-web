@@ -24,9 +24,10 @@ class ResultService
     {
         // Get list of years for which results are available
         // TODO(?): Separate into queries for Acknowledgements and About
-        $years = Cache::remember('results_yearlist', 10800, function() {
+        $years = Cache::remember('results_yearlist', 10800, function () {
             return Result::select('year')->groupBy('year')->get();
         });
+
         return $years;
     }
 
@@ -50,6 +51,7 @@ class ResultService
         if (now()->lt($displayAt)) {
             return array_values(array_filter($years, fn ($y) => (int) $y !== $hiddenYear));
         }
+
         return $years;
     }
 
@@ -67,6 +69,7 @@ class ResultService
         if ($year !== $hiddenYear) {
             return true;
         }
+
         return now()->gte($displayAt);
     }
 
@@ -75,53 +78,53 @@ class ResultService
         // Results by year
         // TODO: Implement cache
         $results = Cache::remember('results_'.$year, 10080, function () use ($year) {
-        return Category::where('year', $year)
-            ->with([
-                'info' => function ($query) {
-                    $query->select(['category_id', 'description']);
-                },
-                'results' => function ($query) {
-                    $query->select([
-                        'id',
-                        'category_id',
-                        'name',
-                        'image',
-                        'jury_rank',
-                        'public_rank',
-                        'description',
-                        'staff_credits',
-                        'entry_id',
-                    ])
-                        ->with(['entry' => function ($query) {
-                            $query->select(['id', 'name', 'parent_id'])
-                                ->with(['parent' => function ($query) {
-                                    $query->select(['id', 'name', 'parent_id'])
+            return Category::where('year', $year)
+                ->with([
+                    'info' => function ($query) {
+                        $query->select(['category_id', 'description']);
+                    },
+                    'results' => function ($query) {
+                        $query->select([
+                            'id',
+                            'category_id',
+                            'name',
+                            'image',
+                            'jury_rank',
+                            'public_rank',
+                            'description',
+                            'staff_credits',
+                            'entry_id',
+                        ])
+                            ->with(['entry' => function ($query) {
+                                $query->select(['id', 'name', 'parent_id'])
                                     ->with(['parent' => function ($query) {
-                                        $query->select(['id', 'name']);
+                                        $query->select(['id', 'name', 'parent_id'])
+                                            ->with(['parent' => function ($query) {
+                                                $query->select(['id', 'name']);
+                                            }]);
                                     }]);
-                                }]);
-                    }])
-                        ->orderBy('jury_rank');
-                },
-                'honorablementions' => function ($query) {
-                    $query->select([
-                        'id',
-                        'category_id',
-                        'name',
-                        'writeup'
-                    ]);
-                },
+                            }])
+                            ->orderBy('jury_rank');
+                    },
+                    'honorablementions' => function ($query) {
+                        $query->select([
+                            'id',
+                            'category_id',
+                            'name',
+                            'writeup',
+                        ]);
+                    },
+                ])
+                ->select([
+                    'id',
+                    'year',
+                    'name',
+                    'type',
+                    'order',
+                    'entry_type',
             ])
-            ->select([
-                'id',
-                'year',
-                'name',
-                'type',
-                'order',
-                'entry_type',
-            ])
-            ->orderBy('order')
-            ->get();
+                ->orderBy('order')
+                ->get();
         });
 
         return $results;
@@ -129,9 +132,14 @@ class ResultService
 
     public function getAcknowledgements(int $year)
     {
-        // Probably don't need cache
-        $acknowledgements = Acknowledgement::where('year', $year)->orderBy('order')->get();
-        return $acknowledgements;
+        return Acknowledgement::where('year', $year)->orderBy('order')->get();
+    }
+
+    public function getLatestAcknowledgementYear(): ?int
+    {
+        $year = Acknowledgement::max('year');
+
+        return $year === null ? null : (int) $year;
     }
 
     public function getAbout(int $year)

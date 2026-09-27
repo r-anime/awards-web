@@ -28,6 +28,8 @@ class DevelopmentContentSeederTest extends TestCase
             ->assertRedirect('/results/2024');
         $this->get('/results/2024')
             ->assertOk();
+        $this->get('/acknowledgements')
+            ->assertRedirect('/acknowledgements/2025');
         $this->get('/acknowledgements/2024')
             ->assertOk();
     }
