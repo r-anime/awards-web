@@ -75,7 +75,7 @@ Optional post-setup commands:
 | `php artisan migrate:fresh --seed` | Delete local database data, rebuild the schema, and reload the default seed data. |
 | `php artisan schema:dump --database=sqlite` | Regenerate `database/schema/sqlite-schema.sql` from a fully migrated SQLite database after schema changes. |
 
-In the local environment, visit `/login` and select **Sign in as local administrator** to access `/dashboard` without configuring Reddit OAuth. This account exists only in the local database and is created by the setup script. Set `LOCAL_LOGIN_ENABLED=false` in `.env` to hide the local login and test the production Reddit authentication flow instead.
+In the local environment, visit `/login` and select **Sign in as local administrator** to access `/dashboard` without configuring Reddit OAuth. This account exists only in the local database and is created by the setup script. The example environment explicitly enables this feature with `LOCAL_LOGIN_ENABLED=true`; the application default is disabled. Set it to `false` to hide the local login and test the production Reddit authentication flow instead.
 
 For Reddit sign-in, create a Reddit OAuth application and replace the placeholder `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_REDIRECT_URI` values in `.env`. Keep `APP_URL` and the callback URL consistent with the hostname used to serve the application. The placeholder Cloudflare Turnstile keys can remain in local development while `CFTURNSTILE_ENABLE=false`.
 

@@ -22,7 +22,7 @@ class DevelopmentUserSeeder extends Seeder
         $user->fill([
             'name' => 'Local Administrator',
             'email' => null,
-            'reddit_user' => 'local-admin',
+            'reddit_user' => null,
             'role' => 2,
             'flags' => 0,
         ]);
