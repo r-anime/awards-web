@@ -51,6 +51,8 @@ jobs:
           fi
 
           git pull --ff-only
+          php artisan optimize:clear
+          php artisan app:verify-production-config
           npm run build
           php artisan optimize
           DEPLOY_SCRIPT

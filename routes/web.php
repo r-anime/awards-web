@@ -1,15 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CreditsController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\ResultController;
-use App\Http\Middleware\RedirectUnauthorizedUsers;
-use App\Http\Middleware\CheckNominationVotingEndDate;
-use App\Http\Middleware\CheckFinalVotingEndDate;
-
+use App\Http\Controllers\FinalVoteImageController;
 use App\Http\Controllers\InertiaController;
+use App\Http\Controllers\ResultController;
+use App\Http\Middleware\CheckFinalVotingEndDate;
+use App\Http\Middleware\CheckNominationVotingEndDate;
+use App\Http\Middleware\RedirectUnauthorizedUsers;
+use App\Livewire\FinalVoting;
+use App\Livewire\NominationVoting;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -24,14 +27,14 @@ Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
     Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');
 });
 Route::middleware(['auth', CheckNominationVotingEndDate::class])->group(function () {
-    Route::get('/participate/nominate', \App\Livewire\NominationVoting::class)->name('nomination.voting');
+    Route::get('/participate/nominate', NominationVoting::class)->name('nomination.voting');
 });
 Route::middleware(['auth', CheckFinalVotingEndDate::class])->group(function () {
-     Route::get('/participate/final-vote', \App\Livewire\FinalVoting::class)->name('final.voting');
-     Route::get('/participate/final-vote/share', function () {
-         return view('final-vote-share');
-     })->name('final.voting.share');
-     Route::get('/participate/final-vote/image', [\App\Http\Controllers\FinalVoteImageController::class, 'generate'])->name('final.voting.image');
+    Route::get('/participate/final-vote', FinalVoting::class)->name('final.voting');
+    Route::get('/participate/final-vote/share', function () {
+        return view('final-vote-share');
+    })->name('final.voting.share');
+    Route::get('/participate/final-vote/image', [FinalVoteImageController::class, 'generate'])->name('final.voting.image');
 });
 Route::get('/participate/voting', function () {
     return view('voting');
@@ -41,6 +44,12 @@ Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.in
 Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
 
 Route::get('/login', [LoginController::class, 'show'])->name('login');
+
+if (app()->environment(['local', 'testing']) && config('auth.local_login.enabled')) {
+    Route::post('/local-login', [LoginController::class, 'local'])
+        ->middleware('guest')
+        ->name('local-login');
+}
 
 Route::post('/participate/application/submit', [ApplicationController::class, 'store'])->name('application.store')->middleware('auth');
 Route::get('/redirect-after-login', [ApplicationController::class, 'redirectAfterLogin'])->name('application.redirect-after-login')->middleware('auth');
@@ -68,5 +77,4 @@ Route::get('/acknowledgements', function () {
 // Database acknowledgements
 Route::get('/acknowledgements/{year}', [InertiaController::class, 'acknowledgements'])->name('inertia.acknowledgements')->whereNumber('year');
 
-
-Route::get('/credits', App\Http\Controllers\CreditsController::class)->name('credits');
+Route::get('/credits', CreditsController::class)->name('credits');

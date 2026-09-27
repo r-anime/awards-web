@@ -2,9 +2,10 @@
 
 namespace App\Providers\Filament;
 
-use App\Models\User;
-use App\Models\Option;
 use App\Filament\Admin\Pages\PublicDashboard;
+use App\Http\Middleware\RedirectUnauthorizedUsers;
+use App\Models\Option;
+use App\Models\User;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Http\Middleware\Authenticate;
@@ -24,7 +25,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
-use App\Http\Middleware\RedirectUnauthorizedUsers;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -36,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('dashboard')
             ->login(false)
-            
+
             // Branding & Styling
             ->colors([
                 'primary' => Color::Amber,
@@ -49,39 +49,39 @@ class AdminPanelProvider extends PanelProvider
                 function (): string {
                     $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
                     $customCss = $manifest['resources/css/custom.css']['file'] ?? '';
-                    
+
                     if ($customCss) {
-                        return '<link rel="stylesheet" href="' . asset('build/' . $customCss) . '">';
+                        return '<link rel="stylesheet" href="'.asset('build/'.$customCss).'">';
                     }
-                    
+
                     return '';
                 }
             )
-            
+
             // Resources & Pagesgit
             ->discoverResources(
-                in: app_path('Filament/Admin/Resources'), 
+                in: app_path('Filament/Admin/Resources'),
                 for: 'App\\Filament\\Admin\\Resources'
             )
             ->discoverPages(
-                in: app_path('Filament/Admin/Pages'), 
+                in: app_path('Filament/Admin/Pages'),
                 for: 'App\\Filament\\Admin\\Pages'
             )
             ->pages([
                 PublicDashboard::class,
             ])
             ->homeUrl(fn (): string => PublicDashboard::getUrl())
-            
+
             // Widgets
             ->discoverWidgets(
-                in: app_path('Filament/Admin/Widgets'), 
+                in: app_path('Filament/Admin/Widgets'),
                 for: 'App\\Filament\\Admin\\Widgets'
             )
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
-            
+
             // Middleware Configuration
             ->middleware([
                 EncryptCookies::class,
@@ -100,7 +100,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authGuard('web')
             ->authPasswordBroker('users')
-            
+
             // Reddit OAuth Plugin
             ->plugin($this->configureRedditAuth());
     }
@@ -113,7 +113,7 @@ class AdminPanelProvider extends PanelProvider
         return FilamentSocialitePlugin::make()
             ->providers([
                 Provider::make('reddit')
-                    ->visible(fn() => true)
+                    ->visible(fn () => true)
                     ->label('Sign in with Reddit')
                     ->icon('heroicon-o-user')
                     ->color('orange'),
@@ -124,7 +124,6 @@ class AdminPanelProvider extends PanelProvider
             ->createUserUsing($this->createUserCallback())
             ->resolveUserUsing($this->resolveUserCallback());
     }
-
 
     /**
      * Callback for creating new users from Reddit authentication
@@ -143,7 +142,7 @@ class AdminPanelProvider extends PanelProvider
             if (isset($oauthUser->user['created_utc'])) {
                 $createdUtc = $oauthUser->user['created_utc'];
                 $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
-                
+
                 // If account is too young, set role to -1
                 if ($accountAgeInDays < $minimumDays) {
                     $role = -1;
@@ -170,41 +169,47 @@ class AdminPanelProvider extends PanelProvider
      */
     private function resolveUserCallback(): callable
     {
-		return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+        return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+            $localUserUuid = config('auth.local_login.user_uuid');
+
             // First try to find by reddit_user field
-            $user = User::where('reddit_user', $oauthUser->getNickname())->first();
-            
+            $user = User::where('uuid', '!=', $localUserUuid)
+                ->where('reddit_user', $oauthUser->getNickname())
+                ->first();
+
             // Fallback to name field for backward compatibility
-            if (!$user) {
-                $user = User::where('name', $oauthUser->getNickname())->first();
+            if (! $user) {
+                $user = User::where('uuid', '!=', $localUserUuid)
+                    ->where('name', $oauthUser->getNickname())
+                    ->first();
             }
 
-			// If no user exists yet, create one to ensure an Authenticatable is always returned
-			if (!$user) {
-				$randomPasswdString = Str::random(64);
-				$placeholderPassword = Hash::make($randomPasswdString);
+            // If no user exists yet, create one to ensure an Authenticatable is always returned
+            if (! $user) {
+                $randomPasswdString = Str::random(64);
+                $placeholderPassword = Hash::make($randomPasswdString);
 
-				$minimumDays = Option::get('account_age_requirement', 30);
-				$role = 0;
-				if (isset($oauthUser->user['created_utc'])) {
-					$createdUtc = $oauthUser->user['created_utc'];
-					$accountAgeInDays = (time() - $createdUtc) / 86400;
-					if ($accountAgeInDays < $minimumDays) {
-						$role = -1;
-					}
-				}
+                $minimumDays = Option::get('account_age_requirement', 30);
+                $role = 0;
+                if (isset($oauthUser->user['created_utc'])) {
+                    $createdUtc = $oauthUser->user['created_utc'];
+                    $accountAgeInDays = (time() - $createdUtc) / 86400;
+                    if ($accountAgeInDays < $minimumDays) {
+                        $role = -1;
+                    }
+                }
 
-				$user = User::create([
-					'name' => $oauthUser->getNickname(),
-					'email' => null,
-					'password' => $placeholderPassword,
-					'reddit_user' => $oauthUser->getNickname(),
-					'role' => $role,
-					'flags' => 0,
-					'avatar' => $oauthUser->getAvatar(),
-					'uuid' => Str::uuid(),
-				]);
-			}
+                $user = User::create([
+                    'name' => $oauthUser->getNickname(),
+                    'email' => null,
+                    'password' => $placeholderPassword,
+                    'reddit_user' => $oauthUser->getNickname(),
+                    'role' => $role,
+                    'flags' => 0,
+                    'avatar' => $oauthUser->getAvatar(),
+                    'uuid' => Str::uuid(),
+                ]);
+            }
 
             return $user;
         };
