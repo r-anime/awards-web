@@ -86,6 +86,9 @@ php artisan migrate
 echo "Seeding site options..."
 php artisan db:seed --class=OptionSeeder
 
+echo "Seeding the local administrator..."
+php artisan db:seed --class=DevelopmentUserSeeder
+
 echo "Seeding bundled development results..."
 php artisan db:seed --class=DevelopmentResultsSeeder
 

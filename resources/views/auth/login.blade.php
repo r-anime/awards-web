@@ -5,6 +5,21 @@
                 <div class="has-text-centered m-6">
                     <img src="{{ asset('images/awardslogo.png') }}" alt="r/anime Awards Logo" style="max-height: 4rem; height: auto; width: auto;">
                 </div>
+
+                @if(Route::has('local-login'))
+                    <form method="POST" action="{{ route('local-login') }}">
+                        @csrf
+                        <button type="submit" class="button is-primary">
+                            Sign in as local administrator
+                        </button>
+                    </form>
+
+                    @error('local_login')
+                        <p class="help is-danger mt-3">{{ $message }}</p>
+                    @enderror
+
+                    <hr>
+                @endif
                 
                 <!-- Reddit OAuth Button Container -->
                 <div class="reddit-oauth-container">
