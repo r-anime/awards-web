@@ -25,6 +25,11 @@ class HonorableMentionResource extends Resource
     // TODO: move sorts to a single "panel order" file ideally
     protected static ?int $navigationSort = 4;
 
+    public static function canAccess(): bool
+    {
+        return auth()->check() && auth()->user()->role >= 2;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return HonorableMentionForm::configure($schema);

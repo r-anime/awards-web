@@ -40,6 +40,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'email',
         'password',
         'reddit_user',
+        'anilist_id',
         'role',
         'flags',
         'avatar',

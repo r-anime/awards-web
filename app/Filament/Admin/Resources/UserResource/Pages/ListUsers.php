@@ -32,6 +32,11 @@ class ListUsers extends ListRecords
                     ->searchable()
                     ->sortable(),
                 
+                TextColumn::make('anilist_id')
+                    ->label('AniList Username')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
