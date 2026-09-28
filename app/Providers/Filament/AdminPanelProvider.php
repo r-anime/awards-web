@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                     $customCss = $manifest['resources/css/custom.css']['file'] ?? '';
 
                     if ($customCss) {
-                        return '<link rel="stylesheet" href="'.asset('build/'.$customCss).'">';
+                        return '<link rel="stylesheet" href="' . asset('build/' . $customCss) . '">';
                     }
 
                     return '';
@@ -70,7 +70,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 PublicDashboard::class,
             ])
-            ->homeUrl(fn (): string => PublicDashboard::getUrl())
+            ->homeUrl(fn(): string => PublicDashboard::getUrl())
 
             // Widgets
             ->discoverWidgets(
@@ -113,7 +113,7 @@ class AdminPanelProvider extends PanelProvider
         return FilamentSocialitePlugin::make()
             ->providers([
                 Provider::make('reddit')
-                    ->visible(fn () => true)
+                    ->visible(fn() => true)
                     ->label('Sign in with Reddit')
                     ->icon('heroicon-o-user')
                     ->color('orange'),
@@ -152,36 +152,36 @@ class AdminPanelProvider extends PanelProvider
             $name = null;
 
 
-            if($provider == 'reddit') {
+            if ($provider === 'reddit') {
                 $redditUser = $oauthUser->getNickname();
                 $name = $oauthUser->getNickname();
 
                 // Get Reddit account creation date from Socialite user data
                 if (isset($oauthUser->user['created_utc'])) {
-                    $createdUtc = $oauthUser->user['created_utc'];
+                    $createdUtc = (int) $oauthUser->user['created_utc'];
                     $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
                 }
             }
 
-            if($provider == 'anilist') {
+            if ($provider === 'anilist') {
                 $anilistUser = $oauthUser->getNickname();
                 $name = $oauthUser->getNickname();
 
                 // Get AniList account creation date from Socialite user data
-                if(isset($oauthUser->user['createdAt'])) {
-                    $createdUtc = $oauthUser->user['createdAt'];
-                    $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
+                if (isset($oauthUser->user['createdAt'])) {
+                    $createdAt = (int) $oauthUser->user['createdAt'];
+                    $accountAgeInDays = (time() - $createdAt) / 86400; // Convert to days
                 }
             }
-           
+
             // If account is too young, set role to -1
-            if (is_int($accountAgeInDays) && $accountAgeInDays < $minimumDays) {
+            if ($accountAgeInDays !== null && $accountAgeInDays < $minimumDays) {
                 $role = -1;
             }
 
             $user = User::create([
                 'name' => $name,
-                'email' => null, 
+                'email' => null,
                 'password' => $placeholderPassword,
                 'reddit_user' => $redditUser,
                 'anilist_user' => $anilistUser,
@@ -200,24 +200,24 @@ class AdminPanelProvider extends PanelProvider
      */
     private function resolveUserCallback(): callable
     {
-		return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+        return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
             $user = null;
             $localUserUuid = config('auth.local_login.user_uuid');
 
             // TODO: Refresh profile data (name and avatar) and age-based role
 
-            if($provider == 'reddit') {
+            if ($provider == 'reddit') {
                 // Find by reddit_user field
                 $user = User::where('uuid', '!=', $localUserUuid)
-                ->where('reddit_user', $oauthUser->getNickname())
-                ->first();
+                    ->where('reddit_user', $oauthUser->getNickname())
+                    ->first();
             }
-            
-            if($provider == 'anilist') {
+
+            if ($provider == 'anilist') {
                 // Find by anilist_user field
                 $user = User::where('uuid', '!=', $localUserUuid)
-                ->where('anilist_user', $oauthUser->getNickname())
-                ->first();
+                    ->where('anilist_user', $oauthUser->getNickname())
+                    ->first();
             }
 
             // ! Fallback to name field removed for avoiding ambiguity
@@ -226,10 +226,10 @@ class AdminPanelProvider extends PanelProvider
             // }
 
             // TODO: Check if this isn't already handled by filament
-			// If no user exists yet, create one to ensure an Authenticatable is always returned
-			if (!$user) {
-				$user = $this->createUserCallback()($provider, $oauthUser, $plugin);
-			}
+            // If no user exists yet, create one to ensure an Authenticatable is always returned
+            if (!$user) {
+                $user = $this->createUserCallback()($provider, $oauthUser, $plugin);
+            }
 
             return $user;
         };
