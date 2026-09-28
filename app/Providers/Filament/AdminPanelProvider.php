@@ -214,7 +214,7 @@ class AdminPanelProvider extends PanelProvider
             }
 
             if ($provider == 'anilist') {
-                // Find by anilist_user field
+                // Find by anilist_id field
                 $user = User::where('uuid', '!=', $localUserUuid)
                     ->where('anilist_id', $oauthUser->getId())
                     ->first();
