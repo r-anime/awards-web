@@ -146,7 +146,7 @@ class AdminPanelProvider extends PanelProvider
             $accountAgeInDays = null;
             // Saving username of whichever oauth provider is used
             $redditUser = null;
-            $anilistUser = null;
+            $anilistId = null;
 
             // Displayed name
             $name = null;
@@ -164,7 +164,7 @@ class AdminPanelProvider extends PanelProvider
             }
 
             if ($provider === 'anilist') {
-                $anilistUser = $oauthUser->getNickname();
+                $anilistId = $oauthUser->getId();
                 $name = $oauthUser->getNickname();
 
                 // Get AniList account creation date from Socialite user data
@@ -184,7 +184,7 @@ class AdminPanelProvider extends PanelProvider
                 'email' => null,
                 'password' => $placeholderPassword,
                 'reddit_user' => $redditUser,
-                'anilist_user' => $anilistUser,
+                'anilist_id' => $anilistId,
                 'role' => $role,
                 'flags' => 0, // Default flags
                 'avatar' => $oauthUser->getAvatar(),
@@ -216,7 +216,7 @@ class AdminPanelProvider extends PanelProvider
             if ($provider == 'anilist') {
                 // Find by anilist_user field
                 $user = User::where('uuid', '!=', $localUserUuid)
-                    ->where('anilist_user', $oauthUser->getNickname())
+                    ->where('anilist_id', $oauthUser->getId())
                     ->first();
             }
 

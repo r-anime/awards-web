@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string('anilist_user', length:32)->after('reddit_user')->nullable()->unique();
+            $table->integer('anilist_id')->after('reddit_user')->nullable()->unique();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->dropColumn('anilist_user');
+            $table->dropColumn('anilist_id');
         });
     }
 };
