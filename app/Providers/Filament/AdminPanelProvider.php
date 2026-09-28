@@ -102,13 +102,13 @@ class AdminPanelProvider extends PanelProvider
             ->authPasswordBroker('users')
 
             // Reddit OAuth Plugin
-            ->plugin($this->configureRedditAuth());
+            ->plugin($this->configureAuth());
     }
 
     /**
-     * Configure Reddit OAuth authentication
+     * Configure Reddit and AniList OAuth authentication
      */
-    private function configureRedditAuth(): FilamentSocialitePlugin
+    private function configureAuth(): FilamentSocialitePlugin
     {
         return FilamentSocialitePlugin::make()
             ->providers([
@@ -117,6 +117,11 @@ class AdminPanelProvider extends PanelProvider
                     ->label('Sign in with Reddit')
                     ->icon('heroicon-o-user')
                     ->color('orange'),
+                Provider::make('anilist')
+                    ->visible(fn() => true)
+                    ->label('Sign in with AniList')
+                    ->icon('heroicon-o-user')
+                    ->color('blue'),
             ])
             ->registration()
             ->showDivider(false)
@@ -126,7 +131,7 @@ class AdminPanelProvider extends PanelProvider
     }
 
     /**
-     * Callback for creating new users from Reddit authentication
+     * Callback for creating new users from Reddit or AniList authentication
      */
     private function createUserCallback(): callable
     {
@@ -138,22 +143,48 @@ class AdminPanelProvider extends PanelProvider
             $minimumDays = Option::get('account_age_requirement', 30);
             $role = 0; // Default role for new users
 
-            // Get Reddit account creation date from Socialite user data
-            if (isset($oauthUser->user['created_utc'])) {
-                $createdUtc = $oauthUser->user['created_utc'];
-                $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
+            $accountAgeInDays = null;
+            // Saving username of whichever oauth provider is used
+            $redditUser = null;
+            $anilistUser = null;
 
-                // If account is too young, set role to -1
-                if ($accountAgeInDays < $minimumDays) {
-                    $role = -1;
+            // Displayed name
+            $name = null;
+
+
+            if($provider == 'reddit') {
+                $redditUser = $oauthUser->getNickname();
+                $name = $oauthUser->getNickname();
+
+                // Get Reddit account creation date from Socialite user data
+                if (isset($oauthUser->user['created_utc'])) {
+                    $createdUtc = $oauthUser->user['created_utc'];
+                    $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
                 }
             }
 
+            if($provider == 'anilist') {
+                $anilistUser = $oauthUser->getNickname();
+                $name = $oauthUser->getNickname();
+
+                // Get AniList account creation date from Socialite user data
+                if(isset($oauthUser->user['createdAt'])) {
+                    $createdUtc = $oauthUser->user['createdAt'];
+                    $accountAgeInDays = (time() - $createdUtc) / 86400; // Convert to days
+                }
+            }
+           
+            // If account is too young, set role to -1
+            if (is_int($accountAgeInDays) && $accountAgeInDays < $minimumDays) {
+                $role = -1;
+            }
+
             $user = User::create([
-                'name' => $oauthUser->getNickname(),
-                'email' => null, // No email required for Reddit users
+                'name' => $name,
+                'email' => null, 
                 'password' => $placeholderPassword,
-                'reddit_user' => $oauthUser->getNickname(),
+                'reddit_user' => $redditUser,
+                'anilist_user' => $anilistUser,
                 'role' => $role,
                 'flags' => 0, // Default flags
                 'avatar' => $oauthUser->getAvatar(),
@@ -165,51 +196,40 @@ class AdminPanelProvider extends PanelProvider
     }
 
     /**
-     * Callback for resolving existing users from Reddit authentication
+     * Callback for resolving existing users from Reddit and AniList authentication
      */
     private function resolveUserCallback(): callable
     {
-        return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+		return function (string $provider, SocialiteUserContract $oauthUser, FilamentSocialitePlugin $plugin) {
+            $user = null;
             $localUserUuid = config('auth.local_login.user_uuid');
 
-            // First try to find by reddit_user field
-            $user = User::where('uuid', '!=', $localUserUuid)
+            // TODO: Refresh profile data (name and avatar) and age-based role
+
+            if($provider == 'reddit') {
+                // Find by reddit_user field
+                $user = User::where('uuid', '!=', $localUserUuid)
                 ->where('reddit_user', $oauthUser->getNickname())
                 ->first();
-
-            // Fallback to name field for backward compatibility
-            if (! $user) {
+            }
+            
+            if($provider == 'anilist') {
+                // Find by anilist_user field
                 $user = User::where('uuid', '!=', $localUserUuid)
-                    ->where('name', $oauthUser->getNickname())
-                    ->first();
+                ->where('anilist_user', $oauthUser->getNickname())
+                ->first();
             }
 
-            // If no user exists yet, create one to ensure an Authenticatable is always returned
-            if (! $user) {
-                $randomPasswdString = Str::random(64);
-                $placeholderPassword = Hash::make($randomPasswdString);
+            // ! Fallback to name field removed for avoiding ambiguity
+            // if (!$user) {
+            //     $user = User::where('name', $oauthUser->getNickname())->first();
+            // }
 
-                $minimumDays = Option::get('account_age_requirement', 30);
-                $role = 0;
-                if (isset($oauthUser->user['created_utc'])) {
-                    $createdUtc = $oauthUser->user['created_utc'];
-                    $accountAgeInDays = (time() - $createdUtc) / 86400;
-                    if ($accountAgeInDays < $minimumDays) {
-                        $role = -1;
-                    }
-                }
-
-                $user = User::create([
-                    'name' => $oauthUser->getNickname(),
-                    'email' => null,
-                    'password' => $placeholderPassword,
-                    'reddit_user' => $oauthUser->getNickname(),
-                    'role' => $role,
-                    'flags' => 0,
-                    'avatar' => $oauthUser->getAvatar(),
-                    'uuid' => Str::uuid(),
-                ]);
-            }
+            // TODO: Check if this isn't already handled by filament
+			// If no user exists yet, create one to ensure an Authenticatable is always returned
+			if (!$user) {
+				$user = $this->createUserCallback()($provider, $oauthUser, $plugin);
+			}
 
             return $user;
         };

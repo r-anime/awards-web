@@ -346,6 +346,69 @@ html, body {
     letter-spacing: 0.025em;
 }
 
+/* Custom Anilist login button styling */
+.anilist-oauth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    padding: 2rem;
+}
+
+.anilist-signin-button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-width: 350px !important;
+    max-width: 400px !important;
+    background-color: #3DB4F2 !important;
+    border: 2px solid #3DB4F2 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 1.2rem !important;
+    padding: 1.25rem 2rem !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    box-shadow: 0 4px 6px rgba(61, 180, 242, 0.2 !important;
+}
+
+.anilist-signin-button:hover {
+    background-color: #2E9FD6 !important;
+    border-color: #2E9FD6 !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 15px rgba(61, 180, 242, 0.3) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.anilist-signin-button:focus {
+    background-color: #2E9FD6 !important;
+    border-color: #2E9FD6 !important;
+    box-shadow: 0 0 0 3px rgba(61, 180, 242, 0.3) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.anilist-button-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.anilist-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.anilist-button-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
 /* Center the login page content */
 .fi-simple-main-content {
     display: flex;

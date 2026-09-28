@@ -41,4 +41,10 @@ return [
         'redirect' => env('REDDIT_REDIRECT_URI')
     ],
 
+    'anilist' => [
+        'client_id' => env('ANILIST_CLIENT_ID'),
+        'client_secret' => env('ANILIST_CLIENT_SECRET'),
+        'redirect' => env('ANILIST_REDIRECT_URI')
+    ],
+
 ];

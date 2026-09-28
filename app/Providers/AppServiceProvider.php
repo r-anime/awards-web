@@ -54,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
             $event->extendSocialite('reddit', \SocialiteProviders\Reddit\Provider::class);
+            $event->extendSocialite('anilist', \App\SocialiteProviders\AniList\Provider::class);
         });
 
         // Inertia set root view

@@ -35,9 +35,11 @@ class UserResource extends Resource
                     ->label('Username'),
                 
                 TextInput::make('reddit_user')
-                    ->label('Reddit Username')
-                    ->required(),
+                    ->label('Reddit Username'),
                 
+                TextInput::make('anilist_user')
+                    ->label('Anilist Username'),
+
                 TextInput::make('email')
                     ->label('Email')
                     ->email(),
@@ -98,6 +100,9 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('reddit_user')
                     ->label('Reddit Username')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('anilist_user')
+                    ->label('AniList Username')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
