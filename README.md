@@ -87,6 +87,8 @@ Start the Laravel server, queue worker, and Vite development server together:
 npm run dev:all
 ```
 
+This also opens <http://127.0.0.1:8000> in your default browser.
+
 They can also be run separately:
 
 ```bash
