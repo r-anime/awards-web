@@ -27,6 +27,11 @@ class ListUsers extends ListRecords
     {
         return $table
             ->columns([
+                TextColumn::make('name')
+                    ->label('Username')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('reddit_user')
                     ->label('Reddit Username')
                     ->searchable()
