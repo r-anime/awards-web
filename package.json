@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "dev:all": "concurrently --kill-others --names app,queue,vite --prefix-colors blue,magenta,green \"php artisan serve\" \"php artisan queue:work --tries=1\" \"vite\"",
+        "dev:all": "concurrently --kill-others --names app,queue,vite --prefix-colors blue,magenta,green \"php artisan serve\" \"php artisan queue:work --tries=1\" \"vite --open http://127.0.0.1:8000\"",
         "build": "vite build",
         "watch": "vite build --watch"
     },
