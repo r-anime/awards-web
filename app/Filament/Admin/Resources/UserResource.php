@@ -38,7 +38,7 @@ class UserResource extends Resource
                     ->label('Reddit Username'),
                 
                 TextInput::make('anilist_id')
-                    ->label('Anilist Username'),
+                    ->label('Anilist ID'),
 
                 TextInput::make('email')
                     ->label('Email')
@@ -102,7 +102,7 @@ class UserResource extends Resource
                     ->label('Reddit Username')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('anilist_id')
-                    ->label('AniList Username')
+                    ->label('AniList ID')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
