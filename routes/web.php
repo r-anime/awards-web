@@ -24,7 +24,7 @@ Route::get('/participate', function () {
 });
 
 // Short url for applications
-Route::redirect('/app', '/participate/application');
+Route::redirect('/apply', '/participate/application');
 
 
 Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
