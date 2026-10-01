@@ -23,6 +23,10 @@ Route::get('/participate', function () {
     return redirect('/');
 });
 
+// Short url for applications
+Route::redirect('/app', '/participate/application');
+
+
 Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
     Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');
 });
