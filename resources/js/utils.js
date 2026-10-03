@@ -3,10 +3,10 @@ import { marked } from 'marked';
 export const nomineeImage = (nominee) => {
         try {
             const image = nominee.image || '/images/awardslogo.png';
-            const imageUrl = image.startsWith('http://') || image.startsWith('https://') || image.startsWith('/')
-                ? image
-                : `/storage/${image}`;
-            return `background-image: url(${imageUrl})`;
+            const isFullPath = ['http://', 'https://', '/images/', '/storage/'].some((prefix) => image.startsWith(prefix));
+            const storagePath = image.startsWith('/') ? image.slice(1) : image;
+            const imageUrl = isFullPath ? image : `/storage/${storagePath}`;
+            return `background-image: url("${imageUrl}")`;
         } catch (error) {
             console.log('Error with image url');
             console.log(nominee);
