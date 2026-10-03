@@ -67,6 +67,25 @@
                     </div>
                 </div>
 
+                <!-- Juror Applications -->
+                <div class="fi-section-content mb-2">
+                    <div class="fi-card">
+                        <div class="fi-card-header p-6 pb-0">
+                            <h3 class="fi-section-header-heading text-lg font-semibold text-gray-950 dark:text-white">Juror Applications</h3>
+                            <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">Configure how hosts grade juror applications</p>
+                        </div>
+                        <div class="fi-card-body p-6 pt-4">
+                            <div class="fi-fo-field-wrp-label space-y-2">
+                                <label class="fi-fo-field-wrp-label-text inline-flex items-center gap-x-3">
+                                    <x-filament::input.checkbox wire:model="show_applicant_names_to_hosts" />
+                                    <span class="fi-fo-field-wrp-label-text-label text-sm font-medium text-gray-700 dark:text-gray-300">Show applicant usernames to hosts</span>
+                                </label>
+                                <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">When unchecked, hosts grade blind and only see applicant UUIDs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Nomination Voting -->
                 <div class="fi-section-content mb-2">
                     <div class="fi-card">

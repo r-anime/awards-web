@@ -6,6 +6,7 @@ use App\Models\Application;
 use App\Models\AppAnswer;
 use App\Models\AppScore;
 use App\Models\Category;
+use App\Models\Option;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -42,6 +43,13 @@ class GradingPage extends Page
         return auth()->check() && auth()->user()->role >= 2;
     }
     
+    // Hosts grade blind unless the show_applicant_names_to_hosts option is enabled
+    public static function canSeeApplicantNames(): bool
+    {
+        return auth()->user()->role >= 3
+            || Option::get('show_applicant_names_to_hosts', 'false') === 'true';
+    }
+
     public static function getUrlForUser(string $userUuid, array $parameters = [], bool $isAbsolute = true): string
     {
         return static::getUrl(array_merge($parameters, ['userUuid' => $userUuid]), $isAbsolute);

@@ -68,8 +68,8 @@ class ApplicationGrading extends Page implements HasTable
                 ->width('200px'),
         ];
 
-        // Only show username column for users with role 2 or higher
-        if (auth()->user()->role >= 2) {
+        // Only show username column to role 3+, or to hosts when the option allows it
+        if (GradingPage::canSeeApplicantNames()) {
             $columns[] = TextColumn::make('name')
                 ->label('Username')
                 ->sortable()

@@ -27,6 +27,7 @@ class ManageOptions extends Page
     public $final_voting_start_date;
     public $final_voting_end_date;
     public $results_display_date;
+    public $show_applicant_names_to_hosts;
 
     public static function canAccess(array $parameters = []): bool
     {
@@ -60,6 +61,8 @@ class ManageOptions extends Page
         $resultsDisplayDate = Option::get('results_display_date', '');
         $this->results_display_date = $resultsDisplayDate ?
             \Carbon\Carbon::parse($resultsDisplayDate)->format('Y-m-d\TH:i') : '';
+
+        $this->show_applicant_names_to_hosts = Option::get('show_applicant_names_to_hosts', 'false') === 'true';
     }
 
     public function saveSettings(): void
@@ -92,6 +95,8 @@ class ManageOptions extends Page
         $resultsDisplayDate = $this->results_display_date ?
             (\Carbon\Carbon::parse($this->results_display_date)->format('Y-m-d H:i:s')) : '';
         Option::set('results_display_date', $resultsDisplayDate);
+
+        Option::set('show_applicant_names_to_hosts', $this->show_applicant_names_to_hosts ? 'true' : 'false');
 
         Notification::make()
             ->title('Settings saved successfully')
