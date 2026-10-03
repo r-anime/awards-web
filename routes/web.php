@@ -26,6 +26,8 @@ Route::get('/participate', function () {
 // Short url for applications
 Route::redirect('/apply', '/participate/application');
 
+// Redirect for feedback
+Route::redirect('/allocations', '/feedback');
 
 Route::middleware([RedirectUnauthorizedUsers::class])->group(function () {
     Route::get('/participate/application', [ApplicationController::class, 'index'])->name('application.index');

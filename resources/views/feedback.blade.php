@@ -16,7 +16,7 @@
                     
                     <div class="card-content">
                         <p class="subtitle is-6 has-text-grey-light mb-5">
-                            Let us know if you have any problems or suggestions with the site.
+                            Let us know if you have any problems or suggestions.
                         </p>
 
                         @if(session('success'))
