@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\UserResource\Pages;
 
 use App\Filament\Admin\Resources\UserResource;
+use App\Models\User;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables;
@@ -91,12 +92,25 @@ class ListUsers extends ListRecords
                         4 => 'Site Admin',
                     ])
                     ->multiple(),
+
+                Tables\Filters\Filter::make('age_restricted')
+                    ->label('Age restricted')
+                    ->query(fn (Builder $query): Builder => $query->whereRaw('(flags & ?) != 0', [User::FLAG_AGE_RESTRICTED])),
             ])
             ->actions([
                 Actions\EditAction::make()
                     ->label('Edit User')
                     ->icon('heroicon-o-pencil'),
-                
+
+                Actions\Action::make('grantAgeException')
+                    ->label('Grant Age Exception')
+                    ->icon('heroicon-o-check-badge')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalDescription('The account age check will stop restricting this user, including on future logins.')
+                    ->visible(fn (User $record): bool => $record->isAgeRestricted())
+                    ->action(fn (User $record) => $record->exemptFromAgeCheck()),
+
                 Actions\DeleteAction::make()
                     ->label('Delete User')
                     ->icon('heroicon-o-trash')

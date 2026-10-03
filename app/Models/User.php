@@ -21,6 +21,12 @@ class User extends Authenticatable implements FilamentUser, HasName
     use HasFactory, HasUuids, Notifiable;
 
     /**
+     * Bits stored in `flags`
+     */
+    public const FLAG_AGE_RESTRICTED = 1;
+    public const FLAG_AGE_EXEMPT = 2;
+
+    /**
      * Scoped to `uuid` so the auto-incrementing `id` is left to the database.
      *
      * @return array<int, string>
@@ -68,7 +74,34 @@ class User extends Authenticatable implements FilamentUser, HasName
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'flags' => 'integer',
         ];
+    }
+
+    public function isAgeRestricted(): bool
+    {
+        return (bool) ($this->flags & self::FLAG_AGE_RESTRICTED);
+    }
+
+    public function isAgeExempt(): bool
+    {
+        return (bool) ($this->flags & self::FLAG_AGE_EXEMPT);
+    }
+
+    /**
+     * Exception granted by a host: the login age check stops restricting this user
+     */
+    public function exemptFromAgeCheck(): void
+    {
+        $this->update(['flags' => ($this->flags | self::FLAG_AGE_EXEMPT) & ~self::FLAG_AGE_RESTRICTED]);
+    }
+
+    /**
+     * Restricted either manually by a host (role -1) or by the account age check
+     */
+    public function isRestricted(): bool
+    {
+        return (int) $this->role === -1 || $this->isAgeRestricted();
     }
 
     public function canAccessPanel(Panel $panel): bool

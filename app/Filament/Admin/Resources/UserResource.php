@@ -13,6 +13,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Auth\Access\Response;
 
 class UserResource extends Resource
 {
@@ -27,6 +28,12 @@ class UserResource extends Resource
         return auth()->check() && auth()->user()->role >= 2;
     }
 
+    // Users are only created through OAuth login; this also hides the "New user" button
+    public static function getCreateAuthorizationResponse(): Response
+    {
+        return Response::deny();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
@@ -34,11 +41,14 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->label('Username'),
                 
+                // Blank saves as null, which the unique check skips
                 TextInput::make('reddit_user')
-                    ->label('Reddit Username'),
-                
+                    ->label('Reddit Username')
+                    ->unique(ignoreRecord: true),
+
                 TextInput::make('anilist_id')
-                    ->label('Anilist ID'),
+                    ->label('Anilist ID')
+                    ->unique(ignoreRecord: true),
 
                 TextInput::make('email')
                     ->label('Email')

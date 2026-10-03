@@ -2,7 +2,7 @@
     <div class="fi-page-content p-6">
         <div class="fi-section">
             <div class="fi-section-content">                
-                @if(auth()->user()->role === -1)
+                @if(auth()->user()->isRestricted())
                 <div class="fi-card fi-card-color-danger mt-4">
                     <div class="fi-card-body p-6">
                         <div class="flex items-center justify-center mb-4">
@@ -37,7 +37,7 @@
                         </p>
                     </div>
                 </div>
-                @elseif(auth()->user()->role !== -1)
+                @elseif(! auth()->user()->isRestricted())
                 <div class="fi-card fi-card-color-warning mt-4">
                     <div class="fi-card-body p-6">
                         <h3 class="fi-section-header-heading has-text-centered mb-4">

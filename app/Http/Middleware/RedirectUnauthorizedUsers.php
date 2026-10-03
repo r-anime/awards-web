@@ -17,11 +17,11 @@ class RedirectUnauthorizedUsers
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // If a role -1 user hits any participate route, send them to the dashboard home directly
+        // If a restricted user hits any participate route, send them to the dashboard home directly
         if ($request->is('participate') || $request->is('participate/*')) {
             if (Auth::check()) {
                 $user = Auth::user();
-                if ($user && (int) $user->role === -1) {
+                if ($user && $user->isRestricted()) {
                     return new RedirectResponse(url('/dashboard'));
                 }
             }
@@ -32,11 +32,11 @@ class RedirectUnauthorizedUsers
 
         $response = $next($request);
 
-        // Handle 403s for non -1 users with insufficient permissions (fallback)
+        // Handle 403s for non-restricted users with insufficient permissions (fallback)
         if ($response->getStatusCode() === 403 && $request->is('dashboard/*') && ! $request->is('login') && ! $request->is('dashboard/logout') && ! $request->is('dashboard/oauth/*')) {
             if (Auth::check()) {
                 $user = Auth::user();
-                if ($user && (int) $user->role < 2 && (int) $user->role !== -1) {
+                if ($user && (int) $user->role < 2 && ! $user->isRestricted()) {
                     return new RedirectResponse(url('/'));
                 }
             }
