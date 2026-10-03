@@ -97,11 +97,20 @@ class User extends Authenticatable implements FilamentUser, HasName
     }
 
     /**
+     * Everyone below Juror is age-checked, staff were vetted when given their role.
+     * Includes manually restricted users so lifting that doesn't skip the age check.
+     */
+    public function isSubjectToAgeCheck(): bool
+    {
+        return (int) $this->role < 1 && ! $this->isAgeExempt();
+    }
+
+    /**
      * Restricted either manually by a host (role -1) or by the account age check
      */
     public function isRestricted(): bool
     {
-        return (int) $this->role === -1 || $this->isAgeRestricted();
+        return (int) $this->role === -1 || ($this->isSubjectToAgeCheck() && $this->isAgeRestricted());
     }
 
     public function canAccessPanel(Panel $panel): bool

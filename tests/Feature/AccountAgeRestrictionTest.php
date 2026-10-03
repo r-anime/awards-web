@@ -100,12 +100,35 @@ class AccountAgeRestrictionTest extends TestCase
     }
 
     #[DataProvider('oauthProviders')]
+    public function test_promoting_a_restricted_user_to_staff_lifts_the_age_restriction(string $provider): void
+    {
+        $account = $this->oauthAccount($provider, daysOld: 5);
+
+        $this->login($provider, $account)->update(['role' => 1]);
+        $this->assertCanApply();
+
+        $this->login($provider, $account);
+        $this->assertCanApply();
+    }
+
+    #[DataProvider('oauthProviders')]
     public function test_a_manual_restriction_survives_logging_in_again(string $provider): void
     {
         $account = $this->oauthAccount($provider, daysOld: 60);
 
         $this->restrictManually($this->login($provider, $account));
         $this->login($provider, $account);
+
+        $this->assertCannotApply();
+    }
+
+    #[DataProvider('oauthProviders')]
+    public function test_lifting_a_manual_restriction_does_not_skip_the_age_check(string $provider): void
+    {
+        $account = $this->oauthAccount($provider, daysOld: 5);
+
+        $this->restrictManually($this->login($provider, $account));
+        $this->login($provider, $account)->update(['role' => 0]);
 
         $this->assertCannotApply();
     }
