@@ -16,7 +16,7 @@
                             </h3>
                         </div>
                         <p class="fi-section-header-description text-center text-gray-700 dark:text-gray-300 mt-2">
-                            Your Reddit account is too young to participate in the awards. Your account must be at least 
+                            Your account is too young to participate in the awards. Your account must be at least 
                             <strong>{{ \App\Models\Option::get('account_age_requirement', 30) }} days old</strong> to access the full system.
                         </p>
                         <p class="fi-section-header-description text-center text-gray-600 dark:text-gray-400 mt-2">
