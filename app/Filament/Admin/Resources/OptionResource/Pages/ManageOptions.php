@@ -30,7 +30,7 @@ class ManageOptions extends Page
 
     public static function canAccess(array $parameters = []): bool
     {
-        return auth()->check() && auth()->user()->role >= 4;
+        return auth()->check() && auth()->user()->role >= 3;
     }
 
     public function mount(): void
