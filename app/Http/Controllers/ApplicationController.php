@@ -229,8 +229,8 @@ class ApplicationController extends Controller
             'color' => 0x00ff00, // Green color
             'fields' => [
                 [
-                    'name' => 'Username',
-                    'value' => $user->name,
+                    'name' => 'User uuid',
+                    'value' => $user->uuid,
                     'inline' => true
                 ],
                 [
