@@ -94,7 +94,7 @@
                             <div style="display: flex; flex-direction: row; justify-content: space-between">
                                 <div class="field is-grouped is-grouped-left cf-turnstile"
                                     data-size="flexible"
-                                    data-sitekey={{ config('cloudflare-turnstile.sitekey') }}
+                                    data-sitekey="{{ config('cloudflare-turnstile.sitekey') }}"
                                     data-callback="onTurnstileSuccess"
                                     {{-- data-error-callback="onTurnstileError" --}}
                                     data-expired-callback="onTurnstileExpired"
@@ -115,6 +115,7 @@
                                             <span>Submit Feedback</span>
                                         </button>
                                     </div>
+                                </div>
                             @endif
                         </form>
                     </div>

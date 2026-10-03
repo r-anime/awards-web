@@ -13,6 +13,7 @@ class Feedback extends Model
         'name',
         'message',
         'ip_hash',
+        'validated',
     ];
 
     protected $casts = [

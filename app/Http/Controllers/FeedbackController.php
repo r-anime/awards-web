@@ -35,7 +35,7 @@ class FeedbackController extends Controller
             
             $turnstile_response = $this->validateTurnstile($turnstile_token, $ipAddress);
             $turnstile_validated = $turnstile_response['success'];
-    }
+        }
         // Check rate limit
         if (Feedback::hasExceededWeeklyLimit($ipAddress)) {
             return back()->withErrors([
@@ -53,7 +53,7 @@ class FeedbackController extends Controller
 
         // If not validated when Turnstile enabled, log failure
         if($turnstile_validated == false && $turnstile_enabled) {
-                \Log::info('Feedback id '.$feedback->id.' validation failed: ' . $turnstile_response['error-codes']);
+            \Log::info('Feedback id '.$feedback->id.' validation failed: ' . implode(', ', $turnstile_response['error-codes'] ?? []));
         }
 
         // If validated, or if Turnstile disabled, send to Discord webhook
@@ -79,18 +79,15 @@ class FeedbackController extends Controller
         }
 
         try {
-        $response = Http::acceptJson()
-            ->post($url, $data);
+            $response = Http::acceptJson()
+                ->post($url, $data);
         } catch(\Exception $e) {
             \Log::error('Failed to validate Turnstile token: ' . $e->getMessage());
             return ['success' => false, 'error-codes' => ['internal-error']];
         }
 
-        if ($response === FALSE) {
-            return ['success' => false, 'error-codes' => ['internal-error']];
-        }
-
-        return json_decode($response, true);
+        // Non-JSON response (e.g. a Cloudflare outage page)
+        return $response->json() ?? ['success' => false, 'error-codes' => ['internal-error']];
     }
 
     private function sendToDiscord(Feedback $feedback)
