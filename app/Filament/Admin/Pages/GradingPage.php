@@ -214,7 +214,7 @@ class GradingPage extends Page
                 $grouped[$qid] = [];
             }
             $grouped[$qid][] = [
-                'scorer' => $score->scorer ? ($score->scorer->name ?? $score->scorer->reddit_user ?? ('#' . $score->scorer->id)) : 'Unknown',
+                'scorer' => $score->scorer ? ($score->scorer->name ?? $score->scorer->reddit_user ?? ($score->scorer->anilist_id ? 'AniList #' . $score->scorer->anilist_id : '#' . $score->scorer->id)) : 'Unknown',
                 'score' => $score->score,
                 'comment' => $score->comment,
             ];

@@ -9,7 +9,7 @@
                                 Grading Application for: <strong>{{ $this->ungradedApplication->uuid }}</strong>
                                 @if(auth()->user()->role >= 2)
                                     <br><span class="text-lg font-normal text-gray-600 dark:text-gray-400">
-                                        Applicant: {{ $this->ungradedApplication->name ?? $this->ungradedApplication->reddit_user ?? 'User #' . $this->ungradedApplication->id }}
+                                        Applicant: {{ $this->ungradedApplication->name ?? $this->ungradedApplication->reddit_user ?? ($this->ungradedApplication->anilist_id ? 'AniList #' . $this->ungradedApplication->anilist_id : 'User #' . $this->ungradedApplication->id) }}
                                     </span>
                                 @endif
                             </h2>

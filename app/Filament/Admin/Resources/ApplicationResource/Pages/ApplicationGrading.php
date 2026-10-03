@@ -74,8 +74,8 @@ class ApplicationGrading extends Page implements HasTable
                 ->label('Username')
                 ->sortable()
                 ->searchable()
-                ->formatStateUsing(function ($record) {
-                    return $record->name ?? $record->reddit_user ?? 'User #' . $record->id;
+                ->getStateUsing(function ($record) {
+                    return $record->name ?? $record->reddit_user ?? ($record->anilist_id ? 'AniList #' . $record->anilist_id : 'User #' . $record->id);
                 })
                 ->width('150px');
         }
@@ -106,7 +106,7 @@ class ApplicationGrading extends Page implements HasTable
                         // Show scorer name only for users with role 2 or higher
                         if (auth()->user()->role >= 2) {
                             $scorerName = $score->scorer ?
-                                ($score->scorer->name ?? $score->scorer->reddit_user ?? 'User #' . $score->scorer->id) :
+                                ($score->scorer->name ?? $score->scorer->reddit_user ?? ($score->scorer->anilist_id ? 'AniList #' . $score->scorer->anilist_id : 'User #' . $score->scorer->id)) :
                                 'Unknown';
                         } else {
                             $scorerName = $score->scorer ?
