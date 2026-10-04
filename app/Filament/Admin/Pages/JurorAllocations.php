@@ -44,7 +44,7 @@ class JurorAllocations extends Page
     
     public static function canAccess(): bool
     {
-        return auth()->check() && auth()->user()->role >= 2;
+        return auth()->check() && GradingPage::canSeeApplicantNames();
     }
 
     public function form(Form $form): Form

@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\ApplicationResource\Pages;
 use App\Filament\Admin\Resources\ApplicationResource;
 use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
 use App\Filament\Admin\Pages\JurorAllocations;
+use App\Filament\Admin\Pages\GradingPage;
 use App\Models\Application;
 use Filament\Actions;
 use Filament\Resources\Pages\Page;
@@ -57,7 +58,7 @@ class ApplicationDashboard extends Page
                 ->label('Grade Applications')
                 ->icon('heroicon-o-academic-cap')
                 ->color('success')
-                ->url(\App\Filament\Admin\Pages\GradingPage::getUrl());
+                ->url(GradingPage::getUrl());
             
             $actions[] = Actions\Action::make('grading-overview')
                 ->label('Grading Overview')
@@ -65,11 +66,14 @@ class ApplicationDashboard extends Page
                 ->color('info')
                 ->url(ApplicationGrading::getUrl());
             
-            $actions[] = Actions\Action::make('juror-allocations')
-                ->label('Juror Allocations')
-                ->icon('heroicon-o-users')
-                ->color('gray')
-                ->url(JurorAllocations::getUrl());
+            // Only show allocation if names are allowed
+            if(GradingPage::canSeeApplicantNames()) {
+                $actions[] = Actions\Action::make('juror-allocations')
+                    ->label('Juror Allocations')
+                    ->icon('heroicon-o-users')
+                    ->color('gray')
+                    ->url(JurorAllocations::getUrl());
+            }
         }
         
         return $actions;
