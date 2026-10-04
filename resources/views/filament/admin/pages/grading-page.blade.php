@@ -193,6 +193,7 @@
                                                             <input 
                                                                 type="text"
                                                                 wire:model="comments.{{ $question['id'] }}"
+                                                                maxlength="{{ \App\Models\AppScore::COMMENT_MAX_LENGTH}}"
                                                                 class="fi-input w-full"
                                                                 placeholder="Optional comment..."
                                                             />

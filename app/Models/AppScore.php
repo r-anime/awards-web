@@ -11,6 +11,8 @@ class AppScore extends Model
 {
     // use HasFactory;
 
+    public const COMMENT_MAX_LENGTH = 512;
+
     protected $fillable = [
         'applicant_id',
         'scorer_id',
