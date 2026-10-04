@@ -449,6 +449,10 @@
                 });
             }
             
+            function normalizeLineEndings(content) {
+                return content.replace(/\r?\n/g, '\r\n')
+            }
+
             // Function to setup character counter for essay fields
             function setupCharacterCounter(questionId, editor) {
                 const counterElement = document.getElementById('counter_' + questionId);
@@ -458,7 +462,7 @@
                 
                 function updateCharacterCount() {
                     const content = editor.value();
-                    const charCount = content.length;
+                    const charCount = normalizeLineEndings(content).length;
                     
                     charCountElement.textContent = charCount.toLocaleString();
                     
