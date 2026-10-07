@@ -12,6 +12,8 @@ use Filament\Resources\Pages\Page;
 use Filament\Tables\Table;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Columns\ColumnGroup;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -80,22 +82,30 @@ class ApplicationGrading extends Page implements HasTable
                 ->width('150px');
         }
 
-        // Add columns for each essay question
+        // Add answered and average score columns for each essay question
+        $answeredColumns = [];
+        $scoreColumns = [];
         foreach ($essayQuestions as $question) {
             $questionId = $question['id'];
             $questionText = $question['question'];
             $questionIndex = array_search($question, $essayQuestions->toArray()) + 1;
 
-            $columns[] = TextColumn::make("question_{$questionIndex}")
+            $answeredColumns[] = IconColumn::make("answered_{$questionIndex}")
                 ->label('Q' . $questionIndex)
-                ->tooltip(function ($record) use ($questionId, $questionText) {
-                    $scores = AppScore::where('applicant_id', $record->id)
-                        ->where(function ($q) use ($questionId) {
-                            $q->where('question_id', $questionId)
-                              ->orWhere('question_uuid', $questionId);
-                        })
-                        ->with('scorer')
-                        ->get();
+                ->tooltip($questionText)
+                ->boolean()
+                ->getStateUsing(fn ($record) => $record->appAnswers->contains('question_id', $questionId))
+                ->alignCenter();
+
+            // This question's scores, from the batch loaded with the table query
+            $questionScores = fn ($record) => $record->appScores->filter(
+                fn ($score) => $score->question_id == $questionId || $score->question_uuid == $questionId
+            );
+
+            $scoreColumns[] = TextColumn::make("question_{$questionIndex}")
+                ->label('Q' . $questionIndex)
+                ->tooltip(function ($record) use ($questionScores, $questionText) {
+                    $scores = $questionScores($record);
 
                     if ($scores->isEmpty()) {
                         return $questionText . "\n\n" . str_repeat("-", 50) . "\n\nNo grades assigned yet.";
@@ -119,13 +129,8 @@ class ApplicationGrading extends Page implements HasTable
 
                     return $questionText . "\n\n" . str_repeat("-", 50) . "\n\nIndividual Scores:\n\n" . implode("\n\n", $scoreList);
                 })
-                ->getStateUsing(function ($record) use ($questionId) {
-                    $scores = AppScore::where('applicant_id', $record->id)
-                        ->where(function ($q) use ($questionId) {
-                            $q->where('question_id', $questionId)
-                              ->orWhere('question_uuid', $questionId);
-                        })
-                        ->get();
+                ->getStateUsing(function ($record) use ($questionScores) {
+                    $scores = $questionScores($record);
 
                     if ($scores->isEmpty()) {
                         return 'No grades';
@@ -134,10 +139,23 @@ class ApplicationGrading extends Page implements HasTable
                     $average = $scores->avg('score');
                     return number_format($average, 2);
                 })
-                ->sortable()
+                // The column is computed, so sort by the same average in a subquery
+                ->sortable(query: fn (Builder $query, string $direction) => $query->orderBy(
+                    AppScore::selectRaw('avg(score)')
+                        ->whereColumn('app_scores.applicant_id', 'users.id')
+                        ->where(function ($q) use ($questionId) {
+                            $q->where('question_id', $questionId)
+                              ->orWhere('question_uuid', $questionId);
+                        }),
+                    $direction
+                ))
                 ->width('100px');
         }
 
+        if (!empty($scoreColumns)) {
+            $columns[] = ColumnGroup::make('Answered', $answeredColumns);
+            $columns[] = ColumnGroup::make('Average Score', $scoreColumns);
+        }
 
         // Debug: Let's see what users we're getting
         $essayQuestionIds = collect($application->form)
@@ -146,6 +164,20 @@ class ApplicationGrading extends Page implements HasTable
             ->toArray();
 
         $userQuery = User::query()
+            ->with(['appAnswers' => function ($query) use ($essayQuestionIds) {
+                // Only what the Answered columns need, not the essay text
+                $query->select('applicant_id', 'question_id')
+                      ->whereIn('question_id', $essayQuestionIds)
+                      ->whereNotNull('answer')
+                      ->where('answer', '!=', '');
+            }])
+            // Scores and scorers for the score columns and their tooltips, one query each per page
+            ->with(['appScores' => function ($query) use ($essayQuestionIds) {
+                $query->where(function ($q) use ($essayQuestionIds) {
+                    $q->whereIn('question_id', $essayQuestionIds)
+                      ->orWhereIn('question_uuid', $essayQuestionIds);
+                });
+            }, 'appScores.scorer'])
             ->whereHas('appAnswers', function (Builder $query) use ($essayQuestionIds) {
                 $query->whereIn('question_id', $essayQuestionIds)
                       ->whereNotNull('answer')
