@@ -88,38 +88,28 @@ class GradingPage extends Page
             }
         }
 
-        // Find applications that the current user hasn't graded yet
-        $applicants = User::whereHas('appAnswers')->get();
-        $ungradedApplicants = [];
-        
-        foreach ($applicants as $applicant) {
-            // Only scores on this year's essays count, so returning applicants are graded again
-            $hasBeenGraded = AppScore::where('applicant_id', $applicant->id)
-                ->where('scorer_id', auth()->id())
-                ->whereIn('question_id', $essayQuestionIds)
-                ->exists();
-            
-            if (!$hasBeenGraded) {
-                // Check if applicant has non-empty essay answers
-                $hasNonEmptyEssayAnswers = false;
-                if (!empty($essayQuestionIds)) {
-                    $hasNonEmptyEssayAnswers = AppAnswer::where('applicant_id', $applicant->id)
-                        ->whereIn('question_id', $essayQuestionIds)
-                        ->whereNotNull('answer')
-                        ->where('answer', '!=', '')
-                        ->exists();
-                }
-                
-                if ($hasNonEmptyEssayAnswers) {
-                    $ungradedApplicants[] = $applicant;
-                }
-            }
-        }
-        
-        // Randomly select an ungraded applicant
-        if (!empty($ungradedApplicants)) {
-            $randomApplicant = $ungradedApplicants[array_rand($ungradedApplicants)];
-            $this->redirect(static::getUrlForUser($randomApplicant->uuid));
+        // Find applications that the current user hasn't graded yet: everyone with a non-empty
+        // answer to this year's essays, minus everyone this host has scored on them. Two queries
+        // for the whole list instead of two per applicant
+        $answeredApplicantIds = AppAnswer::whereIn('question_id', $essayQuestionIds)
+            ->whereNotNull('answer')
+            ->where('answer', '!=', '')
+            ->distinct()
+            ->pluck('applicant_id');
+
+        // Only scores on this year's essays count, so returning applicants are graded again
+        $gradedApplicantIds = AppScore::where('scorer_id', auth()->id())
+            ->whereIn('question_id', $essayQuestionIds)
+            ->distinct()
+            ->pluck('applicant_id');
+
+        // Randomly select an ungraded applicant; going through users skips answers whose account is gone
+        $randomApplicantUuid = User::whereIn('id', $answeredApplicantIds->diff($gradedApplicantIds))
+            ->inRandomOrder()
+            ->value('uuid');
+
+        if ($randomApplicantUuid) {
+            $this->redirect(static::getUrlForUser($randomApplicantUuid));
             return;
         }
     }

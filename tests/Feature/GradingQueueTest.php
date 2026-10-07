@@ -54,6 +54,27 @@ class GradingQueueTest extends TestCase
             ->assertNoRedirect();
     }
 
+    public function test_applicant_who_only_applied_last_year_is_not_queued(): void
+    {
+        $this->score('essay-2026');
+        $lastYearOnly = User::factory()->create();
+        AppAnswer::create(['applicant_id' => $lastYearOnly->id, 'question_id' => 'essay-2025', 'answer' => 'An answer']);
+
+        Livewire::actingAs($this->host)
+            ->test(GradingPage::class)
+            ->assertNoRedirect();
+    }
+
+    public function test_answers_without_an_account_are_not_queued(): void
+    {
+        $this->score('essay-2026');
+        AppAnswer::create(['applicant_id' => 999999, 'question_id' => 'essay-2026', 'answer' => 'An answer']);
+
+        Livewire::actingAs($this->host)
+            ->test(GradingPage::class)
+            ->assertNoRedirect();
+    }
+
     private function application(int $year, string $essayId): void
     {
         Application::create([
