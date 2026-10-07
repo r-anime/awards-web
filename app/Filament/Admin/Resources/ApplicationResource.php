@@ -164,6 +164,7 @@ class ApplicationResource extends Resource
             'create' => Pages\CreateApplication::route('/create'),
             'edit' => Pages\EditApplication::route('/{record}/edit'),
             'grading' => Pages\ApplicationGrading::route('/grading'),
+            'grading-progress' => Pages\HostGradingProgress::route('/grading-progress'),
         ];
     }
 }

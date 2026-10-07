@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\ApplicationResource\Pages;
 
 use App\Filament\Admin\Resources\ApplicationResource;
 use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
+use App\Filament\Admin\Resources\ApplicationResource\Pages\HostGradingProgress;
 use App\Filament\Admin\Pages\JurorAllocations;
 use App\Filament\Admin\Pages\GradingPage;
 use App\Models\Application;
@@ -65,7 +66,13 @@ class ApplicationDashboard extends Page
                 ->icon('heroicon-o-table-cells')
                 ->color('info')
                 ->url(ApplicationGrading::getUrl());
-            
+
+            $actions[] = Actions\Action::make('host-grading-progress')
+                ->label('Host Progress')
+                ->icon('heroicon-o-chart-bar')
+                ->color('info')
+                ->url(HostGradingProgress::getUrl());
+
             // Only show allocation if names are allowed
             if(GradingPage::canSeeApplicantNames()) {
                 $actions[] = Actions\Action::make('juror-allocations')
