@@ -7,6 +7,7 @@ use App\Models\AppAnswer;
 use App\Models\AppScore;
 use App\Models\Category;
 use App\Models\Option;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
@@ -49,6 +50,16 @@ class ApplicationController extends Controller
         $application = Application::orderBy('year', 'desc')->first();
         if (!$application) {
             return redirect()->route('application.index')->with('error', 'No application found.');
+        }
+
+        $now = Carbon::now();
+        if($user->role < 2 && $now->lt($application->start_time)) {
+            $error = 'Applications for the '.$application->year.' awards season will open on '.Carbon::parse($application->start_time)->format('F j, Y').'.';
+            return redirect()->route('application.index')->with('error', $error);
+        }
+        if($user->role < 2 && $now->gt($application->end_time)) {
+            $error = 'Applications for the '.$application->year.' awards season have closed as of '.Carbon::parse($application->end_time)->format('F j, Y').'.';
+            return redirect()->route('application.index')->with('error', $error);
         }
 
         // Answers stay optional; only the essay length is enforced. The limit and
