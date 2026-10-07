@@ -3,13 +3,11 @@
         <div class="columns is-vcentered is-fullheight ">
             <div class="column is-8 mx-4">
                 <div class="welcome-content">
+                    {{-- ! 'Under Construction' banner --}}
                     <div class="notification is-warning is-light mt-4">
                         <div class="level">
                             <div class="level-left">
                                 <div class="level-item">
-                                    <span class="icon">
-                                        <i class="fas fa-tools"></i>
-                                    </span>
                                     <span class="has-text-weight-semibold">Under Construction</span>
                                 </div>
                             </div>
@@ -252,7 +250,12 @@
             background: rgba(40, 167, 69, 0.1);
             border: 1px solid rgba(40, 167, 69, 0.3);
         }
-        
+
+        .notification .level-right,
+        .notification .level-right .level-item {
+            flex-shrink: 1;
+        }
+
         @media (max-width: 768px) {
             .notification .level {
                 flex-direction: column;
