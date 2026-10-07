@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
 use App\Filament\Admin\Resources\ApplicationResource\Pages\HostGradingProgress;
-use App\Models\Application;
 use App\Models\AppAnswer;
+use App\Models\Application;
 use App\Models\AppScore;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -18,7 +18,9 @@ class GradingProgressTest extends TestCase
     use RefreshDatabase;
 
     private User $fullAnswers;
+
     private User $partialAnswers;
+
     private User $noEssays;
 
     protected function setUp(): void

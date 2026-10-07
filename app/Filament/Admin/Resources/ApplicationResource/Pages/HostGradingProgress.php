@@ -3,8 +3,8 @@
 namespace App\Filament\Admin\Resources\ApplicationResource\Pages;
 
 use App\Filament\Admin\Resources\ApplicationResource;
-use App\Models\Application;
 use App\Models\AppAnswer;
+use App\Models\Application;
 use App\Models\AppScore;
 use App\Models\User;
 use Filament\Actions\Action;
@@ -30,6 +30,7 @@ class HostGradingProgress extends Page implements HasTable
     public function getApplication(): ?Application
     {
         $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
+
         return Application::where('year', $filterYear)->first();
     }
 
@@ -43,7 +44,7 @@ class HostGradingProgress extends Page implements HasTable
     {
         $application = $this->getApplication();
 
-        if (!$application) {
+        if (! $application) {
             $filterYear = session('selected-year-filter') ?? intval(app('current-year'));
 
             return $table
@@ -97,7 +98,7 @@ class HostGradingProgress extends Page implements HasTable
             ->whereNotNull('answer')
             ->where('answer', '!=', '')
             ->get(['applicant_id', 'question_id'])
-            ->keyBy(fn ($answer) => $answer->applicant_id . '|' . $answer->question_id);
+            ->keyBy(fn ($answer) => $answer->applicant_id.'|'.$answer->question_id);
 
         // Applicants with at least one essay to grade, and how many answered each question
         $applicantIds = $essays->pluck('applicant_id')->unique()->values();
@@ -107,7 +108,7 @@ class HostGradingProgress extends Page implements HasTable
         $questions = $essayQuestions
             ->map(fn ($question, $index) => [
                 'id' => $question['id'],
-                'label' => 'Q' . ($index + 1),
+                'label' => 'Q'.($index + 1),
                 'question' => $question['question'] ?? '',
                 'answered' => $answeredCounts->get($question['id'], 0),
             ])
@@ -117,9 +118,9 @@ class HostGradingProgress extends Page implements HasTable
         // Every score on this year's essays, grouped by whoever gave it (not only hosts). Also matches
         // question_uuid like the other score queries do; nothing sets it, so scores match on question_id
         $scoresByScorer = AppScore::where(function ($query) use ($essayQuestionIds) {
-                $query->whereIn('question_id', $essayQuestionIds)
-                      ->orWhereIn('question_uuid', $essayQuestionIds);
-            })
+            $query->whereIn('question_id', $essayQuestionIds)
+                ->orWhereIn('question_uuid', $essayQuestionIds);
+        })
             ->get(['applicant_id', 'scorer_id', 'question_id', 'question_uuid'])
             ->groupBy('scorer_id');
 
@@ -135,9 +136,9 @@ class HostGradingProgress extends Page implements HasTable
                 $counted = [];
                 foreach ($scores as $score) {
                     $questionId = in_array($score->question_id, $essayQuestionIds, true) ? $score->question_id : $score->question_uuid;
-                    $key = $score->applicant_id . '|' . $questionId;
+                    $key = $score->applicant_id.'|'.$questionId;
 
-                    if (isset($counted[$key]) || !$essays->has($key)) {
+                    if (isset($counted[$key]) || ! $essays->has($key)) {
                         continue;
                     }
 
@@ -150,7 +151,7 @@ class HostGradingProgress extends Page implements HasTable
                 $gradedApplicationsCount = $scores->pluck('applicant_id')->unique()->intersect($applicantIds)->count();
 
                 return [
-                    'name' => $host->name ?? $host->reddit_user ?? ($host->anilist_id ? 'AniList #' . $host->anilist_id : 'User #' . $host->id),
+                    'name' => $host->name ?? $host->reddit_user ?? ($host->anilist_id ? 'AniList #'.$host->anilist_id : 'User #'.$host->id),
                     'applications_graded' => $gradedApplicationsCount,
                     'applications_remaining' => $applicantIds->count() - $gradedApplicationsCount,
                     'grades' => $gradesPerQuestion,

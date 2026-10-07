@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Filament\Admin\Pages\GradingPage;
-use App\Models\Application;
 use App\Models\AppAnswer;
+use App\Models\Application;
 use App\Models\AppScore;
 use App\Models\User;
 use Filament\Facades\Filament;
@@ -17,6 +17,7 @@ class GradingQueueTest extends TestCase
     use RefreshDatabase;
 
     private User $host;
+
     private User $applicant;
 
     protected function setUp(): void

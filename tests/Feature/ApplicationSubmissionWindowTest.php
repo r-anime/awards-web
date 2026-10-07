@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Application;
 use App\Models\AppAnswer;
+use App\Models\Application;
 use App\Models\AppScore;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
