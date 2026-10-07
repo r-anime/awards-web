@@ -79,26 +79,28 @@ class GradingPage extends Page
             return;
         }
         
+        $essayQuestionIds = [];
+        if ($application->form) {
+            foreach ($application->form as $question) {
+                if ($question['type'] === 'essay') {
+                    $essayQuestionIds[] = $question['id'];
+                }
+            }
+        }
+
         // Find applications that the current user hasn't graded yet
         $applicants = User::whereHas('appAnswers')->get();
         $ungradedApplicants = [];
         
         foreach ($applicants as $applicant) {
+            // Only scores on this year's essays count, so returning applicants are graded again
             $hasBeenGraded = AppScore::where('applicant_id', $applicant->id)
                 ->where('scorer_id', auth()->id())
+                ->whereIn('question_id', $essayQuestionIds)
                 ->exists();
             
             if (!$hasBeenGraded) {
                 // Check if applicant has non-empty essay answers
-                $essayQuestionIds = [];
-                if ($application->form) {
-                    foreach ($application->form as $question) {
-                        if ($question['type'] === 'essay') {
-                            $essayQuestionIds[] = $question['id'];
-                        }
-                    }
-                }
-                
                 $hasNonEmptyEssayAnswers = false;
                 if (!empty($essayQuestionIds)) {
                     $hasNonEmptyEssayAnswers = AppAnswer::where('applicant_id', $applicant->id)
