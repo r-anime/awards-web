@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Filament\Admin\Pages\GradingPage;
+use App\Filament\Admin\Resources\ApplicationResource\Pages\ApplicationGrading;
 use App\Models\Application;
 use App\Models\Option;
 use App\Models\User;
@@ -61,6 +62,26 @@ class GradingPageNamesTest extends TestCase
         $this->actingAs(User::factory()->create(['role' => 3]));
 
         $this->gradingPage()->assertSee('Secret Applicant');
+    }
+
+    public function test_grading_overview_hides_names_from_hosts_even_when_names_are_shown_to_hosts(): void
+    {
+        Option::set('show_applicant_names_to_hosts', 'true');
+        session(['selected-year-filter' => app('current-year')]);
+        $this->actingAs(User::factory()->create(['role' => 2]));
+
+        Livewire::test(ApplicationGrading::class)
+            ->assertTableColumnDoesNotExist('name')
+            ->assertSee('Usernames are hidden');
+    }
+
+    public function test_grading_overview_shows_names_to_moderators(): void
+    {
+        session(['selected-year-filter' => app('current-year')]);
+        $this->actingAs(User::factory()->create(['role' => 3]));
+
+        Livewire::test(ApplicationGrading::class)
+            ->assertTableColumnExists('name');
     }
 
     private function gradingPage()

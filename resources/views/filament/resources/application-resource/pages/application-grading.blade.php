@@ -34,7 +34,7 @@
                             <h3 class="fi-section-header-heading">Application Grading Overview</h3>
                             <p class="fi-section-header-description">
                                 View all applicants and their grades assigned by different scorers for each essay question.
-                                @if(!\App\Filament\Admin\Pages\GradingPage::canSeeApplicantNames())
+                                @if(!\App\Filament\Admin\Pages\GradingPage::canSeeNamesWhileGrading())
                                     <br><span class="text-sm text-gray-500">Note: Usernames are hidden for privacy. Only user IDs and UUIDs are shown.</span>
                                 @endif
                             </p>
