@@ -43,11 +43,18 @@ class GradingPage extends Page
         return auth()->check() && auth()->user()->role >= 2;
     }
     
-    // Hosts grade blind unless the show_applicant_names_to_hosts option is enabled
+    // Hosts only see applicant names (Grading Overview, Juror Allocations) when show_applicant_names_to_hosts is on
     public static function canSeeApplicantNames(): bool
     {
-        return auth()->user()->role >= 3
-            || Option::get('show_applicant_names_to_hosts', 'false') === 'true';
+        $role = (int) auth()->user()->role;
+        return $role >= 3
+            || ($role >= 2 && Option::get('show_applicant_names_to_hosts', 'false') === 'true');
+    }
+
+    // Hosts always grade blind
+    public static function canSeeNamesWhileGrading(): bool
+    {
+        return (int) auth()->user()->role >= 3;
     }
 
     public static function getUrlForUser(string $userUuid, array $parameters = [], bool $isAbsolute = true): string
