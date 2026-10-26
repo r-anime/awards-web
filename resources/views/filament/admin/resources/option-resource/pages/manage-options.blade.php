@@ -80,7 +80,14 @@
                                     <x-filament::input.checkbox wire:model="show_applicant_names_to_hosts" />
                                     <span class="fi-fo-field-wrp-label-text-label text-sm font-medium text-gray-700 dark:text-gray-300">Show applicant usernames to hosts</span>
                                 </label>
-                                <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">When unchecked, hosts grade blind and only see applicant UUIDs.</p>
+                                <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">Lets hosts open Juror Allocations, which shows applicant usernames. Hosts still grade blind unless the option below is also checked.</p>
+                            </div>
+                            <div class="fi-fo-field-wrp-label space-y-2" style="margin-top: 1rem; padding-left: 1.75rem;">
+                                <label class="fi-fo-field-wrp-label-text inline-flex items-center gap-x-3">
+                                    <x-filament::input.checkbox wire:model="show_applicant_names_while_grading" />
+                                    <span class="fi-fo-field-wrp-label-text-label text-sm font-medium text-gray-700 dark:text-gray-300">Also show usernames while grading</span>
+                                </label>
+                                <p class="fi-section-header-description text-sm text-gray-500 dark:text-gray-400 mt-1">Hosts see usernames on the Grading Page and Grading Overview instead of grading blind. Only applies while the option above is checked.</p>
                             </div>
                         </div>
                     </div>

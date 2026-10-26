@@ -57,6 +57,26 @@ class GradingPageNamesTest extends TestCase
             ->assertDontSee('secret_applicant');
     }
 
+    public function test_hosts_see_the_applicants_name_when_names_are_shown_while_grading(): void
+    {
+        Option::set('show_applicant_names_to_hosts', 'true');
+        Option::set('show_applicant_names_while_grading', 'true');
+        $this->actingAs(User::factory()->create(['role' => 2]));
+
+        $this->gradingPage()->assertSee('Secret Applicant');
+    }
+
+    public function test_showing_names_while_grading_needs_names_shown_to_hosts(): void
+    {
+        Option::set('show_applicant_names_to_hosts', 'false');
+        Option::set('show_applicant_names_while_grading', 'true');
+        $this->actingAs(User::factory()->create(['role' => 2]));
+
+        $this->gradingPage()
+            ->assertDontSee('Secret Applicant')
+            ->assertDontSee('secret_applicant');
+    }
+
     public function test_moderators_see_the_applicants_name(): void
     {
         $this->actingAs(User::factory()->create(['role' => 3]));
@@ -73,6 +93,18 @@ class GradingPageNamesTest extends TestCase
         Livewire::test(ApplicationGrading::class)
             ->assertTableColumnDoesNotExist('name')
             ->assertSee('Usernames are hidden');
+    }
+
+    public function test_grading_overview_shows_names_to_hosts_when_names_are_shown_while_grading(): void
+    {
+        Option::set('show_applicant_names_to_hosts', 'true');
+        Option::set('show_applicant_names_while_grading', 'true');
+        session(['selected-year-filter' => app('current-year')]);
+        $this->actingAs(User::factory()->create(['role' => 2]));
+
+        Livewire::test(ApplicationGrading::class)
+            ->assertTableColumnExists('name')
+            ->assertDontSee('Usernames are hidden');
     }
 
     public function test_grading_overview_shows_names_to_moderators(): void

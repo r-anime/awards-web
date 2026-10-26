@@ -70,8 +70,7 @@ class ApplicationGrading extends Page implements HasTable
                 ->width('200px'),
         ];
 
-        // Only show username column to role 3+ (for now)
-        // TODO: figure out actual name visibility while grading
+        // Username column for staff, and for hosts when both username options are on
         if (GradingPage::canSeeNamesWhileGrading()) {
             $columns[] = TextColumn::make('name')
                 ->label('Username')

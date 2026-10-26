@@ -27,7 +27,7 @@ class OptionResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->check() && auth()->user()->role >= 3;
+        return auth()->check() && auth()->user()->role >= 2;
     }
 
     public static function form(Schema $schema): Schema
