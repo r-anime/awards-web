@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Admin\Pages\GradingPage;
 use App\Filament\Admin\Pages\JurorAllocations;
 use App\Models\AppAnswer;
 use App\Models\Application;
@@ -322,32 +323,51 @@ class JurorAllocationsTest extends TestCase
             ->assertFileDownloaded('juror-allocations-2026-10-26.csv');
     }
 
-    public function test_csv_lists_every_applicant_with_scores_eligibility_allocations_and_preferences(): void
+    public function test_csv_lists_every_applicant_for_allocating_by_hand(): void
     {
-        $row = fn (User $user, string $rest) => "{$user->id},{$user->uuid},{$rest}";
+        // User ID, UUID, name, empty Reddit / AniList ID (the factory sets neither), grading page link, then the rest
+        $row = fn (User $user, string $name, string $rest) => "{$user->id},{$user->uuid},\"{$name}\",,,"
+            .GradingPage::getUrlForUser($user->uuid).",{$rest}";
 
         $this->assertSame(
             "\xEF\xBB\xBF".implode("\r\n", [
-                '"User ID",UUID,Applicant,"Total Avg",Q1,"Q1 Grades",Q2,"Q2 Grades",Eligible,"Above Base Cutoff","Yes to Both",'
-                    .'"Allocated To","Main Preference 1","Main Preference 2","Doesn\'t Want","Non-Main Preferences"',
-                $row($this->strong, '"Strong Sam",4,4,1,4,1,Yes,Yes,No,"Anime of the Year; Movie of the Year; OP","Anime of the Year","Movie of the Year",,"OP; Drama"'),
-                $row($this->borderline, '"Borderline Bea",1.5,2,1,1,1,Yes,Yes,No,,"Anime of the Year",,,OP'),
-                // Below the base cutoff: listed too, but not eligible and so never allocated
-                $row($this->belowCutoff, '"Below Bo",1,1,1,1,1,No,No,No,,"Anime of the Year",,,'),
+                '"User ID",UUID,Applicant,Reddit,"AniList ID","Grading Page","Total Avg",Q1,"Q1 Grades",Q2,"Q2 Grades",'
+                    .'"Above Base Cutoff","Anime of the Year","Movie of the Year",OP,Drama,'
+                    .'"Main Preference 1","Main Preference 2","Doesn\'t Want","Non-Main Preferences","Website Allocation"',
+                $row($this->strong, 'Strong Sam', '4,4,1,4,1,Yes,1,2,Yes,Yes,"Anime of the Year","Movie of the Year",,"OP; Drama",'
+                    .'"Anime of the Year; Movie of the Year; OP"'),
+                $row($this->borderline, 'Borderline Bea', '1.5,2,1,1,1,Yes,1,,Yes,,"Anime of the Year",,,OP,'),
+                // Below the base cutoff: listed too, and never allocated by the website
+                $row($this->belowCutoff, 'Below Bo', '1,1,1,1,1,No,1,,,,"Anime of the Year",,,,'),
             ])."\r\n",
             $this->exportCsv(),
         );
     }
 
-    public function test_csv_shows_why_an_applicant_below_the_cutoff_is_still_eligible(): void
+    public function test_csv_has_a_column_per_category_with_the_rank_doesnt_want_or_yes(): void
     {
-        $bothYes = User::factory()->create(['name' => 'Both Yes Yuki']);
-        $this->applicant($bothYes, [1, 1], [], []);
-        $this->answerChoices($bothYes, ['mc-1' => 'mc-1-yes', 'mc-2' => 'mc-2-yes']);
+        $choosy = User::factory()->create(['name' => 'Choosy Cleo']);
+        $this->applicant($choosy, [4, 4], [$this->aoty], [$this->op], unwantedMain: [$this->moty]);
 
-        $row = $this->csvRows()[$bothYes->id];
+        $row = $this->csvRows()[$choosy->id];
 
-        $this->assertSame(['Yes', 'No', 'Yes'], [$row['Eligible'], $row['Above Base Cutoff'], $row['Yes to Both']]);
+        $this->assertSame(
+            ['1', "Doesn't want", 'Yes', ''],
+            [$row['Anime of the Year'], $row['Movie of the Year'], $row['OP'], $row['Drama']],
+        );
+    }
+
+    public function test_csv_has_contact_details_and_a_grading_page_link(): void
+    {
+        $contactable = User::factory()->create(['name' => 'Contact Cam', 'reddit_user' => 'contact_cam', 'anilist_id' => 4242]);
+        $this->applicant($contactable, [4, 4], [$this->aoty], []);
+
+        $row = $this->csvRows()[$contactable->id];
+
+        $this->assertSame(
+            ['contact_cam', '4242', GradingPage::getUrlForUser($contactable->uuid)],
+            [$row['Reddit'], $row['AniList ID'], $row['Grading Page']],
+        );
     }
 
     public function test_table_shows_the_main_categories_an_applicant_does_not_want(): void

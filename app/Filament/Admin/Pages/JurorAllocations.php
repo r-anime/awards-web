@@ -220,9 +220,10 @@ class JurorAllocations extends Page implements HasTable
     }
 
     /**
-     * Everything the page knows about every applicant who answered the preference question,
-     * including those below the base cutoff, for allocating by hand in a spreadsheet. Eligibility
-     * and the current allocations (at the page's cutoffs) are columns, so the sheet can filter on them.
+     * Every applicant who answered the preference question, including those below the base cutoff,
+     * for allocating by hand in a spreadsheet. Each category gets its own column, so picking for one
+     * category is a single filter and sort. The website's own allocation is the last column, labelled
+     * as such, so hosts allocating by hand can ignore or delete it.
      */
     public function exportCsv(): StreamedResponse
     {
@@ -232,23 +233,39 @@ class JurorAllocations extends Page implements HasTable
         $allocatedTo = $this->allocatedCategoryNames();
         $baseCutoff = (float) $this->baseCutoff;
 
+        // Every category this year, main categories first, each group in the admin-set order
+        [$mainCategories, $otherCategories] = Category::where('year', $application?->year)
+            ->orderBy('order')
+            ->orderBy('id')
+            ->get(['id', 'name', 'type'])
+            ->partition(fn (Category $category) => $category->type === 'main');
+        $categories = $mainCategories->concat($otherCategories)->values();
+
+        // Built here rather than while streaming, so the URLs come from the current request
+        $gradingUrls = collect($applicants)
+            ->mapWithKeys(fn ($applicant) => [$applicant['id'] => $applicant['uuid'] ? GradingPage::getUrlForUser($applicant['uuid']) : ''])
+            ->all();
+
         // One column per main preference rank, as many as the longest list
         $mainPreferenceCount = collect($applicants)->max(fn ($applicant) => count($applicant['main_preferences'])) ?? 0;
 
-        $header = ['User ID', 'UUID', 'Applicant', 'Total Avg'];
+        $header = ['User ID', 'UUID', 'Applicant', 'Reddit', 'AniList ID', 'Grading Page', 'Total Avg'];
         foreach ($questions as $question) {
             $header[] = $question['label'];
             $header[] = "{$question['label']} Grades";
         }
-        array_push($header, 'Eligible', 'Above Base Cutoff', 'Yes to Both', 'Allocated To');
+        $header[] = 'Above Base Cutoff';
+        foreach ($categories as $category) {
+            $header[] = $category->name;
+        }
         for ($rank = 1; $rank <= $mainPreferenceCount; $rank++) {
             $header[] = "Main Preference {$rank}";
         }
-        array_push($header, "Doesn't Want", 'Non-Main Preferences');
+        array_push($header, "Doesn't Want", 'Non-Main Preferences', 'Website Allocation');
 
         $filename = 'juror-allocations-'.now()->toDateString().'.csv';
 
-        return response()->streamDownload(function () use ($applicants, $questions, $allocatedTo, $baseCutoff, $mainPreferenceCount, $header) {
+        return response()->streamDownload(function () use ($applicants, $questions, $categories, $gradingUrls, $allocatedTo, $baseCutoff, $mainPreferenceCount, $header) {
             $output = fopen('php://output', 'w');
 
             // Byte order mark, so Excel reads non-ASCII names as UTF-8
@@ -257,7 +274,15 @@ class JurorAllocations extends Page implements HasTable
             fputcsv($output, $header, escape: '', eol: "\r\n");
 
             foreach ($applicants as $applicant) {
-                $row = [$applicant['id'], $applicant['uuid'], $applicant['name'], $applicant['total_average_score']];
+                $row = [
+                    $applicant['id'],
+                    $applicant['uuid'],
+                    $applicant['name'],
+                    $applicant['reddit_user'],
+                    $applicant['anilist_id'],
+                    $gradingUrls[$applicant['id']],
+                    $applicant['total_average_score'],
+                ];
 
                 // Average and number of grades, so a 0 that's "not graded yet" can be told apart
                 foreach ($questions as $question) {
@@ -266,10 +291,20 @@ class JurorAllocations extends Page implements HasTable
                     $row[] = $scores['total_scores'] ?? 0;
                 }
 
-                $row[] = $this->isEligible($applicant, $baseCutoff) ? 'Yes' : 'No';
                 $row[] = $this->isAboveBaseCutoff($applicant, $baseCutoff) ? 'Yes' : 'No';
-                $row[] = $applicant['answered_yes_to_both'] ? 'Yes' : 'No';
-                $row[] = implode('; ', $allocatedTo[$applicant['id']] ?? []);
+
+                // Per category: the rank (or "Doesn't want") for main categories, "Yes" for ticked others.
+                // Preference ids are strings from the answer JSON, hence the (string) keys
+                $ranks = collect($applicant['main_preferences'])->values()
+                    ->mapWithKeys(fn ($preference, $index) => [(string) $preference['id'] => $index + 1]);
+                $unwanted = array_flip(array_map('strval', array_column($applicant['unwanted_main_preferences'], 'id')));
+                $ticked = array_flip(array_map('strval', array_column($applicant['non_main_preferences'], 'id')));
+                foreach ($categories as $category) {
+                    $id = (string) $category->id;
+                    $row[] = $category->type === 'main'
+                        ? ($ranks[$id] ?? (isset($unwanted[$id]) ? "Doesn't want" : ''))
+                        : (isset($ticked[$id]) ? 'Yes' : '');
+                }
 
                 $mainPreferences = array_column($applicant['main_preferences'], 'name');
                 for ($index = 0; $index < $mainPreferenceCount; $index++) {
@@ -278,6 +313,7 @@ class JurorAllocations extends Page implements HasTable
 
                 $row[] = implode('; ', array_column($applicant['unwanted_main_preferences'], 'name'));
                 $row[] = implode('; ', array_column($applicant['non_main_preferences'], 'name'));
+                $row[] = implode('; ', $allocatedTo[$applicant['id']] ?? []);
 
                 fputcsv($output, array_map(fn ($value) => $this->csvCell($value), $row), escape: '', eol: "\r\n");
             }
@@ -651,6 +687,9 @@ class JurorAllocations extends Page implements HasTable
                 'id' => $applicant->id,
                 'uuid' => $applicant->uuid,
                 'name' => $applicant->name ?? $applicant->reddit_user ?? 'User #'.$applicant->id,
+                // Contact details for inviting jurors (CSV export)
+                'reddit_user' => $applicant->reddit_user,
+                'anilist_id' => $applicant->anilist_id,
                 'individual_scores' => [],
                 'total_average_score' => 0,
                 'main_preferences' => [],
