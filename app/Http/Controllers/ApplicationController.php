@@ -24,7 +24,9 @@ class ApplicationController extends Controller
         
         // Get categories for the latest application's year, or current year if no application exists
         $year = $application ? $application->year : app('current-year');
-        $categories = Category::where('year', $year)->get();
+        // The admin-set category order, with id breaking ties (e.g. categories never reordered).
+        // An applicant who doesn't drag the main-category ranking submits it in this order
+        $categories = Category::where('year', $year)->orderBy('order')->orderBy('id')->get();
         $mainCategories = $categories->where('type', 'main');
         $nonMainCategories = $categories->where('type', '!=', 'main');
         

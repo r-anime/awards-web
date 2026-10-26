@@ -546,6 +546,9 @@
                     }
                     
                     // Drag and drop state will be restored after initialization
+
+                    // Save the order as shown, so a ranking the applicant accepts without dragging still counts
+                    updateCategoriesOrder();
                 }
             }
             
